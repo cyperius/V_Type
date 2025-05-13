@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://h237b2yloqon"
+path="res://.godot/imported/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.wav-05ad5363cd7a6236287be78a272c1d37.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.wav"
+dest_files=["res://.godot/imported/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.wav-05ad5363cd7a6236287be78a272c1d37.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=48000.0
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

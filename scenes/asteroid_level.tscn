@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmi3w83r6r3c0"]
+
+[ext_resource type="Script" path="res://scripts/Asteroid_Level.gd" id="1_q0ero"]
+[ext_resource type="PackedScene" uid="uid://ccl32vcqs7ak6" path="res://scenes/astroid_basic.tscn" id="2_ii4qt"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="3_2r5f0"]
+[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="4_1aq3e"]
+
+[node name="Asteroid_Level" type="Node2D"]
+script = ExtResource("1_q0ero")
+
+[node name="background_Control" parent="." instance=ExtResource("3_2r5f0")]
+offset_top = 6.0
+offset_bottom = 6.0
+
+[node name="player_space_ship" parent="." instance=ExtResource("4_1aq3e")]
+position = Vector2(1680, 668)
+
+[node name="Asteroid" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid2" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid3" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid4" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid5" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid6" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid7" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid8" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid9" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid10" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid11" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid12" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid13" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid14" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid15" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid16" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid17" parent="." instance=ExtResource("2_ii4qt")]
+
+[node name="Asteroid18" parent="." instance=ExtResource("2_ii4qt")]

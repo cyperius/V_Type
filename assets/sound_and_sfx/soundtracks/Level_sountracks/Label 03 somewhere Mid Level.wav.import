@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c0hdrgmeoloq"
+path="res://.godot/imported/Label 03 somewhere Mid Level.wav-6595069a7572810cc43fc844cee47f7b.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label 03 somewhere Mid Level.wav"
+dest_files=["res://.godot/imported/Label 03 somewhere Mid Level.wav-6595069a7572810cc43fc844cee47f7b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=48000.0
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

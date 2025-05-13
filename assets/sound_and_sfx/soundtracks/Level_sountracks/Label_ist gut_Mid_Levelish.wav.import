@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bp5o1f1sybdqf"
+path="res://.godot/imported/Label_ist gut_Mid_Levelish.wav-c94f37b480c7c0c03140aea257a298b3.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_ist gut_Mid_Levelish.wav"
+dest_files=["res://.godot/imported/Label_ist gut_Mid_Levelish.wav-c94f37b480c7c0c03140aea257a298b3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=48000.0
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

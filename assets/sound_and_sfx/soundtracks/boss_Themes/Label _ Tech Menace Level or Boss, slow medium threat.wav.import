@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dt5fdvc1m1fs"
+path="res://.godot/imported/Label _ Tech Menace Level or Boss, slow medium threat.wav-715346ef01044fa7624f507b1a912b3a.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label _ Tech Menace Level or Boss, slow medium threat.wav"
+dest_files=["res://.godot/imported/Label _ Tech Menace Level or Boss, slow medium threat.wav-715346ef01044fa7624f507b1a912b3a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

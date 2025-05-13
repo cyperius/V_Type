@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddamewq24ewbi"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_2wu2a"]
+[ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_ffuqo"]
+[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="3_eahio"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="4_nvxsf"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_2wu2a")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotation = 0.000526298
+anchor_mode = 0
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_ffuqo")]
+
+[node name="player_space_ship" parent="." instance=ExtResource("3_eahio")]
+position = Vector2(169, 1047)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="player_space_ship"]
+current = true
+
+[node name="background_Control" parent="." instance=ExtResource("4_nvxsf")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_top = -54.0
+offset_right = -270.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 2

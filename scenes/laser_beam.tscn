@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsohmrklp25tq"]
+
+[ext_resource type="Script" path="res://scripts/laser_beam.gd" id="1_6u8jw"]
+[ext_resource type="AudioStream" uid="uid://rkvvb80hqjb2" path="res://assets/sound_and_sfx/sound_effects/laser_shot.wav" id="2_b1wl3"]
+[ext_resource type="Texture2D" uid="uid://c7ksa0unioni5" path="res://assets/graphic_elements/shots/laser_beam1.png" id="3_ouej6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nvlhb"]
+height = 78.0
+
+[node name="Area2D" type="Area2D"]
+top_level = true
+collision_layer = 2
+collision_mask = 52
+script = ExtResource("1_6u8jw")
+blast_scale = Vector2(20, 20)
+blast_speed = 1200.0
+damage = 20
+sfx_stream = ExtResource("2_b1wl3")
+sfx_name = "laser_beam"
+volume = 0.5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+texture = ExtResource("3_ouej6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_nvlhb")

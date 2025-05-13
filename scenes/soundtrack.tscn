@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://ch1b0fmojvyha"]
+
+[ext_resource type="AudioStream" uid="uid://d18s2s1qus7vu" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/through_space.wav" id="1_8l48t"]
+[ext_resource type="Script" path="res://scripts/soundtrack.gd" id="2_37vtm"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_8l48t")
+script = ExtResource("2_37vtm")

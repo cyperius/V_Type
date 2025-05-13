@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d0rhuiynwc8q5"]
+
+[node name="Space" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true

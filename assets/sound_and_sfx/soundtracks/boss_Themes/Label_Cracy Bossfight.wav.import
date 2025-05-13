@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bj16latcri0ea"
+path="res://.godot/imported/Label_Cracy Bossfight.wav-e64ee82aa1467991a545d2265f2d3c72.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_Cracy Bossfight.wav"
+dest_files=["res://.godot/imported/Label_Cracy Bossfight.wav-e64ee82aa1467991a545d2265f2d3c72.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

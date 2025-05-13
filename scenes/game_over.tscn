@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgppv7j0ebnx1"]
+
+[ext_resource type="Script" path="res://scripts/game_over.gd" id="1_ivthb"]
+[ext_resource type="AudioStream" uid="uid://cadqb1kffagas" path="res://assets/sound_and_sfx/sound_effects/game_Over.wav" id="2_bmbi1"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ivthb")
+sfx_stream = ExtResource("2_bmbi1")

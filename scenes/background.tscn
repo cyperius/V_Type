@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv2u7uwel82og"]
+
+[ext_resource type="Shader" path="res://ressources/scrolling_background.gdshader" id="1_rftyf"]
+[ext_resource type="Texture2D" uid="uid://csgdcmhiu0chx" path="res://assets/graphic_elements/backgrounds/Sternenhimmel_NachtJPG.png" id="2_5m72l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8trb"]
+shader = ExtResource("1_rftyf")
+shader_parameter/speed = 0.1
+
+[node name="background_Control" type="Control"]
+z_index = -1
+layout_mode = 3
+anchors_preset = 0
+
+[node name="background_TextureRect" type="TextureRect" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_d8trb")
+layout_mode = 0
+offset_right = 4224.0
+offset_bottom = 2376.0
+texture = ExtResource("2_5m72l")
+stretch_mode = 1

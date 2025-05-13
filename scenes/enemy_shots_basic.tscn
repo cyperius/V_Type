@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://lnxjxy5a52th"]
+
+[ext_resource type="Script" path="res://scripts/enemy_shots_basic.gd" id="1_aqfnd"]
+[ext_resource type="Texture2D" uid="uid://bn02nhddpo7fl" path="res://assets/graphic_elements/shots/Slice 11.png" id="2_3hlow"]
+[ext_resource type="AudioStream" uid="uid://c8vgc0nfmbupp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_5rcgx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_foi4l"]
+size = Vector2(173.5, 7.5)
+
+[node name="Node2D" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_aqfnd")
+speed = 660
+damage = 40
+sfx_stream = ExtResource("2_5rcgx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(6.10873e-06, -1.6875)
+rotation = 1.5708
+scale = Vector2(5.352, 5)
+texture = ExtResource("2_3hlow")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(26.5, -0.5)
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_foi4l")

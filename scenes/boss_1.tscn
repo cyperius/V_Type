@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://tn7oan56ea6u"]
+
+[ext_resource type="Script" path="res://scripts/boss_1.gd" id="1_kd5r2"]
+[ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_yguwa"]
+[ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://scenes/enemy_shots_basic.tscn" id="3_1ohr7"]
+[ext_resource type="Texture2D" uid="uid://bgsl5b0g4eo5h" path="res://assets/graphic_elements/enemies/ship3.png" id="4_gdapw"]
+[ext_resource type="AudioStream" uid="uid://dt5fdvc1m1fs" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label _ Tech Menace Level or Boss, slow medium threat.wav" id="4_jqv7l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6k2x"]
+size = Vector2(960, 1018)
+
+[node name="Boss1" type="Area2D"]
+collision_layer = 4
+collision_mask = 19
+script = ExtResource("1_kd5r2")
+health = 10
+sfx_stream = ExtResource("2_yguwa")
+sfx_name = "\"laser_beam\""
+weapon = ExtResource("3_1ohr7")
+boss_soundtrack = ExtResource("4_jqv7l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_h6k2x")
+
+[node name="Ship3" type="Sprite2D" parent="."]
+texture = ExtResource("4_gdapw")
+
+[node name="Gunpoint1" type="Node2D" parent="."]
+position = Vector2(-194, 9)
+
+[node name="Gunpoint2" type="Node2D" parent="."]
+position = Vector2(-9, -382)
+
+[node name="Gunpoint3" type="Node2D" parent="."]
+position = Vector2(-17, 401)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_jqv7l")
+volume_db = 7.428
+autoplay = true
+max_distance = 1000.0
+attenuation = 0.615572
+panning_strength = 2.02

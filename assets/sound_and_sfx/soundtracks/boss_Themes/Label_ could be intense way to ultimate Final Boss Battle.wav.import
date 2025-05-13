@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dktkk6cng3k0n"
+path="res://.godot/imported/Label_ could be intense way to ultimate Final Boss Battle.wav-5f846f49225754f1aa5d16a41f83a935.sample"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_ could be intense way to ultimate Final Boss Battle.wav"
+dest_files=["res://.godot/imported/Label_ could be intense way to ultimate Final Boss Battle.wav-5f846f49225754f1aa5d16a41f83a935.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=true
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=true
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://m1xmua3tbslv"]
+
+[ext_resource type="Script" path="res://scripts/AsteroidSpawner.gd" id="1_gw1y1"]
+
+[node name="AsteroidSpawner" type="Node2D"]
+script = ExtResource("1_gw1y1")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
