@@ -19,6 +19,10 @@ script = ExtResource("1_25hqd")
 position = Vector2(-74, 558)
 rotation = 3.13211
 
+<<<<<<< Updated upstream
 [node name="Enemy_1" parent="." instance=ExtResource("2_omv5l")]
 position = Vector2(-202.589, 554.142)
 speed = 0
+=======
+[node name="Enemy_1" parent="PathFollow2D" instance=ExtResource("2_omv5l")]
+>>>>>>> Stashed changes
