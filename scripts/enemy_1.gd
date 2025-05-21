@@ -1,9 +1,7 @@
 extends Area2D
 
 @onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
-@export var speed = 600
 @export var damage = 100
-
 
 
 func _on_area_entered(area: Area2D) -> void:
@@ -12,8 +10,6 @@ func _on_area_entered(area: Area2D) -> void:
 	queue_free()
 	
 
-func _process(delta: float) -> void:
-	position.x -= speed * delta
 	
 	
  

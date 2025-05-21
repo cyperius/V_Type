@@ -1,6 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://cljnl8u2serb7"]
+[gd_scene load_steps=5 format=3 uid="uid://cljnl8u2serb7"]
 
 [ext_resource type="Script" path="res://scripts/enemy_1.gd" id="1_xwa4m"]
+[ext_resource type="Texture2D" uid="uid://bpisr50e3sd0s" path="res://assets/graphic_elements/enemies/mech_ship.png" id="2_ajnso"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aiwq4"]
+size = Vector2(823, 915)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d3oyf"]
+size = Vector2(967.5, 636)
 
 [node name="Mech_Enemy" type="Area2D"]
+scale = Vector2(0.1, 0.1)
 script = ExtResource("1_xwa4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(5, -3)
+texture = ExtResource("2_ajnso")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(11.5, -1.5)
+shape = SubResource("RectangleShape2D_aiwq4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(7.25, 119)
+shape = SubResource("RectangleShape2D_d3oyf")
