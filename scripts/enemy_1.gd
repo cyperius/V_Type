@@ -1,7 +1,7 @@
 extends Area2D
 
 @onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
-@export var speed = 300
+@export var speed = 600
 @export var damage = 100
 
 
