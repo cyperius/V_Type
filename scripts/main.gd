@@ -19,8 +19,6 @@ func _ready():
 	AudioManager.play_music("level_2")
 
 func _on_boss_timer_timeout():
-	var boss = preload("res://scenes/boss_1.tscn").instantiate()
-	add_child(boss)
-	boss.global_position = Vector2(2800, 1100)
+	pass
 	
 

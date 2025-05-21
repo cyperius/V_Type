@@ -10,10 +10,17 @@ extends Node2D
 @onready var enemy_positions = enemy_positions_node.get_children()
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
+@onready var enemy_counter : int = 0
 
 
 func _ready() -> void:
 	timer.timeout.connect(_on_timer_timeout)
+	
+
+func _process(delta: float) -> void:
+	if enemy_counter == 5:
+		here_comes_the_boss()
+	
 
 
 
@@ -26,4 +33,17 @@ func _on_timer_timeout():
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	enemy.position = enemy_positions[spawn_pos_nr].position
+	enemy_counter += 1
+	enemy.speed += enemy_counter * 10
+	print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
+	
+func here_comes_the_boss():
+	enemy_counter += 1
+	timer.stop()
+	await get_tree().create_timer(5.0).timeout
+	var boss = preload("res://scenes/boss_1.tscn").instantiate()
+	get_tree().current_scene.add_child(boss)
+	boss.global_position = Vector2(2800, 1100)
+
 	#print(enemy.global_position)
+	
