@@ -1,7 +1,7 @@
 extends Path2D
 
 @onready var path : PathFollow2D = $PathFollow2D
-@onready var enemy_on_path = $PathFollow2D/Enemy
+@onready var enemy_on_path = $Enemy_1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -10,7 +10,8 @@ extends Node2D
 @onready var enemy_positions = enemy_positions_node.get_children()
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
-@onready var enemy_counter : int = 0
+var enemy_counter : int = 0
+var boss_spawned = false
 
 
 func _ready() -> void:
@@ -18,10 +19,10 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == 5:
+	if enemy_counter == 30 and boss_spawned == false:
 		here_comes_the_boss()
-	
-
+		boss_spawned = true
+		
 
 
 func _on_timer_timeout():
@@ -38,7 +39,6 @@ func _on_timer_timeout():
 	print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
 	
 func here_comes_the_boss():
-	enemy_counter += 1
 	timer.stop()
 	await get_tree().create_timer(5.0).timeout
 	var boss = preload("res://scenes/boss_1.tscn").instantiate()

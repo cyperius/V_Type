@@ -16,9 +16,10 @@ curve = SubResource("Curve2D_ehqj4")
 script = ExtResource("1_25hqd")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
-position = Vector2(-74, 558)
-rotation = 3.13211
+position = Vector2(1354, 395)
+rotation = -0.189988
+progress = 5085.48
 
-[node name="Enemy_1" parent="." instance=ExtResource("2_omv5l")]
-position = Vector2(-202.589, 554.142)
+[node name="Enemy_1" parent="PathFollow2D" instance=ExtResource("2_omv5l")]
+scale = Vector2(1, 1)
 speed = 0
