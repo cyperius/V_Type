@@ -5,7 +5,7 @@ extends Node2D  # MainScene basiert auf Node2D
 func _ready():
 	# var song1 = preload("res://assets/sound_and_sfx/soundtracks/Level_sountracks/Not Alone.wav")
 	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
-	#var enemy_spawner = preload("res://scenes/enemy_spawner.tscn").instantiate()
+	
 	
 	add_child(enemy)
 	#add_child(background)
