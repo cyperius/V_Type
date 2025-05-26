@@ -18,7 +18,6 @@ anchor_mode = 0
 position = Vector2(169, 1047)
 
 [node name="AudioListener2D" type="AudioListener2D" parent="player_space_ship"]
-current = true
 
 [node name="background_Control" parent="." instance=ExtResource("4_nvxsf")]
 anchors_preset = 15
