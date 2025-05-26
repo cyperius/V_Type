@@ -19,7 +19,7 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == 10:
+	if enemy_counter == 15:
 		here_comes_the_boss()
 	
 
@@ -53,6 +53,7 @@ func _on_timer2_timeout():
 func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
+	timer2.stop()
 	#await get_tree().create_timer(5.0).timeout
 	AudioManager.fade_out(5)
 	var boss = preload("res://scenes/boss_1.tscn").instantiate()
