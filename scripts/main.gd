@@ -9,7 +9,7 @@ func _ready():
 	
 	add_child(enemy)
 	#add_child(background)
-	boss_timer.wait_time = 30 # kann im Editor überschrieben werden
+	boss_timer.wait_time = 15 # kann im Editor überschrieben werden
 	boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	
@@ -19,6 +19,6 @@ func _ready():
 	AudioManager.play_music("level_2")
 
 func _on_boss_timer_timeout():
-	pass
+	AudioManager.stop_music()
 	
 
