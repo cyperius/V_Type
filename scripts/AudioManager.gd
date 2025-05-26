@@ -30,10 +30,11 @@ func _ready() -> void:
 	music_tracks["survival_3"] = preload("res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).wav")
 
 
-func play_music(track_name: String) -> void:
+func play_music(track_name: String, volume: float = 1.0) -> void:
 	if track_name in music_tracks:
 		music_player.stream = music_tracks[track_name]
 		music_player.play()
+		music_player.volume_db = linear2db(volume)
 	else:
 		print("Fehler: Musiktrack '" + track_name + "' nicht gefunden!")
 
@@ -60,3 +61,10 @@ func linear2db(volume: float) -> float:
 	if volume <= 0:
 		return -80
 	return 20 * (log(volume) / log(10))
+	
+
+func fade_out(duration : float = 2.0):
+	var tween := create_tween()
+	tween.tween_property(music_player, "volume_db", -80, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+	
+

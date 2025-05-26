@@ -19,7 +19,7 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == 40:
+	if enemy_counter == 10:
 		here_comes_the_boss()
 	
 
@@ -53,10 +53,11 @@ func _on_timer2_timeout():
 func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
-	await get_tree().create_timer(5.0).timeout
+	#await get_tree().create_timer(5.0).timeout
+	AudioManager.fade_out(5)
 	var boss = preload("res://scenes/boss_1.tscn").instantiate()
 	get_tree().current_scene.add_child(boss)
-	boss.global_position = Vector2(2800, 1100)
+	boss.global_position = Vector2(7000, 1100)
 
 	#print(enemy.global_position)
 	

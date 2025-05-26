@@ -19,6 +19,6 @@ func _ready():
 	AudioManager.play_music("level_2")
 
 func _on_boss_timer_timeout():
-	AudioManager.stop_music()
+	pass
 	
 

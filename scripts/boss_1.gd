@@ -29,7 +29,7 @@ func _ready() -> void:
 	add_child(shoot_timer) 
 	shoot_timer.timeout.connect(_shot)
 	audio2d.stream = boss_soundtrack
-	audio2d.play()
+	fade_in_sound()
 	
 	var new_y = position.y
 	change_pos_timer.wait_time = 2
@@ -50,7 +50,8 @@ func _process(delta: float) -> void:
 	else:
 		print("Global.player_ship ist noch nicht gesetzt!")
 
-	position.y = lerp(float(position.y), float(new_y), 0.05)  # Bewegt sich langsam Richtung `new_y`
+	position.y = lerp(float(position.y), float(new_y), 0.05)
+	position.x = lerp(float(position.x), float(2800), 0.005) # Bewegt sich langsam Richtung `new_y`
 	
 		
 func _position_change() -> void:
@@ -138,4 +139,9 @@ func enemy_is_hit(damage) -> void:
 		explosion_animation.speed_scale = 0.5
 		queue_free()
 	
-	#
+func fade_in_sound(duration : float = 5):
+	audio2d.volume_db = -80
+	audio2d.play()
+	var tween := create_tween()
+	tween.tween_property(audio2d, "volume_db", 1, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
