@@ -3,28 +3,41 @@ extends Node
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
 # `NOTIFICATION_RESIZED` hingegen ist nur in Control-Nodes verfügbar, daher definieren wir **diese eine Konstante manuell**.
-
-# Warum wir nicht `extends Control` verwenden: 
-# Weil dieses Script als Autoload (Singleton) im Hintergrund läuft und **nicht Teil der Benutzeroberfläche ist**.
-# Control-Nodes sind speziell für UI gedacht und bringen zusätzliche Logik mit, die wir hier nicht brauchen.
-# Um das Script so leichtgewichtig und unabhängig wie möglich zu halten, bleiben wir bei `extends Node`.
-
 const NOTIFICATION_RESIZED = 40
 
 var screen_size: Vector2
+
 # Spielzustände
-const STATE_MENU = "menu"
-const STATE_PLAYING = "playing"
-const STATE_PAUSED = "paused"
+const STATE_MENU      = "menu"
+const STATE_PLAYING   = "playing"
+const STATE_PAUSED    = "paused"
 const STATE_GAME_OVER = "game_over"
 
 var state: String = STATE_MENU  # Initialzustand
 
+# Persistente Daten
+var score         : int       = 0
+var inventory     : Dictionary = {}
+var energy_units  : int       = 0
+var lives         : int       = 3
+
+# Aktuelles Level als Zahl
+var current_level : int       = 1
+
+# Reihenfolge der Level–Szenen
+var level_paths   : Array     = [
+	"res://scenes/levels/level_1.tscn",
+	"res://scenes/levels/asteroid_level.tscn",
+	# …weitere Levels hier anhängen
+]
+
+# Für zukünftige Shop-Integration (momentan nicht genutzt)
+# var shop_paths : Array = []
 
 func _ready():
 	screen_size = get_viewport().get_visible_rect().size
 	# print("📐 Initiale Fenstergrösse:", screen_size)
-	# print("GameData.gd bereit, aktueller Zustand:", state)
+	# print("GameManager bereit, aktueller Zustand:", state)
 
 func _notification(what):
 	if what == NOTIFICATION_RESIZED:
@@ -37,3 +50,16 @@ func is_playing() -> bool:
 
 func is_paused() -> bool:
 	return state == STATE_PAUSED
+
+# Für allfällige spätere Implementierung eines Shops / einer Werkstatt
+# func next_state():
+#	# Zwischen Level und Shop wechseln
+#	if should_show_shop():
+#		return "shop"
+#	else:
+#		return "level"
+
+# func should_show_shop() -> bool:
+#	# hier deine Logik, z.B. alle 3 Level
+#	pass
+

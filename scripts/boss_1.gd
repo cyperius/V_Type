@@ -16,6 +16,7 @@ var enemy_weapon = preload("res://scenes/enemy_shots_basic.tscn")
 var projectiles = []
 var game_over = preload("res://scripts/game_over.gd")
 var new_y = 1000 # Globale Variable für die Zielposition
+signal level_finished(level_nr : int)
 
 
 
@@ -138,6 +139,7 @@ func enemy_is_hit(damage) -> void:
 		explosion_animation.scale = Vector2(25, 25)
 		explosion_animation.speed_scale = 0.5
 		queue_free()
+		
 	
 func fade_in_sound(duration : float = 5):
 	audio2d.volume_db = -80

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="V_Type"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/levels/level_1.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://assets/graphic_elements/icon.svg"
 
@@ -23,7 +23,7 @@ buses/default_bus_layout="res://ressources/default_bus_layout.tres"
 
 AudioManager="*res://scenes/AudioManager.tscn"
 Global="*res://scripts/Global.gd"
-GameData="*res://scripts/game_data.gd"
+GameManager="*res://scripts/GameManager.gd"
 
 [display]
 

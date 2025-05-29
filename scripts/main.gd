@@ -1,24 +1,49 @@
-extends Node2D  # MainScene basiert auf Node2D
+# Main.gd
+extends Node2D
 
-@onready var boss_timer = $BossTimer
+# Container in Main.tscn, in den Level geladen werden
+@onready var level_container: Node = $LevelContainer
+# Referenz auf das aktuell geladene Level
+var current_level_node: Node = null
 
-func _ready():
-	# var song1 = preload("res://assets/sound_and_sfx/soundtracks/Level_sountracks/Not Alone.wav")
-	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
-	
-	
-	add_child(enemy)
-	#add_child(background)
-	boss_timer.wait_time = 15 # kann im Editor überschrieben werden
-	boss_timer.timeout.connect(_on_boss_timer_timeout)
-	
-	
-	#background.size = Vector2(3840, 2880)  # Falls FullHD-Fenstergröße
-	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
+func _ready() -> void:
+	GameManager.state = GameManager.STATE_PLAYING
+	# Erstes Level laden (GameManager.current_level ist ein int)
+	_load_level(GameManager.current_level)
 
-	AudioManager.play_music("level_2")
+func _load_level(level_nr: int) -> void:
+	# Alten Level entfernen
+	if current_level_node:
+		current_level_node.queue_free()
 
-func _on_boss_timer_timeout():
-	pass
-	
+	# Pfad aus Autoload holen (Array, 0-basiert)
+	var path: String = GameManager.level_paths[level_nr - 1]
 
+	# Szene dynamisch laden und als PackedScene casten
+	var packed_scene := ResourceLoader.load(path) as PackedScene
+	if not packed_scene:
+		push_error("Konnte Level nicht laden: %s" % path)
+		return
+
+	# Instanziieren
+	current_level_node = packed_scene.instantiate()
+
+	# Persistente Daten übergeben, wenn das Level eine setup-Methode anbietet
+	if current_level_node.has_method("setup"):
+		current_level_node.setup(GameManager.score, GameManager.energy_units, GameManager.lives, GameManager.inventory)
+
+	# In den Container einfügen
+	level_container.add_child(current_level_node)
+
+	# Signal fürs Level-Ende verbinden (Godot 4-Style)
+	if current_level_node.has_signal("level_finished"):
+		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
+
+func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy: int = 0) -> void:
+	# Persistente Daten aktualisieren
+	GameManager.score        += gained_score
+	GameManager.energy_units += gained_energy
+	GameManager.current_level = next_level_nr
+
+	# Nächstes Level laden
+	_load_level(GameManager.current_level)
