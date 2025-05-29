@@ -29,10 +29,10 @@ func _process(delta):
 		queue_free()
 	
 func _on_area_entered(area: Area2D):
-
-	var enemy_hit = enemy_hit_scene.instantiate()
-	get_tree().current_scene.add_child(enemy_hit)
-	enemy_hit.position = global_position
+	if not area.is_in_group("one_hit_enemies"):
+		var enemy_hit = enemy_hit_scene.instantiate()
+		get_tree().current_scene.add_child(enemy_hit)
+		enemy_hit.position = global_position
 	
 	if area.is_in_group("asteroids"):
 		# Hier kommt später die Schadenslogik hin
