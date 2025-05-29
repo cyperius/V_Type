@@ -9,7 +9,7 @@ size = Vector2(823, 915)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d3oyf"]
 size = Vector2(967.5, 636)
 
-[node name="Mech_Enemy" type="Area2D"]
+[node name="Mech_Enemy" type="Area2D" groups=["one_hit_enemies"]]
 rotation = 1.5708
 scale = Vector2(0.05, 0.05)
 collision_layer = 4
