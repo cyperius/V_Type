@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://2iudnapipaak"]
+
+[ext_resource type="PackedScene" uid="uid://biu2g8yefq00u" path="res://scenes/explosion_animation.tscn" id="1_be261"]
+[ext_resource type="Script" path="res://scripts/hit.gd" id="1_nshml"]
+[ext_resource type="AudioStream" uid="uid://7x0hg4px1q1j" path="res://assets/sound_and_sfx/sound_effects/hit_low_frequency.wav" id="3_wj8pp"]
+
+[node name="Hit" type="Node2D"]
+script = ExtResource("1_nshml")
+
+[node name="explosion_animation" parent="." instance=ExtResource("1_be261")]
+scale = Vector2(1, 1)
+frame = 10
+frame_progress = 1.0
+speed_scale = 5.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_wj8pp")
