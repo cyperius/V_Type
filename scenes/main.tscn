@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://c20flpj8vlyd6"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_2wu2a"]
+[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="3_eahio"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_2wu2a")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotation = 0.000526298
+anchor_mode = 0
+
+[node name="player_space_ship" parent="." instance=ExtResource("3_eahio")]
+position = Vector2(169, 1047)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="player_space_ship"]
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LevelContainer" type="Node2D" parent="."]
+
+[node name="Shop" type="Node2D" parent="."]
+
+[node name="StartMenu" type="Node2D" parent="."]

@@ -11,6 +11,7 @@ extends Node2D
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
 @onready var enemy_counter : int = 0
+signal level_finished(level_nr: int)
 
 
 func _ready() -> void:
@@ -19,7 +20,7 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == 15:
+	if enemy_counter == 5:
 		here_comes_the_boss()
 	
 

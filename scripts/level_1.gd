@@ -1,6 +1,8 @@
 extends Node2D  # MainScene basiert auf Node2D
 
 @onready var boss_timer = $BossTimer
+signal level_finished
+
 
 func _ready():
 	# var song1 = preload("res://assets/sound_and_sfx/soundtracks/Level_sountracks/Not Alone.wav")
@@ -21,3 +23,7 @@ func _ready():
 func _on_boss_timer_timeout():
 	pass
 	
+
+
+func _on_enemy_spawner_level_finished() -> void:
+	emit_signal("level_finished", 1)
