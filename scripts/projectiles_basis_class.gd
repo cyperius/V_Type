@@ -6,6 +6,9 @@ extends Area2D
 @export var sfx_name: String = ""  # Alternativer Name für AudioManager
 @export var volume: float = 1
 
+@onready var enemy_hit_scene : PackedScene = preload("res://scenes/hit.tscn")
+
+
 func _ready():
 	set_process(true)  # Stelle sicher, dass _process() aktiv ist
 	#if get_parent():
@@ -27,6 +30,10 @@ func _process(delta):
 	
 func _on_area_entered(area: Area2D):
 
+	var enemy_hit = enemy_hit_scene.instantiate()
+	get_tree().current_scene.add_child(enemy_hit)
+	enemy_hit.position = global_position
+	
 	if area.is_in_group("asteroids"):
 		# Hier kommt später die Schadenslogik hin
 		queue_free()
