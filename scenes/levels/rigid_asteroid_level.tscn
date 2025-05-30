@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://1p2k6pgvwphb"]
+[gd_scene load_steps=5 format=3 uid="uid://1p2k6pgvwphb"]
 
 [ext_resource type="Script" path="res://scripts/Asteroid_Level.gd" id="1_cqqrw"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="2_0jwxd"]
-[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="3_8ohjx"]
 [ext_resource type="PackedScene" uid="uid://be2saoppwc7v6" path="res://scenes/ui.tscn" id="4_1w7mx"]
 [ext_resource type="PackedScene" uid="uid://m1xmua3tbslv" path="res://scenes/asteroid_spawner.tscn" id="5_shokp"]
 
@@ -24,9 +23,6 @@ scale = Vector2(0.999378, 0.99893)
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.25
 autostart = true
-
-[node name="player_space_ship" parent="." instance=ExtResource("3_8ohjx")]
-position = Vector2(336, 1139)
 
 [node name="AsteroidSpawner" parent="." instance=ExtResource("5_shokp")]
 position = Vector2(-2, 4)
