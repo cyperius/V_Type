@@ -3,6 +3,12 @@ extends Node2D
 
 # Container in Main.tscn, in den Level geladen werden
 @onready var level_container: Node = $LevelContainer
+
+@onready var shop: Node2D = $Shop
+@onready var start_menu: Node2D = $StartMenu
+@onready var player_space_ship: Area2D = $player_space_ship
+
+
 # Referenz auf das aktuell geladene Level
 var current_level_node: Node = null
 
@@ -38,6 +44,7 @@ func _load_level(level_nr: int) -> void:
 	# Signal fürs Level-Ende verbinden (Godot 4-Style)
 	if current_level_node.has_signal("level_finished"):
 		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
+
 
 func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy: int = 0) -> void:
 	# Persistente Daten aktualisieren

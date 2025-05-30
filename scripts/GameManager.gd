@@ -27,7 +27,7 @@ var current_level : int       = 1
 # Reihenfolge der Level–Szenen
 var level_paths   : Array     = [
 	"res://scenes/levels/level_1.tscn",
-	"res://scenes/levels/asteroid_level.tscn",
+	"res://scenes/rigid_asteroid_level.tscn",
 	# …weitere Levels hier anhängen
 ]
 

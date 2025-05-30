@@ -11,6 +11,7 @@ extends Node2D
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
 @onready var enemy_counter : int = 0
+signal boss_defeated
 signal level_finished(level_nr: int)
 
 
@@ -59,7 +60,9 @@ func here_comes_the_boss():
 	AudioManager.fade_out(5)
 	var boss = preload("res://scenes/boss_1.tscn").instantiate()
 	get_tree().current_scene.add_child(boss)
+	boss.connect("boss_defeated", Callable(self, "_on_boss_defated"))
 	boss.global_position = Vector2(7000, 1100)
 
-	#print(enemy.global_position)
+func _on_boss_defated():
+	emit_signal("boss_defeated")
 	

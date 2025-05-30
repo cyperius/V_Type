@@ -16,7 +16,7 @@ var enemy_weapon = preload("res://scenes/enemy_shots_basic.tscn")
 var projectiles = []
 var game_over = preload("res://scripts/game_over.gd")
 var new_y = 1000 # Globale Variable für die Zielposition
-signal level_finished(level_nr : int)
+signal boss_defeated()
 
 
 
@@ -138,6 +138,7 @@ func enemy_is_hit(damage) -> void:
 		explosion_animation.position = global_position
 		explosion_animation.scale = Vector2(25, 25)
 		explosion_animation.speed_scale = 0.5
+		emit_signal("boss_defeated")
 		queue_free()
 		
 	
