@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="3_xu06g"]
 [ext_resource type="PackedScene" uid="uid://ccl32vcqs7ak6" path="res://scenes/astroid_basic.tscn" id="4_gs876"]
 
-[node name="Asteroid_Level" type="Node2D"]
+[node name="Asteroid_Level2" type="Node2D"]
 script = ExtResource("1_7y0l1")
 
 [node name="background_Control" parent="." instance=ExtResource("2_lid0l")]

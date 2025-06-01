@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://1jlksoel3qea"]
+
+[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="1_wv6e3"]
+[ext_resource type="Texture2D" uid="uid://brvk8l7vblmrb" path="res://assets/graphic_elements/backgrounds/back.png" id="2_vefjv"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="player_space_ship" parent="." instance=ExtResource("1_wv6e3")]
+position = Vector2(-1200, 2.08165e-12)
+
+[node name="Camera2D" type="Camera2D" parent="player_space_ship"]
+position = Vector2(6000, -8.32659e-12)
+scale = Vector2(4, 4)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1858.0
+offset_top = -1297.0
+offset_right = 190.0
+offset_bottom = 239.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+texture = ExtResource("2_vefjv")
+stretch_mode = 1
