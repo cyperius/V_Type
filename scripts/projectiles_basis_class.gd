@@ -5,6 +5,7 @@ extends Area2D
 @export var sfx_stream: AudioStream  # Editor-Zuweisung möglich
 @export var sfx_name: String = ""  # Alternativer Name für AudioManager
 @export var volume: float = 1
+var player_mode = Global.player_ship.mode
 
 @onready var enemy_hit_scene : PackedScene = preload("res://scenes/hit.tscn")
 
@@ -21,12 +22,23 @@ func _ready():
 	area_entered.connect(_on_area_entered)
 
 func _process(delta):
+	match player_mode:
+		Global.player_ship.PlayerMode.FREE:
+			_process_horizontal(delta)
+	match player_mode:
+		Global.player_ship.PlayerMode.CIRCLE:
+			_process_circle(delta)
+			
+func _process_horizontal(delta):
 	position.x += speed * delta
 	# print("Projektil bewegt sich! Position:", position)
 	
 	# Lösche Projektil, wenn es aus dem Bildschirm fliegt
 	if position.x > 4000:  # Bildschirmbreite
 		queue_free()
+	
+func _process_circle(delta):
+	print("circle Shot!!!!!")
 	
 func _on_area_entered(area: Area2D):
 	if not area.is_in_group("one_hit_enemies"):

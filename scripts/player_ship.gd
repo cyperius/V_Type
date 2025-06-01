@@ -107,12 +107,12 @@ func _on_just_been_hit_timer_timeout() -> void:
 func _process(delta: float) -> void:
 	match mode:
 		PlayerMode.FREE:
-			_process_free(delta)
+			_process_horizontal(delta)
 		PlayerMode.CIRCLE:
 			_process_circle(delta)
 
 # ─── FREI-Mode: deine bisherige Bewegungs- & Schusslogik ─────────────────
-func _process_free(delta: float) -> void:
+func _process_horizontal(delta: float) -> void:
 	# Bewegungssteuerung des Schiffs
 	var direction := Vector2(0, 0)
 	direction.x = Input.get_axis("backward", "forward")  # Links/Rechts
