@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://b402fm5cuxyoc"]
+
+[ext_resource type="Script" path="res://scripts/player_ship.gd" id="1_6i3ro"]
+[ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://scenes/laser_beam.tscn" id="2_othpc"]
+[ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://scenes/laser_blast.tscn" id="3_igyjx"]
+[ext_resource type="AudioStream" uid="uid://cadqb1kffagas" path="res://assets/sound_and_sfx/sound_effects/game_Over.wav" id="4_tluyk"]
+[ext_resource type="PackedScene" uid="uid://dgppv7j0ebnx1" path="res://scenes/game_over.tscn" id="5_jfq58"]
+[ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/enemies/space_ship1.png" id="6_vs4qq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jnu13"]
+radius = 365.55
+height = 1166.67
+
+[node name="PlayerShip" type="Area2D"]
+self_modulate = Color(0.960784, 0.0313726, 0.0313726, 1)
+scale = Vector2(0.25, 0.25)
+collision_mask = 60
+script = ExtResource("1_6i3ro")
+laser_beam = ExtResource("2_othpc")
+laser_blast = ExtResource("3_igyjx")
+max_health = 500
+game_over_jingle = ExtResource("4_tluyk")
+damage = 25
+game_over = ExtResource("5_jfq58")
+
+[node name="ship_sprite" type="Sprite2D" parent="."]
+rotation = -1.5708
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("6_vs4qq")
+
+[node name="Gunpoint" type="Node2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 0)
+rotation = -1.5708
+scale = Vector2(0.6, 0.6)
+shape = SubResource("CapsuleShape2D_jnu13")
+one_way_collision_margin = 0.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.065

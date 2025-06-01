@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Asteroid_Level.gd" id="1_7y0l1"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="2_lid0l"]
-[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/space_ship.tscn" id="3_xu06g"]
+[ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="3_xu06g"]
 [ext_resource type="PackedScene" uid="uid://ccl32vcqs7ak6" path="res://scenes/astroid_basic.tscn" id="4_gs876"]
 
 [node name="Asteroid_Level2" type="Node2D"]

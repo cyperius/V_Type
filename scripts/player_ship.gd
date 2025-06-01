@@ -203,21 +203,47 @@ func _process_circle(delta: float) -> void:
 
 	# 4. Schießen in Richtung Zentrum
 	if Input.is_action_just_pressed("primary_weapon"):
-		#print("PWeapon_fire")
-		shoot_circle_mode(primary_weapon)
+		print("PWeapon_fire")
+		shoot_weapon(primary_weapon)
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_circle_mode(secondary_weapon)
-		#print("SWeapon_fire")
+		print("SWeapon_fire")
 
 # ─── Waffenschießen im CIRCLE-Mode (zur Mitte) ────────────────────────────────
 func shoot_circle_mode(weapon: PackedScene) -> void:
-	#print("CMWeapon_fire")
+	print("CMWeapon_fire")
 	if not weapon:
 		print("Fehler: Keine Waffe zugewiesen!")
 		return
 
 	# Instanziere das Projektil
 	var projectile_instance := weapon.instantiate()
+	
+	# Füge das Projektil der aktuellen Szene hinzu
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		current_scene.add_child(projectile_instance)
+		#print("✅ Projektil erfolgreich zur Szene hinzugefügt!")
+	else:
+		print("Fehler: Keine aktuelle Szene gefunden!")
+		return
 
 	# Setze Startposition: vom Gunpoint oder fallback auf Schiffposition
-	var gunp
+	var gunpoint = $Gunpoint
+	if gunpoint:
+		projectile_instance.global_position = gunpoint.global_position
+		print("Projektil-Position (Gunpoint):", projectile_instance.global_position)
+	else:
+		# Fallback: Nutze die Schiffposition
+		projectile_instance.global_position = global_position
+		print("Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+
+	# Füge das Projektil der Liste aktiver Projektile hinzu
+	projectiles.append(projectile_instance)
+
+	# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
+	if projectile_instance.has_method("fire"):
+		#print("Fire-Funktion wird aufgerufen!")
+		projectile_instance.fire()
+	else:
+		print("Fehler: Projektil hat keine fire()-Methode!")
