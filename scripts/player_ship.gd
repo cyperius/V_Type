@@ -29,11 +29,11 @@ var velocity := Vector2(240, 240)
 @export var max_speed := 600
 var speed := max_speed
 
-@export var max_health: int := 400
+@export var max_health: int = 400
 var health := max_health
 
 @export var game_over_jingle: AudioStream  # AudioStream ist anscheinend ein Datentyp
-@export var damage: int := 10
+@export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
 
 @onready var just_been_hit_timer := $Timer
@@ -81,7 +81,7 @@ func _on_area_entered(area_that_entered) -> void:
 		print("I'm already dead!")
 		return
 	else:
-		var damage_inflicted := area_that_entered.damage
+		var damage_inflicted : int = area_that_entered.damage
 		player_is_hit(damage_inflicted)
 
 func player_is_hit(damage: int):
