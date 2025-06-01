@@ -148,6 +148,46 @@ func _process_free(delta: float) -> void:
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_weapon(secondary_weapon)
 
+
+#Funktion zum Abfeuern einer Waffe
+# weapon: PackedScene - Die Szene des Projektils, das abgefeuert werden soll
+func shoot_weapon(weapon: PackedScene):
+	if not weapon:
+		print("Fehler: Keine Waffe zugewiesen!")
+		return
+
+	# Instanziere das Projektil
+	var projectile_instance = weapon.instantiate()
+	
+	# Füge das Projektil der aktuellen Szene hinzu
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		current_scene.add_child(projectile_instance)
+		#print("✅ Projektil erfolgreich zur Szene hinzugefügt!")
+	else:
+		print("Fehler: Keine aktuelle Szene gefunden!")
+		return
+
+	# Verwende den Gunpoint als Referenz für den Startpunkt des Schusses
+	var gunpoint = $Gunpoint
+	if gunpoint:
+		projectile_instance.global_position = gunpoint.global_position
+		#print("Projektil-Position (Gunpoint):", projectile_instance.global_position)
+	else:
+		# Fallback: Nutze die Schiffposition
+		projectile_instance.global_position = global_position
+		print("Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+
+	# Füge das Projektil der Liste aktiver Projektile hinzu
+	projectiles.append(projectile_instance)
+
+	# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
+	if projectile_instance.has_method("fire"):
+		#print("Fire-Funktion wird aufgerufen!")
+		projectile_instance.fire()
+	else:
+		print("Fehler: Projektil hat keine fire()-Methode!")
+
 # ─── CIRCLE-Mode: Schiff bewegt sich auf Kreislinie, immer nach außen gerichtet ───
 func _process_circle(delta: float) -> void:
 	# 1. Eingabe: Links/Rechts ändern den Winkel
@@ -159,16 +199,19 @@ func _process_circle(delta: float) -> void:
 	global_position = circle_center_position + offset
 
 	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
-	rotation = angle
+	rotation = angle + PI
 
 	# 4. Schießen in Richtung Zentrum
 	if Input.is_action_just_pressed("primary_weapon"):
+		#print("PWeapon_fire")
 		shoot_circle_mode(primary_weapon)
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_circle_mode(secondary_weapon)
+		#print("SWeapon_fire")
 
 # ─── Waffenschießen im CIRCLE-Mode (zur Mitte) ────────────────────────────────
 func shoot_circle_mode(weapon: PackedScene) -> void:
+	#print("CMWeapon_fire")
 	if not weapon:
 		print("Fehler: Keine Waffe zugewiesen!")
 		return

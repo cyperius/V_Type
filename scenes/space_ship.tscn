@@ -18,7 +18,6 @@ collision_mask = 60
 script = ExtResource("1_t453u")
 laser_beam = ExtResource("2_jgdjl")
 laser_blast = ExtResource("3_ghkfl")
-max_speed = null
 max_health = 500
 game_over_jingle = ExtResource("4_tg2x3")
 damage = 25
