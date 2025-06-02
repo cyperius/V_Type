@@ -1,15 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://1jlksoel3qea"]
+[gd_scene load_steps=5 format=3 uid="uid://1jlksoel3qea"]
 
 [ext_resource type="Script" path="res://scripts/level_3.gd" id="1_856mx"]
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="1_wv6e3"]
+[ext_resource type="AudioStream" uid="uid://d1vt4irxw6wis" path="res://assets/sound_and_sfx/soundtracks/CircleMode/Cosmic Dreams.wav" id="3_mi50s"]
+[ext_resource type="Texture2D" uid="uid://dobrc44jyarb1" path="res://assets/graphic_elements/backgrounds/vortex1.png" id="4_i30ti"]
 
 [node name="Level_3" type="Node2D"]
 script = ExtResource("1_856mx")
 player_scene = ExtResource("1_wv6e3")
-circle_radius = 800.0
+circle_radius = 1000.0
 
 [node name="Center" type="Marker2D" parent="."]
 position = Vector2(1857, 1090)
 
 [node name="PlayerSpawn" type="Node2D" parent="."]
 position = Vector2(2926, 1096)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_mi50s")
+autoplay = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 478.0
+offset_top = -350.0
+offset_right = 1278.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.90521, 4.29319)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_i30ti")
+expand_mode = 2

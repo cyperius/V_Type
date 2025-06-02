@@ -2,6 +2,11 @@ extends Node2D
 
 @export var player_scene: PackedScene
 @export var circle_radius := 200.0
+@export var level_soundtrack : AudioStreamWAV
+
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+
+
 
 func _ready() -> void:
 	# 1. Spieler-Schiff instanziieren

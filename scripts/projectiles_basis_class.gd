@@ -5,9 +5,12 @@ extends Area2D
 @export var sfx_stream: AudioStream  # Editor-Zuweisung möglich
 @export var sfx_name: String = ""  # Alternativer Name für AudioManager
 @export var volume: float = 1
-var player_mode = Global.player_ship.mode
+@export var level_soundtrack 
 
 @onready var enemy_hit_scene : PackedScene = preload("res://scenes/hit.tscn")
+@onready var offset = Global.player_ship.global_position - Global.player_ship.circle_center_position
+@onready var angle = offset.angle()
+var player_mode = Global.player_ship.mode
 
 
 func _ready():
@@ -20,6 +23,18 @@ func _ready():
 	
 	# Signal verbinden (Beachte den Funktionsnamen _on_area_entered)
 	area_entered.connect(_on_area_entered)
+	if Global.player_ship.PlayerMode.CIRCLE == Global.player_ship.PlayerMode.CIRCLE:
+		rotate(angle)
+		start_tweens()
+	
+
+func start_tweens():
+	var center_tween = create_tween()
+	center_tween.tween_property(self, "position", Global.player_ship.circle_center_position, 5000/(speed*3)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var shrink_tween = create_tween()
+	shrink_tween.tween_property(self, "scale", Vector2(0.05, 0.05), 5000/(speed*3)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+
 
 func _process(delta):
 	match player_mode:
@@ -36,9 +51,14 @@ func _process_horizontal(delta):
 	# Lösche Projektil, wenn es aus dem Bildschirm fliegt
 	if position.x > 4000:  # Bildschirmbreite
 		queue_free()
+		
 	
 func _process_circle(delta):
-	print("circle Shot!!!!!")
+	# im Circle Mode wird ein Tween ausgelöst, der auf scale < 0.1 schrumpfen lässt, dies wird hier ausgenutzt um die Schüsse zu löschen
+	if scale < Vector2(0.1, 0.1):
+		queue_free()
+	
+	
 	
 func _on_area_entered(area: Area2D):
 	if not area.is_in_group("one_hit_enemies"):
