@@ -6,7 +6,7 @@ extends Node2D
 
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var growing_vortex: TextureRect = $ControlNode/GrowingVortex
-
+@onready var animated_vortex: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _ready() -> void:
@@ -38,10 +38,16 @@ func _ready() -> void:
 	print("Level3: Circle_Mode aktiviert. Center=", player.circle_center_position, " Radius=", player.circle_radius)
 	
 	# 9. Versuch mit Background Tween
-	vortex_grow_tween()
+	vortex_grow_tweens()
+	
+	# 10. 
 	
 	
-func vortex_grow_tween():
-	var tween = create_tween()
-	tween.tween_property(growing_vortex, "scale", Vector2(10, 10), 100)
+	
+func vortex_grow_tweens():
+	var grow_tween = create_tween()
+	grow_tween.tween_property(growing_vortex, "scale", Vector2(10, 10), 100)
+	var animate_tween = create_tween()
+	animate_tween.tween_property(animated_vortex, "scale", Vector2(10, 10), 100)
+	
 	
