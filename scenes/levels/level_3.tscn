@@ -20,31 +20,34 @@ position = Vector2(2926, 1096)
 stream = ExtResource("3_mi50s")
 autoplay = true
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="ControlNode" type="Node2D" parent="."]
+position = Vector2(1843, 1072)
+
+[node name="TextureRect" type="TextureRect" parent="ControlNode"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 337.0
-offset_top = -350.0
-offset_right = 1137.0
-offset_bottom = 250.0
+offset_left = -1403.0
+offset_top = -1189.0
+offset_right = -475.0
+offset_bottom = -559.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(4, 4.293)
+scale = Vector2(3.8, 3.8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("4_i30ti")
-expand_mode = 2
+stretch_mode = 2
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="TextureRect2" type="TextureRect" parent="ControlNode"]
 z_index = -1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -16.0
-offset_top = -343.0
-offset_right = 1043.0
-offset_bottom = 257.0
+offset_left = -1941.0
+offset_top = -1449.0
+offset_right = -882.0
+offset_bottom = -849.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3.90521, 4.29319)
