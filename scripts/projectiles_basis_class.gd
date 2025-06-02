@@ -5,7 +5,6 @@ extends Area2D
 @export var sfx_stream: AudioStream  # Editor-Zuweisung möglich
 @export var sfx_name: String = ""  # Alternativer Name für AudioManager
 @export var volume: float = 1
-@export var level_soundtrack 
 
 @onready var enemy_hit_scene : PackedScene = preload("res://scenes/hit.tscn")
 @onready var offset = Global.player_ship.global_position - Global.player_ship.circle_center_position

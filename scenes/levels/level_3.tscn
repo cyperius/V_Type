@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/level_3.gd" id="1_856mx"]
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="1_wv6e3"]
 [ext_resource type="AudioStream" uid="uid://d1vt4irxw6wis" path="res://assets/sound_and_sfx/soundtracks/CircleMode/Cosmic Dreams.wav" id="3_mi50s"]
-[ext_resource type="Texture2D" uid="uid://dobrc44jyarb1" path="res://assets/graphic_elements/backgrounds/vortex1.png" id="4_i30ti"]
+[ext_resource type="Texture2D" path="res://assets/graphic_elements/backgrounds/vortex1.png" id="4_i30ti"]
 
 [node name="Level_3" type="Node2D"]
 script = ExtResource("1_856mx")
