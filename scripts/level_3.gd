@@ -7,6 +7,7 @@ extends Node2D
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var growing_vortex: TextureRect = $ControlNode/GrowingVortex
 @onready var animated_vortex: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animated_sprite_2d_2: AnimatedSprite2D = $AnimatedSprite2D2
 
 
 func _ready() -> void:
@@ -48,6 +49,6 @@ func vortex_grow_tweens():
 	var grow_tween = create_tween()
 	grow_tween.tween_property(growing_vortex, "scale", Vector2(10, 10), 100)
 	var animate_tween = create_tween()
-	animate_tween.tween_property(animated_vortex, "scale", Vector2(10, 10), 100)
+	animate_tween.tween_property(animated_vortex, "scale", Vector2(7, 7), 100)
 	
 	
