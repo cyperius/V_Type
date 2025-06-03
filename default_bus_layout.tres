@@ -1,9 +1,0 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://c3jss08g8gyx4"]
-
-[sub_resource type="AudioEffectPhaser" id="AudioEffectPhaser_vql6a"]
-resource_name = "Phaser"
-
-[resource]
-bus/0/volume_db = 1.15826
-bus/0/effect/0/effect = SubResource("AudioEffectPhaser_vql6a")
-bus/0/effect/0/enabled = true
