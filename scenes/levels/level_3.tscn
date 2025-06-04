@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/level_3.gd" id="1_856mx"]
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="1_wv6e3"]
 [ext_resource type="AudioStream" uid="uid://d1vt4irxw6wis" path="res://assets/sound_and_sfx/soundtracks/CircleMode/Cosmic Dreams.wav" id="3_mi50s"]
-[ext_resource type="PackedScene" uid="uid://burogmqjwwkev" path="res://vortex.tscn" id="4_qmkp1"]
+[ext_resource type="PackedScene" uid="uid://burogmqjwwkev" path="res://scenes/vortex.tscn" id="4_qmkp1"]
 
 [node name="Level_3" type="Node2D"]
 script = ExtResource("1_856mx")
@@ -12,9 +12,6 @@ circle_radius = 1000.0
 
 [node name="Center" type="Marker2D" parent="."]
 position = Vector2(1857, 1090)
-
-[node name="PlayerSpawn" type="Node2D" parent="."]
-position = Vector2(2926, 1096)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_mi50s")

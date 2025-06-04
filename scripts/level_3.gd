@@ -12,6 +12,7 @@ func _ready() -> void:
 	# 1. Spieler-Schiff instanziieren
 	var player = player_scene.instantiate()
 	add_child(player)
+	player.scale = Vector2(0.2, 0.2)
 
 	# 2. Circle-Mode aktivieren
 	player.mode = player.PlayerMode.CIRCLE

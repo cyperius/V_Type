@@ -72,6 +72,7 @@ func _ready():
 		# können wir anhand der aktuellen Position den Startwinkel bestimmen:
 		var offset := global_position - circle_center_position
 		angle = offset.angle()
+		
 	# ────────────────────────────────────────────────────────────────────────
 
 func _on_area_entered(area_that_entered) -> void:
