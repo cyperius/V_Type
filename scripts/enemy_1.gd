@@ -8,7 +8,8 @@ extends Area2D
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	add_to_group("one_hit_enemies")
-
+	
+	
 
 func _on_area_entered(area: Area2D) -> void:
 	AudioManager.play_sfx_string("explosion")
@@ -20,4 +21,5 @@ func _on_area_entered(area: Area2D) -> void:
 	
 func _process(delta: float) -> void:
 	position.x -= delta * speed
- 
+	
+	

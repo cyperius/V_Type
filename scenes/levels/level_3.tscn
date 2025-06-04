@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://1jlksoel3qea"]
+[gd_scene load_steps=6 format=3 uid="uid://1jlksoel3qea"]
 
 [ext_resource type="Script" path="res://scripts/level_3.gd" id="1_856mx"]
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="1_wv6e3"]
+[ext_resource type="PackedScene" uid="uid://wowii0hwc8e2" path="res://scenes/enemy_circle_1.tscn" id="3_l3jpy"]
 [ext_resource type="AudioStream" uid="uid://d1vt4irxw6wis" path="res://assets/sound_and_sfx/soundtracks/CircleMode/Cosmic Dreams.wav" id="3_mi50s"]
 [ext_resource type="PackedScene" uid="uid://burogmqjwwkev" path="res://scenes/vortex.tscn" id="4_qmkp1"]
 
@@ -18,3 +19,6 @@ stream = ExtResource("3_mi50s")
 autoplay = true
 
 [node name="Vortex" parent="." instance=ExtResource("4_qmkp1")]
+
+[node name="CircleEnemy1" parent="." instance=ExtResource("3_l3jpy")]
+position = Vector2(1857, 1090)
