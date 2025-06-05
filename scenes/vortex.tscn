@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://burogmqjwwkev"]
+[gd_scene load_steps=4 format=3 uid="uid://dqvir6srh5t1i"]
 
 [ext_resource type="Shader" path="res://ressources/shaders/vortex.gdshader" id="1_l1r6s"]
 [ext_resource type="Texture2D" uid="uid://oto0d10fgrnp" path="res://assets/graphic_elements/backgrounds/back_no_stars.png" id="2_y3cq8"]
