@@ -5,7 +5,7 @@ extends Node2D
 @onready var randomizer = RandomNumberGenerator.new()
 @onready var enemy_blueprint = preload("res://scenes/enemy_1.tscn")
 @onready var path_enemy_blueprint = preload("res://scenes/enemy_with_path.tscn")
-
+@onready var level_1 = $".."
 @onready var enemy_positions_node = $SpawnPositions
 @onready var enemy_positions = enemy_positions_node.get_children()
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == 5:
+	if enemy_counter == level_1.amount_of_enemies:
 		here_comes_the_boss()
 	
 

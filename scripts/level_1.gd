@@ -2,6 +2,7 @@ extends Node2D  # MainScene basiert auf Node2D
 
 @onready var boss_timer = $BossTimer
 @onready var enemy_spawner: Node2D = $EnemySpawner
+@export var amount_of_enemies : int
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 

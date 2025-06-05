@@ -4,8 +4,10 @@ extends Node2D
 @export var circle_radius := 200.0
 @export var level_soundtrack : AudioStreamWAV
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var timer = $Timer
 
-signal level_finished
+
+signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 
 
@@ -14,6 +16,7 @@ func _ready() -> void:
 	var player = player_scene.instantiate()
 	add_child(player)
 	player.scale = Vector2(0.2, 0.2)
+	timer.timeout.connect(_on_timer_timeout)
 
 	# 2. Circle-Mode aktivieren
 	player.mode = player.PlayerMode.CIRCLE
@@ -37,3 +40,7 @@ func _ready() -> void:
 
 	# 8. Debug-Ausgabe
 	print("Level3: Circle_Mode aktiviert. Center=", player.circle_center_position, " Radius=", player.circle_radius)
+	
+	# 9. Level Ende
+func _on_timer_timeout():
+	emit_signal("level_finished", 3, 0, 0)

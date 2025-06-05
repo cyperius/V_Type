@@ -22,3 +22,8 @@ autoplay = true
 
 [node name="CircleEnemy1" parent="." instance=ExtResource("3_l3jpy")]
 position = Vector2(1857, 1090)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+autostart = true
