@@ -17,12 +17,14 @@ func _ready():
 	ui.score.text = str(score)
 
 	AudioManager.play_music("survival_3")
-	
+	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
+	Global.player_ship.rotation_degrees = 0
 	
 func _process(delta: float) -> void:
 	pass
 	ui.asteroids_counter.text = "Asteroids: " + str(asteroids_spawner.asteroid_counter)
-	if asteroids_spawner.asteroid_counter == 300:
+	if asteroids_spawner.asteroid_counter == 20:
+		AudioManager.fade_out(10)
 		await get_tree().create_timer(10).timeout
 		emit_signal("level_finished", 3, score, 0)
 	

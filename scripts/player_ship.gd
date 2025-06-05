@@ -65,6 +65,7 @@ func _ready():
 	primary_weapon = laser_beam
 	secondary_weapon = laser_blast
 	area_entered.connect(_on_area_entered)
+	
 
 	# ─── NEU: Initialisierung für Circle-Mode ───────────────────────────────
 	if mode == PlayerMode.CIRCLE:

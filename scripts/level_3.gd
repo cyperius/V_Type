@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var player_scene: PackedScene
+@onready var player = get_tree().current_scene.player_space_ship
 @export var circle_radius := 200.0
 @export var level_soundtrack : AudioStreamWAV
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -13,8 +13,8 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 func _ready() -> void:
 	# 1. Spieler-Schiff instanziieren
-	var player = player_scene.instantiate()
-	add_child(player)
+	# var player = player_scene.instantiate()
+	# add_child(player)
 	player.scale = Vector2(0.2, 0.2)
 	timer.timeout.connect(_on_timer_timeout)
 
@@ -43,4 +43,4 @@ func _ready() -> void:
 	
 	# 9. Level Ende
 func _on_timer_timeout():
-	emit_signal("level_finished", 3, 0, 0)
+	emit_signal("level_finished",1, 0, 0)

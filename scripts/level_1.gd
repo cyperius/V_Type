@@ -11,7 +11,11 @@ func _ready():
 	# var song1 = preload("res://assets/sound_and_sfx/soundtracks/Level_sountracks/Not Alone.wav")
 	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-	
+	# Global.player_ship referenziert die Player_ship Szene mit angehängtem player_ship.gd,
+	# und zwar via Global.gd (ein Autoload -> von jedem Skript erreichbar)
+	# Mit Zugriff auf die Variable mode und enum PLayer;ode.FREE kann so der Spielmodus gesetzt werden
+	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
+	Global.player_ship.rotation_degrees = 0
 	
 	add_child(enemy)
 	#add_child(background)

@@ -12,6 +12,7 @@ shader_parameter/speed = 0.324
 [node name="Vortex" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
 material = SubResource("ShaderMaterial_k5jf0")
 position = Vector2(1877, 1077.5)
 scale = Vector2(1.91406, 2.30143)
