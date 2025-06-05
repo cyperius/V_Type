@@ -22,7 +22,7 @@ func _ready():
 	
 	# Signal verbinden (Beachte den Funktionsnamen _on_area_entered)
 	area_entered.connect(_on_area_entered)
-	if Global.player_ship.PlayerMode.CIRCLE == Global.player_ship.PlayerMode.CIRCLE:
+	if player_mode == Global.player_ship.PlayerMode.CIRCLE:
 		rotate(angle)
 		start_tweens()
 	
