@@ -7,6 +7,8 @@ extends Node2D  # MainScene basiert auf Node2D
 @onready var asteroids_spawner = $AsteroidSpawner
 @onready var score: int = 0
 
+signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
+
 
 func _ready():
 	
@@ -20,6 +22,9 @@ func _ready():
 func _process(delta: float) -> void:
 	pass
 	ui.asteroids_counter.text = "Asteroids: " + str(asteroids_spawner.asteroid_counter)
+	if asteroids_spawner.asteroid_counter == 15:
+		await get_tree().create_timer(10).timeout
+		emit_signal("level_finished", 3, score, 0)
 	
 	
 func _on_destroyed_asteroid(size) -> void:
