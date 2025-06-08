@@ -1,11 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://be2saoppwc7v6"]
+[gd_scene load_steps=3 format=3 uid="uid://be2saoppwc7v6"]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_h7thw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_v5wbp"]
-font_size = 48
-
-[sub_resource type="LabelSettings" id="LabelSettings_ehkrw"]
 font_size = 48
 
 [node name="UI" type="Control"]
@@ -17,25 +14,20 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h7thw")
 
-[node name="AsteroidsCounter" type="Label" parent="."]
+[node name="EnemiesDestroyed" type="Label" parent="."]
 layout_mode = 1
 offset_left = 38.0
 offset_top = 23.0
 offset_right = 293.0
 offset_bottom = 158.0
-text = "Asteroids: "
+text = "Enemies destroyed:"
 label_settings = SubResource("LabelSettings_v5wbp")
 
 [node name="Score" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -327.0
-offset_top = 18.0
-offset_right = -66.0
-offset_bottom = 85.0
-grow_horizontal = 0
-text = "Score: 0000"
-label_settings = SubResource("LabelSettings_ehkrw")
-horizontal_alignment = 2
+offset_left = 3399.0
+offset_top = 25.0
+offset_right = 3853.0
+offset_bottom = 160.0
+text = "Score:"
+label_settings = SubResource("LabelSettings_v5wbp")
