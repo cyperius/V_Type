@@ -17,4 +17,5 @@ func _process(delta: float) -> void:
 
 func _on_animation_finished() -> void:
 	#print("Schluss mit der Animation")
+	pass
 	queue_free()

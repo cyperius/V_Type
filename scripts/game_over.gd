@@ -20,13 +20,8 @@ func _ready() -> void:
 	
 	
 func reset_level():
-	var timer = Timer.new()
-	timer.wait_time = 3
-	timer.one_shot = true
-	timer.start()
-	await  timer.timeout
-	add_child(timer)
-	main._load_level(GameManager.current_level)
+	await get_tree().create_timer(4).timeout
+	GameManager._load_level(1)
 		
 
 

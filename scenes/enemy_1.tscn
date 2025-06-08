@@ -18,6 +18,7 @@ scale = Vector2(0.2, 0.2)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_iflxy")
+damage = 500
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = -1.37881

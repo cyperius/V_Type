@@ -42,6 +42,8 @@ var level_container: Node = null
 # Referenz auf das aktuell geladene Level
 var current_level_node: Node = null
 
+var game_over : PackedScene = preload("res://scenes/game_over.tscn")
+
 
 func _ready():
 	screen_size = get_viewport().get_visible_rect().size
@@ -70,6 +72,7 @@ func register_level_container(container: Node) -> void:
 
 func _load_level(level_nr: int) -> void:
 	# Alten Level entfernen
+	print("ich lade level...")
 	if current_level_node:
 		current_level_node.queue_free()
 
@@ -105,7 +108,7 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 	AudioManager.fade_out(4)
 
 	# Nächstes Level laden
-	_load_level(GameManager.current_level)
+	_load_level(current_level)
 
 # Für allfällige spätere Implementierung eines Shops / einer Werkstatt
 # func next_state():
