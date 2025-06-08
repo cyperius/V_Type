@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddamewq24ewbi"]
+[gd_scene load_steps=5 format=3 uid="uid://ddamewq24ewbi"]
 
 [ext_resource type="Script" path="res://scripts/level_1.gd" id="1_cjh6t"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_ffuqo"]
+[ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="4_2g2jk"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="4_nvxsf"]
 
 [node name="Level_1" type="Node2D"]
@@ -25,5 +26,9 @@ grow_vertical = 2
 wait_time = 6.322
 one_shot = true
 autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_2g2jk")
+autoplay = true
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]

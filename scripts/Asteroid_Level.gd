@@ -1,5 +1,6 @@
 extends Node2D  # MainScene basiert auf Node2D
 
+@onready var audio_stream_player = $AudioStreamPlayer
 @onready var bg = $background_Control
 @onready var asteroid : PackedScene = preload("res://scenes/rigid_asteroid.tscn")
 @onready var spawn_timer = $Timer
@@ -16,7 +17,6 @@ func _ready():
 	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
 	ui.score.text = str(score)
 
-	AudioManager.play_music("survival_3")
 	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
 	Global.player_ship.rotation_degrees = 0
 	
@@ -24,7 +24,6 @@ func _process(delta: float) -> void:
 	pass
 	ui.asteroids_counter.text = "Asteroids: " + str(asteroids_spawner.asteroid_counter)
 	if asteroids_spawner.asteroid_counter == 20:
-		AudioManager.fade_out(10)
 		await get_tree().create_timer(10).timeout
 		emit_signal("level_finished", 3, score, 0)
 	

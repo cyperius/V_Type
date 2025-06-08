@@ -1,5 +1,6 @@
 extends Node2D  # MainScene basiert auf Node2D
 
+@onready var audio_stream_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer
 @onready var enemy_spawner: Node2D = $EnemySpawner
 @export var amount_of_enemies : int
@@ -25,8 +26,6 @@ func _ready():
 	
 	#background.size = Vector2(3840, 2880)  # Falls FullHD-Fenstergröße
 	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
-
-	AudioManager.play_music("level_2")
 
 func _on_boss_timer_timeout():
 	pass
