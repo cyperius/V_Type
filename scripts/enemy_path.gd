@@ -11,6 +11,5 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	path.progress_ratio -= delta * 0.1
-	print("aktuelle Position: ", global_position)
 	if path.progress_ratio <= 0:
 		queue_free()

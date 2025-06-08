@@ -17,4 +17,5 @@ func _on_area_entered(area: Area2D) -> void:
 
 	
 func _process(delta: float) -> void:
-	print("Pfad_enemy Posotion: ", global_position)
+	pass
+	#print("Pfad_enemy Posotion: ", global_position)

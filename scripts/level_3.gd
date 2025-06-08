@@ -5,6 +5,11 @@ extends Node2D
 @export var level_soundtrack : AudioStreamWAV
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var timer = $Timer
+@onready var circle_enemy_1 : PackedScene = preload("res://scenes/enemy_circle_1.tscn")
+# Gescheindikeit für Gegner. Der Wert 5 kom biniert mit einem timer Intervall
+# von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Lionie spawnen
+@export var winkel_geschwindigkeit : float = 5
+
 
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
@@ -12,9 +17,6 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 
 func _ready() -> void:
-	# 1. Spieler-Schiff instanziieren
-	# var player = player_scene.instantiate()
-	# add_child(player)
 	player.scale = Vector2(0.2, 0.2)
 	timer.timeout.connect(_on_timer_timeout)
 
@@ -43,4 +45,6 @@ func _ready() -> void:
 	
 	# 9. Level Ende
 func _on_timer_timeout():
-	emit_signal("level_finished",1, 0, 0)
+	var new_circle_enemy = circle_enemy_1.instantiate()
+	add_child(new_circle_enemy)
+	#emit_signal("level_finished",1, 0, 0)

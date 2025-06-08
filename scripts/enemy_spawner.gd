@@ -34,7 +34,7 @@ func _on_timer_timeout():
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	enemy.position = enemy_positions[spawn_pos_nr].position
-	print(enemy.position)
+	#print(enemy.position)
 	enemy_counter += 1
 	enemy.speed += enemy_counter * 10
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)

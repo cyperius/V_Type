@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://biu2g8yefq00u"]
+[gd_scene load_steps=15 format=3 uid="uid://biu2g8yefq00u"]
 
 [ext_resource type="Texture2D" uid="uid://bor1ao2anl1i5" path="res://assets/graphic_elements/explosions/expl_fr0.png" id="1_to2ac"]
 [ext_resource type="Texture2D" uid="uid://c7hqlo0xk31qr" path="res://assets/graphic_elements/explosions/expl_fr1.png" id="2_gy63q"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cbnfa86yxngkk" path="res://assets/graphic_elements/explosions/expl_fr9.png" id="10_wfepq"]
 [ext_resource type="Texture2D" uid="uid://c17rwkc0vlfbg" path="res://assets/graphic_elements/explosions/expl_fr11.png" id="11_8i0p2"]
 [ext_resource type="Script" path="res://scripts/explosion_animation.gd" id="12_vjg32"]
+[ext_resource type="AudioStream" uid="uid://brcsfkqpv2fj1" path="res://assets/sound_and_sfx/sound_effects/explosion_lang_sanft.wav" id="13_kulfi"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xa02d"]
 animations = [{
@@ -59,5 +60,8 @@ scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_xa02d")
 offset = Vector2(2.08165e-12, 2.08165e-12)
 script = ExtResource("12_vjg32")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_kulfi")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

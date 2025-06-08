@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var main = $".."
+
 @export var sfx_stream: AudioStream
 var explosion: PackedScene = load("res://scenes/explosion_animation.tscn")
 
@@ -10,10 +12,21 @@ func _ready() -> void:
 		# Hier greifst du auf eine Eigenschaft des Player-Schiffs zu,
 		# z. B. auf einen Kind-Knoten 'ship_sprite'
 		self.position = Global.player_sprite.global_position
-		print(self.position)
+		print("Initialposition: ", self.position)
 	else:
 		print("Global.player_ship ist nicht gesetzt!")
 	add_child(explosion.instantiate())
+	reset_level()
+	
+	
+func reset_level():
+	var timer = Timer.new()
+	timer.wait_time = 3
+	timer.one_shot = true
+	timer.start()
+	await  timer.timeout
+	add_child(timer)
+	main._load_level(GameManager.current_level)
 		
 
 
