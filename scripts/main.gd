@@ -1,4 +1,3 @@
-# Main.gd
 extends Node2D
 
 # Container in Main.tscn, in den Level geladen werden
@@ -63,7 +62,7 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 	GameManager.score        += gained_score
 	GameManager.energy_units += gained_energy
 	GameManager.current_level = next_level_nr
-	#AudioManager.fade_out(4)
+	AudioManager.fade_out(4)
 
 	# Nächstes Level laden
 	_load_level(GameManager.current_level)
