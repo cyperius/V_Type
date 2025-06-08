@@ -22,6 +22,6 @@ autoplay = true
 position = Vector2(1857, 1090)
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 54.717
 one_shot = true
 autostart = true
