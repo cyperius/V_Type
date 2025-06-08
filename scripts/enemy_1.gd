@@ -2,9 +2,11 @@ extends Area2D
 
 @onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
 @export var damage = 100
-@export var speed = 600
+@export var basic_speed : int = 600
 @export var score_count : int = 100
 @export var energy_left : int = 5
+
+var speed = basic_speed * GameManager.loop_counter
 
 signal enemy_destroyed(score: int, energy: int)
 

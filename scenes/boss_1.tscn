@@ -18,6 +18,8 @@ sfx_stream = ExtResource("2_yguwa")
 sfx_name = "\"laser_beam\""
 weapon = ExtResource("3_1ohr7")
 boss_soundtrack = ExtResource("4_jqv7l")
+damage = 300
+score_count = 5000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_h6k2x")

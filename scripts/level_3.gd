@@ -47,4 +47,5 @@ func _ready() -> void:
 func _on_timer_timeout():
 	var new_circle_enemy = circle_enemy_1.instantiate()
 	add_child(new_circle_enemy)
-	#emit_signal("level_finished",1, 0, 0)
+	GameManager.loop_counter += 1
+	emit_signal("level_finished",1, 0, 0)
