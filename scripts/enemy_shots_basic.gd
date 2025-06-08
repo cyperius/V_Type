@@ -6,7 +6,8 @@ extends Area2D
 
 var projectiles = []  
 
- #func _ready() -> void:
+func _ready() -> void:
+	add_to_group("projectiles")
 	 #if get_parent():
 			 #print("Projektil-Parent:", get_parent().name)
 			 #print("Parent globaler Transform:", get_parent().global_transform)

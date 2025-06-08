@@ -31,6 +31,7 @@ func _ready() -> void:
 	shoot_timer.timeout.connect(_shot)
 	audio2d.stream = boss_soundtrack
 	fade_in_sound()
+	add_to_group("enemies")
 	
 	var new_y = position.y
 	change_pos_timer.wait_time = 2

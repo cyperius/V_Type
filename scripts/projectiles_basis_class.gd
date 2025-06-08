@@ -13,6 +13,7 @@ var player_mode = Global.player_ship.mode
 
 
 func _ready():
+	add_to_group("projectiles")
 	set_process(true)  # Stelle sicher, dass _process() aktiv ist
 	#if get_parent():
 		#print("Projektil-Parent:", get_parent().name)

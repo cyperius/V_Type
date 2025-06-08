@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 func reset_level():
 	await get_tree().create_timer(4).timeout
-	GameManager._load_level(1)
+	GameManager._load_level(GameManager.current_level)
 		
 
 

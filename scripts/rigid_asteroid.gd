@@ -20,9 +20,8 @@ const SCREEN_SIZE = Vector2(3840, 2160)
 func _ready() -> void:
 	animated_sprite.play("astroid_rotating")
 	asteroid_destroyed.connect(Callable(get_parent(), "_on_asteroid_destroyed"))
+	add_to_group("enemies")
 
-	
-	
 	can_sleep = false
 	sleeping = false
 	

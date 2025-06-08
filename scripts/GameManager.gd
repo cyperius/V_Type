@@ -70,9 +70,20 @@ func register_level_container(container: Node) -> void:
 	level_container = container
 
 
+func clear_level():
+	# Alle Gegner und Schüsse entfernen
+	get_tree().call_group("enemies", "queue_free")
+	get_tree().call_group("projectiles", "queue_free")
+	# Und falls es noch andere Gruppen gibt:
+   # get_tree().call_group("powerups", "queue_free")
+
+
 func _load_level(level_nr: int) -> void:
+	
+	#instanziierte Objekte nach Typ entfernen (siehe clean_level() Funktion)
+	clear_level()
+	
 	# Alten Level entfernen
-	print("ich lade level...")
 	if current_level_node:
 		current_level_node.queue_free()
 
