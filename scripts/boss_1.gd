@@ -9,6 +9,10 @@ extends Area2D
 @onready var audio2d = $AudioStreamPlayer2D
 @export var damage : int = 50
 @onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
+@export var energy_left : int = 5
+@export var score_count : int = 100
+
+signal enemy_destroyed(score: int, energy: int)
 
 var shoot_timer = Timer.new()
 var change_pos_timer = Timer.new()
@@ -140,6 +144,7 @@ func enemy_is_hit(damage) -> void:
 		explosion_animation.scale = Vector2(25, 25)
 		explosion_animation.speed_scale = 0.5
 		emit_signal("boss_defeated")
+		get_tree().current_scene.emit_signal("enemy_destroyed", score_count, energy_left)
 		queue_free()
 		
 	

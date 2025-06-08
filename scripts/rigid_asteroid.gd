@@ -8,6 +8,10 @@ extends RigidBody2D
 @export var speed = 500
 @export var angle : float = (deg_to_rad(180))
 @export var direction = Vector2.RIGHT.rotated(angle)
+@export var energy_left : int = 5
+@export var score_count : int = 100
+
+signal enemy_destroyed(score: int, energy: int)
 
 var scale_factor_rounded
 
@@ -96,9 +100,10 @@ func take_damage(damage) -> void:
 	#print("health: ", health, "damage: ", damage)
 	if health <= 0:
 		AudioManager.play_sfx_string("explosion", 1)
-		get_tree().current_scene.add_child(explosion_animation)
+		get_tree().current_scene.add_child(explosion_animation)  
 		explosion_animation.scale *= 0.5 * scale
 		explosion_animation.speed_scale = 2
 		explosion_animation.position = global_position
 		emit_signal("asteroid_destroyed", scale_factor_rounded)
+		get_tree().current_scene.emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
 		queue_free()
