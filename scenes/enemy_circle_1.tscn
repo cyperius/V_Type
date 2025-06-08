@@ -1,27 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://wowii0hwc8e2"]
+[gd_scene load_steps=4 format=3 uid="uid://dqud88glri484"]
 
 [ext_resource type="Script" path="res://scripts/enemy_circle_1.gd" id="1_c3dbg"]
-[ext_resource type="Texture2D" uid="uid://bm7ghfng4yupa" path="res://assets/graphic_elements/enemies/ship4.png" id="2_7ohan"]
+[ext_resource type="Texture2D" path="res://assets/graphic_elements/enemies/ship4.png" id="2_7ohan"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0e2c5"]
 radius = 25.1855
 
 [node name="CircleEnemy1" type="Area2D"]
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.05, 0.05)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_c3dbg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-7.48681, -2.03993)
 rotation = -1.37881
+scale = Vector2(0.841019, 1.02687)
 texture = ExtResource("2_7ohan")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-5, -15)
-scale = Vector2(9.52928, -11.7648)
-shape = SubResource("CircleShape2D_0e2c5")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(-30, 95)
-scale = Vector2(7.92928, -8.20294)
+position = Vector2(-15, -5)
+scale = Vector2(9.52928, -10.1648)
 shape = SubResource("CircleShape2D_0e2c5")

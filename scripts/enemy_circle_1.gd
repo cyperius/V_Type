@@ -12,8 +12,6 @@ var angular_speed := 1.5
 
 
 func _ready() -> void:
-	var dist_to_center = sqrt(pow(0.3, 2) + pow(-0.2, 2))
-	print(dist_to_center)
 	var center_node = $"../Center"
 	circle_center_position = center_node.global_position
 
@@ -29,3 +27,8 @@ func _process(delta: float) -> void:
 
 	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
 	rotation = angle + PI
+	
+	# 4. Schiff wird grösser mit zunehmendem Abstand zum Zentrum (Perspektive)
+	var dist_to_center = sqrt(pow(offset.x, 2) + pow(offset.y, 2))
+	scale.x = dist_to_center/3000
+	scale.y = dist_to_center/3000
