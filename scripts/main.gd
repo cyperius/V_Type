@@ -16,7 +16,19 @@ func _ready() -> void:
 	GameManager.state = GameManager.STATE_PLAYING
 	# Erstes Level laden (GameManager.current_level ist ein int)
 	_load_level(GameManager.current_level)
-
+	
+	
+func _process(delta):
+	if Input.is_action_just_pressed("level_1"):
+		_load_level(1)
+	if Input.is_action_just_pressed("level_2"):
+		_load_level(2)
+	if Input.is_action_just_pressed("level_3"):
+		_load_level(3)
+	if Input.is_action_just_pressed("level_4"):
+		_load_level(4)
+		
+	
 func _load_level(level_nr: int) -> void:
 	# Alten Level entfernen
 	if current_level_node:
@@ -54,3 +66,8 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 
 	# Nächstes Level laden
 	_load_level(GameManager.current_level)
+	
+	
+func jump_to_level(level_nr : int):
+	_load_level(GameManager.level_nr)	
+	
