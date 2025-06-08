@@ -20,13 +20,13 @@ func _ready() -> void:
 	
 func _process(delta):
 	if Input.is_action_just_pressed("level_1"):
-		_load_level(1)
+		jump_to_level(1)
 	if Input.is_action_just_pressed("level_2"):
-		_load_level(2)
+		jump_to_level(2)
 	if Input.is_action_just_pressed("level_3"):
-		_load_level(3)
+		jump_to_level(3)
 	if Input.is_action_just_pressed("level_4"):
-		_load_level(4)
+		jump_to_level(4)
 		
 	
 func _load_level(level_nr: int) -> void:
@@ -63,11 +63,13 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 	GameManager.score        += gained_score
 	GameManager.energy_units += gained_energy
 	GameManager.current_level = next_level_nr
+	#AudioManager.fade_out(4)
 
 	# Nächstes Level laden
 	_load_level(GameManager.current_level)
 	
 	
 func jump_to_level(level_nr : int):
-	_load_level(GameManager.level_nr)	
+	await AudioManager.fade_out(4)
+	_load_level(level_nr)	
 	

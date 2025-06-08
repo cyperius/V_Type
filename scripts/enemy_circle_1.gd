@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	# 2. Neue Position auf dem Kreis berechnen
 	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
 	global_position = circle_center_position + offset
-	circle_radius += 0.2
+	circle_radius += 0.4
 
 	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
 	rotation = angle + PI
