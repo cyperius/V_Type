@@ -35,22 +35,77 @@ var level_paths   : Array     = [
 # Für zukünftige Shop-Integration (momentan nicht genutzt)
 # var shop_paths : Array = []
 
+# Referenz auf den Container in Main, wird von Main übergeben
+var level_container: Node = null
+
+
+# Referenz auf das aktuell geladene Level
+var current_level_node: Node = null
+
+
 func _ready():
 	screen_size = get_viewport().get_visible_rect().size
 	# print("📐 Initiale Fenstergrösse:", screen_size)
 	# print("GameManager bereit, aktueller Zustand:", state)
+
 
 func _notification(what):
 	if what == NOTIFICATION_RESIZED:
 		screen_size = get_viewport().get_visible_rect().size
 		# print("📐 Fenstergrösse geändert:", screen_size)
 
+
 # Optionale Helferfunktionen
 func is_playing() -> bool:
 	return state == STATE_PLAYING
 
+
 func is_paused() -> bool:
 	return state == STATE_PAUSED
+
+
+func register_level_container(container: Node) -> void:
+	level_container = container
+
+
+func _load_level(level_nr: int) -> void:
+	# Alten Level entfernen
+	if current_level_node:
+		current_level_node.queue_free()
+
+	# Pfad aus Autoload holen (Array, 0-basiert)
+	var path: String = GameManager.level_paths[level_nr - 1]
+
+	# Szene dynamisch laden und als PackedScene casten
+	var packed_scene := ResourceLoader.load(path) as PackedScene
+	if not packed_scene:
+		push_error("Konnte Level nicht laden: %s" % path)
+		return
+
+	# Instanziieren
+	current_level_node = packed_scene.instantiate()
+
+	# Persistente Daten übergeben, wenn das Level eine setup-Methode anbietet
+	if current_level_node.has_method("setup"):
+		current_level_node.setup(GameManager.score, GameManager.energy_units, GameManager.lives, GameManager.inventory)
+
+	# In den Container einfügen
+	level_container.add_child(current_level_node)
+
+	# Signal fürs Level-Ende verbinden (Godot 4-Style)
+	if current_level_node.has_signal("level_finished"):
+		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
+
+
+func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy: int = 0) -> void:
+	# Persistente Daten aktualisieren
+	GameManager.score        += gained_score
+	GameManager.energy_units += gained_energy
+	GameManager.current_level = next_level_nr
+	AudioManager.fade_out(4)
+
+	# Nächstes Level laden
+	_load_level(GameManager.current_level)
 
 # Für allfällige spätere Implementierung eines Shops / einer Werkstatt
 # func next_state():
