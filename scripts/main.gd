@@ -8,6 +8,7 @@ extends Node2D
 @onready var player_space_ship: Area2D = $player_space_ship
 signal enemy_destroyed(score: int, energy: int)
 var player_score = 0
+var destroyed_enemies_counter = 0
 
 
 func _ready() -> void:
@@ -37,6 +38,7 @@ func jump_to_level(level_nr : int):
 	
 	
 func _on_enemy_destroyed(score, energy):
-	print("signal angekommen")
 	player_score += score
 	ui.score.text = "Score: " + str(player_score)
+	destroyed_enemies_counter += 1
+	ui.destroyed_enemies_counter.text = "Enemies destroyed: " + str(destroyed_enemies_counter)
