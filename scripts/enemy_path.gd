@@ -13,6 +13,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	path.progress_ratio -= delta * 0.1
+	path.progress_ratio -= delta * 0.1 * GameManager.loop_counter
 	if path.progress_ratio <= 0:
 		queue_free()

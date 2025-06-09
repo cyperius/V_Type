@@ -8,7 +8,7 @@ var circle_radius := 1.0
 # Interne Variable: aktueller Winkel auf dem Kreis
 var angle := 0.0
 # Wie schnell sich der Winkel ändert (Radiant pro Sekunde)
-@onready var angular_speed : float = level_3.winkel_geschwindigkeit
+@onready var angular_speed : float = level_3.winkel_geschwindigkeit * GameManager.loop_counter
 
 
 func _ready() -> void:

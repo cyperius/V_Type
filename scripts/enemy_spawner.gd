@@ -11,13 +11,18 @@ extends Node2D
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
 @onready var enemy_counter : int = 0
+#spawn Rate bei '1' starten und pro Durchlauf um 0.2 erhöhen
+@onready var spawn_rate : float = 0.8 + GameManager.loop_counter/5
 signal boss_defeated
 signal level_finished(level_nr: int)
+
 
 
 func _ready() -> void:
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
+	timer.wait_time = 2 / spawn_rate
+	timer2.wait_time = 3 / spawn_rate
 	
 
 func _process(delta: float) -> void:

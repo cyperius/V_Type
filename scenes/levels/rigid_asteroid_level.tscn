@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://1p2k6pgvwphb"]
+[gd_scene load_steps=5 format=3 uid="uid://1p2k6pgvwphb"]
 
 [ext_resource type="Script" path="res://scripts/Asteroid_Level.gd" id="1_cqqrw"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="2_0jwxd"]
-[ext_resource type="PackedScene" uid="uid://be2saoppwc7v6" path="res://scenes/ui.tscn" id="4_1w7mx"]
 [ext_resource type="AudioStream" uid="uid://4k2ef33la8ss" path="res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).wav" id="5_01p4q"]
 [ext_resource type="PackedScene" uid="uid://m1xmua3tbslv" path="res://scenes/asteroid_spawner.tscn" id="5_shokp"]
 
@@ -11,13 +10,6 @@ script = ExtResource("1_cqqrw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
-
-[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
-follow_viewport_enabled = true
-
-[node name="UI" parent="Camera2D/CanvasLayer" instance=ExtResource("4_1w7mx")]
-z_index = 5
-scale = Vector2(0.999378, 0.99893)
 
 [node name="background_Control" parent="." instance=ExtResource("2_0jwxd")]
 

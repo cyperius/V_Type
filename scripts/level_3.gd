@@ -9,6 +9,7 @@ extends Node2D
 # Gescheindikeit für Gegner. Der Wert 5 kom biniert mit einem timer Intervall
 # von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Lionie spawnen
 @export var winkel_geschwindigkeit : float = 5
+@onready var time_delay = 0.8 + GameManager.loop_counter / 5
 
 
 
@@ -19,6 +20,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 func _ready() -> void:
 	player.scale = Vector2(0.2, 0.2)
 	timer.timeout.connect(_on_timer_timeout)
+	timer.wait_time = 90 * time_delay
 
 	# 2. Circle-Mode aktivieren
 	player.mode = player.PlayerMode.CIRCLE
