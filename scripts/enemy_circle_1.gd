@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 	var dist_to_center = sqrt(pow(offset.x, 2) + pow(offset.y, 2))
 	var scaling_factor = dist_to_center/3000
 	scale = Vector2(scaling_factor, scaling_factor)
-	explosion_size = dist_to_center/100
+	explosion_size = dist_to_center/200
 	
 	
 	# 5. Schiff löschen, wenn es in einer nicht mehr sichtbarten Distanz ist

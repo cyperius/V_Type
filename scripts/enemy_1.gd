@@ -25,7 +25,6 @@ func _on_area_entered(area: Area2D) -> void:
 	get_tree().current_scene.emit_signal("enemy_destroyed", score_count, energy_left)
 	queue_free()
 	
-
 	
 func _process(delta: float) -> void:
 	position.x -= delta * speed

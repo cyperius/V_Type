@@ -1,7 +1,7 @@
 extends AnimatedSprite2D
 
 
-@onready var audio_stream_player_2d = $AudioStreamPlayer
+@onready var audio_stream_player_2d = $AudioStreamPlayer2D
 
 signal enemy_destroyed(score: int, energy: int)
 
@@ -18,8 +18,6 @@ func _process(delta: float) -> void:
 
 
 func _on_animation_finished() -> void:
-	#print("Schluss mit der Animation")
-	pass
 	queue_free()
 	
 	
