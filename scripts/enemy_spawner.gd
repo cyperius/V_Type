@@ -46,8 +46,7 @@ func _on_timer_timeout():
 	
 	
 func _on_timer2_timeout():
-	return
-	var spawn_pos_nr = randi_range(2, 5)
+	var spawn_pos_nr = randi_range(1, 5)
 	var path_enemy = path_enemy_blueprint.instantiate()
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...

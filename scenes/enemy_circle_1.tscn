@@ -11,6 +11,7 @@ scale = Vector2(0.05, 0.05)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_c3dbg")
+damage = 200
 score_count = 200
 energy_left = 10
 

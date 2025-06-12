@@ -3,7 +3,8 @@ extends RigidBody2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var area2d = $Area2D
-@onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
+@onready var explosion_animation_scene = preload("res://scenes/explosion_animation.tscn")
+@export var explosion_scale : float = 0.5
 @export var health = 200
 @export var speed = 500
 @export var angle : float = (deg_to_rad(180))
@@ -11,7 +12,8 @@ extends RigidBody2D
 @export var energy_left : int = 5
 @export var score_count : int = 100
 @export var damage : int = 100
-var asteroid_scale : float
+
+var asteroid_scale : float = 1
 
 signal enemy_destroyed(score: int, energy: int)
 
@@ -96,15 +98,16 @@ func apply_space_physics(body: RigidBody2D) -> void:
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	var damage_inflicted = area.damage
 	take_damage(damage_inflicted)
-	
+	 
 	
 func take_damage(damage) -> void:
 	health -= damage
 	#print("health: ", health, "damage: ", damage)
 	if health <= 0:
 		AudioManager.play_sfx_string("explosion", asteroid_scale)
+		var explosion_animation = explosion_animation_scene.instantiate()
 		get_tree().current_scene.add_child(explosion_animation)  
-		explosion_animation.scale *= 0.5 * scale
+		explosion_animation.scale *= scale_factor_rounded * explosion_scale
 		explosion_animation.speed_scale = 2
 		explosion_animation.position = global_position
 		emit_signal("asteroid_destroyed", scale_factor_rounded)
