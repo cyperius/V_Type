@@ -41,11 +41,12 @@ func _on_timer_timeout():
 	enemy.position = enemy_positions[spawn_pos_nr].position
 	#print(enemy.position)
 	enemy_counter += 1
-	enemy.speed += enemy_counter * 10
+	#enemy.speed += enemy_counter * 10
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
 	
 	
 func _on_timer2_timeout():
+	return
 	var spawn_pos_nr = randi_range(2, 5)
 	var path_enemy = path_enemy_blueprint.instantiate()
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 

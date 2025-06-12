@@ -14,8 +14,6 @@ anchor_mode = 0
 [node name="player_space_ship" parent="." instance=ExtResource("3_eahio")]
 position = Vector2(169, 1047)
 
-[node name="AudioListener2D" type="AudioListener2D" parent="player_space_ship"]
-
 [node name="LevelContainer" type="Node2D" parent="."]
 
 [node name="Shop" type="Node2D" parent="."]

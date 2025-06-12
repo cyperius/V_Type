@@ -1,6 +1,7 @@
 extends Area2D
 
-@export var damage = 10
+@onready var rigid_asteroid = $".."
+@onready var damage : int = rigid_asteroid.damage
 @export var health = 300
 
 # Called when the node enters the scene tree for the first time.

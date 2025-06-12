@@ -20,7 +20,7 @@ func _ready():
 	
 	add_child(enemy)
 	#add_child(background)
-	boss_timer.wait_time = 15 # kann im Editor überschrieben werden
+	boss_timer.wait_time = 100 # kann im Editor überschrieben werden
 	boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	

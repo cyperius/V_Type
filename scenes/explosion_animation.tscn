@@ -63,7 +63,8 @@ script = ExtResource("12_vjg32")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("13_kulfi")
-max_distance = 1000.0
-attenuation = 0.0136024
+volume_db = 6.0
+max_distance = 3000.0
+attenuation = 2.14355
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

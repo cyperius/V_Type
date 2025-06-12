@@ -39,3 +39,6 @@ one_way_collision_margin = 0.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 4.065
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true

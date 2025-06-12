@@ -10,6 +10,7 @@ extends RigidBody2D
 @export var direction = Vector2.RIGHT.rotated(angle)
 @export var energy_left : int = 5
 @export var score_count : int = 100
+@export var damage : int = 100
 
 signal enemy_destroyed(score: int, energy: int)
 
