@@ -19,9 +19,9 @@ func _ready():
 	Global.player_ship.rotation_degrees = 0
 	
 	add_child(enemy)
-	#add_child(background)
-	boss_timer.wait_time = 100 # kann im Editor überschrieben werden
-	boss_timer.timeout.connect(_on_boss_timer_timeout)
+	#falls Boss zu fixer Zeit gespawnr werden soll reaktivieren:
+	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
+	#boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	
 	#background.size = Vector2(3840, 2880)  # Falls FullHD-Fenstergröße
