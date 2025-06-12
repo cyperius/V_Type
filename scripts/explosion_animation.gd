@@ -3,6 +3,8 @@ extends AnimatedSprite2D
 
 @onready var audio_stream_player_2d = $AudioStreamPlayer
 
+signal enemy_destroyed(score: int, energy: int)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	animation_finished.connect(_on_animation_finished)
@@ -19,3 +21,5 @@ func _on_animation_finished() -> void:
 	#print("Schluss mit der Animation")
 	pass
 	queue_free()
+	
+	

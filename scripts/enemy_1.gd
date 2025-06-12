@@ -5,8 +5,8 @@ extends Area2D
 @export var basic_speed : int = 600
 @export var score_count : int = 100
 @export var energy_left : int = 5
-
-var speed = basic_speed * GameManager.loop_counter
+@onready var explosion_size : float = 5
+@onready var speed = basic_speed * GameManager.loop_counter
 
 signal enemy_destroyed(score: int, energy: int)
 
@@ -21,6 +21,7 @@ func _on_area_entered(area: Area2D) -> void:
 	AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
+	explosion_animation.scale = Vector2(explosion_size, explosion_size)
 	get_tree().current_scene.emit_signal("enemy_destroyed", score_count, energy_left)
 	queue_free()
 	
@@ -28,6 +29,4 @@ func _on_area_entered(area: Area2D) -> void:
 	
 func _process(delta: float) -> void:
 	position.x -= delta * speed
-	
-	
 	

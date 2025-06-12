@@ -21,7 +21,7 @@ func _ready():
 	
 func _process(delta: float) -> void:
 	if asteroids_spawner.asteroid_counter == 300 * asteroid_amount:
-		await get_tree().create_timer(5).timeout
+		await get_tree().create_timer(10).timeout
 		emit_signal("level_finished", 3, score, 0)
 	
 	

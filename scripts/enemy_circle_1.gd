@@ -32,8 +32,9 @@ func _process(delta: float) -> void:
 	
 	# 4. Schiff wird grösser mit zunehmendem Abstand zum Zentrum (Perspektive)
 	var dist_to_center = sqrt(pow(offset.x, 2) + pow(offset.y, 2))
-	scale.x = dist_to_center/3000
-	scale.y = dist_to_center/3000
+	var scaling_factor = dist_to_center/3000
+	scale = Vector2(scaling_factor, scaling_factor)
+	explosion_size = dist_to_center/100
 	
 	
 	# 5. Schiff löschen, wenn es in einer nicht mehr sichtbarten Distanz ist
