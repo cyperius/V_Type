@@ -20,7 +20,7 @@ var score         : int       = 0
 var inventory     : Dictionary = {}
 var energy_units  : int       = 0
 var lives         : int       = 3
-var loop_counter  : int       = 1
+var loop_counter  : float     = 1.0
 # Aktuelles Level als Zahl
 var current_level : int       = 1
 
