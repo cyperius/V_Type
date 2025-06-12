@@ -11,6 +11,7 @@ extends RigidBody2D
 @export var energy_left : int = 5
 @export var score_count : int = 100
 @export var damage : int = 100
+var asteroid_scale : float
 
 signal enemy_destroyed(score: int, energy: int)
 
@@ -33,21 +34,22 @@ func _ready() -> void:
 	apply_space_physics(self)
 
 	# Zufällige Skalierung
-	var scale = randf_range(1, 2.0)
-	scale_factor_rounded = round(scale)
-	animated_sprite.scale = Vector2(scale, scale)
+	var astroid_scale = randf_range(1, 2.0)
+	scale_factor_rounded = round(astroid_scale)
+	animated_sprite.scale = Vector2(astroid_scale, astroid_scale)
 	# "health" und Basisschaden, den Asteroid anrichtet, wird mit seiner Grösse multipliziert
-	area2d.damage *= scale
-	health *= scale
+	area2d.damage *= astroid_scale
+	health *= astroid_scale
+	damage *= astroid_scale
 
 	# Kollision anpassen (z. B. CircleShape2D)
 	if collision_shape.shape is CircleShape2D:
 		var shape = collision_shape.shape.duplicate() as CircleShape2D
-		shape.radius *= scale
+		shape.radius *= astroid_scale
 		collision_shape.shape = shape
 
 	# Masse basierend auf Volumen-
-	mass = scale * scale * scale
+	mass = astroid_scale * astroid_scale * astroid_scale
 
 
 	# Zufällige Geschwindigkeit
@@ -100,7 +102,7 @@ func take_damage(damage) -> void:
 	health -= damage
 	#print("health: ", health, "damage: ", damage)
 	if health <= 0:
-		AudioManager.play_sfx_string("explosion", 1)
+		AudioManager.play_sfx_string("explosion", asteroid_scale)
 		get_tree().current_scene.add_child(explosion_animation)  
 		explosion_animation.scale *= 0.5 * scale
 		explosion_animation.speed_scale = 2
