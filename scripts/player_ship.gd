@@ -31,6 +31,8 @@ var speed := max_speed
 
 @export var max_health: int = 400
 var health := max_health
+@export var shield_energy : int = 1000
+var shield_activated = false
 
 @export var game_over_jingle: AudioStream  # AudioStream ist anscheinend ein Datentyp
 @export var damage: int = 10
@@ -77,14 +79,24 @@ func _ready():
 	# ────────────────────────────────────────────────────────────────────────
 
 func _on_area_entered(area_that_entered) -> void:
-	print("Ich bin getroffen")
-	collision_mask = 0
-	if health <= 0:
-		print("I'm already dead!")
-		return
-	else:
-		var damage_inflicted : int = area_that_entered.damage
-		player_is_hit(damage_inflicted)
+	var potential_damage_inflicted : int = area_that_entered.damage
+	if shield_activated == false:
+		print("Ich bin getroffen")
+		collision_mask = 0
+		if health <= 0:
+			print("I'm already dead!")
+			return
+		else:
+			player_is_hit(potential_damage_inflicted)
+	elif shield_activated == true:
+		shield_absorbing(potential_damage_inflicted)
+			
+	
+func shield_absorbing(absorbed_damage):
+	shield_energy += absorbed_damage
+	print("absorbed enery: ", absorbed_damage)
+	
+	
 
 func player_is_hit(damage: int):
 	print("health: ", health)
@@ -138,17 +150,31 @@ func _process_horizontal(delta: float) -> void:
 		speed /= 1.5
 
 	# Bremsen: Reduziert die Geschwindigkeit um 50%
-	if Input.is_action_just_pressed("brake"):
-		speed *= 0.5
+	if Input.is_action_just_pressed("shield"):
+		acivate_shield()
 	# Wenn Bremse losgelassen wird, zurück zur normalen Geschwindigkeit
-	if Input.is_action_just_released("brake"):
-		speed *= 2
+	if Input.is_action_just_released("shield"):
+		deactivate_shield()
 
 	# Überprüft Waffeneingaben und löst entsprechende Waffen aus
 	if Input.is_action_just_pressed("primary_weapon"):
 		shoot_weapon(primary_weapon)
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_weapon(secondary_weapon)
+
+
+#Schildfunktionen
+
+func acivate_shield():
+	print("shield activated")
+	modulate = Color(0.27, 0.03, 0.87, 1.0)
+	shield_activated = true
+	
+	
+func deactivate_shield():
+	print("shield deactivated")
+	modulate = Color(1, 1, 1, 1)
+	
 
 
 #Funktion zum Abfeuern einer Waffe
@@ -210,6 +236,7 @@ func _process_circle(delta: float) -> void:
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_circle_mode(secondary_weapon)
 		print("SWeapon_fire")
+
 
 # ─── Waffenschießen im CIRCLE-Mode (zur Mitte) ────────────────────────────────
 func shoot_circle_mode(weapon: PackedScene) -> void:
