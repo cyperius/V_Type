@@ -37,7 +37,6 @@ var shield_activated = false
 @export var game_over_jingle: AudioStream  # AudioStream ist anscheinend ein Datentyp
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
-
 @onready var just_been_hit_timer := $Timer
 
 # Diese Variablen speichern die aktiven Waffen
@@ -47,6 +46,7 @@ var projectiles := []                  # Liste aller aktiven Projektile
 
 # health_ratio bestimmen um für Farbgebung und allenfalls weitere Effekte zu verwenden
 var health_ratio := 1.0
+
 
 # Diese Funktion wird beim Start der Szene automatisch ausgeführt
 func _ready():
@@ -91,12 +91,6 @@ func _on_area_entered(area_that_entered) -> void:
 	elif shield_activated == true:
 		shield_absorbing(potential_damage_inflicted)
 			
-	
-func shield_absorbing(absorbed_damage):
-	shield_energy += absorbed_damage
-	print("absorbed enery: ", absorbed_damage)
-	
-	
 
 func player_is_hit(damage: int):
 	print("health: ", health)
@@ -170,7 +164,14 @@ func acivate_shield():
 	modulate = Color(0.27, 0.03, 0.87, 1.0)
 	shield_activated = true
 	
+
+func shield_absorbing(absorbed_damage):
+	shield_energy += absorbed_damage
+	#get_tree().current_scene.emit_signal("absorbed_energy", absorbed_damage)
+	get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
 	
+
+
 func deactivate_shield():
 	print("shield deactivated")
 	modulate = Color(1, 1, 1, 1)

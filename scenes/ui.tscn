@@ -31,3 +31,12 @@ offset_right = 3853.0
 offset_bottom = 160.0
 text = "Score:"
 label_settings = SubResource("LabelSettings_v5wbp")
+
+[node name="energy" type="Label" parent="."]
+layout_mode = 0
+offset_left = 752.0
+offset_top = 23.0
+offset_right = 1206.0
+offset_bottom = 158.0
+text = "energy:"
+label_settings = SubResource("LabelSettings_v5wbp")

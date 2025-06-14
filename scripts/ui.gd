@@ -5,6 +5,8 @@ extends Control
 # z.B. kann ich dann in der übergeordneten Szene schreiben: ui.score += 1
 @onready var destroyed_enemies_counter = $EnemiesDestroyed
 @onready var score = $Score
+@onready var energy = $energy
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
