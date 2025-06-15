@@ -2,6 +2,7 @@ extends "res://scripts/enemy_1.gd"
 
 @onready var level_3 = $".."
 
+
 # Für Circle-Mode: Zentrum und Radius (allenfalls vom Level‐Script zuweisen)
 var circle_center_position := Vector2.ZERO
 var circle_radius := 1.0
@@ -11,12 +12,12 @@ var angle := 0.0
 @onready var angular_speed : float = level_3.winkel_geschwindigkeit * GameManager.loop_counter
 
 
+
 func _ready() -> void:
+	super._ready()
 	var center_node = $"../Center"
 	circle_center_position = center_node.global_position
-	area_entered.connect(_on_area_entered)
-	add_to_group("one_hit_enemies")
-
+	
 
 func _process(delta: float) -> void:
 	
