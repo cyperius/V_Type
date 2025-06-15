@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player = get_tree().current_scene.player_space_ship
+@onready var player = get_tree().current_scene.player
 @export var circle_radius := 200.0
 @export var level_duration_basis : int = 90
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer

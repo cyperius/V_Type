@@ -23,7 +23,6 @@ position = Vector2(169, 1047)
 [node name="UI" parent="." instance=ExtResource("3_vtdax")]
 
 [node name="energy" parent="UI" index="2"]
-layout_mode = 0
 offset_left = 696.0
 offset_top = 22.0
 offset_right = 1150.0
