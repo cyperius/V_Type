@@ -26,7 +26,6 @@ func _ready() -> void:
 	ui.energy.text = "Energy: " + str(player_energy)
 	
 	
-	
 func _process(delta):
 	if Input.is_action_just_pressed("level_1"):
 		jump_to_level(1)

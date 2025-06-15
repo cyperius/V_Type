@@ -152,7 +152,12 @@ func _process_horizontal(delta: float) -> void:
 
 	# Überprüft Waffeneingaben und löst entsprechende Waffen aus
 	if Input.is_action_just_pressed("primary_weapon"):
+		if shield_energy < 50:
+			return
+		shield_energy -= 50
+		get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
 		shoot_weapon(primary_weapon)
+		
 	if Input.is_action_just_pressed("secondary_weapon"):
 		shoot_weapon(secondary_weapon)
 
