@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var player = get_tree().current_scene.player_space_ship
 @export var circle_radius := 200.0
-@export var level_soundtrack : AudioStreamWAV
+@export var level_duration_basis : int = 90
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var level_duration = $Timer
 @onready var spawn_timer = Timer.new()
@@ -20,7 +20,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 func _ready() -> void:
 	player.scale = Vector2(0.2, 0.2)
-	level_duration.wait_time = 90 * time_delay
+	level_duration.wait_time = level_duration_basis * time_delay
 	level_duration.timeout.connect(_on_level_duration_timeout)
 	spawn_timer.wait_time = 1 / time_delay
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
