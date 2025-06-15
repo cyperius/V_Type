@@ -1,5 +1,6 @@
 extends Node2D  # MainScene basiert auf Node2D
 
+@export var asteroids_amount_basic : int = 300
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var bg = $background_Control
 @onready var asteroid : PackedScene = preload("res://scenes/rigid_asteroid.tscn")
@@ -20,7 +21,7 @@ func _ready():
 	
 	
 func _process(delta: float) -> void:
-	if asteroids_spawner.asteroid_counter == 300 * asteroid_amount:
+	if asteroids_spawner.asteroid_counter == asteroids_amount_basic * asteroid_amount:
 		await get_tree().create_timer(10).timeout
 		emit_signal("level_finished", 3, score, 0)
 	
