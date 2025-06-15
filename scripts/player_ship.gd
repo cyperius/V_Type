@@ -80,7 +80,9 @@ func _ready():
 
 func _on_area_entered(area_that_entered) -> void:
 	var potential_damage_inflicted : int = area_that_entered.damage
-	if shield_activated == false:
+	if area_that_entered.is_in_group("projectiles") and shield_activated == true:
+		shield_absorbing(potential_damage_inflicted)
+	else:
 		print("Ich bin getroffen")
 		collision_mask = 0
 		if health <= 0:
@@ -88,9 +90,8 @@ func _on_area_entered(area_that_entered) -> void:
 			return
 		else:
 			player_is_hit(potential_damage_inflicted)
-	elif shield_activated == true:
-		shield_absorbing(potential_damage_inflicted)
-			
+	
+		
 
 func player_is_hit(damage: int):
 	print("health: ", health)
@@ -172,7 +173,6 @@ func acivate_shield():
 
 func shield_absorbing(absorbed_damage):
 	shield_energy += absorbed_damage
-	#get_tree().current_scene.emit_signal("absorbed_energy", absorbed_damage)
 	get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
 	
 
