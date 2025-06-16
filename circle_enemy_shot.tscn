@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bltk058wgbio0"]
+
+[node name="CircleEnemyShot" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

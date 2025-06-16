@@ -41,3 +41,9 @@ func _process(delta: float) -> void:
 	# 5. Schiff löschen, wenn es in einer nicht mehr sichtbarten Distanz ist
 	if dist_to_center > 2500:
 		queue_free()
+
+func _on_shoot_timer_timeout():
+	audio_stream_player_2d.play()
+	var shot = shot_scene.instantiate()
+	shot.scale = Vector2(3, 3)
+	add_child(shot)
