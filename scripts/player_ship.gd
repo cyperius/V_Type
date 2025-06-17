@@ -106,12 +106,15 @@ func player_is_hit(damage: int):
 		var current_scene := get_tree().current_scene
 		if current_scene:
 			current_scene.add_child(game_over_now)
-		queue_free()
-	do_the_been_hit_blinking()
-	current_player_state = Color(1, health_ratio, health_ratio)
-	modulate = current_player_state
-	do_the_been_hit_blinking()
-	just_been_hit_timer.start()
+		collision_mask = 0
+		collision_layer = 0
+		hide()
+	else:	
+		do_the_been_hit_blinking()
+		current_player_state = Color(1, health_ratio, health_ratio)
+		modulate = current_player_state
+		do_the_been_hit_blinking()
+		just_been_hit_timer.start()
 
 
 func calculate_damage_state():

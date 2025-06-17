@@ -1,9 +1,11 @@
 extends Node2D
 
-@onready var main = $".."
-
 @export var sfx_stream: AudioStream
 var explosion: PackedScene = load("res://scenes/explosion_animation.tscn")
+
+@onready var audio_stream_player = $AudioStreamPlayer
+@onready var main = $".."
+
 
 func _ready() -> void:
 	print("ausgelöst")
@@ -19,29 +21,8 @@ func _ready() -> void:
 	
 	
 func reset_level():
-	await AudioManager.play_sfx(sfx_stream)
-	#await get_tree().create_timer(4).timeout
+	audio_stream_player.play()
+	await audio_stream_player.finished
 	GameManager._load_level(GameManager.current_level)
 		
 
-
-
-# Invalid type in function 'get_child' in base 'Area2D (space_ship.gd)'. Cannot convert argument 1 from String to int.
-
-#extends Node2D
-#
-#@export var sfx_stream: AudioStream
-#var ship = null
-#
-#func _ready() -> void:
-	#AudioManager.play_sfx(sfx_stream)
-	#$AnimatedSprite2D.play()
-	#print("ausgelöst")
-	#if Global.player_ship:
-		## Hier greifst du auf eine Eigenschaft des Player-Schiffs zu,
-		## z. B. auf einen Kind-Knoten 'ship_sprite'
-		#ship = Global.player_ship.get_child("ship_sprite")
-		#self.position = ship.position
-#
-	#else:
-		#print("Global.player_ship ist nicht gesetzt!")

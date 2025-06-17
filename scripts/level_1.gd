@@ -17,6 +17,9 @@ func _ready():
 	# Mit Zugriff auf die Variable mode und enum PLayer;ode.FREE kann so der Spielmodus gesetzt werden
 	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
 	Global.player_ship.rotation_degrees = 0
+	Global.player_ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	Global.player_ship.collision_layer = 1
+	Global.player_ship.show()
 	
 	add_child(enemy)
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
