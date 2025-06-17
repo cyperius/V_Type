@@ -19,6 +19,8 @@ var angular_speed := 2.0
 
 # Aktuelle Bewegungsrichtung und -geschwindigkeit (x und y Komponenten)
 var velocity := Vector2(240, 240)
+var default_player_state = Color(1, 1, 1)
+var current_player_state = default_player_state 
 
 # @export macht diese Variablen im Godot Editor sichtbar und einstellbar
 # PackedScene ist ein Typ für vorbereitete Szenen (wie unsere Laser-Projektile)
@@ -29,15 +31,14 @@ var velocity := Vector2(240, 240)
 @export var max_speed := 600
 var speed := max_speed
 
-@export var max_health: int = 400
-var health := max_health
+@export var max_health: int = 600
+@onready var health := max_health
 @export var shield_energy : int = 1000
 var shield_activated = false
-
-@export var game_over_jingle: AudioStream  # AudioStream ist anscheinend ein Datentyp
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
 @onready var just_been_hit_timer := $Timer
+@onready var hit_scene : PackedScene = preload("res://scenes/hit.tscn")
 
 # Diese Variablen speichern die aktiven Waffen
 var primary_weapon: PackedScene        # Hauptwaffe
@@ -85,30 +86,52 @@ func _on_area_entered(area_that_entered) -> void:
 	else:
 		print("Ich bin getroffen")
 		collision_mask = 0
-		if health <= 0:
-			print("I'm already dead!")
-			return
-		else:
-			player_is_hit(potential_damage_inflicted)
+		collision_layer = 0
+		player_is_hit(potential_damage_inflicted)
+	if area_that_entered.is_in_group("projectiles"):
+		var hit = hit_scene.instantiate()
+		add_child(hit)
+		hit.scale = Vector2(15, 15)
+		hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
+		area_that_entered.queue_free()
 	
-		
 
 func player_is_hit(damage: int):
 	print("health: ", health)
 	health -= damage
 	print("damage: ", damage, "ergo new health: ", health)
-	health_ratio = float(health) / float(max_health)
-	modulate = Color(1, health_ratio, health_ratio)
+	calculate_damage_state()
 	if health <= 0:
 		var game_over_now := game_over.instantiate()
 		var current_scene := get_tree().current_scene
 		if current_scene:
 			current_scene.add_child(game_over_now)
-		hide()
+		queue_free()
+	do_the_been_hit_blinking()
+	current_player_state = Color(1, health_ratio, health_ratio)
+	modulate = current_player_state
+	do_the_been_hit_blinking()
 	just_been_hit_timer.start()
 
+
+func calculate_damage_state():
+	# Berechnung des aktuellen Gesundheitszustand im Verhältnis zur maximalen Gesundheit 
+	health_ratio = float(health) / float(max_health)
+	# zunehmende Rotverfärnbung des player-ships mit abnehmendem Gesundheitszustand
+	
+	
+	
+func do_the_been_hit_blinking():
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
+	tween.set_loops(2)
+
+
 func _on_just_been_hit_timer_timeout() -> void:
+	print("ja. ich were ausgelösat")
+	modulate = current_player_state
 	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	collision_layer = 1
 	# ("um die Ebenen 3, 4, 5 und 6 in deiner Collision-Maske wieder zu aktivieren, kannst du die Bit-Shift-Notation verwenden.")
 
 # Diese Funktion wird jeden Frame ausgeführt
@@ -179,7 +202,7 @@ func shield_absorbing(absorbed_damage):
 
 func deactivate_shield():
 	print("shield deactivated")
-	modulate = Color(1, 1, 1, 1)
+	modulate = current_player_state
 	
 
 
