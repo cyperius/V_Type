@@ -39,7 +39,9 @@ func _process(delta):
 	
 func jump_to_level(level_nr : int):
 	await AudioManager.fade_out(4)
+	GameManager.current_level = level_nr
 	GameManager._load_level(level_nr)
+	
 	
 	
 func _on_enemy_destroyed(score, energy):

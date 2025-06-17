@@ -6,7 +6,6 @@ extends Node2D
 var explosion: PackedScene = load("res://scenes/explosion_animation.tscn")
 
 func _ready() -> void:
-	AudioManager.play_sfx(sfx_stream)
 	print("ausgelöst")
 	if Global.player_ship:
 		# Hier greifst du auf eine Eigenschaft des Player-Schiffs zu,
@@ -20,7 +19,8 @@ func _ready() -> void:
 	
 	
 func reset_level():
-	await get_tree().create_timer(4).timeout
+	await AudioManager.play_sfx(sfx_stream)
+	#await get_tree().create_timer(4).timeout
 	GameManager._load_level(GameManager.current_level)
 		
 
