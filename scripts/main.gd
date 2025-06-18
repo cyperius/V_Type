@@ -1,17 +1,20 @@
 extends Node2D
 
+signal enemy_destroyed(score: int, energy: int)
+signal absorbed_energy(amount)
+
 # Container in Main.tscn, in den Level geladen werden
 @onready var level_container: Node = $LevelContainer
 @onready var ui : Control = $UI
 @onready var shop: Node2D = $Shop
 @onready var start_menu: Node2D = $StartMenu
 @onready var player: Area2D = $player_space_ship
-signal enemy_destroyed(score: int, energy: int)
-signal absorbed_energy(amount)
+@onready var player_energy : int = player.shield_energy
+
 var player_score = 0
 var destroyed_enemies_counter = 0
 # wird nur für HUD vom inititalen Wert gebraucht...
-@onready var player_energy : int = player.shield_energy
+
 
 
 func _ready() -> void:
@@ -20,10 +23,15 @@ func _ready() -> void:
 	GameManager.register_level_container(level_container)
 	# Erstes Level laden (GameManager.current_level ist ein int)
 	GameManager._load_level(GameManager.current_level)
-	enemy_destroyed.connect(_on_enemy_destroyed)
 	ui.destroyed_enemies_counter.text = "Enemies destroyed: " + str(destroyed_enemies_counter)
 	ui.score.text = "Score: " + str(player_score)
 	ui.energy.text = "Energy: " + str(player_energy)
+	if level_container.get_child_count() > 0:
+		var current_level = level_container.get_child(0)
+		if current_level.has_signal("enemy_destroyed"):
+			current_level.enemy_destroyed.connect(_on_enemy_destroyed)
+		if current_level.has_signal("level_finished"):
+			current_level.level_finished.connect(_on_level_finished)
 	
 	
 func _process(delta):
@@ -49,4 +57,7 @@ func _on_enemy_destroyed(score, energy):
 	destroyed_enemies_counter += 1
 	ui.destroyed_enemies_counter.text = "Enemies destroyed: " + str(destroyed_enemies_counter)
 	
+	
+func _on_level_finished():
+	print("level finished")
 	

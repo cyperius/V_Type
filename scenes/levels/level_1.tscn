@@ -11,6 +11,8 @@ amount_of_enemies = 60
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ffuqo")]
 
+[node name="EnemiesContainer" type="Node2D" parent="."]
+
 [node name="background_Control" parent="." instance=ExtResource("4_nvxsf")]
 anchors_preset = 15
 anchor_right = 1.0

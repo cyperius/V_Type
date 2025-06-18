@@ -1,10 +1,6 @@
 extends Area2D
 
-@onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
-@onready var explosion_size : float = 5
-@onready var speed = basic_speed * GameManager.loop_counter
-@onready var audio_stream_player_2d = $AudioStreamPlayer2D
-
+signal enemy_destroyed(score: int, energy: int)
 
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
@@ -13,10 +9,12 @@ extends Area2D
 @export var score_count : int = 100
 @export var energy_left : int = 5
 
+@onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
+@onready var explosion_size : float = 5
+@onready var speed = basic_speed * GameManager.loop_counter
+@onready var audio_stream_player_2d = $AudioStreamPlayer2D
+
 var shoot_timer = Timer.new()
-
-
-signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready() -> void:
