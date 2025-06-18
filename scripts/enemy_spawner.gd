@@ -15,6 +15,7 @@ extends Node2D
 @onready var spawn_rate : float = 0.8 + GameManager.loop_counter/5
 signal boss_defeated
 signal level_finished(level_nr: int)
+signal enemy_destroyed(score: int, energy: int)
 
 
 

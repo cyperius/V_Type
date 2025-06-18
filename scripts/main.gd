@@ -43,7 +43,6 @@ func jump_to_level(level_nr : int):
 	GameManager._load_level(level_nr)
 	
 	
-	
 func _on_enemy_destroyed(score, energy):
 	player_score += score
 	ui.score.text = "Score: " + str(player_score)

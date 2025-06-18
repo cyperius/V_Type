@@ -16,7 +16,7 @@ extends Area2D
 var shoot_timer = Timer.new()
 
 
-#signal enemy_destroyed(score: int, energy: int)
+signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready() -> void:
@@ -35,7 +35,7 @@ func _on_area_entered(area: Area2D) -> void:
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
-	get_tree().current_scene.emit_signal("enemy_destroyed", score_count, energy_left)
+	emit_signal("enemy_destroyed", score_count, energy_left)
 	queue_free()
 	
 	
