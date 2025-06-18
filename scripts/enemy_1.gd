@@ -6,7 +6,6 @@ extends Area2D
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 
 
-
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
 @export var damage = 100
@@ -17,7 +16,7 @@ extends Area2D
 var shoot_timer = Timer.new()
 
 
-signal enemy_destroyed(score: int, energy: int)
+#signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready() -> void:
@@ -30,7 +29,7 @@ func _ready() -> void:
 	shoot_timer.start()
 	audio_stream_player_2d.stream = shot_sound
 	
-
+	
 func _on_area_entered(area: Area2D) -> void:
 	#AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
