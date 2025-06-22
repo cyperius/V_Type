@@ -5,8 +5,11 @@ extends Area2D
 @export var sfx_stream: AudioStream 
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 @onready var biological_parent = get_parent().get_node("CircleEnemy1")
-@onready var center_position = biological_parent.circle_center_position
+# das scheint so nicht zu funktioneiren
+@onready var center = $Center
+#@onready var center_position = Vector2.ZERO
 @onready var speed_level : float = 0.8 + GameManager.loop_counter / 5
+# funktioniert so nicht zuverlässig, wenn gegner imm falschen moment zerstörtb werden.-. stattdessen beim schiessen eper sognal die pos übermitteln
 @onready var direction_vector := Vector2(cos(biological_parent.global_position.x), sin(biological_parent.global_position.y))
 #@onready var dist_to_center = biological_parent.dist_to_center
 
@@ -31,10 +34,16 @@ func _process(delta: float) -> void:
 	# folgende 4 Zeilen anpassen
 	
 	global_position += direction_vector * delta * 1000
-	#dist_to_center = sqrt(pow(offset.x, 2) + pow(offset.y, 2))
-	#scaling_factor = dist_to_center/3000
-	#scale = Vector2(scaling_factor, scaling_factor)
-	#explosion_size = dist_to_center/200
+	# geht so nicht, kann nicht auf center.global_posizion zugreifen
+	#var dist_to_center = sqrt(pow(global_position.x-center.global_position.x, 2) + pow(global_position.y-center.global_position.y, 2))
+	#var scaling_factor = dist_to_center/1000
+	#scaling_factor += Vector2(dist_to_center, dist_to_center) * delta
+	
+	# funktioniert halbwegs, aber shclechte Variante
+	if scale <= Vector2(4, 4) :
+		scale += Vector2(2, 2) * delta
+	
+	
 	
 	#position.x += speed * delta * speed_level
 	#position.y += speed * delta
@@ -44,4 +53,4 @@ func _process(delta: float) -> void:
 	#print("dist to center: ", dist_to_center)
 	
 	#print("scaling_factor: ", biological_parent.scaling_factor)
-	print("shot_position: ", position)
+	#print("shot_position: ", position)

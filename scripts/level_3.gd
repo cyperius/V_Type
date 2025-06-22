@@ -24,7 +24,7 @@ func _ready() -> void:
 	player.scale = Vector2(0.2, 0.2)
 	level_duration.wait_time = level_duration_basis * time_delay
 	level_duration.timeout.connect(_on_level_duration_timeout)
-	spawn_timer.wait_time = 1 / time_delay
+	spawn_timer.wait_time = 4 / time_delay
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
 	spawn_timer.start()
