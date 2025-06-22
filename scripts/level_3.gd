@@ -1,7 +1,8 @@
 extends Node2D
 
-@onready var player = get_tree().current_scene.player
+
 @export var circle_radius := 200.0
+@export var cirle_shot_scene : PackedScene
 @export var level_duration_basis : int = 90
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var level_duration = $Timer
@@ -11,6 +12,7 @@ extends Node2D
 # von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Lionie spawnen
 @export var winkel_geschwindigkeit : float = 5
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
+@onready var player = get_tree().current_scene.player
 
 
 

@@ -4,6 +4,7 @@ signal boss_defeated
 signal level_finished(level_nr: int)
 signal enemy_destroyed(score: int, energy: int)
 signal enemy_spawned(enemy: Node)
+signal incoming_boss
 
 
 @onready var timer = $Timer
@@ -71,11 +72,10 @@ func _on_timer2_timeout():
 	
 	
 func here_comes_the_boss():
+	emit_signal("incoming_boss")
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
-	#await get_tree().create_timer(5.0).timeout
-	AudioManager.fade_out(5)
 	var boss = preload("res://scenes/boss_1.tscn").instantiate()
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
