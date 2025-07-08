@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dqud88glri484"]
 
-[ext_resource type="Script" path="res://scripts/enemy_circle_1.gd" id="1_c3dbg"]
+[ext_resource type="Script" uid="uid://cyiilswpncqgw" path="res://scripts/enemy_circle_1.gd" id="1_c3dbg"]
 [ext_resource type="AudioStream" uid="uid://daf7ccvxjc5dy" path="res://assets/sound_and_sfx/sound_effects/Laser.wav" id="2_5a4bh"]
 [ext_resource type="Texture2D" uid="uid://bm7ghfng4yupa" path="res://assets/graphic_elements/enemies/ship4.png" id="2_7ohan"]
 [ext_resource type="PackedScene" uid="uid://bltk058wgbio0" path="res://scenes/circle_enemy_shot.tscn" id="2_phuov"]

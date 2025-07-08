@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://ccl32vcqs7ak6"]
 
-[ext_resource type="Script" path="res://scripts/astroid_basic.gd" id="1_12amd"]
+[ext_resource type="Script" uid="uid://cuihd6hcn7ncb" path="res://scripts/astroid_basic.gd" id="1_12amd"]
 [ext_resource type="PackedScene" uid="uid://djba7sqwptmdw" path="res://scenes/asteroid_animation.tscn" id="2_evu0w"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yrgnv"]

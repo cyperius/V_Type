@@ -1,5 +1,7 @@
 extends Node
 
+signal connect_signals
+
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
 # `NOTIFICATION_RESIZED` hingegen ist nur in Control-Nodes verfügbar, daher definieren wir **diese eine Konstante manuell**.
@@ -109,7 +111,9 @@ func _load_level(level_nr: int) -> void:
 	# Signal fürs Level-Ende verbinden (Godot 4-Style)
 	if current_level_node.has_signal("level_finished"):
 		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
-
+	if current_level_node.has_signal("enemy_destroyed"):
+		emit_signal("connect_signals")
+		
 
 func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy: int = 0) -> void:
 	# Persistente Daten aktualisieren
@@ -132,4 +136,3 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 # func should_show_shop() -> bool:
 #	# hier deine Logik, z.B. alle 3 Level
 #	pass
-

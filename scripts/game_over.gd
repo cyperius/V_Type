@@ -25,4 +25,3 @@ func reset_level():
 	await audio_stream_player.finished
 	GameManager._load_level(GameManager.current_level)
 		
-

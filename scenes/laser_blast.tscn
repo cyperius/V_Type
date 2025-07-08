@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d2jofv3v62qdo"]
 
-[ext_resource type="Script" path="res://scripts/laser_blast.gd" id="1_4ouod"]
+[ext_resource type="Script" uid="uid://dxvm10wva7ff4" path="res://scripts/laser_blast.gd" id="1_4ouod"]
 [ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_vsxi4"]
 [ext_resource type="Texture2D" uid="uid://ctkb2usix7oq2" path="res://assets/graphic_elements/shots/laser_blast1.png" id="3_uwrai"]
 

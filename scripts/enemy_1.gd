@@ -34,6 +34,8 @@ func _on_area_entered(area: Area2D) -> void:
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
 	emit_signal("enemy_destroyed", score_count, energy_left)
+	hide()
+	await get_tree().create_timer(0.05).timeout
 	queue_free()
 	
 	

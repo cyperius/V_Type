@@ -18,6 +18,7 @@ var destroyed_enemies_counter = 0
 
 
 func _ready() -> void:
+	GameManager.connect_signals.connect(_on_connect_the_signals)
 	GameManager.state = GameManager.STATE_PLAYING
 	# Main registriert seinen Container beim GameManager
 	GameManager.register_level_container(level_container)
@@ -52,6 +53,7 @@ func jump_to_level(level_nr : int):
 	
 	
 func _on_enemy_destroyed(score, energy):
+	print(" here is the score finally: ", score)
 	player_score += score
 	ui.score.text = "Score: " + str(player_score)
 	destroyed_enemies_counter += 1
@@ -61,3 +63,5 @@ func _on_enemy_destroyed(score, energy):
 func _on_level_finished():
 	print("level finished")
 	
+func _on_connect_the_signals() -> void:
+	GameManager.current_level_node.enemy_destroyed.connect(_on_enemy_destroyed)

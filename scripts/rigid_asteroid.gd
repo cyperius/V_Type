@@ -1,5 +1,8 @@
 extends RigidBody2D
 
+signal enemy_destroyed(score: int, energy: int)
+signal asteroid_destroyed(size)
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var area2d = $Area2D
@@ -14,13 +17,7 @@ extends RigidBody2D
 @export var damage : int = 100
 
 var asteroid_scale : float = 1
-
-signal enemy_destroyed(score: int, energy: int)
-
 var scale_factor_rounded
-
-signal asteroid_destroyed(size)
-
 
 # Bildschirmgrösse
 const SCREEN_SIZE = Vector2(3840, 2160)
@@ -111,5 +108,5 @@ func take_damage(damage) -> void:
 		explosion_animation.speed_scale = 2
 		explosion_animation.position = global_position
 		emit_signal("asteroid_destroyed", scale_factor_rounded)
-		get_tree().current_scene.emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
+		emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
 		queue_free()

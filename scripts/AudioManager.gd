@@ -67,4 +67,3 @@ func fade_out(duration : float = 2.0):
 	var tween := create_tween()
 	tween.tween_property(music_player, "volume_db", -80, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
 	
-

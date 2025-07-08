@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://rgckmvef731q"]
 
-[ext_resource type="Script" path="res://scripts/enemy_1.gd" id="1_iflxy"]
+[ext_resource type="Script" uid="uid://d27u07raui764" path="res://scripts/enemy_1.gd" id="1_iflxy"]
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_e6246"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://scenes/enemy_shots_basic.tscn" id="2_f688s"]
 [ext_resource type="Texture2D" uid="uid://btb5hc5pleirr" path="res://assets/graphic_elements/enemies/enemy2.png" id="2_hcdqk"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://crtwspcyxj4mj"]
 
-[ext_resource type="Script" path="res://scripts/test.gd" id="1_pirkg"]
+[ext_resource type="Script" uid="uid://wpdd1q3sh72e" path="res://scripts/test.gd" id="1_pirkg"]
 [ext_resource type="Theme" uid="uid://d337mpgfcioah" path="res://ressources/new_theme.tres" id="2_0ev0x"]
 
 [node name="test" type="Control"]

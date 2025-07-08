@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cljnl8u2serb7"]
 
-[ext_resource type="Script" path="res://scripts/mech_enemy.gd" id="1_qdju6"]
+[ext_resource type="Script" uid="uid://ecewsbe2rq2a" path="res://scripts/mech_enemy.gd" id="1_qdju6"]
 [ext_resource type="Texture2D" uid="uid://bpisr50e3sd0s" path="res://assets/graphic_elements/enemies/mech_ship.png" id="2_ajnso"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aiwq4"]

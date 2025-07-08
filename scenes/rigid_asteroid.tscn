@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dd13bjbqv6ap"]
 
-[ext_resource type="Script" path="res://scripts/rigid_asteroid.gd" id="1_iatvu"]
+[ext_resource type="Script" uid="uid://b7sj5h4so43qn" path="res://scripts/rigid_asteroid.gd" id="1_iatvu"]
 [ext_resource type="PackedScene" uid="uid://djba7sqwptmdw" path="res://scenes/asteroid_animation.tscn" id="1_vn8af"]
-[ext_resource type="Script" path="res://scripts/Area2D.gd" id="3_c8icm"]
+[ext_resource type="Script" uid="uid://bl4c52hweh2ov" path="res://scripts/Area2D.gd" id="3_c8icm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_81xbp"]
 radius = 42.403
@@ -10,11 +10,12 @@ radius = 42.403
 [node name="RigidAsteroid" type="RigidBody2D"]
 collision_layer = 16
 collision_mask = 19
+mass = 1.347
 can_sleep = false
 freeze_mode = 1
 linear_damp_mode = 1
 script = ExtResource("1_iatvu")
-health = 100
+health = 250
 speed = 600
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

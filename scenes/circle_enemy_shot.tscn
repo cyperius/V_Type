@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bltk058wgbio0"]
 
-[ext_resource type="Script" path="res://scripts/circle_enemy_shot.gd" id="1_4d17e"]
+[ext_resource type="Script" uid="uid://3srl3nw13yrx" path="res://scripts/circle_enemy_shot.gd" id="1_4d17e"]
 [ext_resource type="Texture2D" uid="uid://dy1y3j1scbswe" path="res://assets/graphic_elements/shots/red_blast.png" id="2_kkqvk"]
 [ext_resource type="AudioStream" uid="uid://daf7ccvxjc5dy" path="res://assets/sound_and_sfx/sound_effects/Laser.wav" id="3_tm3h5"]
 

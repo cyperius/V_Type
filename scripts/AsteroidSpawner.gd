@@ -1,5 +1,8 @@
 extends Node2D  # MainScene basiert auf Node2D
 
+
+signal asteroid_destroyed(size)
+signal enemy_spawned(enemy: Node)
 @onready var asteroid : PackedScene = preload("res://scenes/rigid_asteroid.tscn")
 @onready var spawn_timer = $Timer
 @onready var ui : Control = $UI
@@ -12,10 +15,6 @@ extends Node2D  # MainScene basiert auf Node2D
 const SCREEN_SIZE = Vector2(3840, 2160)
 
 var asteroid_counter = 0
-
-signal asteroid_destroyed(size)
-
-
 
 
 func _ready():
@@ -62,6 +61,7 @@ func _on_spawn_timer_timeout() -> void:
 		spawn_timer.stop()
 	
 	add_child(new_asteroid)
+	emit_signal("enemy_spawned", new_asteroid)
 	asteroid_counter += 1
 	
 	

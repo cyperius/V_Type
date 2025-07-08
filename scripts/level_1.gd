@@ -11,12 +11,12 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready():
-	# var song1 = preload("res://assets/sound_and_sfx/soundtracks/Level_sountracks/Not Alone.wav")
 	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
+	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 	
 	# Global.player_ship referenziert die Player_ship Szene mit angehängtem player_ship.gd,
 	# und zwar via Global.gd (ein Autoload -> von jedem Skript erreichbar)
@@ -25,6 +25,9 @@ func _ready():
 	Global.player_ship.rotation_degrees = 0
 	Global.player_ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 	Global.player_ship.collision_layer = 1
+	Global.player_ship.global_position = Vector2 (500, 1000)
+	Global.player_ship.scale = Vector2(0.25, 0.25)
+	#Global.player_ship.speed = Global.player_ship.max_speed
 	Global.player_ship.show()
 	enemies_container.add_child(enemy)
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
@@ -52,3 +55,6 @@ func _on_boss_timer_timeout():
 func _on_boss_defeated():
 	emit_signal("level_finished", 2, 0, 0)
 	print("boss defeated")
+	
+func _on_incoming_boss() -> void:
+	audio_stream_player.stop()

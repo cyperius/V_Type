@@ -8,9 +8,9 @@ extends Node2D
 @onready var level_duration = $Timer
 @onready var spawn_timer = Timer.new()
 @onready var circle_enemy_1 : PackedScene = preload("res://scenes/enemy_circle_1.tscn")
-# Gescheindikeit für Gegner. Der Wert 5 kom biniert mit einem timer Intervall
-# von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Lionie spawnen
-@export var winkel_geschwindigkeit : float = 5
+# Gescheindikeit für Gegner. Der Wert 5 kombiniert mit einem timer Intervall
+# von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Linie spawnen
+@export var winkel_geschwindigkeit : float = 6
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
 @onready var player = get_tree().current_scene.player
 

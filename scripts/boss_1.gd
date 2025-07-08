@@ -152,5 +152,5 @@ func fade_in_sound(duration : float = 5):
 	audio2d.volume_db = -80
 	audio2d.play()
 	var tween := create_tween()
-	tween.tween_property(audio2d, "volume_db", 1, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(audio2d, "volume_db", 10, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
