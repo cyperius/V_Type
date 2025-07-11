@@ -206,7 +206,6 @@ func shield_absorbing(absorbed_damage):
 	get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
 	
 
-
 func deactivate_shield():
 	print("shield deactivated")
 	_particles_shield.emitting = false
