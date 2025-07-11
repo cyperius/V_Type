@@ -15,12 +15,14 @@ signal enemy_destroyed(score: int, energy: int)
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 
 var shoot_timer = Timer.new()
+var evasive_mode_on = false
 
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	add_to_group("one_hit_enemies")
 	add_to_group("enemies")
+	add_to_group("evaders")
 	add_child(shoot_timer)
 	shoot_timer.wait_time = 2
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
@@ -40,6 +42,8 @@ func _on_area_entered(area: Area2D) -> void:
 	
 	
 func _process(delta: float) -> void:
+	if evasive_mode_on:
+		position.y += delta * 950
 	position.x -= delta * speed
 	
 
