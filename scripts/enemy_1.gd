@@ -46,5 +46,5 @@ func _process(delta: float) -> void:
 func _on_shoot_timer_timeout():
 	audio_stream_player_2d.play()
 	var shot = shot_scene.instantiate()
-	shot.scale = Vector2(3, 3)
-	add_child(shot)
+	shot.global_position = global_position
+	get_parent().add_child(shot)
