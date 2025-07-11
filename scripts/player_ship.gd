@@ -39,6 +39,9 @@ var shield_activated = false
 @export var game_over: PackedScene        # Game Over Szene
 @onready var just_been_hit_timer := $Timer
 @onready var hit_scene : PackedScene = preload("res://scenes/hit.tscn")
+# Schild um das Schiff mittels PGPUParticles, kann vom Spieler aktiviert werden
+@onready var _particles_shield: GPUParticles2D = %GPUParticles2D
+
 
 # Diese Variablen speichern die aktiven Waffen
 var primary_weapon: PackedScene        # Hauptwaffe
@@ -193,7 +196,8 @@ func _process_horizontal(delta: float) -> void:
 
 func acivate_shield():
 	print("shield activated")
-	modulate = Color(0.27, 0.03, 0.87, 1.0)
+	_particles_shield.emitting = true
+	# modulate = Color(0.27, 0.03, 0.87, 1.0)
 	shield_activated = true
 	
 
@@ -205,7 +209,8 @@ func shield_absorbing(absorbed_damage):
 
 func deactivate_shield():
 	print("shield deactivated")
-	modulate = current_player_state
+	_particles_shield.emitting = false
+	# modulate = current_player_state
 	
 
 
