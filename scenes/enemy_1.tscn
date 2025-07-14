@@ -44,3 +44,7 @@ position = Vector2(-530, 30)
 shape = SubResource("CircleShape2D_6yld4")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="GunPoint" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-675, 20)

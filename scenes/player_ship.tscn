@@ -81,20 +81,23 @@ shape = SubResource("CapsuleShape2D_jnu13")
 one_way_collision_margin = 0.0
 
 [node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(32, -12)
 rotation = -1.5708
 scale = Vector2(1, 1.47999)
 shape = SubResource("CapsuleShape2D_jnu13")
 one_way_collision_margin = 0.0
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+[node name="BeenHitTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 1.5
 one_shot = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="ParticlesShield" type="GPUParticles2D" parent="."]
 unique_name_in_owner = true
+emitting = false
 amount = 2000
 lifetime = 1.08
 speed_scale = 34.71

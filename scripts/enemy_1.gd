@@ -13,6 +13,7 @@ signal enemy_destroyed(score: int, energy: int)
 @onready var explosion_size : float = 5
 @onready var speed = basic_speed * GameManager.loop_counter
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
+@onready var _gun_point: Marker2D = %GunPoint
 
 var shoot_timer = Timer.new()
 var evasive_mode_on = false
@@ -50,5 +51,5 @@ func _process(delta: float) -> void:
 func _on_shoot_timer_timeout():
 	audio_stream_player_2d.play()
 	var shot = shot_scene.instantiate()
-	shot.global_position = global_position
+	shot.global_position = _gun_point.global_position
 	get_parent().add_child(shot)

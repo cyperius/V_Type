@@ -6,6 +6,7 @@ extends Control
 @onready var destroyed_enemies_counter = $EnemiesDestroyed
 @onready var score = $Score
 @onready var energy = $energy
+@onready var health: Label = $Health
 
 
 # Called when the node enters the scene tree for the first time.

@@ -1,5 +1,5 @@
 # Die Klasse erbt von Area2D, was Kollisionserkennung ermöglicht
-extends Area2D
+class_name player_ship extends Area2D
 
 # ─── NEU: Modi für das Spieler‐Schiff ──────────────────────────────────────────
 enum PlayerMode {
@@ -34,14 +34,14 @@ var speed := max_speed
 @export var max_health: int = 600
 @onready var health := max_health
 @export var shield_energy : int = 1000
-var shield_activated = false
+var shield_activated := false
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
-@onready var just_been_hit_timer := $Timer
+@onready var just_been_hit_timer := %BeenHitTimer
 @onready var hit_scene : PackedScene = preload("res://scenes/hit.tscn")
 # Schild um das Schiff mittels PGPUParticles, kann vom Spieler aktiviert werden
-@onready var _particles_shield: GPUParticles2D = %GPUParticles2D
-
+@onready var _particles_shield: GPUParticles2D = %ParticlesShield
+@onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 
 # Diese Variablen speichern die aktiven Waffen
 var primary_weapon: PackedScene        # Hauptwaffe
@@ -72,6 +72,9 @@ func _ready():
 	secondary_weapon = laser_blast
 	area_entered.connect(_on_area_entered)
 	
+	# Collisionserkennung des Schilds zu Beginn ausschalten
+	_shield_collision_shape.disabled = false
+	
 
 	# ─── NEU: Initialisierung für Circle-Mode ───────────────────────────────
 	if mode == PlayerMode.CIRCLE:
@@ -84,8 +87,11 @@ func _ready():
 
 func _on_area_entered(area_that_entered) -> void:
 	var potential_damage_inflicted : int = area_that_entered.damage
-	if area_that_entered.is_in_group("projectiles") and shield_activated == true:
-		shield_absorbing(potential_damage_inflicted)
+	if shield_activated == true:
+		if area_that_entered.is_in_group("projectiles"):
+			shield_absorbing(potential_damage_inflicted)
+		if area_that_entered.is_in_group("enemies"):
+			shield_energy -= potential_damage_inflicted
 	else:
 		print("Ich bin getroffen")
 		collision_mask = 0
@@ -113,7 +119,6 @@ func player_is_hit(damage: int):
 		collision_layer = 0
 		hide()
 	else:	
-		do_the_been_hit_blinking()
 		current_player_state = Color(1, health_ratio, health_ratio)
 		modulate = current_player_state
 		do_the_been_hit_blinking()
@@ -130,11 +135,11 @@ func calculate_damage_state():
 func do_the_been_hit_blinking():
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
-	tween.set_loops(2)
+	tween.set_loops(1)
 
 
 func _on_just_been_hit_timer_timeout() -> void:
-	print("ja. ich were ausgelösat")
+	print("ja. ich werde ausgelösat")
 	modulate = current_player_state
 	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 	collision_layer = 1
@@ -143,11 +148,38 @@ func _on_just_been_hit_timer_timeout() -> void:
 # Diese Funktion wird jeden Frame ausgeführt
 # delta ist die Zeit seit dem letzten Frame in Sekunden
 func _process(delta: float) -> void:
+	# Code der unabhängig vom PlayerMode gelten soll
+	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
+
+	get_tree().current_scene.ui.health.text = "Health: " + str(health)
+	if shield_activated:
+		# bei aktiviertem Schild wird laufend Energie verbraucht...
+		shield_energy -= 300 * delta
+		# dies wird in der UI angezeigt
+		get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
+		# durch die Verknüpfung von Schildenergie mt Particle_amount wird die 
+		# die Stäreke des Schilds visualisiert
+		_particles_shield.amount_ratio = float(shield_energy) / 1000.0
+		print("amount_ratio: ", _particles_shield.amount_ratio, "shieldEnergy: ", shield_energy)
+		# und die Schild_collision_shape aktiveirt
+		_shield_collision_shape.disabled = false
+		if shield_energy <= 0:
+			shield_energy = 0
+			deactivate_shield()
+	
+	else:
+		# Schild_collision_shape deaktivieren, damit nur die player_ship \
+		# collision_shape Treffer registriert
+		_shield_collision_shape.disabled = true
+		
+	# Unterscheidung von PlayerMode
 	match mode:
 		PlayerMode.FREE:
 			_process_horizontal(delta)
 		PlayerMode.CIRCLE:
 			_process_circle(delta)
+		
+		
 
 # ─── FREI-Mode: deine bisherige Bewegungs- & Schusslogik ─────────────────
 func _process_horizontal(delta: float) -> void:
@@ -173,10 +205,10 @@ func _process_horizontal(delta: float) -> void:
 	if Input.is_action_just_released("accelarate"):
 		speed /= 1.5
 
-	# Bremsen: Reduziert die Geschwindigkeit um 50%
-	if Input.is_action_just_pressed("shield"):
-		acivate_shield()
-	# Wenn Bremse losgelassen wird, zurück zur normalen Geschwindigkeit
+	# aktiviert den Schild -> braucht Energie, absorbiert Schüsse
+	if Input.is_action_just_pressed("shield") and shield_energy > 0:
+		activate_shield()
+	# Wenn Taste losgelassen, Schild deaktivieren
 	if Input.is_action_just_released("shield"):
 		deactivate_shield()
 
@@ -194,7 +226,7 @@ func _process_horizontal(delta: float) -> void:
 
 #Schildfunktionen
 
-func acivate_shield():
+func activate_shield():
 	print("shield activated")
 	_particles_shield.emitting = true
 	# modulate = Color(0.27, 0.03, 0.87, 1.0)
@@ -209,6 +241,7 @@ func shield_absorbing(absorbed_damage):
 func deactivate_shield():
 	print("shield deactivated")
 	_particles_shield.emitting = false
+	shield_activated = false
 	# modulate = current_player_state
 	
 
