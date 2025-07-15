@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://cadqb1kffagas" path="res://assets/sound_and_sfx/sound_effects/game_Over.wav" id="2_bmbi1"]
 
 [node name="GameOver" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_ivthb")
 sfx_stream = ExtResource("2_bmbi1")
 

@@ -111,13 +111,10 @@ func player_is_hit(damage: int):
 	print("damage: ", damage, "ergo new health: ", health)
 	calculate_damage_state()
 	if health <= 0:
-		var game_over_now := game_over.instantiate()
-		var current_scene := get_tree().current_scene
-		if current_scene:
-			current_scene.add_child(game_over_now)
-		collision_mask = 0
-		collision_layer = 0
-		hide()
+		# Spieler kann nicht mehr schießen oder sich bewegen,
+		# weil der GameManager den Baum pausiere wird.
+		GameManager.set_state(GameManager.STATE_GAME_OVER)
+
 	else:	
 		current_player_state = Color(1, health_ratio, health_ratio)
 		modulate = current_player_state
