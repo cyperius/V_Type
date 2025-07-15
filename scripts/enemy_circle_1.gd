@@ -1,6 +1,6 @@
 extends "res://scripts/enemy_1.gd"
 
-signal my_position(position: Vector2, scale: Vector2)
+#signal my_position(position: Vector2, scale: Vector2)
 
 @export var circle_shot_scene : PackedScene
 @onready var level_3 = $".."
@@ -15,8 +15,6 @@ var angle := 0.0
 
 #var dist_to_center
 var scaling_factor
-
-
 
 func _ready() -> void:
 	super._ready()
@@ -46,12 +44,8 @@ func _process(delta: float) -> void:
 	if dist_to_center > 2500:
 		queue_free()
 
-# 
+
 func _on_shoot_timer_timeout():
-	# position beim Schiessen weitergeben, auch global_scale evtl nuzten
-	# aber klappt das? an parent (level3) weitergebn, wo es dann wieder für das neue child (den schuss verwendet wird?)
-	emit_signal("my_position", global_position, global_scale)
-	
 	audio_stream_player_2d.play()
 	var shot = circle_shot_scene.instantiate()
 	# scale des instantiierten Schusses entspricht dem scale des enemies (siehe oben 4.)

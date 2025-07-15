@@ -6,7 +6,8 @@ func _physics_process(_delta: float) -> void:
 		print("colliding with: ", collider)
 		if collider.is_in_group("evaders"):
 			collider.evasive_mode_on = true
-			await  get_tree().create_timer(0.2).timeout
-			collider.evasive_mode_on = false
+			await get_tree().create_timer(0.2).timeout
+			if collider:
+				collider.evasive_mode_on = false
 			
 	

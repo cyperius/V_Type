@@ -14,10 +14,9 @@ signal enemy_destroyed(score: int, energy: int)
 @onready var speed = basic_speed * GameManager.loop_counter
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 @onready var _gun_point: Marker2D = %GunPoint
+@onready var shoot_timer: Timer = $ShootTimer
 
-var shoot_timer = Timer.new()
 var evasive_mode_on = false
-
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
@@ -25,7 +24,6 @@ func _ready() -> void:
 	add_to_group("enemies")
 	add_to_group("evaders")
 	add_child(shoot_timer)
-	shoot_timer.wait_time = 2
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
 	shoot_timer.start()
 	audio_stream_player_2d.stream = shot_sound

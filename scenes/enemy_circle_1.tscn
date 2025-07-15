@@ -33,3 +33,7 @@ scale = Vector2(9.52928, -10.1648)
 shape = SubResource("CircleShape2D_0e2c5")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
