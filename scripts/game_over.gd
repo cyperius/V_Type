@@ -1,5 +1,7 @@
 extends Node2D
 
+signal finished
+
 @export var sfx_stream: AudioStream
 var explosion: PackedScene = load("res://scenes/explosion_animation.tscn")
 
@@ -23,5 +25,5 @@ func _ready() -> void:
 func reset_level():
 	audio_stream_player.play()
 	await audio_stream_player.finished
-	load("res://scenes/main.tscn")
+	emit_signal("finished")
 		

@@ -85,70 +85,12 @@ func _ready():
 		
 	# ────────────────────────────────────────────────────────────────────────
 
-func _on_area_entered(area_that_entered) -> void:
-	var potential_damage_inflicted : int = area_that_entered.damage
-	if shield_activated == true:
-		if area_that_entered.is_in_group("projectiles"):
-			shield_absorbing(potential_damage_inflicted)
-		if area_that_entered.is_in_group("enemies"):
-			shield_energy -= potential_damage_inflicted
-	else:
-		print("Ich bin getroffen")
-		collision_mask = 0
-		collision_layer = 0
-		player_is_hit(potential_damage_inflicted)
-	if area_that_entered.is_in_group("projectiles"):
-		var hit = hit_scene.instantiate()
-		add_child(hit)
-		hit.scale = Vector2(15, 15)
-		hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
-		area_that_entered.queue_free()
-	
-
-func player_is_hit(damage: int):
-	print("health: ", health)
-	health -= damage
-	print("damage: ", damage, "ergo new health: ", health)
-	calculate_damage_state()
-	if health <= 0:
-		# Spieler kann nicht mehr schießen oder sich bewegen,
-		# weil der GameManager den Baum pausiere wird.
-		GameManager.set_state(GameManager.STATE_GAME_OVER)
-
-	else:	
-		current_player_state = Color(1, health_ratio, health_ratio)
-		modulate = current_player_state
-		do_the_been_hit_blinking()
-		just_been_hit_timer.start()
-
-
-func calculate_damage_state():
-	# Berechnung des aktuellen Gesundheitszustand im Verhältnis zur maximalen Gesundheit 
-	health_ratio = float(health) / float(max_health)
-	# zunehmende Rotverfärnbung des player-ships mit abnehmendem Gesundheitszustand
-	
-	
-	
-func do_the_been_hit_blinking():
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
-	tween.set_loops(1)
-
-
-func _on_just_been_hit_timer_timeout() -> void:
-	print("ja. ich werde ausgelösat")
-	modulate = current_player_state
-	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-	collision_layer = 1
-	# ("um die Ebenen 3, 4, 5 und 6 in deiner Collision-Maske wieder zu aktivieren, kannst du die Bit-Shift-Notation verwenden.")
-
 # Diese Funktion wird jeden Frame ausgeführt
 # delta ist die Zeit seit dem letzten Frame in Sekunden
 func _process(delta: float) -> void:
 	# Code der unabhängig vom PlayerMode gelten soll
 	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
-
-	get_tree().current_scene.ui.health.text = "Health: " + str(health)
+	#get_tree().current_scene.ui.health.text = "Health: " + str(health)
 	if shield_activated:
 		# bei aktiviertem Schild wird laufend Energie verbraucht...
 		shield_energy -= 300 * delta
@@ -177,8 +119,7 @@ func _process(delta: float) -> void:
 			_process_circle(delta)
 		
 		
-
-# ─── FREI-Mode: deine bisherige Bewegungs- & Schusslogik ─────────────────
+# ─── FREE-Mode: Standard Bewegungs- & Schusslogik ─────────────────
 func _process_horizontal(delta: float) -> void:
 	# Bewegungssteuerung des Schiffs
 	var direction := Vector2(0, 0)
@@ -221,8 +162,65 @@ func _process_horizontal(delta: float) -> void:
 		shoot_weapon(secondary_weapon)
 
 
-#Schildfunktionen
+func _on_area_entered(area_that_entered) -> void:
+	var potential_damage_inflicted : int = area_that_entered.damage
+	if shield_activated == true:
+		if area_that_entered.is_in_group("projectiles"):
+			shield_absorbing(potential_damage_inflicted)
+		if area_that_entered.is_in_group("enemies"):
+			shield_energy -= potential_damage_inflicted
+	else:
+		print("Ich bin getroffen")
+		collision_mask = 0
+		collision_layer = 0
+		player_is_hit(potential_damage_inflicted)
+	if area_that_entered.is_in_group("projectiles"):
+		var hit = hit_scene.instantiate()
+		add_child(hit)
+		hit.scale = Vector2(15, 15)
+		hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
+		area_that_entered.queue_free()
+	
 
+func player_is_hit(damage: int):
+	print("health: ", health)
+	health -= damage
+	get_tree().current_scene.ui.health.text = "Health: " + str(health)
+	print("damage: ", damage, "ergo new health: ", health)
+	calculate_damage_state()
+	if health <= 0:
+		hide()
+		# Spieler kann nicht mehr schießen oder sich bewegen,
+		# weil der GameManager den Baum pausiere wird.
+		GameManager.set_state(GameManager.STATE_GAME_OVER)
+
+	else:	
+		current_player_state = Color(1, health_ratio, health_ratio)
+		modulate = current_player_state
+		do_the_been_hit_blinking()
+		just_been_hit_timer.start()
+
+
+func calculate_damage_state():
+	# Berechnung des aktuellen Gesundheitszustand im Verhältnis zur maximalen Gesundheit 
+	health_ratio = float(health) / float(max_health)
+	# zunehmende Rotverfärnbung des player-ships mit abnehmendem Gesundheitszustand
+	
+	
+func do_the_been_hit_blinking():
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
+	tween.set_loops(1)
+
+
+func _on_just_been_hit_timer_timeout() -> void:
+	print("ja. ich werde ausgelösat")
+	modulate = current_player_state
+	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	collision_layer = 1
+	# ("um die Ebenen 3, 4, 5 und 6 in deiner Collision-Maske wieder zu aktivieren, kannst du die Bit-Shift-Notation verwenden.")
+
+#Schildfunktionen
 func activate_shield():
 	print("shield activated")
 	_particles_shield.emitting = true
