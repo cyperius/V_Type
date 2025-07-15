@@ -62,7 +62,7 @@ script = ExtResource("1_6i3ro")
 laser_beam = ExtResource("2_othpc")
 laser_blast = ExtResource("3_igyjx")
 max_speed = 800
-max_health = 2000
+max_health = 1
 damage = 25
 game_over = ExtResource("5_jfq58")
 

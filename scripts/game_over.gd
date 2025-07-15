@@ -23,5 +23,5 @@ func _ready() -> void:
 func reset_level():
 	audio_stream_player.play()
 	await audio_stream_player.finished
-	GameManager._load_level(GameManager.current_level)
+	load("res://scenes/main.tscn")
 		
