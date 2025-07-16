@@ -5,15 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://scenes/laser_blast.tscn" id="3_igyjx"]
 [ext_resource type="PackedScene" uid="uid://dgppv7j0ebnx1" path="res://scenes/game_over.tscn" id="5_jfq58"]
 [ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/enemies/space_ship1.png" id="6_vs4qq"]
-[ext_resource type="Script" uid="uid://3rcg1dm60hpv" path="res://scripts/particle_damage.gd" id="6_yf02v"]
+[ext_resource type="Script" path="res://scripts/particle_damage.gd" id="6_yf02v"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jnu13"]
 radius = 628.0
 height = 1256.0
 
 [sub_resource type="Gradient" id="Gradient_7ni5w"]
-offsets = PackedFloat32Array(0, 0.108298, 0.469761, 0.991561)
-colors = PackedColorArray(0.435412, 0.853516, 0.105022, 1, 0.387903, 0.716474, 0.0905252, 1, 0.1875, 0.0608063, 0.0274658, 1, 0.0351562, 0.0147715, 0.00940704, 1)
+offsets = PackedFloat32Array(0, 0.54065)
+colors = PackedColorArray(0.156863, 0.607843, 0.866667, 1, 0.145098, 0.0784314, 0.658824, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_yf02v"]
 gradient = SubResource("Gradient_7ni5w")
@@ -22,6 +22,13 @@ gradient = SubResource("Gradient_7ni5w")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_evoqb"]
 particle_flag_disable_z = true
+emission_shape_scale = Vector3(4, 3, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 227.03
+emission_ring_inner_radius = 208.36
+emission_ring_cone_angle = 7.4
 angle_min = 135.6
 angle_max = 135.6
 spread = 8.212
@@ -29,16 +36,17 @@ initial_velocity_min = 31.67
 initial_velocity_max = 127.09
 angular_velocity_min = -1.60933e-05
 angular_velocity_max = -1.60933e-05
-gravity = Vector3(-200, 10, 0)
-linear_accel_min = 3.28
-linear_accel_max = 37.66
-radial_accel_min = -47.73
-radial_accel_max = 98.93
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 0.0570001
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -100.0
+radial_accel_max = -47.0
 tangential_accel_min = -2.23517e-06
 tangential_accel_max = 0.479998
+scale_min = 0.0
 scale_max = 4.0
 scale_over_velocity_max = 27.7
-color = Color(0.0666667, 0.92549, 0.0901961, 1)
+color = Color(0.470588, 0.780392, 0.988235, 1)
 color_initial_ramp = SubResource("GradientTexture1D_yf02v")
 emission_curve = SubResource("CurveTexture_g8niy")
 hue_variation_min = -2.23517e-08
@@ -51,6 +59,8 @@ turbulence_noise_strength = 1.18
 turbulence_noise_scale = 7.558
 turbulence_noise_speed = Vector3(10, 0, 0)
 turbulence_noise_speed_random = 1.97
+sub_emitter_mode = 1
+sub_emitter_frequency = 4.0
 
 [sub_resource type="Gradient" id="Gradient_g8niy"]
 

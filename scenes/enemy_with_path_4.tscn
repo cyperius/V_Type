@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://drfa7rqshhg31"]
+[gd_scene load_steps=4 format=3 uid="uid://cbjidl008eqlo"]
 
-[ext_resource type="Script" uid="uid://3vviquiw0fh7" path="res://scripts/enemy_with_path_4.gd" id="1_l7txs"]
+[ext_resource type="Script" path="res://scripts/enemy_with_path_4.gd" id="1_l7txs"]
 [ext_resource type="PackedScene" uid="uid://cljnl8u2serb7" path="res://scenes/mech_enemy.tscn" id="2_hlix4"]
 
 [sub_resource type="Curve2D" id="Curve2D_ehqj4"]
