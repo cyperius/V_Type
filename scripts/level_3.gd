@@ -24,7 +24,7 @@ func _ready() -> void:
 	player.scale = Vector2(0.2, 0.2)
 	level_duration.wait_time = level_duration_basis * time_delay
 	level_duration.timeout.connect(_on_level_duration_timeout)
-	spawn_timer.wait_time = 4 / time_delay
+	spawn_timer.wait_time = 6 / time_delay
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
 	spawn_timer.start()
@@ -56,12 +56,9 @@ func _ready() -> void:
 	# 9. Level Ende
 func _on_level_duration_timeout():
 	GameManager.loop_counter += 1
-	emit_signal("level_finished",1, 0, 0)
+	emit_signal("level_finished",4, 0, 0)
 	
 	
 func _on_spawn_timer_timeout():
 	var new_circle_enemy = circle_enemy_1.instantiate()
 	add_child(new_circle_enemy)
-	# offset drin lassen oder nicht? (das Schussrivchtugn-Problem löst er nicht)
-	var offset = Vector2(randi_range(1,10), randi_range(1, 10))
-	new_circle_enemy.position = center_node.global_position + offset
