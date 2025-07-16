@@ -52,7 +52,8 @@ func _on_boss_timer_timeout():
 	
 	
 func _on_boss_defeated():
-	emit_signal("level_finished", 2, 0, 0)
+	GameManager.loop_counter += 1
+	emit_signal("level_finished", 1, 0, 0)
 	print("boss defeated")
 	
 func _on_incoming_boss() -> void:

@@ -55,7 +55,6 @@ func _ready() -> void:
 	
 	# 9. Level Ende
 func _on_level_duration_timeout():
-	GameManager.loop_counter += 1
 	emit_signal("level_finished",4, 0, 0)
 	
 	
