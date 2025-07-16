@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/levels/level_4.gd" id="1_anwe6"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_anwe6"]
-[ext_resource type="Script" path="res://scripts/enemy_spawner_level_4.gd" id="3_5vn0v"]
+[ext_resource type="Script" uid="uid://jcx7qmveujln" path="res://scripts/enemy_spawner_level_4.gd" id="3_5vn0v"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="3_rej77"]
 [ext_resource type="AudioStream" uid="uid://y3eqqc102n8c" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.wav" id="5_anwe6"]
 

@@ -186,24 +186,25 @@ func _process_circle(delta: float) -> void:
 
 
 func _on_area_entered(area_that_entered) -> void:
-	var potential_damage_inflicted : int = area_that_entered.damage
-	if shield_activated == true:
+	if "damage" in area_that_entered:
+		var potential_damage_inflicted : int = area_that_entered.damage
+		if shield_activated == true:
+			if area_that_entered.is_in_group("projectiles"):
+				shield_absorbing(potential_damage_inflicted)
+			if area_that_entered.is_in_group("enemies"):
+				blue_energy -= potential_damage_inflicted
+		else:
+			print("Ich bin getroffen")
+			collision_mask = 0
+			collision_layer = 0
+			player_is_hit(potential_damage_inflicted)
 		if area_that_entered.is_in_group("projectiles"):
-			shield_absorbing(potential_damage_inflicted)
-		if area_that_entered.is_in_group("enemies"):
-			blue_energy -= potential_damage_inflicted
-	else:
-		print("Ich bin getroffen")
-		collision_mask = 0
-		collision_layer = 0
-		player_is_hit(potential_damage_inflicted)
-	if area_that_entered.is_in_group("projectiles"):
-		var hit = hit_scene.instantiate()
-		add_child(hit)
-		hit.scale = Vector2(15, 15)
-		hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
-		area_that_entered.queue_free()
-	
+			var hit = hit_scene.instantiate()
+			add_child(hit)
+			hit.scale = Vector2(15, 15)
+			hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
+			area_that_entered.queue_free()
+		
 
 func player_is_hit(damage: int):
 	print("health: ", health)

@@ -11,7 +11,7 @@ signal incoming_boss
 @onready var timer2 = $Timer2
 @onready var randomizer = RandomNumberGenerator.new()
 @onready var enemy_blueprint = preload("res://scenes/enemy_4.tscn")
-@onready var path_enemy_blueprint = preload("res://scenes/enemy_with_path.tscn")
+@onready var path_enemy_blueprint = preload("res://scenes/enemy_with_path_4.tscn")
 @onready var level_1 = $".."
 
 # Vorteil dieser Schreibweise: Die Verbindung stimmt, egal welcher Szene dieses
