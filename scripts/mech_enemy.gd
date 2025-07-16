@@ -2,10 +2,12 @@ extends Area2D
 
 signal enemy_destroyed(score: int, energy: int)
 
+@onready var skin2 : Texture = preload("res://assets/graphic_elements/shots/laser_beam1.png")
 @onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
 @export var damage = 100
 @export var score_count : int = 300
 @export var energy_left : int = 20
+@onready var looks: Sprite2D = $Looks
 
 
 

@@ -6,11 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://btb5hc5pleirr" path="res://assets/graphic_elements/enemies/enemy2.png" id="2_hcdqk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_778il"]
-size = Vector2(938, 424)
+size = Vector2(236, 404)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3fnv"]
 radius = 247.096
-height = 875.674
+height = 871.761
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6yld4"]
 radius = 134.093

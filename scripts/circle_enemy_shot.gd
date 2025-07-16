@@ -6,6 +6,9 @@ extends Area2D
 
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 @onready var speed_level : float = 0.8 + GameManager.loop_counter / 5
+@onready var marker_2d: Marker2D = $Marker2D
+@onready var shot_direction = Vector2.ZERO.direction_to(Vector2(randi_range(-360, 360),\
+	randi_range(-360, 360)))
 
 var projectiles = []  
 
@@ -23,11 +26,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	rotate(0.05)
-	# Schussrichtung: Gerade von center_position zum enemy verlängern
-	
-	# Schussrichtung vom Zentrum zur  Richtung des Gegners
-	var shot_direction = Vector2.ZERO.direction_to(global_position)
-	global_position += shot_direction * delta * 1000
+	# Schussrichtung: wird aktuell zufällig mit onready var shot_direction bestimmt
+	# funktioniert, aber ist suboptimal für Gegenr, die nach weiter aussen kommen
+	position += shot_direction * delta * 1000
 	
 	
 	# funktioniert halbwegs, aber shclechte Variante

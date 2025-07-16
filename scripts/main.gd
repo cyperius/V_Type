@@ -22,7 +22,7 @@ func _ready() -> void:
 
 	ui.destroyed_enemies_counter.text = "Enemies destroyed: " + str(destroyed_enemies_counter)
 	ui.score.text                    = "Score: " + str(player_score)
-	ui.energy.text                   = "Energy: " + str(player.shield_energy)
+	ui.energy.text                   = "Energy: " + str(player.blue_energy)
 	ui.health.text = "Health: " + str(player.health)
 	if level_container.get_child_count() > 0:
 		var current_level_node = level_container.get_child(0)

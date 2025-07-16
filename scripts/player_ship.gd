@@ -30,10 +30,11 @@ var current_player_state = default_player_state
 # Grundgeschwindigkeit des Raumschiffs (Pixel pro Sekunde)
 @export var max_speed := 600
 var speed := max_speed
+var boost_activated := false
 
 @export var max_health: int = 600
 @onready var health := max_health
-@export var shield_energy : int = 1000
+@export var blue_energy : int = 1000
 var shield_activated := false
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
@@ -42,14 +43,14 @@ var shield_activated := false
 # Schild um das Schiff mittels PGPUParticles, kann vom Spieler aktiviert werden
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
+# health_ratio bestimmen um für Farbgebung und allenfalls weitere Effekte zu verwenden
+@onready var health_ratio := 1.0
 
 # Diese Variablen speichern die aktiven Waffen
 var primary_weapon: PackedScene        # Hauptwaffe
 var secondary_weapon: PackedScene      # Sekundärwaffe
 var projectiles := []                  # Liste aller aktiven Projektile
 
-# health_ratio bestimmen um für Farbgebung und allenfalls weitere Effekte zu verwenden
-var health_ratio := 1.0
 
 
 # Diese Funktion wird beim Start der Szene automatisch ausgeführt
@@ -88,28 +89,61 @@ func _ready():
 # Diese Funktion wird jeden Frame ausgeführt
 # delta ist die Zeit seit dem letzten Frame in Sekunden
 func _process(delta: float) -> void:
+	
+		# Beschleunigung: Erhöht die Geschwindigkeit um in beiden Flugmodi
+	if Input.is_action_just_pressed("accelarate"):
+		speed *= 1.8
+		angular_speed *= 1.8
+		boost_activated = true
+		
+	# Wenn Beschleunigung losgelassen wird, zurück zur normalen Geschwindigkeit
+	if Input.is_action_just_released("accelarate"):
+		speed /= 1.8
+		angular_speed /= 1.8
+		boost_activated = false
+		
+	if boost_activated:
+		blue_energy -= 50 * delta
+		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
+	
+	# aktiviert den Schild -> braucht Energie, absorbiert Schüsse
+	if Input.is_action_just_pressed("shield") and blue_energy > 0:
+		activate_shield()
+	# Wenn Taste losgelassen, Schild deaktivieren
+	if Input.is_action_just_released("shield"):
+		deactivate_shield()
 	# Code der unabhängig vom PlayerMode gelten soll
 	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
 	#get_tree().current_scene.ui.health.text = "Health: " + str(health)
 	if shield_activated:
 		# bei aktiviertem Schild wird laufend Energie verbraucht...
-		shield_energy -= 300 * delta
+		blue_energy -= 300 * delta
 		# dies wird in der UI angezeigt
-		get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
+		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 		# durch die Verknüpfung von Schildenergie mt Particle_amount wird die 
 		# die Stäreke des Schilds visualisiert
-		_particles_shield.amount_ratio = float(shield_energy) / 1000.0
-		print("amount_ratio: ", _particles_shield.amount_ratio, "shieldEnergy: ", shield_energy)
+		_particles_shield.amount_ratio = float(blue_energy) / 1000.0
+		print("amount_ratio: ", _particles_shield.amount_ratio, "blue Energy: ", blue_energy)
 		# und die Schild_collision_shape aktiveirt
 		_shield_collision_shape.disabled = false
-		if shield_energy <= 0:
-			shield_energy = 0
+		if blue_energy <= 0:
+			blue_energy = 0
 			deactivate_shield()
-	
 	else:
 		# Schild_collision_shape deaktivieren, damit nur die player_ship \
 		# collision_shape Treffer registriert
 		_shield_collision_shape.disabled = true
+	
+		# Überprüft Waffeneingaben und löst entsprechende Waffen aus
+	if Input.is_action_just_pressed("primary_weapon"):
+		if blue_energy < 20:
+			return
+		blue_energy -= 20
+		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
+		shoot_weapon(primary_weapon)
+		
+	if Input.is_action_just_pressed("secondary_weapon"):
+		shoot_weapon(secondary_weapon)
 		
 	# Unterscheidung von PlayerMode
 	match mode:
@@ -136,30 +170,19 @@ func _process_horizontal(delta: float) -> void:
 	position.x = clampf(position.x, 0, screensize.x)
 	position.y = clampf(position.y, 0, screensize.y)
 
-	# Beschleunigung: Erhöht die Geschwindigkeit um 50%
-	if Input.is_action_just_pressed("accelarate"):
-		speed *= 1.5
-	# Wenn Beschleunigung losgelassen wird, zurück zur normalen Geschwindigkeit
-	if Input.is_action_just_released("accelarate"):
-		speed /= 1.5
 
-	# aktiviert den Schild -> braucht Energie, absorbiert Schüsse
-	if Input.is_action_just_pressed("shield") and shield_energy > 0:
-		activate_shield()
-	# Wenn Taste losgelassen, Schild deaktivieren
-	if Input.is_action_just_released("shield"):
-		deactivate_shield()
+# ─── CIRCLE-Mode: Schiff bewegt sich auf Kreislinie, immer nach außen gerichtet ───
+func _process_circle(delta: float) -> void:
+	# 1. Eingabe: Links/Rechts ändern den Winkel
+	var input_strength := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	angle += input_strength * angular_speed * delta
 
-	# Überprüft Waffeneingaben und löst entsprechende Waffen aus
-	if Input.is_action_just_pressed("primary_weapon"):
-		if shield_energy < 50:
-			return
-		shield_energy -= 50
-		get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
-		shoot_weapon(primary_weapon)
-		
-	if Input.is_action_just_pressed("secondary_weapon"):
-		shoot_weapon(secondary_weapon)
+	# 2. Neue Position auf dem Kreis berechnen
+	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
+	global_position = circle_center_position + offset
+
+	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
+	rotation = angle + PI
 
 
 func _on_area_entered(area_that_entered) -> void:
@@ -168,7 +191,7 @@ func _on_area_entered(area_that_entered) -> void:
 		if area_that_entered.is_in_group("projectiles"):
 			shield_absorbing(potential_damage_inflicted)
 		if area_that_entered.is_in_group("enemies"):
-			shield_energy -= potential_damage_inflicted
+			blue_energy -= potential_damage_inflicted
 	else:
 		print("Ich bin getroffen")
 		collision_mask = 0
@@ -195,8 +218,8 @@ func player_is_hit(damage: int):
 		GameManager.set_state(GameManager.STATE_GAME_OVER)
 
 	else:	
-		current_player_state = Color(1, health_ratio, health_ratio)
-		modulate = current_player_state
+		#current_player_state = Color(1, health_ratio, health_ratio)
+		#modulate = current_player_state
 		do_the_been_hit_blinking()
 		just_been_hit_timer.start()
 
@@ -229,8 +252,8 @@ func activate_shield():
 	
 
 func shield_absorbing(absorbed_damage):
-	shield_energy += absorbed_damage
-	get_tree().current_scene.ui.energy.text = "Energy: " + str(shield_energy)
+	blue_energy += absorbed_damage
+	get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 	
 
 func deactivate_shield():
@@ -239,7 +262,6 @@ func deactivate_shield():
 	shield_activated = false
 	# modulate = current_player_state
 	
-
 
 #Funktion zum Abfeuern einer Waffe
 # weapon: PackedScene - Die Szene des Projektils, das abgefeuert werden soll
@@ -265,67 +287,6 @@ func shoot_weapon(weapon: PackedScene):
 	if gunpoint:
 		projectile_instance.global_position = gunpoint.global_position
 		#print("Projektil-Position (Gunpoint):", projectile_instance.global_position)
-	else:
-		# Fallback: Nutze die Schiffposition
-		projectile_instance.global_position = global_position
-		print("Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
-
-	# Füge das Projektil der Liste aktiver Projektile hinzu
-	projectiles.append(projectile_instance)
-
-	# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
-	if projectile_instance.has_method("fire"):
-		#print("Fire-Funktion wird aufgerufen!")
-		projectile_instance.fire()
-	else:
-		print("Fehler: Projektil hat keine fire()-Methode!")
-
-# ─── CIRCLE-Mode: Schiff bewegt sich auf Kreislinie, immer nach außen gerichtet ───
-func _process_circle(delta: float) -> void:
-	# 1. Eingabe: Links/Rechts ändern den Winkel
-	var input_strength := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	angle += input_strength * angular_speed * delta
-
-	# 2. Neue Position auf dem Kreis berechnen
-	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
-	global_position = circle_center_position + offset
-
-	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
-	rotation = angle + PI
-
-	# 4. Schießen in Richtung Zentrum
-	if Input.is_action_just_pressed("primary_weapon"):
-		print("PWeapon_fire")
-		shoot_weapon(primary_weapon)
-	if Input.is_action_just_pressed("secondary_weapon"):
-		shoot_circle_mode(secondary_weapon)
-		print("SWeapon_fire")
-
-
-# ─── Waffenschießen im CIRCLE-Mode (zur Mitte) ────────────────────────────────
-func shoot_circle_mode(weapon: PackedScene) -> void:
-	print("CMWeapon_fire")
-	if not weapon:
-		print("Fehler: Keine Waffe zugewiesen!")
-		return
-
-	# Instanziere das Projektil
-	var projectile_instance := weapon.instantiate()
-	
-	# Füge das Projektil der aktuellen Szene hinzu
-	var current_scene = get_tree().current_scene
-	if current_scene:
-		current_scene.add_child(projectile_instance)
-		#print("✅ Projektil erfolgreich zur Szene hinzugefügt!")
-	else:
-		print("Fehler: Keine aktuelle Szene gefunden!")
-		return
-
-	# Setze Startposition: vom Gunpoint oder fallback auf Schiffposition
-	var gunpoint = $Gunpoint
-	if gunpoint:
-		projectile_instance.global_position = gunpoint.global_position
-		print("Projektil-Position (Gunpoint):", projectile_instance.global_position)
 	else:
 		# Fallback: Nutze die Schiffposition
 		projectile_instance.global_position = global_position

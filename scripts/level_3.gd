@@ -8,12 +8,12 @@ extends Node2D
 @onready var level_duration = $Timer
 @onready var spawn_timer = Timer.new()
 @onready var circle_enemy_1 : PackedScene = preload("res://scenes/enemy_circle_1.tscn")
-# Gescheindikeit für Gegner. Der Wert 5 kombiniert mit einem timer Intervall
+# Geschwindikeit für Gegner. Der Wert 5 kombiniert mit einem timer Intervall
 # von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Linie spawnen
 @export var winkel_geschwindigkeit : float = 6
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
 @onready var player = get_tree().current_scene.player
-
+@onready  var center_node = $Center
 
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
@@ -34,8 +34,7 @@ func _ready() -> void:
 	# 2. Circle-Mode aktivieren>
 	player.mode = player.PlayerMode.CIRCLE
 
-	# 3. Zentrum setzen
-	var center_node = $Center
+	# 3. Player Zentrum setzen
 	player.circle_center_position = center_node.global_position
 
 	# 4. Radius setzen
@@ -63,3 +62,6 @@ func _on_level_duration_timeout():
 func _on_spawn_timer_timeout():
 	var new_circle_enemy = circle_enemy_1.instantiate()
 	add_child(new_circle_enemy)
+	# offset drin lassen oder nicht? (das Schussrivchtugn-Problem löst er nicht)
+	var offset = Vector2(randi_range(1,10), randi_range(1, 10))
+	new_circle_enemy.position = center_node.global_position + offset

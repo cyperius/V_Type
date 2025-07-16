@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cnv5td5ljen2b"]
+
+[ext_resource type="Script" uid="uid://c5hsgfbjrpxai" path="res://scenes/levels/level_4.gd" id="1_anwe6"]
+[ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_anwe6"]
+[ext_resource type="Script" uid="uid://jcx7qmveujln" path="res://scripts/enemy_spawner_level_4.gd" id="3_5vn0v"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="3_rej77"]
+[ext_resource type="AudioStream" uid="uid://y3eqqc102n8c" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.wav" id="5_anwe6"]
+
+[node name="Level_4" type="Node2D"]
+script = ExtResource("1_anwe6")
+amount_of_enemies = 20
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_anwe6")]
+script = ExtResource("3_5vn0v")
+
+[node name="EnemiesContainer" type="Node2D" parent="."]
+
+[node name="background_Control" parent="." instance=ExtResource("3_rej77")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_top = -54.0
+offset_right = -270.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 6.322
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_anwe6")
+autoplay = true
+
+[connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
