@@ -20,4 +20,5 @@ rotation = -0.192218
 progress = 7037.94
 loop = false
 
-[node name="Mech_Enemy" parent="PathFollow2D" instance=ExtResource("2_l7txs")]
+[node name="Zombee" parent="PathFollow2D" instance=ExtResource("2_l7txs")]
+unique_name_in_owner = true

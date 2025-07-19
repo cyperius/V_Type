@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://scenes/laser_blast.tscn" id="3_igyjx"]
 [ext_resource type="PackedScene" uid="uid://dgppv7j0ebnx1" path="res://scenes/game_over.tscn" id="5_jfq58"]
 [ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/enemies/space_ship1.png" id="6_vs4qq"]
-[ext_resource type="Script" path="res://scripts/particle_damage.gd" id="6_yf02v"]
+[ext_resource type="Script" uid="uid://3rcg1dm60hpv" path="res://scripts/particle_damage.gd" id="6_yf02v"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jnu13"]
 radius = 628.0

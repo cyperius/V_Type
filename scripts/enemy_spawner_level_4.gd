@@ -11,7 +11,7 @@ signal incoming_boss
 @onready var timer2 = $Timer2
 @onready var randomizer = RandomNumberGenerator.new()
 @onready var enemy_blueprint = preload("res://scenes/enemy_4.tscn")
-@onready var path_enemy_blueprint = preload("res://scenes/enemy_with_path_4.tscn")
+@onready var path_zombee = preload("res://scenes/enemy_with_path_4.tscn")
 @onready var level_1 = $".."
 
 # Vorteil dieser Schreibweise: Die Verbindung stimmt, egal welcher Szene dieses
@@ -58,9 +58,9 @@ func _on_timer_timeout():
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
 	
 	
-func _on_timer2_timeout():
+func _on_timer2_timeout(): 
 	var spawn_pos_nr = randi_range(1, 5)
-	var path_enemy = path_enemy_blueprint.instantiate()
+	var path_enemy = path_zombee.instantiate()
 	emit_signal("enemy_spawned", path_enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...

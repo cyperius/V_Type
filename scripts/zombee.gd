@@ -13,19 +13,26 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
+	brain_area.area_entered.connect(_on_brain_area_entered)
+	body_area.area_entered.connect(_on_body_area_entered)
 	add_to_group("one_hit_enemies")
 	add_to_group("enemies")
 	
 
-func _on_area_entered(area: Area2D) -> void:
+func _on_brain_area_entered(area: Area2D) -> void:
+	print("brain_hit")
 	AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	emit_signal("enemy_destroyed", score_count, energy_left)
 	queue_free()
 	
-		
+
+func _on_body_area_entered(area: Area2D) -> void:
+	print("body_hit")
+	scale *= 1.1
+	
+	
 func set_skin2():
 	print("Looks: ", looks)
 	if looks == null:

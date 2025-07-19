@@ -3,8 +3,7 @@ extends Path2D
 signal enemy_destroyed(score: int, energy: int)
 
 @onready var path : PathFollow2D = $PathFollow2D
-@onready var enemy_on_path = $PathFollow2D/Mech_Enemy
-@onready var mech_enemy = $PathFollow2D/Mech_Enemy
+@onready var zombee = %Zombee
 @onready var timer: Timer = $Timer
 
 
@@ -12,10 +11,9 @@ signal enemy_destroyed(score: int, energy: int)
 func _ready() -> void:
 	path.set_progress_ratio(1)
 	add_to_group("enemies")
-	enemy_on_path.enemy_destroyed.connect(_on_enemy_destroyed)
+	enemy_destroyed.connect(_on_enemy_destroyed)
 	#mech_enemy.set_skin2()
-	mech_enemy.looks.texture = mech_enemy.skin2
-	mech_enemy.scale = Vector2(0.1, 0.1)
+	zombee.scale = Vector2(0.1, 0.1)
 	
 
 

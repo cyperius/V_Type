@@ -1,19 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dsq0pi7susdps"]
+[gd_scene load_steps=6 format=3 uid="uid://dsq0pi7susdps"]
 
-[ext_resource type="Script" uid="uid://ecewsbe2rq2a" path="res://scripts/mech_enemy.gd" id="1_xiu26"]
-[ext_resource type="Texture2D" uid="uid://cfhu4w4ihqo7f" path="res://assets/graphic_elements/enemies/Zombee.png" id="2_xiu26"]
+[ext_resource type="Script" uid="uid://bo6o2iiwqrv2c" path="res://scripts/zombee.gd" id="1_xiu26"]
+[ext_resource type="Texture2D" uid="uid://c8q5jsr27mkcy" path="res://assets/graphic_elements/enemies/fat_zombee.png" id="2_xiu26"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xiu26"]
 radius = 3.15794
 height = 11.2804
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hjbk6"]
-radius = 11.5817
+radius = 12.1865
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hjbk6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d3oyf"]
-size = Vector2(80.1149, 4.97502)
 
 [node name="Zombee" type="Area2D" groups=["one_hit_enemies"]]
 scale = Vector2(0.05, 0.05)
@@ -27,16 +24,17 @@ texture = ExtResource("2_xiu26")
 [node name="BodyArea" type="Area2D" parent="."]
 unique_name_in_owner = true
 collision_layer = 4
+collision_mask = 3
 
 [node name="InvincibleBody" type="CollisionShape2D" parent="BodyArea"]
-position = Vector2(160, -280)
-rotation = 0.6818
-scale = Vector2(31.6603, 27.6927)
+position = Vector2(220, -320)
+rotation = 0.859406
+scale = Vector2(40.5751, 33.2022)
 shape = SubResource("CapsuleShape2D_xiu26")
 
 [node name="InvincibleBody2" type="CollisionShape2D" parent="BodyArea"]
-position = Vector2(60, 80)
-scale = Vector2(28.252, 12.5702)
+position = Vector2(60, 60)
+scale = Vector2(29.852, 22.9701)
 shape = SubResource("CircleShape2D_hjbk6")
 
 [node name="BrainArea" type="Area2D" parent="."]
@@ -45,14 +43,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="Brain2" type="CollisionShape2D" parent="BrainArea"]
-position = Vector2(-160, -160)
-rotation = -3.14159
+position = Vector2(-240, -200)
+rotation = -3.5827
 scale = Vector2(17.4277, 5.06536)
 shape = SubResource("CapsuleShape2D_hjbk6")
-
-[node name="Brain" type="CollisionShape2D" parent="BrainArea"]
-position = Vector2(-300, -60)
-rotation = 1.55334
-scale = Vector2(2.74999, 9.56729)
-shape = SubResource("RectangleShape2D_d3oyf")
-one_way_collision = true
