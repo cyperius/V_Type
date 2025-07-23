@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7jpd3cwrduww"
-path="res://.godot/imported/Helm_mit_Transparenz.png-e31fc5ef8a1c7f259c8a0fb64da1d643.ctex"
+uid="uid://sqfodeaos8rj"
+path="res://.godot/imported/Zombee_with_helmet.png-fb4672d571837e794eb223dbc2039839.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/Helm_mit_Transparenz.png"
-dest_files=["res://.godot/imported/Helm_mit_Transparenz.png-e31fc5ef8a1c7f259c8a0fb64da1d643.ctex"]
+source_file="res://enemies/ZomBee/Zombee_with_helmet.png"
+dest_files=["res://.godot/imported/Zombee_with_helmet.png-fb4672d571837e794eb223dbc2039839.ctex"]
 
 [params]
 
@@ -26,7 +26,7 @@ mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
 process/fix_alpha_border=true
-process/premult_alpha=true
+process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false

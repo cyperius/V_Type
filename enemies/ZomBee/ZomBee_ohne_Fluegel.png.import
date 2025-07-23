@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cu0bm40feraif"
-path="res://.godot/imported/ZomBeeHelmet.png-f0718b5baa441118813a8620036b11b9.ctex"
+uid="uid://cp13dwijnb2p1"
+path="res://.godot/imported/ZomBee_ohne_Fluegel.png-e3cb1436c444081ec82c0d8111754c7a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/ZomBeeHelmet.png"
-dest_files=["res://.godot/imported/ZomBeeHelmet.png-f0718b5baa441118813a8620036b11b9.ctex"]
+source_file="res://enemies/ZomBee/ZomBee_ohne_Fluegel.png"
+dest_files=["res://.godot/imported/ZomBee_ohne_Fluegel.png-e3cb1436c444081ec82c0d8111754c7a.ctex"]
 
 [params]
 

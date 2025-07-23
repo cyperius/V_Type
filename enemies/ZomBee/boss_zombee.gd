@@ -11,8 +11,11 @@ class_name BossZombee extends Area2D
 @onready var brain: Area2D = %Brain
 @onready var vomit_timer: Timer = %VomitTimer
 @onready var mouth: Area2D = %Mouth
-@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var sprite_2d: Sprite2D = $BodySprite
 @onready var helmet_sprite: Sprite2D = %HelmetSprite
+
+
+
 
 var direction 
 
