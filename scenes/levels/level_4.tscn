@@ -8,7 +8,6 @@
 
 [node name="Level_4" type="Node2D"]
 script = ExtResource("1_anwe6")
-amount_of_enemies = 20
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_anwe6")]
 script = ExtResource("3_5vn0v")

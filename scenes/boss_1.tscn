@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://bgsl5b0g4eo5h" path="res://assets/graphic_elements/enemies/ship3.png" id="4_gdapw"]
 [ext_resource type="AudioStream" uid="uid://dt5fdvc1m1fs" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label _ Tech Menace Level or Boss, slow medium threat.wav" id="4_jqv7l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h6k2x"]
-size = Vector2(960, 1018)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_2ng8k"]
+points = PackedVector2Array(-435, -414, -161, -40, -378, -67, -243, 19, -404, 46, -471, 88, 106, 89, 85, -418, 3, -420, -45, -205)
 
 [node name="Boss1" type="Area2D"]
 collision_layer = 4
@@ -22,7 +22,14 @@ damage = 300
 score_count = 5000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_h6k2x")
+position = Vector2(-16, -88)
+shape = SubResource("ConvexPolygonShape2D_2ng8k")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 84)
+rotation = 3.14159
+scale = Vector2(-1, 1)
+shape = SubResource("ConvexPolygonShape2D_2ng8k")
 
 [node name="Ship3" type="Sprite2D" parent="."]
 texture = ExtResource("4_gdapw")

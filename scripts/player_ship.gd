@@ -90,6 +90,9 @@ func _ready():
 # delta ist die Zeit seit dem letzten Frame in Sekunden
 func _process(delta: float) -> void:
 	
+	if Input.is_action_just_pressed("status_report"):
+		status_report()
+		
 		# Beschleunigung: Erhöht die Geschwindigkeit um in beiden Flugmodi
 	if Input.is_action_just_pressed("accelarate"):
 		speed *= 1.8
@@ -302,3 +305,7 @@ func shoot_weapon(weapon: PackedScene):
 		projectile_instance.fire()
 	else:
 		print("Fehler: Projektil hat keine fire()-Methode!")
+
+
+func status_report() -> void:
+	print("player_global_position: ", global_position)

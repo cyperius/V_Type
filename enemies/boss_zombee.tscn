@@ -1,0 +1,110 @@
+[gd_scene load_steps=14 format=3 uid="uid://dgkhgx4gb10tq"]
+
+[ext_resource type="Texture2D" uid="uid://c8q5jsr27mkcy" path="res://assets/graphic_elements/enemies/fat_zombee.png" id="1_7n7ys"]
+[ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies/boss_zombee.gd" id="1_37dvw"]
+[ext_resource type="Texture2D" uid="uid://bx2pijo2priag" path="res://assets/graphic_elements/weapons/bugger1.png" id="2_37dvw"]
+[ext_resource type="Script" uid="uid://coo7uy72pptcc" path="res://enemies/damage_area.gd" id="4_10gkv"]
+[ext_resource type="AudioStream" uid="uid://cfsl5asvtp44p" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_another_dangerous_Boss.wav" id="5_1kd36"]
+[ext_resource type="Shader" uid="uid://bu1shne253ga" path="res://enemies/boss_zombee.gdshader" id="6_grjcn"]
+[ext_resource type="Texture2D" uid="uid://b7glrx6wb160k" path="res://enemies/ZomBeeHelmetCrackTexture.png" id="7_j251n"]
+[ext_resource type="Texture2D" uid="uid://7jpd3cwrduww" path="res://enemies/Helm_mit_Transparenz.png" id="8_1kd36"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6hjs6"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 2, 1)
+emission_shape = 1
+emission_sphere_radius = 26.38
+inherit_velocity_ratio = 1.0
+spread = 27.826
+gravity = Vector3(-200, 0, 0)
+collision_mode = 1
+collision_friction = 0.3
+collision_bounce = 0.1
+collision_use_scale = true
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hjs6"]
+radius = 19.0829
+height = 44.2377
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s47yk"]
+radius = 107.883
+height = 219.727
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xadtk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ul4f8"]
+shader = ExtResource("6_grjcn")
+shader_parameter/alpha_strength = 0.45
+shader_parameter/crack_strength = 0.505
+shader_parameter/crack_texture = ExtResource("7_j251n")
+
+[node name="BossZombee" type="Area2D"]
+rotation = -0.138248
+script = ExtResource("1_37dvw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_7n7ys")
+
+[node name="VomitParticles" type="GPUParticles2D" parent="Sprite2D"]
+unique_name_in_owner = true
+position = Vector2(-420, 4)
+emitting = false
+amount = 500
+texture = ExtResource("2_37dvw")
+lifetime = 7.33
+speed_scale = 6.89
+explosiveness = 0.19
+randomness = 0.31
+process_material = SubResource("ParticleProcessMaterial_6hjs6")
+
+[node name="Body" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_10gkv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Body"]
+position = Vector2(113.343, 56.1553)
+rotation = 1.75017
+scale = Vector2(13.3644, 13.0213)
+shape = SubResource("CapsuleShape2D_6hjs6")
+
+[node name="Brain" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_10gkv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Brain"]
+position = Vector2(-211.484, -170.774)
+scale = Vector2(1.5342, -0.978947)
+shape = SubResource("CapsuleShape2D_s47yk")
+
+[node name="Mouth" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+scale = Vector2(1.00105, 1.00446)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_10gkv")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Sprite2D/Mouth"]
+position = Vector2(-252.739, -4.87605)
+scale = Vector2(11.4824, 8.16325)
+shape = SubResource("CapsuleShape2D_xadtk")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_1kd36")
+autoplay = true
+
+[node name="VomitTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 2.0
+
+[node name="HelmetSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.87451)
+self_modulate = Color(1, 1, 1, 0.564706)
+material = SubResource("ShaderMaterial_ul4f8")
+position = Vector2(-266.278, -110.752)
+scale = Vector2(0.69629, 0.622655)
+texture = ExtResource("8_1kd36")
