@@ -1,7 +1,7 @@
 class_name BossZombee extends Area2D
 
 @export var health := 10000
-@export var speed := 300
+@export var speed := 400
 @export var accelaration := 1200
 
 @onready var explosion_scene : PackedScene = preload("res://scenes/explosion_animation.tscn")
@@ -11,7 +11,7 @@ class_name BossZombee extends Area2D
 @onready var brain: Area2D = %Brain
 @onready var vomit_timer: Timer = %VomitTimer
 @onready var mouth: Area2D = %Mouth
-@onready var sprite_2d: Sprite2D = $BodySprite
+@onready var body_sprite: Sprite2D = $BodySprite
 @onready var helmet_sprite: Sprite2D = %HelmetSprite
 
 
@@ -22,6 +22,8 @@ var direction
 func _ready() -> void:
 	var shader_material := helmet_sprite.material as ShaderMaterial
 	shader_material.set_shader_parameter("crack_strength", 0.0)
+	var eyes_shader_material := body_sprite.material as ShaderMaterial
+	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	body.area_entered.connect(_on_body_area_entered)
 	brain.area_entered.connect(_on_brain_area_entered)
 	mouth.area_entered.connect(_on_mouth_area_entered)
@@ -55,10 +57,13 @@ func _process(delta: float) -> void:
 	
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
+	var eyes_shader_material := body_sprite.material as ShaderMaterial
+	eyes_shader_material.set_shader_parameter("red_color", 1.0)
 	vomit_particles.emitting = true
 	vomit_timer.start()
 	await vomit_timer.timeout 
 	vomit_particles.emitting = false
+	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	
 	
 	#var tween = create_tween()

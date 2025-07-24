@@ -1,8 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene load_steps=21 format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies/ZomBee/boss_zombee.gd" id="1_37dvw"]
+[ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
 [ext_resource type="Texture2D" uid="uid://bx2pijo2priag" path="res://assets/graphic_elements/weapons/bugger1.png" id="2_37dvw"]
 [ext_resource type="Texture2D" uid="uid://cp13dwijnb2p1" path="res://enemies/ZomBee/ZomBee_ohne_Fluegel.png" id="2_vfk83"]
+[ext_resource type="Texture2D" uid="uid://jx1yhbia0ut7" path="res://enemies/ZomBee/both_eyes_shapes.png" id="3_lmhcn"]
 [ext_resource type="Script" uid="uid://coo7uy72pptcc" path="res://enemies/ZomBee/damage_area.gd" id="4_10gkv"]
 [ext_resource type="AudioStream" uid="uid://cfsl5asvtp44p" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_another_dangerous_Boss.wav" id="5_1kd36"]
 [ext_resource type="Shader" uid="uid://bu1shne253ga" path="res://enemies/ZomBee/boss_zombee.gdshader" id="6_grjcn"]
@@ -11,6 +13,12 @@
 [ext_resource type="Script" uid="uid://v4kvq1vh7sby" path="res://enemies/ZomBee/wings.gd" id="9_htw1e"]
 [ext_resource type="Texture2D" uid="uid://cdi3g7o6xv8qc" path="res://enemies/ZomBee/ZomBeeFluegelLinks.png" id="10_7qxdt"]
 [ext_resource type="Texture2D" uid="uid://b5wsxshc2jjv1" path="res://enemies/ZomBee/fluegel_rechts1.png" id="11_lmhcn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvp36"]
+shader = ExtResource("2_7qxdt")
+shader_parameter/eyes_shape = ExtResource("3_lmhcn")
+shader_parameter/red_color = 1.0
+shader_parameter/alpha_strength = 1.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6hjs6"]
 particle_flag_disable_z = true
@@ -50,6 +58,8 @@ rotation = -0.138248
 script = ExtResource("1_37dvw")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_wvp36")
+scale = Vector2(0.99746, 1.00263)
 texture = ExtResource("2_vfk83")
 
 [node name="VomitParticles" type="GPUParticles2D" parent="BodySprite"]
@@ -133,7 +143,7 @@ texture = ExtResource("10_7qxdt")
 [node name="RightWingAnchor" type="Marker2D" parent="Wings"]
 unique_name_in_owner = true
 position = Vector2(84, -221)
-rotation = 0.139626
+rotation = -0.539307
 
 [node name="RightWing" type="Sprite2D" parent="Wings/RightWingAnchor"]
 unique_name_in_owner = true

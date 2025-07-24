@@ -24,5 +24,5 @@ func _process(delta: float) -> void:
 			outer_right_angle_reached = true
 	if outer_right_angle_reached == true:
 		right_wing_anchor.rotation_degrees -= 8
-		if right_wing_anchor.rotation_degrees <= -16:
+		if right_wing_anchor.rotation_degrees <= -32:
 			outer_right_angle_reached = false
