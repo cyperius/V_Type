@@ -1,12 +1,13 @@
-[gd_scene load_steps=21 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene load_steps=22 format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies/ZomBee/boss_zombee.gd" id="1_37dvw"]
 [ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
 [ext_resource type="Texture2D" uid="uid://bx2pijo2priag" path="res://assets/graphic_elements/weapons/bugger1.png" id="2_37dvw"]
-[ext_resource type="Texture2D" uid="uid://cp13dwijnb2p1" path="res://enemies/ZomBee/ZomBee_ohne_Fluegel.png" id="2_vfk83"]
+[ext_resource type="Texture2D" uid="uid://b484nhvetjg6n" path="res://enemies/ZomBee/ZombeeKopf.png" id="2_lmhcn"]
 [ext_resource type="Texture2D" uid="uid://jx1yhbia0ut7" path="res://enemies/ZomBee/both_eyes_shapes.png" id="3_lmhcn"]
 [ext_resource type="Script" uid="uid://coo7uy72pptcc" path="res://enemies/ZomBee/damage_area.gd" id="4_10gkv"]
 [ext_resource type="AudioStream" uid="uid://cfsl5asvtp44p" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_another_dangerous_Boss.wav" id="5_1kd36"]
+[ext_resource type="Texture2D" uid="uid://dvvuikt16msry" path="res://enemies/ZomBee/ZomBeeKoerper_angepasst.png" id="5_wvp36"]
 [ext_resource type="Shader" uid="uid://bu1shne253ga" path="res://enemies/ZomBee/boss_zombee.gdshader" id="6_grjcn"]
 [ext_resource type="Texture2D" uid="uid://b7glrx6wb160k" path="res://enemies/ZomBee/ZomBeeHelmetCrackTexture.png" id="7_j251n"]
 [ext_resource type="Texture2D" uid="uid://7jpd3cwrduww" path="res://enemies/ZomBee/Helm_mit_Transparenz.png" id="8_1kd36"]
@@ -57,10 +58,18 @@ height = 227.38
 rotation = -0.138248
 script = ExtResource("1_37dvw")
 
+[node name="Head" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(12.1177, 65.2929)
+rotation = 0.119749
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_lmhcn")
+
 [node name="BodySprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_wvp36")
-scale = Vector2(0.99746, 1.00263)
-texture = ExtResource("2_vfk83")
+rotation = 0.0939254
+scale = Vector2(1.45, 1.402)
+texture = ExtResource("5_wvp36")
 
 [node name="VomitParticles" type="GPUParticles2D" parent="BodySprite"]
 unique_name_in_owner = true
@@ -76,12 +85,13 @@ process_material = SubResource("ParticleProcessMaterial_6hjs6")
 
 [node name="Body" type="Area2D" parent="BodySprite"]
 unique_name_in_owner = true
+rotation = 0.0997259
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Body"]
-position = Vector2(113.343, 56.1553)
+position = Vector2(110.68, 26.8857)
 rotation = 1.75017
 scale = Vector2(13.3644, 13.0213)
 shape = SubResource("CapsuleShape2D_6hjs6")
@@ -93,7 +103,7 @@ collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Brain"]
-position = Vector2(-211.484, -170.774)
+position = Vector2(-149.47, -88.2485)
 scale = Vector2(1.5342, -0.978947)
 shape = SubResource("CapsuleShape2D_s47yk")
 
@@ -105,8 +115,8 @@ collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="BodySprite/Mouth"]
-position = Vector2(-252.739, -4.87605)
-scale = Vector2(11.4824, 8.16325)
+position = Vector2(-161.554, 20.3358)
+scale = Vector2(11.4824, 8.60783)
 shape = SubResource("CapsuleShape2D_xadtk")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -122,8 +132,8 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.87451)
 self_modulate = Color(1, 1, 1, 0.564706)
 material = SubResource("ShaderMaterial_ul4f8")
-position = Vector2(-266.278, -110.752)
-scale = Vector2(0.69629, 0.622655)
+position = Vector2(-247.812, -127.366)
+scale = Vector2(0.8, 0.981271)
 texture = ExtResource("8_1kd36")
 
 [node name="Wings" type="Area2D" parent="."]
@@ -151,7 +161,7 @@ position = Vector2(214.767, -104.937)
 texture = ExtResource("11_lmhcn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wings"]
-position = Vector2(280.948, -364.763)
-rotation = 0.521897
-scale = Vector2(-2.07219, 1.66614)
+position = Vector2(180.481, -419.127)
+rotation = -0.956926
+scale = Vector2(-2.07219, 0.950651)
 shape = SubResource("CapsuleShape2D_wvp36")
