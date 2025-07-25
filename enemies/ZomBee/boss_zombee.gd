@@ -1,6 +1,7 @@
 class_name BossZombee extends Area2D
 
 @export var health := 10000
+@export var helmet_max_health : int
 @export var speed := 400
 @export var accelaration := 1200
 
@@ -13,13 +14,18 @@ class_name BossZombee extends Area2D
 @onready var mouth: Area2D = %Mouth
 @onready var body_sprite: Sprite2D = $BodySprite
 @onready var helmet_sprite: Sprite2D = %HelmetSprite
-
-
+@onready var helmet: Area2D = %Helmet
+@onready var head: Sprite2D = %Head
+@onready var anger_timer: Timer = %AngerTimer
+@onready var timer: Timer = $Timer
 
 
 var direction 
+var helmet_health
 
 func _ready() -> void:
+	timer.timeout.connect(_on_timer_timeout)
+	helmet_health = helmet_max_health
 	var shader_material := helmet_sprite.material as ShaderMaterial
 	shader_material.set_shader_parameter("crack_strength", 0.0)
 	var eyes_shader_material := body_sprite.material as ShaderMaterial
@@ -27,6 +33,8 @@ func _ready() -> void:
 	body.area_entered.connect(_on_body_area_entered)
 	brain.area_entered.connect(_on_brain_area_entered)
 	mouth.area_entered.connect(_on_mouth_area_entered)
+	helmet.area_entered.connect(_on_helmet_area_entered)
+	
 	body.damage = 300
 	mouth.damage = 600
 	brain.damage = 300
@@ -35,15 +43,21 @@ func _ready() -> void:
 func apply_helmet_damage(damage: float):
 	var shader_material := helmet_sprite.material as ShaderMaterial
 	var current_strength : float = shader_material.get_shader_parameter("crack_strength")
-	var new_strength : float = clamp(current_strength + damage * 0.0002, 0.0, 1.0)
+	helmet_health -= damage
+	# helmet_damage_ratio als Zahl zw. 0 und 1, so dass sich der Wert mit zuneh-
+	# mendem Scahden 1 annähert
+	var helmet_damage_ratio = 1 - (helmet_health / helmet_max_health)
+	# folgende 2 Zeilen: mit zunehemndem Helmschaden, werden die Cracks im Helm deutlicher
+	var new_strength : float = clamp(helmet_damage_ratio, 0.0, 1.0)
 	shader_material.set_shader_parameter("crack_strength", new_strength)
-	if new_strength == 1:
-		helmet_sprite.hide()
+	if new_strength >= 1:
+		helmet.queue_free()
 		var explosion_animation = explosion_scene.instantiate()
 		get_tree().current_scene.add_child(explosion_animation)
 		explosion_animation.global_position = helmet_sprite.global_position
 		explosion_animation.scale = Vector2(10, 10)
 		explosion_animation.speed_scale = 0.8
+
 
 func _process(delta: float) -> void:
 	
@@ -57,25 +71,28 @@ func _process(delta: float) -> void:
 	
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
-	var eyes_shader_material := body_sprite.material as ShaderMaterial
+	if area_that_entered != Global.player_ship:
+		angry_zombee()
+	
+func angry_zombee() -> void:
+	var eyes_shader_material := head.material as ShaderMaterial
 	eyes_shader_material.set_shader_parameter("red_color", 1.0)
 	vomit_particles.emitting = true
-	vomit_timer.start()
-	await vomit_timer.timeout 
-	vomit_particles.emitting = false
+	speed = 1000
+	#vomit_timer.start()
+	anger_timer.start()
+	await anger_timer.timeout
+	speed = 400
+	#await vomit_timer.timeout 
+	#vomit_particles.emitting = false
+	
 	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	
-	
-	#var tween = create_tween()
-	#tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
-	#tween.set_loops(1)
-	
-	
+
 func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 	if "damage" in area_that_entered:
 		health -= area_that_entered.damage
-		if helmet_sprite.visible == true:
-			apply_helmet_damage(area_that_entered.damage)
+	
 	if health < 0:
 		var explosion_animation = explosion_scene.instantiate()
 		get_tree().current_scene.add_child(explosion_animation)
@@ -83,16 +100,24 @@ func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 		explosion_animation.scale = Vector2(50, 50)
 		explosion_animation.speed_scale = 0.3
 		queue_free()
-		
+	
+	
+func _on_helmet_area_entered(area_that_entered: Area2D) -> void:		
+	apply_helmet_damage(area_that_entered.damage)
+	print("hit the fucking helmet!!")
+	print("helmet_health: ", helmet_health)
+
 
 func _on_mouth_area_entered(area_that_entered: Area2D) -> void:
-	if "damage" in area_that_entered:
-		health -= area_that_entered.damage
-		if helmet_sprite.visible == true:
-			apply_helmet_damage(area_that_entered.damage)
-	
+	if area_that_entered != Global.player_ship:
+		angry_zombee()
+
 
 func status_report() -> void:
 	print("Zombee Position: ", global_position)
 	print("Direction to player: ", direction)
 	print("direction angle(): ", direction.angle())
+
+func _on_timer_timeout() -> void:
+	print("timeout")
+	vomit_particles.emitting != vomit_particles.emitting

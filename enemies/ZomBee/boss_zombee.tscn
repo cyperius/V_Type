@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene load_steps=26 format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies/ZomBee/boss_zombee.gd" id="1_37dvw"]
 [ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
@@ -13,7 +13,22 @@
 [ext_resource type="Texture2D" uid="uid://7jpd3cwrduww" path="res://enemies/ZomBee/Helm_mit_Transparenz.png" id="8_1kd36"]
 [ext_resource type="Script" uid="uid://v4kvq1vh7sby" path="res://enemies/ZomBee/wings.gd" id="9_htw1e"]
 [ext_resource type="Texture2D" uid="uid://cdi3g7o6xv8qc" path="res://enemies/ZomBee/ZomBeeFluegelLinks.png" id="10_7qxdt"]
+[ext_resource type="Script" uid="uid://bm2wmwyr7781y" path="res://enemies/ZomBee/vomit_particles.gd" id="10_wvp36"]
 [ext_resource type="Texture2D" uid="uid://b5wsxshc2jjv1" path="res://enemies/ZomBee/fluegel_rechts1.png" id="11_lmhcn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ul4f8"]
+shader = ExtResource("6_grjcn")
+shader_parameter/alpha_strength = 0.45
+shader_parameter/crack_strength = 0.505
+shader_parameter/crack_texture = ExtResource("7_j251n")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lmhcn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lmhcn"]
+shader = ExtResource("2_7qxdt")
+shader_parameter/eyes_shape = ExtResource("3_lmhcn")
+shader_parameter/red_color = 0.0
+shader_parameter/alpha_strength = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wvp36"]
 shader = ExtResource("2_7qxdt")
@@ -26,9 +41,9 @@ particle_flag_disable_z = true
 emission_shape_scale = Vector3(1, 2, 1)
 emission_shape = 1
 emission_sphere_radius = 26.38
-inherit_velocity_ratio = 1.0
+direction = Vector3(0, 0, 0)
 spread = 27.826
-gravity = Vector3(-200, 0, 0)
+gravity = Vector3(0, 0, 0)
 collision_mode = 1
 collision_friction = 0.3
 collision_bounce = 0.1
@@ -38,43 +53,64 @@ collision_use_scale = true
 radius = 19.0829
 height = 44.2377
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s47yk"]
-radius = 107.883
-height = 219.727
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xadtk"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ul4f8"]
-shader = ExtResource("6_grjcn")
-shader_parameter/alpha_strength = 0.45
-shader_parameter/crack_strength = 0.505
-shader_parameter/crack_texture = ExtResource("7_j251n")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lmhcn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvp36"]
 radius = 108.462
 height = 227.38
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omsgk"]
+radius = 5.6167
+height = 15.949
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xadtk"]
+height = 21.952
+
 [node name="BossZombee" type="Area2D"]
 rotation = -0.138248
 script = ExtResource("1_37dvw")
+helmet_max_health = 200
+
+[node name="Helmet" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 3
+
+[node name="HelmetSprite" type="Sprite2D" parent="Helmet"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.87451)
+self_modulate = Color(1, 1, 1, 0.564706)
+z_index = 2
+material = SubResource("ShaderMaterial_ul4f8")
+position = Vector2(-196.911, -130.38)
+scale = Vector2(0.823627, 0.742633)
+texture = ExtResource("8_1kd36")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Helmet"]
+position = Vector2(-208.848, -146.176)
+scale = Vector2(30.4718, 29.5889)
+shape = SubResource("CircleShape2D_lmhcn")
 
 [node name="Head" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 z_index = 1
-position = Vector2(12.1177, 65.2929)
+material = SubResource("ShaderMaterial_lmhcn")
+position = Vector2(16.3728, -8.82793)
 rotation = 0.119749
-scale = Vector2(1.2, 1.2)
+scale = Vector2(1.05, 1.05)
 texture = ExtResource("2_lmhcn")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_wvp36")
+position = Vector2(19.5166, -38.6795)
 rotation = 0.0939254
 scale = Vector2(1.45, 1.402)
 texture = ExtResource("5_wvp36")
 
 [node name="VomitParticles" type="GPUParticles2D" parent="BodySprite"]
 unique_name_in_owner = true
-position = Vector2(-420, 4)
-emitting = false
+position = Vector2(-195.47, 2.45728)
 amount = 500
 texture = ExtResource("2_37dvw")
 lifetime = 7.33
@@ -82,6 +118,7 @@ speed_scale = 6.89
 explosiveness = 0.19
 randomness = 0.31
 process_material = SubResource("ParticleProcessMaterial_6hjs6")
+script = ExtResource("10_wvp36")
 
 [node name="Body" type="Area2D" parent="BodySprite"]
 unique_name_in_owner = true
@@ -91,33 +128,19 @@ collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Body"]
-position = Vector2(110.68, 26.8857)
-rotation = 1.75017
-scale = Vector2(13.3644, 13.0213)
+position = Vector2(89.0059, 34.483)
+rotation = 1.43494
+scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
 
-[node name="Brain" type="Area2D" parent="BodySprite"]
-unique_name_in_owner = true
-collision_layer = 4
-collision_mask = 3
-script = ExtResource("4_10gkv")
+[node name="vomit_area" type="Area2D" parent="BodySprite"]
+collision_layer = 0
+collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Brain"]
-position = Vector2(-149.47, -88.2485)
-scale = Vector2(1.5342, -0.978947)
-shape = SubResource("CapsuleShape2D_s47yk")
-
-[node name="Mouth" type="Area2D" parent="BodySprite"]
-unique_name_in_owner = true
-scale = Vector2(1.00105, 1.00446)
-collision_layer = 4
-collision_mask = 3
-script = ExtResource("4_10gkv")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BodySprite/Mouth"]
-position = Vector2(-161.554, 20.3358)
-scale = Vector2(11.4824, 8.60783)
-shape = SubResource("CapsuleShape2D_xadtk")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/vomit_area"]
+position = Vector2(-864.298, -16.0845)
+scale = Vector2(50, 1)
+shape = SubResource("RectangleShape2D_lmhcn")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_1kd36")
@@ -125,16 +148,11 @@ autoplay = true
 
 [node name="VomitTimer" type="Timer" parent="."]
 unique_name_in_owner = true
-wait_time = 2.0
+wait_time = 5.0
 
-[node name="HelmetSprite" type="Sprite2D" parent="."]
+[node name="AngerTimer" type="Timer" parent="."]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.87451)
-self_modulate = Color(1, 1, 1, 0.564706)
-material = SubResource("ShaderMaterial_ul4f8")
-position = Vector2(-247.812, -127.366)
-scale = Vector2(0.8, 0.981271)
-texture = ExtResource("8_1kd36")
+wait_time = 1.5
 
 [node name="Wings" type="Area2D" parent="."]
 script = ExtResource("9_htw1e")
@@ -146,7 +164,7 @@ rotation = -0.0855211
 
 [node name="LeftWing" type="Sprite2D" parent="Wings/LeftWingAnchor"]
 unique_name_in_owner = true
-position = Vector2(74.1906, -170.402)
+position = Vector2(197.265, -226.882)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("10_7qxdt")
 
@@ -157,11 +175,43 @@ rotation = -0.539307
 
 [node name="RightWing" type="Sprite2D" parent="Wings/RightWingAnchor"]
 unique_name_in_owner = true
-position = Vector2(214.767, -104.937)
+position = Vector2(365.154, -94.4943)
 texture = ExtResource("11_lmhcn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wings"]
-position = Vector2(180.481, -419.127)
+position = Vector2(320.929, -492.472)
 rotation = -0.956926
 scale = Vector2(-2.07219, 0.950651)
 shape = SubResource("CapsuleShape2D_wvp36")
+
+[node name="Brain" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(19.5166, -38.6795)
+rotation = 0.0939254
+scale = Vector2(1.45, 1.402)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_10gkv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Brain"]
+position = Vector2(-134.115, -108.249)
+scale = Vector2(20, 9.14762)
+shape = SubResource("CapsuleShape2D_omsgk")
+
+[node name="Mouth" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(19.5166, -38.6795)
+rotation = 0.0939254
+scale = Vector2(1.45152, 1.40825)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("4_10gkv")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Mouth"]
+position = Vector2(-172.336, 30.5049)
+scale = Vector2(10.5001, 8.26661)
+shape = SubResource("CapsuleShape2D_xadtk")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
