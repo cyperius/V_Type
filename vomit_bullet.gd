@@ -3,7 +3,7 @@ extends Area2D
 var velocity: Vector2 = Vector2.ZERO
 const LIFETIME := 8.0  # Sekunde
 var timer := 0.0
-@export var hit_effect : String = "slow"
+@export var hit_effect : String = "reverse_controls"
 
 func _ready():
 	area_entered.connect(_on_area_entered)

@@ -37,8 +37,9 @@ var boost_activated := false
 @export var max_health: int = 600
 @onready var health := max_health
 @export var blue_energy : int = 1000
-var shield_activated := false
-var player_slowed_down := false
+var shield_is_activated := false
+var player_is_slowed_down := false
+var controls_are_reversed := false
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
 @onready var just_been_hit_timer := %BeenHitTimer
@@ -122,7 +123,7 @@ func _process(delta: float) -> void:
 	# Code der unabhängig vom PlayerMode gelten soll
 	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
 	#get_tree().current_scene.ui.health.text = "Health: " + str(health)
-	if shield_activated:
+	if shield_is_activated:
 		# bei aktiviertem Schild wird laufend Energie verbraucht...
 		blue_energy -= 300 * delta
 		# dies wird in der UI angezeigt
@@ -164,8 +165,13 @@ func _process(delta: float) -> void:
 func _process_horizontal(delta: float) -> void:
 	# Bewegungssteuerung des Schiffs
 	var direction := Vector2(0, 0)
-	direction.x = Input.get_axis("backward", "forward")  # Links/Rechts
-	direction.y = Input.get_axis("up", "down")            # Hoch/Runter
+	if controls_are_reversed:
+		direction.x = Input.get_axis("forward", "backward")  # verkehrt
+		direction.y = Input.get_axis("down", "up")            # verkehrt
+		print("links ist rechts und oben ist unten")
+	else:
+		direction.x = Input.get_axis("backward", "forward")  # Links/Rechts
+		direction.y = Input.get_axis("up", "down")            # Hoch/Runter
 
 	# Grösse des Fensters erfassen (zwecks Bewegungsbegrenzung)
 	var screensize := get_viewport_rect().size
@@ -197,7 +203,7 @@ func _on_area_entered(area_that_entered: Area2D) -> void:
 			emit_signal("hit_effect_triggered", area_that_entered.hit_effect)
 	if "damage" in area_that_entered:
 		var potential_damage_inflicted : int = area_that_entered.damage
-		if shield_activated == true:
+		if shield_is_activated == true:
 			if area_that_entered.is_in_group("projectiles"):
 				shield_absorbing(potential_damage_inflicted)
 			if area_that_entered.is_in_group("enemies"):
@@ -258,7 +264,7 @@ func activate_shield():
 	print("shield activated")
 	_particles_shield.emitting = true
 	# modulate = Color(0.27, 0.03, 0.87, 1.0)
-	shield_activated = true
+	shield_is_activated = true
 	
 
 func shield_absorbing(absorbed_damage):
@@ -269,7 +275,7 @@ func shield_absorbing(absorbed_damage):
 func deactivate_shield():
 	print("shield deactivated")
 	_particles_shield.emitting = false
-	shield_activated = false
+	shield_is_activated = false
 	# modulate = current_player_state
 	
 
@@ -331,16 +337,26 @@ func _on_hit_effect_triggered(effect : String):
 
 func _apply_reverse_control() -> void:
 	print("Steuerung wird umgekehrt!")
+	# Wenn der Effekt noch aktiv ist, kann der Spieler nicht erneut infiziert werden
+	if controls_are_reversed:
+		return
+	# ansonsten: Steuerung umkehren
+	controls_are_reversed = true
+	print("steuerung umgedreht?")
+	await get_tree().create_timer(5).timeout
+	# nach Ablauf des Timers wieder auf normal stellen (allenfalls zusätzliche Immun-Zeit?)
+	controls_are_reversed = false
+	
 
 func _apply_slow() -> void:
-	if player_slowed_down:
+	if player_is_slowed_down:
 		return
 	else:
 		print("Spieler wird verlangsamt.")
-		player_slowed_down = true
+		player_is_slowed_down = true
 		speed /= 2
 		await get_tree().create_timer(1.5).timeout
 		speed *= 2
-		await  get_tree().create_timer(0.5).timeout
-		player_slowed_down = false
+		await  get_tree().create_timer(1).timeout
+		player_is_slowed_down = false
 	
