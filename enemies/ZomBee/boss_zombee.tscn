@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://b7glrx6wb160k" path="res://enemies/ZomBee/ZomBeeHelmetCrackTexture.png" id="7_j251n"]
 [ext_resource type="Texture2D" uid="uid://7jpd3cwrduww" path="res://enemies/ZomBee/Helm_mit_Transparenz.png" id="8_1kd36"]
 [ext_resource type="Script" uid="uid://v4kvq1vh7sby" path="res://enemies/ZomBee/wings.gd" id="9_htw1e"]
+[ext_resource type="PackedScene" uid="uid://bqk620vnt2kg4" path="res://enemies/ZomBee/vomit_bullet.tscn" id="9_omsgk"]
 [ext_resource type="Texture2D" uid="uid://cdi3g7o6xv8qc" path="res://enemies/ZomBee/ZomBeeFluegelLinks.png" id="10_7qxdt"]
 [ext_resource type="Script" uid="uid://bm2wmwyr7781y" path="res://enemies/ZomBee/vomit_particles.gd" id="10_wvp36"]
 [ext_resource type="Texture2D" uid="uid://b5wsxshc2jjv1" path="res://enemies/ZomBee/fluegel_rechts1.png" id="11_lmhcn"]
@@ -30,12 +31,6 @@ shader_parameter/eyes_shape = ExtResource("3_lmhcn")
 shader_parameter/red_color = 0.0
 shader_parameter/alpha_strength = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvp36"]
-shader = ExtResource("2_7qxdt")
-shader_parameter/eyes_shape = ExtResource("3_lmhcn")
-shader_parameter/red_color = 1.0
-shader_parameter/alpha_strength = 1.0
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6hjs6"]
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(1, 2, 1)
@@ -49,11 +44,15 @@ collision_friction = 0.3
 collision_bounce = 0.1
 collision_use_scale = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wvp36"]
+shader = ExtResource("2_7qxdt")
+shader_parameter/eyes_shape = ExtResource("3_lmhcn")
+shader_parameter/red_color = 1.0
+shader_parameter/alpha_strength = 1.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hjs6"]
 radius = 19.0829
 height = 44.2377
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lmhcn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvp36"]
 radius = 108.462
@@ -90,6 +89,7 @@ texture = ExtResource("8_1kd36")
 position = Vector2(-208.848, -146.176)
 scale = Vector2(30.4718, 29.5889)
 shape = SubResource("CircleShape2D_lmhcn")
+disabled = true
 
 [node name="Head" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -99,6 +99,21 @@ position = Vector2(16.3728, -8.82793)
 rotation = 0.119749
 scale = Vector2(1.05, 1.05)
 texture = ExtResource("2_lmhcn")
+script = ExtResource("10_wvp36")
+vomit_bullet_scene = ExtResource("9_omsgk")
+
+[node name="VomitParticles" type="GPUParticles2D" parent="Head"]
+unique_name_in_owner = true
+position = Vector2(-270.183, -18.3343)
+rotation = -0.0258236
+scale = Vector2(1.38095, 1.33524)
+amount = 500
+texture = ExtResource("2_37dvw")
+lifetime = 7.33
+speed_scale = 6.89
+explosiveness = 0.19
+randomness = 0.31
+process_material = SubResource("ParticleProcessMaterial_6hjs6")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -107,18 +122,6 @@ position = Vector2(19.5166, -38.6795)
 rotation = 0.0939254
 scale = Vector2(1.45, 1.402)
 texture = ExtResource("5_wvp36")
-
-[node name="VomitParticles" type="GPUParticles2D" parent="BodySprite"]
-unique_name_in_owner = true
-position = Vector2(-195.47, 2.45728)
-amount = 500
-texture = ExtResource("2_37dvw")
-lifetime = 7.33
-speed_scale = 6.89
-explosiveness = 0.19
-randomness = 0.31
-process_material = SubResource("ParticleProcessMaterial_6hjs6")
-script = ExtResource("10_wvp36")
 
 [node name="Body" type="Area2D" parent="BodySprite"]
 unique_name_in_owner = true
@@ -132,15 +135,7 @@ position = Vector2(89.0059, 34.483)
 rotation = 1.43494
 scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
-
-[node name="vomit_area" type="Area2D" parent="BodySprite"]
-collision_layer = 0
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/vomit_area"]
-position = Vector2(-864.298, -16.0845)
-scale = Vector2(50, 1)
-shape = SubResource("RectangleShape2D_lmhcn")
+disabled = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_1kd36")
@@ -197,6 +192,7 @@ script = ExtResource("4_10gkv")
 position = Vector2(-134.115, -108.249)
 scale = Vector2(20, 9.14762)
 shape = SubResource("CapsuleShape2D_omsgk")
+disabled = true
 
 [node name="Mouth" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -211,6 +207,7 @@ script = ExtResource("4_10gkv")
 position = Vector2(-172.336, 30.5049)
 scale = Vector2(10.5001, 8.26661)
 shape = SubResource("CapsuleShape2D_xadtk")
+disabled = true
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0

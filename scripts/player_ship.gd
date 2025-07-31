@@ -1,6 +1,8 @@
 # Die Klasse erbt von Area2D, was Kollisionserkennung ermöglicht
 class_name player_ship extends Area2D
 
+signal hit_effect_triggered(effect)
+
 # ─── NEU: Modi für das Spieler‐Schiff ──────────────────────────────────────────
 enum PlayerMode {
 	FREE,
@@ -64,7 +66,8 @@ func _ready():
 
 	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-
+	# Signal "hit_effect_triggered" verbinden
+	hit_effect_triggered.connect(_on_hit_effect_triggered)
 	# Debug-Ausgabe: aktueller Health-Wert (wenn health vorher korrekt initialisiert ist)
 	print(health)
 
@@ -188,7 +191,9 @@ func _process_circle(delta: float) -> void:
 	rotation = angle + PI
 
 
-func _on_area_entered(area_that_entered) -> void:
+func _on_area_entered(area_that_entered: Area2D) -> void:
+	if "hit_effect" in area_that_entered:
+			emit_signal("hit_effect_triggered", area_that_entered.hit_effect)
 	if "damage" in area_that_entered:
 		var potential_damage_inflicted : int = area_that_entered.damage
 		if shield_activated == true:
@@ -309,3 +314,20 @@ func shoot_weapon(weapon: PackedScene):
 
 func status_report() -> void:
 	print("player_global_position: ", global_position)
+
+func _on_hit_effect_triggered(effect : String):
+	var effect_table = {
+		"reverse_control" : _apply_reverse_control,
+		"slow": _apply_slow
+	}
+	
+	if effect_table.has(effect):
+		effect_table[effect].call()
+	else:
+		print("Unbekannter Effekt: ", effect)
+
+func _apply_reverse_control() -> void:
+	print("Steuerung wird umgekehrt!")
+
+func _apply_slow() -> void:
+	print("Spieler wird verlangsamt.")

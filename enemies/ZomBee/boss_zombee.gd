@@ -18,10 +18,12 @@ class_name BossZombee extends Area2D
 @onready var head: Sprite2D = %Head
 @onready var anger_timer: Timer = %AngerTimer
 @onready var timer: Timer = $Timer
+@onready var vomit_hit_box: Area2D = %VomitHitBox
 
 
 var direction 
 var helmet_health
+
 
 func _ready() -> void:
 	timer.timeout.connect(_on_timer_timeout)
@@ -118,6 +120,9 @@ func status_report() -> void:
 	print("Direction to player: ", direction)
 	print("direction angle(): ", direction.angle())
 
+
 func _on_timer_timeout() -> void:
 	print("timeout")
 	vomit_particles.emitting != vomit_particles.emitting
+	head.vomit_wave()
+	
