@@ -38,6 +38,7 @@ var boost_activated := false
 @onready var health := max_health
 @export var blue_energy : int = 1000
 var shield_activated := false
+var player_slowed_down := false
 @export var damage: int = 10
 @export var game_over: PackedScene        # Game Over Szene
 @onready var just_been_hit_timer := %BeenHitTimer
@@ -315,9 +316,10 @@ func shoot_weapon(weapon: PackedScene):
 func status_report() -> void:
 	print("player_global_position: ", global_position)
 
+
 func _on_hit_effect_triggered(effect : String):
 	var effect_table = {
-		"reverse_control" : _apply_reverse_control,
+		"reverse_controls" : _apply_reverse_control,
 		"slow": _apply_slow
 	}
 	
@@ -325,9 +327,20 @@ func _on_hit_effect_triggered(effect : String):
 		effect_table[effect].call()
 	else:
 		print("Unbekannter Effekt: ", effect)
+	
 
 func _apply_reverse_control() -> void:
 	print("Steuerung wird umgekehrt!")
 
 func _apply_slow() -> void:
-	print("Spieler wird verlangsamt.")
+	if player_slowed_down:
+		return
+	else:
+		print("Spieler wird verlangsamt.")
+		player_slowed_down = true
+		speed /= 2
+		await get_tree().create_timer(1.5).timeout
+		speed *= 2
+		await  get_tree().create_timer(0.5).timeout
+		player_slowed_down = false
+	
