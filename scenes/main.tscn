@@ -17,6 +17,10 @@ anchor_mode = 0
 [node name="player_space_ship" parent="." instance=ExtResource("3_eahio")]
 position = Vector2(169, 1047)
 
+[node name="player_space_ship2" parent="." instance=ExtResource("3_eahio")]
+position = Vector2(169, 1047)
+player_id = 2
+
 [node name="LevelContainer" type="Node2D" parent="."]
 
 [node name="Shop" type="Node2D" parent="."]

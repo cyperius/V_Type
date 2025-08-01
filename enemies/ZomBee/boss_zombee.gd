@@ -123,6 +123,7 @@ func status_report() -> void:
 
 func _on_timer_timeout() -> void:
 	print("timeout")
-	vomit_particles.emitting != vomit_particles.emitting
+	vomit_particles.emitting
+	print("toggle_emitting")
 	head.vomit_wave()
 	

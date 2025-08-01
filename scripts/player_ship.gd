@@ -24,6 +24,8 @@ var velocity := Vector2(240, 240)
 var default_player_state = Color(1, 1, 1)
 var current_player_state = default_player_state 
 
+@export var player_id : int = 1
+
 # @export macht diese Variablen im Godot Editor sichtbar und einstellbar
 # PackedScene ist ein Typ für vorbereitete Szenen (wie unsere Laser-Projektile)
 @export var laser_beam: PackedScene    # Szene für den normalen Laser
@@ -99,13 +101,13 @@ func _process(delta: float) -> void:
 		status_report()
 		
 		# Beschleunigung: Erhöht die Geschwindigkeit um in beiden Flugmodi
-	if Input.is_action_just_pressed("accelarate"):
+	if Input.is_action_just_pressed("p%d_accelarate" % player_id):
 		speed *= 1.8
 		angular_speed *= 1.8
 		boost_activated = true
 		
 	# Wenn Beschleunigung losgelassen wird, zurück zur normalen Geschwindigkeit
-	if Input.is_action_just_released("accelarate"):
+	if Input.is_action_just_released("p%d_accelarate" % player_id):
 		speed /= 1.8
 		angular_speed /= 1.8
 		boost_activated = false
@@ -115,10 +117,10 @@ func _process(delta: float) -> void:
 		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 	
 	# aktiviert den Schild -> braucht Energie, absorbiert Schüsse
-	if Input.is_action_just_pressed("shield") and blue_energy > 0:
+	if Input.is_action_just_pressed("p%d_shield" % player_id) and blue_energy > 0:
 		activate_shield()
 	# Wenn Taste losgelassen, Schild deaktivieren
-	if Input.is_action_just_released("shield"):
+	if Input.is_action_just_released("p%d_shield" % player_id):
 		deactivate_shield()
 	# Code der unabhängig vom PlayerMode gelten soll
 	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
@@ -143,14 +145,14 @@ func _process(delta: float) -> void:
 		_shield_collision_shape.disabled = true
 	
 		# Überprüft Waffeneingaben und löst entsprechende Waffen aus
-	if Input.is_action_just_pressed("primary_weapon"):
+	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
 		if blue_energy < 20:
 			return
 		blue_energy -= 20
 		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 		shoot_weapon(primary_weapon)
 		
-	if Input.is_action_just_pressed("secondary_weapon"):
+	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
 		shoot_weapon(secondary_weapon)
 		
 	# Unterscheidung von PlayerMode
@@ -166,12 +168,12 @@ func _process_horizontal(delta: float) -> void:
 	# Bewegungssteuerung des Schiffs
 	var direction := Vector2(0, 0)
 	if controls_are_reversed:
-		direction.x = Input.get_axis("forward", "backward")  # verkehrt
-		direction.y = Input.get_axis("down", "up")            # verkehrt
+		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)  # verkehrt
+		direction.y = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)            # verkehrt
 		print("links ist rechts und oben ist unten")
 	else:
-		direction.x = Input.get_axis("backward", "forward")  # Links/Rechts
-		direction.y = Input.get_axis("up", "down")            # Hoch/Runter
+		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)  # Links/Rechts
+		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)            # Hoch/Runter
 
 	# Grösse des Fensters erfassen (zwecks Bewegungsbegrenzung)
 	var screensize := get_viewport_rect().size
