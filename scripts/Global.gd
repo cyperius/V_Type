@@ -1,14 +1,24 @@
 extends Node
 
-# Globale Referenz auf das Spieler-Schiff (z. B. für Kamera, UI, Gegner, GameManager etc.)
-# Diese Variable wird vom Spieler-Script (player_ship.gd) im _ready() gesetzt
-var player_ship = null
+# Enthält Spieler-Schiff-Referenzen: {1: player1_ship, 2: player2_ship, ...}
+var player_ships := {}
 
-# Referenz auf den Sprite des Spieler-Schiffs (z. B. für Effekte, Animationen etc.)
-# Wird ebenfalls im Spieler-Script gesetzt
-var player_sprite = null
+# Enthält die jeweiligen Sprites der Spieler: {1: sprite1, 2: sprite2, ...}
+var player_sprites := {}
 
 func _ready():
-	# Wird beim Starten des Spiels einmalig aufgerufen.
-	# Hier ist player_ship noch null, weil das Schiff noch nicht instanziiert wurde.
-	print("Global.gd _ready aufgerufen. player_ship =", player_ship)
+	print("Global.gd _ready aufgerufen. Spieler-Daten:", player_ships)
+
+# Helferfunktion, um ein Spieler-Schiff zu registrieren
+func register_player(player_id: int, ship: Node, sprite: Node) -> void:
+	player_ships[player_id] = ship
+	player_sprites[player_id] = sprite
+	print("✅ Spieler %d registriert" % player_id)
+
+# Zugriffsfunktion für Schiffe
+func get_player_ship(player_id: int) -> Node:
+	return player_ships.get(player_id, null)
+
+# Zugriffsfunktion für Sprite
+func get_player_sprite(player_id: int) -> Node:
+	return player_sprites.get(player_id, null)

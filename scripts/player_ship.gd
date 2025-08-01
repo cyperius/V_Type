@@ -57,16 +57,24 @@ var primary_weapon: PackedScene        # Hauptwaffe
 var secondary_weapon: PackedScene      # Sekundärwaffe
 var projectiles := []                  # Liste aller aktiven Projektile
 
+# Variabeln für Handling von player_death und respawning
+var player_is_dead := false
+var spawn_position := Vector2.ZERO  # wird beim Start gesetzt
 
 
 # Diese Funktion wird beim Start der Szene automatisch ausgeführt
 func _ready():
-	# Sobald das Spieler-Schiff instanziiert und bereit ist, setzen wir den globalen Verweis darauf.
-	# Damit können andere Scripts jederzeit über Global.player_ship darauf zugreifen.
-	Global.player_ship = self
 
-	# Wir setzen zusätzlich eine Referenz auf den Sprite des Schiffs (z. B. für Farbänderungen oder Animationen)
-	Global.player_sprite = get_node("ship_sprite")  # Node-Name muss genau stimmen!
+	# Sobald das Spieler-Schiff instanziiert und bereit ist, registrieren wir es zentral in Global.
+	# Dadurch können andere Skripte gezielt über Global.get_player_ship(player_id) auf diesen Spieler zugreifen.
+	# Zusätzlich speichern wir auch den Sprite-Knoten, z. B. für Farbänderungen oder Effekte.
+	# Der player_id muss vorher korrekt gesetzt worden sein (z. B. im Inspektor).
+
+	Global.register_player(
+		player_id,                  # numerische ID, z. B. 1 oder 2
+		self,                       # Verweis auf dieses Spieler-Schiff (also die ganze Node)
+		get_node("ship_sprite")     # Verweis auf den Sprite des Schiffs (für visuelle Änderungen)
+)
 
 	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
@@ -97,6 +105,9 @@ func _ready():
 # delta ist die Zeit seit dem letzten Frame in Sekunden
 func _process(delta: float) -> void:
 	
+	if Input.is_action_just_pressed("revive") and player_is_dead:
+		revive()
+
 	if Input.is_action_just_pressed("status_report"):
 		status_report()
 		
@@ -230,10 +241,11 @@ func player_is_hit(damage: int):
 	print("damage: ", damage, "ergo new health: ", health)
 	calculate_damage_state()
 	if health <= 0:
-		hide()
+		handle_player_death()
 		# Spieler kann nicht mehr schießen oder sich bewegen,
 		# weil der GameManager den Baum pausiere wird.
 		GameManager.set_state(GameManager.STATE_GAME_OVER)
+		
 
 	else:	
 		#current_player_state = Color(1, health_ratio, health_ratio)
@@ -362,3 +374,24 @@ func _apply_slow() -> void:
 		await  get_tree().create_timer(1).timeout
 		player_is_slowed_down = false
 	
+	
+func handle_player_death():
+	print("Spieler %d ist gestorben!" % player_id)
+	visible = false                     # ausblenden
+	set_process(false)                 # keine Logik mehr ausführen
+	set_physics_process(false)
+	player_is_dead = true              # Status merken
+
+
+func revive():
+	print("Spieler %d wird wiederbelebt!" % player_id)
+	global_position = spawn_position
+	visible = true
+	set_process(true)
+	set_physics_process(true)
+	player_is_dead = false
+	health = max_health
+	blue_energy = 1000
+	modulate = default_player_state
+	Global.get_tree().current_scene.ui.health.text = "Health: " + str(health)
+	Global.get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
