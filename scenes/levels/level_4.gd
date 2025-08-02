@@ -18,17 +18,20 @@ func _ready():
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 	
-	# Global.player_ship referenziert die Player_ship Szene mit angehängtem player_ship.gd,
+	#alt (1-Plaer): Global.player_ship referenziert die Player_ship Szene mit angehängtem player_ship.gd,
 	# und zwar via Global.gd (ein Autoload -> von jedem Skript erreichbar)
 	# Mit Zugriff auf die Variable mode und enum PLayer;ode.FREE kann so der Spielmodus gesetzt werden
-	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
-	Global.player_ship.rotation_degrees = 0
-	Global.player_ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-	Global.player_ship.collision_layer = 1
-	Global.player_ship.global_position = Vector2 (500, 1000)
-	Global.player_ship.scale = Vector2(0.25, 0.25)
+	# neu:  🔁 Für alle registrierten Spieler im Global-Singleton
+	for player_id in Global.player_ships.keys():
+		var player = Global.get_player_ship(player_id)
+		player.mode = player.PlayerMode.FREE
+		player.rotation_degrees = 0
+		player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+		player.collision_layer = 1
+		player.global_position = Vector2 (500, 1000 + 200 * player_id)
+		player.scale = Vector2(0.25, 0.25)
 	#Global.player_ship.speed = Global.player_ship.max_speed
-	Global.player_ship.show()
+		player.show()
 	enemies_container.add_child(enemy)
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
 	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden

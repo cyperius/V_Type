@@ -4,6 +4,7 @@ class_name BossZombee extends Area2D
 @export var helmet_max_health : int
 @export var speed := 400
 @export var accelaration := 1200
+var closest_player : Node
 
 @onready var explosion_scene : PackedScene = preload("res://scenes/explosion_animation.tscn")
 @onready var vomit_particles: GPUParticles2D = %VomitParticles
@@ -20,12 +21,20 @@ class_name BossZombee extends Area2D
 @onready var timer: Timer = $Timer
 @onready var vomit_hit_box: Area2D = %VomitHitBox
 
-
+# Dictionary, das (ijn reeady-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
+var players : Dictionary = {}
 var direction 
 var helmet_health
 
 
 func _ready() -> void:
+	# Durch alle registrierten Spieler in Global gehen
+	for player_id in Global.player_ships.keys():
+		var player = Global.get_player_ship(player_id)
+		if player:
+			# Spieler in das Dictionary eintragen
+			players[player_id] = player
+		
 	timer.timeout.connect(_on_timer_timeout)
 	helmet_health = helmet_max_health
 	var shader_material := helmet_sprite.material as ShaderMaterial
@@ -65,9 +74,8 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("status_report"):
 		status_report()
-	
-	var player_position = Global.player_ship.global_position
-	direction = global_position.direction_to(player_position)
+	# hier noch anpassen, das wirklich der Spieler mit der kürzesten Distanz referenziert wird
+	track_nearest_player()
 	global_position += direction * speed * delta
 	rotation = direction.angle() - PI
 	
@@ -75,7 +83,31 @@ func _process(delta: float) -> void:
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
 	if area_that_entered != Global.player_ship:
 		angry_zombee()
+
+
+func track_nearest_player():
+	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
+	closest_player = null
+	# INF ist eine vordefnierte Konstante "Infinite". Sinn: 
+	# erst Wert "unendlich" als Disztanz setzen, die dann durhc deie nächste
+	# gemessene (zwingend kleinere) eDistanz ersetzt wird
+	var min_distance = INF
+	# Für jeden Spieler, die oben im dictionary players erfasst wurde, wird die 
+	# Disztanz zum Boss geprüft...
+	for player_id in players.keys():
+		var player = players[player_id]
+		var dist = global_position.distance_to(player.global_position)
+		# ...und wenn diese gemessene Distanz < ist als die bishr kleinste
+		# Distanz, wird dies die neuste kleinste Distanz
+		if dist < min_distance:
+			min_distance = dist
+			#...und der Spieler zu dem sie gehört ist der nahgelegenste Spieler
+			closest_player = player
 	
+	if closest_player:
+		direction = global_position.direction_to(closest_player.global_position)
+
+
 func angry_zombee() -> void:
 	var eyes_shader_material := head.material as ShaderMaterial
 	eyes_shader_material.set_shader_parameter("red_color", 1.0)
