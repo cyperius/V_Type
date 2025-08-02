@@ -1,6 +1,5 @@
 extends Node2D
 
-
 @export var circle_radius := 200.0
 @export var cirle_shot_scene : PackedScene
 @export var level_duration_basis : int = 90
@@ -8,56 +7,58 @@ extends Node2D
 @onready var level_duration = $Timer
 @onready var spawn_timer = Timer.new()
 @onready var circle_enemy_1 : PackedScene = preload("res://scenes/enemy_circle_1.tscn")
-# Geschwindikeit für Gegner. Der Wert 5 kombiniert mit einem timer Intervall
-# von 5 Sekunden führt dazu dsass die Gegner fats perfekt auf einer Linie spawnen
 @export var winkel_geschwindigkeit : float = 6
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
-@onready var player = get_tree().current_scene.player
-@onready  var center_node = $Center
-
+@onready var center_node = $Center
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
-
-
 func _ready() -> void:
-	player.scale = Vector2(0.2, 0.2)
 	level_duration.wait_time = level_duration_basis * time_delay
 	level_duration.timeout.connect(_on_level_duration_timeout)
+
 	spawn_timer.wait_time = 6 / time_delay
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
 	spawn_timer.start()
 	level_duration.start()
-	
 
-	# 2. Circle-Mode aktivieren>
-	player.mode = player.PlayerMode.CIRCLE
+	# 🔁 Für alle registrierten Spieler im Global-Singleton
+	for player_id in Global.player_ships.keys():
+		var player = Global.get_player_ship(player_id)
+		if player == null:
+			continue  # Sicherheitshalber
 
-	# 3. Player Zentrum setzen
-	player.circle_center_position = center_node.global_position
+		# 1. Skalierung anpassen
+		player.scale = Vector2(0.2, 0.2)
 
-	# 4. Radius setzen
-	player.circle_radius = circle_radius
+		# 2. Circle-Mode aktivieren
+		player.mode = player.PlayerMode.CIRCLE
 
-	# 5. Startwinkel auswählen (hier 0 Radiant = rechts außen)
-	var start_angle := 0.0
-	player.angle = start_angle
+		# 3. Player-Zentrum setzen
+		player.circle_center_position = center_node.global_position
 
-	# 6. Position auf dem Kreis berechnen
-	player.global_position = center_node.global_position + Vector2(cos(start_angle), sin(start_angle)) * circle_radius
+		# 4. Radius setzen
+		player.circle_radius = circle_radius
 
-	# 7. Rotation so setzen, dass das Schiff nach innen schaut (angle + PI)
-	player.rotation = start_angle + PI
+		# 5. Startwinkel – optional je Spieler anders
+		var start_angle : float = PI * 2 * float(player_id - 1) / Global.player_ships.size()
+		player.angle = start_angle
 
-	# 8. Debug-Ausgabe
-	print("Level3: Circle_Mode aktiviert. Center=", player.circle_center_position, " Radius=", player.circle_radius)
-	
-	# 9. Level Ende
+		# 6. Position auf dem Kreis berechnen
+		player.global_position = center_node.global_position + Vector2(cos(start_angle), sin(start_angle)) * circle_radius
+
+		# 7. Rotation so setzen, dass das Schiff nach innen schaut
+		player.rotation = start_angle + PI
+
+		# 8. Debug-Ausgabe
+		print("🌀 Spieler %d im Kreis-Modus. Center=%s, Angle=%.2f" % [player_id, player.circle_center_position, start_angle])
+
+
 func _on_level_duration_timeout():
-	emit_signal("level_finished",4, 0, 0)
-	
-	
+	emit_signal("level_finished", 4, 0, 0)
+
+
 func _on_spawn_timer_timeout():
 	var new_circle_enemy = circle_enemy_1.instantiate()
 	add_child(new_circle_enemy)
