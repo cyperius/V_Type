@@ -303,6 +303,9 @@ func shoot_weapon(weapon: PackedScene):
 	# Instanziere das Projektil
 	var projectile_instance = weapon.instantiate()
 	
+	# 💡 Übergib die Spieler-ID!
+	projectile_instance.owner_id = player_id
+	
 	# Füge das Projektil der aktuellen Szene hinzu
 	var current_scene = get_tree().current_scene
 	if current_scene:

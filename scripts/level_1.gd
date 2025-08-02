@@ -18,17 +18,30 @@ func _ready():
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 	
-	# Global.player_ship referenziert die Player_ship Szene mit angehängtem player_ship.gd,
-	# und zwar via Global.gd (ein Autoload -> von jedem Skript erreichbar)
-	# Mit Zugriff auf die Variable mode und enum PLayer;ode.FREE kann so der Spielmodus gesetzt werden
-	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
-	Global.player_ship.rotation_degrees = 0
-	Global.player_ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-	Global.player_ship.collision_layer = 1
-	Global.player_ship.global_position = Vector2 (500, 1000)
-	Global.player_ship.scale = Vector2(0.25, 0.25)
-	#Global.player_ship.speed = Global.player_ship.max_speed
-	Global.player_ship.show()
+	# Referenz auf das Schiff des gewünschten Spielers holen (z. B. Spieler 1 oder 2)
+	var ship = Global.get_player_ship(1)
+
+	# Sicherheitscheck: Gibt es diesen Spieler überhaupt?
+	if ship == null:
+		print("⚠️ Spieler mit ID %d nicht gefunden!" % Global.player_id)
+		return
+
+	# Setzt den Modus des Spielers (z. B. FREE, CIRCLE) – Achtung: Enum kommt aus dem Spieler selbst!
+	ship.mode = ship.PlayerMode.FREE  # Zugriff über das Schiff selbst
+
+	# Zurücksetzen von Rotation und Kollisionsdaten (z. B. bei Respawn oder Level-Start)
+	ship.rotation_degrees = 0
+	ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	ship.collision_layer = 1
+	ship.global_position = Vector2(500, 1000)  # z. B. Startposition für Player 1
+	ship.scale = Vector2(0.25, 0.25)
+
+	# Optional: Bewegung zurücksetzen (falls nötig)
+	# ship.speed = ship.max_speed
+
+	# Spieler sichtbar machen (z. B. nach Respawn)
+	ship.show()
+
 	enemies_container.add_child(enemy)
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
 	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
