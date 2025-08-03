@@ -78,8 +78,15 @@ func _ready():
 		self,                       # Verweis auf dieses Spieler-Schiff (also die ganze Node)
 		get_node("ship_sprite")     # Verweis auf den Sprite des Schiffs (für visuelle Änderungen)
 )
+
+	if player_id == 2:
+		ship_sprite.texture = player2_skin
+		ship_sprite.scale = Vector2(1.5, 1.2)
+	# else brächte es nicht solange player1 im Inspector sein Sprite zugeordnet kriegt
+	else:
+		ship_sprite.texture = player1_skin
 	
-	ship_sprite.texture = player2_skin if player_id == 2 else player1_skin
+	
 	var ui_energy = "energy%d" % player_id
 	print ("player_id: " % player_id, ui_energy)
 	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken
