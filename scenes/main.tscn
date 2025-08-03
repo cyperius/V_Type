@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://c20flpj8vlyd6"]
+[gd_scene load_steps=6 format=3 uid="uid://c20flpj8vlyd6"]
 
 [ext_resource type="Script" uid="uid://be45lia8mdmjn" path="res://scripts/main.gd" id="1_2wu2a"]
 [ext_resource type="PackedScene" uid="uid://b402fm5cuxyoc" path="res://scenes/player_ship.tscn" id="3_eahio"]
 [ext_resource type="PackedScene" uid="uid://be2saoppwc7v6" path="res://scenes/ui.tscn" id="3_vtdax"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_v5wbp"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_sugp2"]
 font_size = 48
 
 [node name="Main" type="Node2D"]
@@ -29,19 +32,59 @@ player_id = 2
 
 [node name="UI" parent="." instance=ExtResource("3_vtdax")]
 
+[node name="EnemiesDestroyed" parent="UI" index="0"]
+offset_left = 42.0
+offset_right = 496.0
+
 [node name="energy" parent="UI" index="2"]
-offset_left = 696.0
-offset_top = 22.0
-offset_right = 1150.0
-offset_bottom = 157.0
+offset_left = 45.0
+offset_top = 95.0
+offset_right = 499.0
+offset_bottom = 230.0
+
+[node name="EnemiesDestroyed2" type="Label" parent="UI"]
+layout_mode = 1
+offset_left = 2159.0
+offset_top = 4.0
+offset_right = 2613.0
+offset_bottom = 139.0
+text = "Enemies destroyed:"
+label_settings = SubResource("LabelSettings_v5wbp")
+
+[node name="Score2" type="Label" parent="UI"]
+layout_mode = 1
+offset_left = 3399.0
+offset_top = 25.0
+offset_right = 3853.0
+offset_bottom = 160.0
+text = "Score:"
+label_settings = SubResource("LabelSettings_v5wbp")
+
+[node name="energy2" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 2162.0
+offset_top = 68.0
+offset_right = 2616.0
+offset_bottom = 203.0
+text = "energy:"
+label_settings = SubResource("LabelSettings_v5wbp")
 
 [node name="Health" type="Label" parent="UI"]
 layout_mode = 0
-offset_left = 1144.0
-offset_top = 20.0
-offset_right = 1598.0
-offset_bottom = 155.0
+offset_left = 47.0
+offset_top = 168.0
+offset_right = 501.0
+offset_bottom = 303.0
 text = "health:"
-label_settings = SubResource("LabelSettings_v5wbp")
+label_settings = SubResource("LabelSettings_sugp2")
+
+[node name="Health2" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 2167.0
+offset_top = 135.0
+offset_right = 2621.0
+offset_bottom = 270.0
+text = "health:"
+label_settings = SubResource("LabelSettings_sugp2")
 
 [editable path="UI"]

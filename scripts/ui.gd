@@ -7,6 +7,9 @@ extends Control
 @onready var score = $Score
 @onready var energy = $energy
 @onready var health: Label = $Health
+@onready var score_2: Label = $Score2
+@onready var energy_2: Label = $energy2
+@onready var health_2: Label = $Health2
 
 
 # Called when the node enters the scene tree for the first time.

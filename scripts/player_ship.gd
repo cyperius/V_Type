@@ -76,6 +76,8 @@ func _ready():
 		get_node("ship_sprite")     # Verweis auf den Sprite des Schiffs (für visuelle Änderungen)
 )
 
+	var ui_energy = "energy%d" % player_id
+	print ("player_id: " % player_id, ui_energy)
 	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
 	# Signal "hit_effect_triggered" verbinden
@@ -133,9 +135,6 @@ func _process(delta: float) -> void:
 	# Wenn Taste losgelassen, Schild deaktivieren
 	if Input.is_action_just_released("p%d_shield" % player_id):
 		deactivate_shield()
-	# Code der unabhängig vom PlayerMode gelten soll
-	# vorübergehend zwecks debugging im process Funktion laufend upgedatet
-	#get_tree().current_scene.ui.health.text = "Health: " + str(health)
 	if shield_is_activated:
 		# bei aktiviertem Schild wird laufend Energie verbraucht...
 		blue_energy -= 300 * delta

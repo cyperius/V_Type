@@ -2,6 +2,8 @@ extends Sprite2D
 
 @export var vomit_bullet_scene : PackedScene
 
+var last_target_position = Vector2.INF
+
 @onready var vomit_particles: GPUParticles2D = %VomitParticles
 @onready var head: Sprite2D = %Head
 @onready var direction_2d : Vector2
@@ -10,7 +12,11 @@ extends Sprite2D
 
 
 func _process(_delta: float) -> void:
-	vomit_particles.look_at(boss_zombee.closest_player.global_position)
+	# Nur bei einem Wechsel des nahegelegensten Spielers look_at() ausführen, spart Rechenleistung
+	if boss_zombee.closest_player and boss_zombee.closest_player.global_position != last_target_position:
+		vomit_particles.look_at(boss_zombee.closest_player.global_position)
+		last_target_position = boss_zombee.closest_player.global_position
+	
 	var material := vomit_particles.process_material as ParticleProcessMaterial
 	material.direction = Vector3(1, 0, 0)  # Immer nach vorne (lokale +X-Richtung)
 	material.initial_velocity_min = 300.0
