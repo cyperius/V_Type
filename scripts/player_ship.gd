@@ -26,6 +26,7 @@ var current_player_state = default_player_state
 
 @export var player_id : int = 1
 
+
 # @export macht diese Variablen im Godot Editor sichtbar und einstellbar
 # PackedScene ist ein Typ für vorbereitete Szenen (wie unsere Laser-Projektile)
 @export var laser_beam: PackedScene    # Szene für den normalen Laser
@@ -60,7 +61,9 @@ var projectiles := []                  # Liste aller aktiven Projektile
 # Variabeln für Handling von player_death und respawning
 var player_is_dead := false
 var spawn_position := Vector2.ZERO  # wird beim Start gesetzt
-
+@onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
+@onready var player2_skin = preload("res://assets/graphic_elements/enemies/player2_ship.png")
+@onready var ship_sprite: Sprite2D = %ship_sprite
 
 # Diese Funktion wird beim Start der Szene automatisch ausgeführt
 func _ready():
@@ -75,7 +78,8 @@ func _ready():
 		self,                       # Verweis auf dieses Spieler-Schiff (also die ganze Node)
 		get_node("ship_sprite")     # Verweis auf den Sprite des Schiffs (für visuelle Änderungen)
 )
-
+	
+	ship_sprite.texture = player2_skin if player_id == 2 else player1_skin
 	var ui_energy = "energy%d" % player_id
 	print ("player_id: " % player_id, ui_energy)
 	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken

@@ -84,6 +84,7 @@ damage = 25
 game_over = ExtResource("5_jfq58")
 
 [node name="ship_sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 rotation = -1.5708
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_vs4qq")
