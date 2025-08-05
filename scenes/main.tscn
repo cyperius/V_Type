@@ -45,7 +45,7 @@ offset_bottom = 230.0
 [node name="EnemiesDestroyed2" type="Label" parent="UI"]
 layout_mode = 1
 offset_left = 2159.0
-offset_top = 4.0
+offset_top = 8.0
 offset_right = 2613.0
 offset_bottom = 139.0
 text = "Enemies destroyed:"
@@ -80,10 +80,10 @@ label_settings = SubResource("LabelSettings_sugp2")
 
 [node name="Health2" type="Label" parent="UI"]
 layout_mode = 0
-offset_left = 2167.0
-offset_top = 135.0
-offset_right = 2621.0
-offset_bottom = 270.0
+offset_left = 2174.0
+offset_top = 161.0
+offset_right = 2628.0
+offset_bottom = 296.0
 text = "health:"
 label_settings = SubResource("LabelSettings_sugp2")
 

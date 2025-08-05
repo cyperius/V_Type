@@ -12,6 +12,7 @@ signal absorbed_energy(amount)
 var player_score               = 0
 var destroyed_enemies_counter  = 0
 
+
 func _ready() -> void:
 	GameManager.connect_signals.connect(_on_connect_the_signals)
 	# Hier setzen wir wieder auf Playing und registrieren Container
