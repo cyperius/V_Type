@@ -17,10 +17,10 @@ signal enemy_destroyed(score: int, energy: int)
 func _ready():
 	asteroid_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	bg.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
-	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
-	Global.player_ship.global_position = Vector2(1000, 1000)
-	Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
-	Global.player_ship.rotation_degrees = 0
+	##background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
+	#Global.getplayer_ship.global_position = Vector2(1000, 1000)
+	#Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
+	#Global.player_ship.rotation_degrees = 0
 	
 	
 func _process(delta: float) -> void:

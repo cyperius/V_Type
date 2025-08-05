@@ -26,6 +26,7 @@ signal boss_defeated()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	add_to_group("enemies")
 	area_entered.connect(_on_area_entered)
 	# Timer konfigurieren:>>
 	shoot_timer.wait_time = 2
@@ -63,7 +64,6 @@ func _process(delta: float) -> void:
 func _position_change() -> void:
 		new_y = randi_range(position.y - 300, position.y + 300) 
 		
-
 func _shot() -> void:
 	if sfx_stream:
 		AudioManager.play_sfx(sfx_stream)

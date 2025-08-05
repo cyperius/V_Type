@@ -28,6 +28,7 @@ var helmet_health
 
 
 func _ready() -> void:
+	add_to_group("enemies")
 	# Durch alle registrierten Spieler in Global gehen
 	for player_id in Global.player_ships.keys():
 		var player = Global.get_player_ship(player_id)

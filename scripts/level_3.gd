@@ -17,6 +17,14 @@ func _ready() -> void:
 	level_duration.wait_time = level_duration_basis * time_delay
 	level_duration.timeout.connect(_on_level_duration_timeout)
 
+	# Pos und Modus für alle Spieler setzen:  🔁 Für alle registrierten Spieler im Global-Singleton
+	for player_id in Global.player_ships.keys():
+		var player = Global.get_player_ship(player_id)
+		player.mode = player.PlayerMode.FREE
+		player.rotation_degrees = 0
+		player.global_position = Vector2 (500, 1000 + 200 * player_id)
+		player.scale = Vector2(0.25, 0.25)
+
 	spawn_timer.wait_time = 6 / time_delay
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)

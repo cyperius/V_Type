@@ -3,17 +3,20 @@ extends Node2D
 signal enemy_destroyed(score: int, energy: int)
 signal absorbed_energy(amount)
 
+var player_score               = 0
+var destroyed_enemies_counter  = 0
+var there_are_active_players : bool
+
 @onready var level_container: Node   = $LevelContainer
 @onready var ui              : Control = $UI
 @onready var shop            : Node2D  = $Shop
 @onready var start_menu      : Node2D  = $StartMenu
 @onready var player          : Area2D  = $player_space_ship
 
-var player_score               = 0
-var destroyed_enemies_counter  = 0
-
 
 func _ready() -> void:
+	there_are_active_players = Global.player_ships != {}
+	print("there are active players? riiiiight? - ", there_are_active_players)
 	GameManager.connect_signals.connect(_on_connect_the_signals)
 	# Hier setzen wir wieder auf Playing und registrieren Container
 	GameManager.set_state(GameManager.STATE_PLAYING)

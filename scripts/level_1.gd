@@ -11,6 +11,13 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready():
+# Pos und Modus für alle Spieler setzen:  🔁 Für alle registrierten Spieler im Global-Singleton
+	for player_id in Global.player_ships.keys():
+		var player = Global.get_player_ship(player_id)
+		player.mode = player.PlayerMode.FREE
+		player.rotation_degrees = 0
+		player.global_position = Vector2 (500, 1000 + 200 * player_id)
+		player.scale = Vector2(0.25, 0.25)
 	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
@@ -20,12 +27,14 @@ func _ready():
 	
 	# Referenz auf das Schiff des gewünschten Spielers holen (z. B. Spieler 1 oder 2)
 	var ship = Global.get_player_ship(1)
+	
 
 	# Sicherheitscheck: Gibt es diesen Spieler überhaupt?
 	if ship == null:
 		print("⚠️ Spieler mit ID %d nicht gefunden!" % Global.player_id)
 		return
-
+	
+	#Vergleiche mit player Werte Rücksetzung oben - Für eine Varainte entscheiden
 	# Setzt den Modus des Spielers (z. B. FREE, CIRCLE) – Achtung: Enum kommt aus dem Spieler selbst!
 	ship.mode = ship.PlayerMode.FREE  # Zugriff über das Schiff selbst
 
