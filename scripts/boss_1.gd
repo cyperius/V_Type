@@ -48,13 +48,13 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	
-	if Global.player_ship:
-		var ship_sprite = Global.player_ship.get_node("ship_sprite")
-		var player_position = ship_sprite.global_position
-	# Kontrolle ob Player-Position ändert
-		# print("player position", player_position) 
-	else:
-		print("Global.player_ship ist noch nicht gesetzt!")
+	#if Global.player_ship:
+		#var ship_sprite = Global.player_ship.get_node("ship_sprite")
+		#var player_position = ship_sprite.global_position
+	## Kontrolle ob Player-Position ändert
+		## print("player position", player_position) 
+	#else:
+		#print("Global.player_ship ist noch nicht gesetzt!")
 
 	position.y = lerp(float(position.y), float(new_y), 0.05)
 	position.x = lerp(float(position.x), float(2800), 0.005) # Bewegt sich langsam Richtung `new_y`
