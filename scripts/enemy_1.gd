@@ -1,6 +1,6 @@
 extends Area2D
 
-signal enemy_destroyed(score: int, energy: int)
+signal enemy_destroyed(score: int, energy: int, player_id: int)
 
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
@@ -29,12 +29,15 @@ func _ready() -> void:
 	audio_stream_player_2d.stream = shot_sound
 	
 	
-func _on_area_entered(area: Area2D) -> void:
+func _on_area_entered(other: Area2D) -> void:
 	#AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
-	emit_signal("enemy_destroyed", score_count, energy_left)
+	# Prüfen, ob der Kollisionspartner ein PlayerShip ist
+	if other is player_ship:
+		var player_id := (other as player_ship).player_id
+		emit_signal("enemy_destroyed", score_count, energy_left, player_id)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

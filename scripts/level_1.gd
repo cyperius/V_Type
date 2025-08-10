@@ -1,7 +1,7 @@
 extends Node2D  # MainScene basiert auf Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
-signal enemy_destroyed(score: int, energy: int)
+signal enemy_destroyed(score: int, energy: int, player_id :int)
 
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer

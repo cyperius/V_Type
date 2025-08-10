@@ -9,6 +9,38 @@ extends Control
 @onready var health_2: Label = $Health2
 @onready var energy: Label = $energy
 
+# Eine Zeile Text pro Spieler (Score, Energy, Health in einer Label-Zeile)
+@onready var player_rows := {}  # player_id -> Label
+
+# Sorgt dafür, dass für eine player_id ein Label existiert (lazy)
+func _ensure_player_row(player_id: int) -> Label:
+	# Falls schon vorhanden: zurückgeben
+	if player_rows.has(player_id):
+		return player_rows[player_id]
+
+	# Neu anlegen
+	var row := Label.new()
+	row.name = "player_row_%d" % player_id
+	# Sauber: Font-Größe via Theme-Override (ohne .ttf)
+	row.add_theme_font_size_override("font_size", 28)
+
+	# Feste Koordinaten (eine Zeile pro Spieler; 20px Start, 36px Zeilenhöhe)
+	row.position = Vector2(20, 20 + (player_id - 1) * 36)
+
+	add_child(row)
+	player_rows[player_id] = row
+	return row
+
+# Öffentliche API für main.gd: eine Zeile updaten
+func set_player_ui(pid: int, score: int, energy: int, health: int) -> void:
+	var row := _ensure_player_row(pid)
+	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [pid, score, energy, health]
+
+# Optional: Gesamtzähler weiter darstellen (falls du das oben noch nutzt)
+func set_destroyed_enemies(total: int) -> void:
+	destroyed_enemies_counter.text = "Enemies destroyed: %d" % total
+
+
 func _ready() -> void:
 	var player_nr := 0
 
@@ -17,7 +49,7 @@ func _ready() -> void:
 
 		# Laufzeit-Label erzeugen
 		var label := Label.new()
-		label.text = "Player%d Score" % player_nr
+		label.text = "Player%d Score: " % player_nr
 		label.name = "score_player_%d" % player_nr
 
 		# -> WICHTIG: Font-Größe ohne Font-Datei setzen
