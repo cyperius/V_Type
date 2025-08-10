@@ -168,10 +168,11 @@ func _process(delta: float) -> void:
 	
 		# Überprüft Waffeneingaben und löst entsprechende Waffen aus
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
-		if blue_energy < 20:
-			return
-		blue_energy -= 20
-		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
+		# Mechanik falls Einsatz der Waffe Energie verbrauchen soll
+		#if blue_energy < 20:
+			#return
+		#blue_energy -= 20
+		#get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 		shoot_weapon(primary_weapon)
 		
 	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
@@ -204,6 +205,7 @@ func _process_horizontal(delta: float) -> void:
 	velocity = direction * speed
 	# Aktualisiert die Position des Schiffs
 	position += velocity * delta
+	# Begrenzt den Bewegunsspeilraum auf dei Grösse des (Spiel-)Bildschirms
 	position.x = clampf(position.x, 0, screensize.x)
 	position.y = clampf(position.y, 0, screensize.y)
 
@@ -257,7 +259,7 @@ func player_is_hit(damage: int):
 		if Global.destroyed_player_ships.size() == Global.player_ships.size():
 			print("1 Spieler tot... player_ship_size: ", Global.player_ships.size()\
 			, "destroyed_player_size: ", Global.destroyed_player_ships.size())
-			await get_tree().create_timer(1.3).timeout
+			await get_tree().create_timer(1.2).timeout
 			GameManager.set_state(GameManager.STATE_GAME_OVER)
 		
 

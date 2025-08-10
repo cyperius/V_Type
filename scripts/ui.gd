@@ -1,8 +1,6 @@
 extends Control
 
-# Diese onready-Zeilen sind notwendig, damit ich von einer übergeordneten Szene,
-# in welcher diese UI-Szene instantiert wird, auf diese Varaiabeln zugreifen kann
-# z.B. kann ich dann in der übergeordneten Szene schreiben: ui.score += 1
+# Diese onready-Variablen bleiben wie gehabt
 @onready var energy_labels := {}
 @onready var destroyed_enemies_counter = $EnemiesDestroyed
 @onready var score = $Score
@@ -11,24 +9,28 @@ extends Control
 @onready var health_2: Label = $Health2
 @onready var energy: Label = $energy
 
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var player_nr = 0
-	#var font = DynamicFont.new()
-	#font.size = 32                                   # Schriftgröße in Punkten
-	for player in Global.player_ships:
-		player_nr +=1
-		var label = Label.new()
-		label.text = "Score"
-		label.name = "score_player" + str(player_nr)
-		#label.font.size = 48
-		add_child(label)
-		label.global_position = Vector2(0, randi_range(0,500))
-		
-		
+	var player_nr := 0
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	for player in Global.player_ships:
+		player_nr += 1
+
+		# Laufzeit-Label erzeugen
+		var label := Label.new()
+		label.text = "Player%d Score" % player_nr
+		label.name = "score_player_%d" % player_nr
+
+		# -> WICHTIG: Font-Größe ohne Font-Datei setzen
+		# Godot 4: Theme-Override für die Schriftgröße (sauberer Weg)
+		label.add_theme_font_size_override("font_size", 48)
+
+		# Child einhängen
+		add_child(label)
+
+		# Harte Koordinaten relativ zum Parent (Control)
+		label.position = Vector2(0, randi_range(0, 500))
+
+	# Optional: vorhandene Labels ebenfalls größer machen
+	for ui_label in [destroyed_enemies_counter, score, health, score_2, health_2, energy]:
+		if ui_label:
+			ui_label.add_theme_font_size_override("font_size", 48)
