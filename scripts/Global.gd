@@ -3,6 +3,9 @@ extends Node
 # Enthält Spieler-Schiff-Referenzen: {1: player1_ship, 2: player2_ship, ...}
 var player_ships := {}
 
+# enthält die aktuell 'toten' players
+var destroyed_player_ships := []
+
 # Enthält die jeweiligen Sprites der Spieler: {1: sprite1, 2: sprite2, ...}
 var player_sprites := {}
 
@@ -22,3 +25,7 @@ func get_player_ship(player_id: int) -> Node:
 # Zugriffsfunktion für Sprite
 func get_player_sprite(player_id: int) -> Node:
 	return player_sprites.get(player_id, null)
+
+# Helferfunktion, um die zerstörten Spieler-Schiffe zu erfassen
+func register_player_destroyed(ship: Node) -> void:
+	destroyed_player_ships.append(ship)

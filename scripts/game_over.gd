@@ -11,15 +11,15 @@ var explosion: PackedScene = load("res://scenes/explosion_animation.tscn")
 
 func _ready() -> void:
 	print("ausgelöst")
-	if Global.player_ship:
-		# Hier greifst du auf eine Eigenschaft des Player-Schiffs zu,
-		# z. B. auf einen Kind-Knoten 'ship_sprite'
-		self.position = Global.player_sprite.global_position
-		print("Initialposition: ", self.position)
+	if Global.destroyed_player_ships != []:
+		var destroyed_player = Global.destroyed_player_ships.back()
+		self.global_position = destroyed_player.global_position
+		print("Initialposition: ", self.global_position)
 	else:
-		print("Global.player_ship ist nicht gesetzt!")
+		print("kein Spieler im destroyed_player Dictionary")
 	add_child(explosion.instantiate())
-	reset_level()
+	if Global.destroyed_player_ships.size() == Global.player_ships.size():
+		reset_level()
 	
 	
 func reset_level():

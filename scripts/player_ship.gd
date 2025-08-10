@@ -251,10 +251,12 @@ func player_is_hit(damage: int):
 	print("damage: ", damage, "ergo new health: ", health)
 	calculate_damage_state()
 	if health <= 0:
-		handle_player_death()
-		# Spieler kann nicht mehr schießen oder sich bewegen,
-		# weil der GameManager den Baum pausiere wird.
-		GameManager.set_state(GameManager.STATE_GAME_OVER)
+		handle_player_death() # Spieler, unsichtbar, nicht mehr steuerbar, wird dem destroyed_player Array hinzugefügt
+		# falls alle regstrierten Spieler tot sind, GameOver Status auslösen
+		if Global.destroyed_player_ships.size() == Global.player_ships.size():
+			print("1 Spieler tot... player_ship_size: ", Global.player_ships.size()\
+			, "destroyed_player_size: ", Global.destroyed_player_ships.size())
+			GameManager.set_state(GameManager.STATE_GAME_OVER)
 		
 
 	else:	
@@ -391,9 +393,10 @@ func _apply_slow() -> void:
 func handle_player_death():
 	print("Spieler %d ist gestorben!" % player_id)
 	visible = false                     # ausblenden
-	set_process(false)                 # keine Logik mehr ausführen
-	set_physics_process(false)
+	self.set_process(false)                 # keine Logik mehr ausführen
+	self.set_physics_process(false)
 	player_is_dead = true              # Status merken
+	Global.destroyed_player_ships.append(self)
 
 
 func revive():

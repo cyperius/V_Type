@@ -34,6 +34,9 @@ func _ready() -> void:
 			current_level_node.enemy_destroyed.connect(_on_enemy_destroyed)
 		if current_level_node.has_signal("level_finished"):
 			current_level_node.level_finished.connect(_on_level_finished)
+	
+	print("start player_ship_size: ", Global.player_ships.size()\
+			, "start destroyed_player_size: ", Global.destroyed_player_ships.size())
 
 func _process(delta):
 	if Input.is_action_just_pressed("level_1"):
