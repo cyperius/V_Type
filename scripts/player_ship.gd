@@ -44,7 +44,7 @@ var shield_is_activated := false
 var player_is_slowed_down := false
 var controls_are_reversed := false
 @export var damage: int = 10
-@export var game_over: PackedScene        # Game Over Szene
+#@export var game_over: PackedScene        # Game Over Szene
 @onready var just_been_hit_timer := %BeenHitTimer
 @onready var hit_scene : PackedScene = preload("res://scenes/hit.tscn")
 # Schild um das Schiff mittels PGPUParticles, kann vom Spieler aktiviert werden
@@ -52,6 +52,7 @@ var controls_are_reversed := false
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 # health_ratio bestimmen um für Farbgebung und allenfalls weitere Effekte zu verwenden
 @onready var health_ratio := 1.0
+@onready var explosion_scene: PackedScene = load("res://scenes/explosion_animation.tscn")
 
 # Diese Variablen speichern die aktiven Waffen
 var primary_weapon: PackedScene        # Hauptwaffe
@@ -256,6 +257,7 @@ func player_is_hit(damage: int):
 		if Global.destroyed_player_ships.size() == Global.player_ships.size():
 			print("1 Spieler tot... player_ship_size: ", Global.player_ships.size()\
 			, "destroyed_player_size: ", Global.destroyed_player_ships.size())
+			await get_tree().create_timer(1.3).timeout
 			GameManager.set_state(GameManager.STATE_GAME_OVER)
 		
 
@@ -393,10 +395,13 @@ func _apply_slow() -> void:
 func handle_player_death():
 	print("Spieler %d ist gestorben!" % player_id)
 	visible = false                     # ausblenden
-	self.set_process(false)                 # keine Logik mehr ausführen
-	self.set_physics_process(false)
+	set_process(false)                 # keine Logik mehr ausführen
+	set_physics_process(false)
 	player_is_dead = true              # Status merken
 	Global.destroyed_player_ships.append(self)
+	var player_explosion = explosion_scene.instantiate()
+	get_tree().current_scene.add_child(player_explosion)
+	player_explosion.global_position = global_position
 
 
 func revive():

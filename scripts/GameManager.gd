@@ -109,7 +109,6 @@ func _start_game_over() -> void:
 	var game_over_scene: Node2D = game_over_scene_packed.instantiate() as Node2D
 	game_over_scene.name = "GameOverScene"
 	# Damit die GameOver-Szene auch im pausierten Baum weiterläuft
-	# Damit die GameOver-Szene auch im pausierten Baum weiterläuft
 	#game_over_scene.pause_mode = Node.PauseMode.PROCESS
 	level_container.add_child(game_over_scene)
 	# Verbindung zum Signal, wenn die Sequenz fertig ist

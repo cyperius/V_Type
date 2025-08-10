@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene load_steps=13 format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_6i3ro"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://scenes/laser_beam.tscn" id="2_othpc"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://scenes/laser_blast.tscn" id="3_igyjx"]
-[ext_resource type="PackedScene" uid="uid://dgppv7j0ebnx1" path="res://scenes/game_over.tscn" id="5_jfq58"]
 [ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/enemies/space_ship1.png" id="6_vs4qq"]
 [ext_resource type="Script" uid="uid://3rcg1dm60hpv" path="res://scripts/particle_damage.gd" id="6_yf02v"]
 
@@ -79,9 +78,8 @@ script = ExtResource("1_6i3ro")
 laser_beam = ExtResource("2_othpc")
 laser_blast = ExtResource("3_igyjx")
 max_speed = 800
-max_health = 2000
+max_health = 50
 damage = 25
-game_over = ExtResource("5_jfq58")
 
 [node name="ship_sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
