@@ -19,7 +19,7 @@ func _ready() -> void:
 			continue
 
 		# Grundzustand für Levelstart
-		ship.mode = ship.PlayerShip.PlayerMode.FREE
+		ship.mode = ship.PlayerMode.FREE
 		ship.rotation_degrees = 0
 		ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 		ship.collision_layer = 1

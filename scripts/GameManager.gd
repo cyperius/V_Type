@@ -54,6 +54,21 @@ func _ready():
 	# print("📐 Initiale Fenstergrösse:", screen_size)
 	# print("GameManager bereit, aktueller Zustand:", state)
 
+func _process(delta):
+	if Input.is_action_just_pressed("level_1"):
+		jump_to_level(1)
+	if Input.is_action_just_pressed("level_2"):
+		jump_to_level(2)
+	if Input.is_action_just_pressed("level_3"):
+		jump_to_level(3)
+	if Input.is_action_just_pressed("level_4"):
+		jump_to_level(4)
+
+func jump_to_level(level_nr: int) -> void:
+	await AudioManager.fade_out(4)
+	GameManager.current_level = level_nr
+	GameManager._load_level(level_nr)
+
 # Notification für Fenstergrößen-Änderung
 func _notification(what):
 	if what == NOTIFICATION_RESIZED:

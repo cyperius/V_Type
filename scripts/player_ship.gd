@@ -27,10 +27,9 @@ var speed: float = max_speed
 var boost_activated := false
 
 @export var max_health: int = 600
-var health: int = max_health
-
+var health # wird  in _ready-Funktion auf max_health Wert gesetzt
 @export var max_energy: int = 1000
-var blue_energy: int = max_energy
+var blue_energy # analog zu health
 
 var shield_is_activated := false
 var player_is_slowed_down := false
@@ -73,6 +72,11 @@ func _ready() -> void:
 	# Registrierung zentral hier (Main ruft NICHT mehr register auf)
 	Global.register_player(player_id, self, ship_sprite)
 
+	# stats setzen (erst in -ready-Funktion, damit der Bezug auf den im Editor
+	# gesetzten Wert für max_health (als @export Variable) funktioniert
+	health = max_health
+	blue_energy = max_energy
+	
 	# Skin
 	if player_id == 2:
 		ship_sprite.texture = player2_skin
@@ -164,11 +168,12 @@ func _process_free_move(delta: float) -> void:
 	position.y = clampf(position.y, 0.0, screensize.y)
 
 func _process_circle(delta: float) -> void:
-	var input_strength := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)
 	angle += input_strength * angular_speed * delta
 	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
 	global_position = circle_center_position + offset
 	rotation = angle + PI
+
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
