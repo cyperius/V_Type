@@ -10,12 +10,13 @@ signal absorbed_energy(amount: int, player_id: int)
 #   GAME STATE
 # ──────────────────────────────────────────────────────────────
 var total_destroyed_enemies: int = 0
-var player_scores: Dictionary = {}  # player_id → score
+var player_scores: Dictionary = {}	# player_id → score
 
 # ──────────────────────────────────────────────────────────────
-#   REFERENCES
+#   REFERENCES (Editor: stelle sicher, dass PlayersRoot existiert!)
 # ──────────────────────────────────────────────────────────────
 @onready var level_container: Node = $LevelContainer
+@onready var players_root: Node2D = $LevelContainer/PlayersRoot	# <— fester Node im Editor
 @onready var ui: Control = $UI
 var input_joiner: Node = null
 @onready var player_scene: PackedScene = preload("res://scenes/player_ship.tscn")
@@ -31,12 +32,12 @@ func _ready() -> void:
 		push_warning("⚠️ Kein InputJoiner-Node unter Main gefunden.")
 		input_joiner = null
 
-	# 2) Signale verbinden
+	# 2) Signale vom InputJoiner verbinden
 	if input_joiner:
 		input_joiner.player_joined.connect(_on_player_joined)
 		input_joiner.player_left.connect(_on_player_left)
 
-	# 3) Level laden
+	# 3) Level laden (Level‑Node wird als Geschwister neben PlayersRoot eingefügt)
 	GameManager.set_state(GameManager.STATE_PLAYING)
 	GameManager.register_level_container(level_container)
 	if GameManager.has_signal("level_loaded"):
@@ -46,13 +47,11 @@ func _ready() -> void:
 	await _ensure_level_ready()
 
 	# 4) Bereits aktive Spieler spawnen (Pads evtl. schon vor _ready() verbunden)
-	var initial_ids := []
+	var initial_ids: Array = []
 	if input_joiner and input_joiner.has_method("get_active_player_ids"):
 		initial_ids = input_joiner.get_active_player_ids()
 	else:
-		# Fallback über Autoload "Players" (bleibt bestehen)
-		initial_ids = Players.get_active_player_ids()
-
+		initial_ids = Players.get_active_player_ids()	# Fallback über Autoload
 	for player_id in initial_ids:
 		_on_player_joined(player_id)
 
@@ -61,30 +60,23 @@ func _ready() -> void:
 	_update_all_players_ui()
 
 # ──────────────────────────────────────────────────────────────
-#   LEVEL WARTEN
+#   LEVEL WARTEN (nur bis der erste Level hängt)
 # ──────────────────────────────────────────────────────────────
 func _ensure_level_ready() -> void:
 	var attempts := 0
 	while level_container.get_child_count() == 0 and attempts < 120:
 		await get_tree().process_frame
 		attempts += 1
-	if level_container.get_child_count() == 0:
-		push_warning("⚠️ Level wurde nicht in den LevelContainer geladen. Spawne Spieler unter Main als Fallback.")
-	else:
-		# Optional: print("✅ Level bereit:", level_container.get_child(0).name)
-		pass
+	# Kein weiteres Handling nötig: PlayersRoot ist persistent und bleibt bestehen.
 
 # ──────────────────────────────────────────────────────────────
 #   SPIELER-HANDLING
 # ──────────────────────────────────────────────────────────────
 func _on_player_joined(player_id: int) -> void:
-	# Falls Level gerade (noch) lädt: sicherstellen, dass er hängt
 	if level_container.get_child_count() == 0:
 		await _ensure_level_ready()
 	_spawn_player(player_id)
 	_register_player_in_main(player_id)
-	# Direkt sicherstellen, dass der Spieler im Players‑Container des Levels hängt
-	_on_level_loaded()
 	_update_player_ui(player_id)
 
 func _on_player_left(player_id: int) -> void:
@@ -93,7 +85,7 @@ func _on_player_left(player_id: int) -> void:
 	_update_all_players_ui()
 
 func _spawn_player(player_id: int) -> void:
-	# 1) Neue Spieler‑Instanz
+	# 1) Spielerinstanz
 	var player_ship: PlayerShip = player_scene.instantiate()
 	player_ship.player_id = player_id
 
@@ -103,20 +95,16 @@ func _spawn_player(player_id: int) -> void:
 	var player_offset = Vector2(180 * (player_id - 1), 120 * (player_id - 1))
 	player_ship.global_position = base_position + player_offset
 
-	# 3) Basis-Eigenschaften
+	# 3) Basiswerte
 	player_ship.scale = Vector2(0.25, 0.25)
 	player_ship.visible = true
 	player_ship.set_process(true)
 	player_ship.set_physics_process(true)
 
-	# 4) Parent bestimmen (LevelRoot → Players-Container)
-	var level_root: Node = self
-	if level_container.get_child_count() > 0:
-		level_root = level_container.get_child(0)
-	var players_container_node = _find_or_create_players_container(level_root)
-	players_container_node.add_child(player_ship)
+	# 4) Immer unter den persistenten PlayersRoot hängen (überlebt Levelwechsel)
+	players_root.add_child(player_ship)
 
-	# 5) Global-Registrierung (falls PlayerShip._ready() noch nicht dran war)
+	# 5) Global registrieren (falls PlayerShip._ready() noch nicht dran war)
 	Global.player_ships[player_id] = player_ship
 
 	# 6) Live‑UI koppeln (nur falls Signal existiert)
@@ -135,8 +123,8 @@ func _remove_player(player_id: int) -> void:
 		if is_instance_valid(ship):
 			ship.queue_free()
 		Global.player_ships.erase(player_id)
-		if Global.player_sprites.has(player_id):
-			Global.player_sprites.erase(player_id)
+	if Global.player_sprites.has(player_id):
+		Global.player_sprites.erase(player_id)
 	if player_scores.has(player_id):
 		player_scores.erase(player_id)
 
@@ -153,29 +141,10 @@ func _connect_level_signals() -> void:
 		current_level.level_finished.connect(_on_level_finished)
 
 func _on_level_loaded() -> void:
-	# Spieler in den Players‑Anker des aktuell geladenen Levels umhängen
-	if level_container.get_child_count() == 0:
-		return
-	var level_root: Node = level_container.get_child(0)
-	var players_container_node = _find_or_create_players_container(level_root)
-	for player_ship in Global.player_ships.values():
-		if not is_instance_valid(player_ship):
-			continue
-		if player_ship.get_parent() == players_container_node:
-			continue
-		var old_parent = player_ship.get_parent()
-		if old_parent:
-			old_parent.remove_child(player_ship)
-		players_container_node.add_child(player_ship)
-
-func _find_or_create_players_container(level_root: Node) -> Node:
-	var container_name = "Players"
-	if level_root.has_node(container_name):
-		return level_root.get_node(container_name)
-	var players_container_node = Node2D.new()
-	players_container_node.name = container_name
-	level_root.add_child(players_container_node)
-	return players_container_node
+	# Ein Frame warten, bis der neue Level sicher im Tree ist (kosmetisch)
+	await get_tree().process_frame
+	# Spieler bleiben erhalten, da sie unter PlayersRoot hängen.
+	# Optional: Hier könntest du Kameraziel neu setzen oder Level‑spezifische Dinge tun.
 
 # ──────────────────────────────────────────────────────────────
 #   SIGNAL-CALLBACKS

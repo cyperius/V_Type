@@ -13,6 +13,8 @@ anchor_mode = 0
 
 [node name="LevelContainer" type="Node2D" parent="."]
 
+[node name="PlayersRoot" type="Node2D" parent="LevelContainer"]
+
 [node name="Shop" type="Node2D" parent="."]
 
 [node name="StartMenu" type="Node2D" parent="."]
