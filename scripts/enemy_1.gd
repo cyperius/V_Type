@@ -35,8 +35,8 @@ func _on_area_entered(other: Area2D) -> void:
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
 	# Prüfen, ob der Kollisionspartner ein PlayerShip ist
-	if other is player_ship:
-		var player_id := (other as player_ship).player_id
+	if other is PlayerShip:
+		var player_id := (other as PlayerShip).player_id
 		emit_signal("enemy_destroyed", score_count, energy_left, player_id)
 	hide()
 	await get_tree().create_timer(0.05).timeout

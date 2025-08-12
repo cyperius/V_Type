@@ -24,6 +24,8 @@ buses/default_bus_layout="res://ressources/default_bus_layout.tres"
 AudioManager="*res://scenes/AudioManager.tscn"
 Global="*res://scripts/Global.gd"
 GameManager="*res://scripts/GameManager.gd"
+Players="*res://Autoloads&GameManaging/Players.gd"
+InputJoiner="*res://Autoloads&GameManaging/InputJoiner.gd"
 
 [display]
 

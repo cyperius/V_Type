@@ -1,42 +1,57 @@
 extends Node
 
 # ──────────────────────────────────────────────────────────────
-#   SPIELER-DATEN
+#   SIGNALS
 # ──────────────────────────────────────────────────────────────
-## Enthält Spieler-Schiff-Referenzen: {1: player1_ship, 2: player2_ship, ...}
-var player_ships: Dictionary = {}
-
-## Enthält die aktuell 'toten' Spieler-Schiffe (Liste von Nodes)
-var destroyed_player_ships: Array = []
-
-## Enthält die jeweiligen Sprites der Spieler: {1: sprite1, 2: sprite2, ...}
-var player_sprites: Dictionary = {}
-
+signal player_joined(player_id: int)
+signal player_left(player_id: int)
 
 # ──────────────────────────────────────────────────────────────
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
-	print("🌍 Global.gd _ready – Spieler-Daten:", player_ships)
+	Input.joy_connection_changed.connect(_on_device_changed)
 
-
-# ──────────────────────────────────────────────────────────────
-#   REGISTRIERUNG
-# ──────────────────────────────────────────────────────────────
-func register_player(player_id: int, ship: Node, sprite: Node) -> void:
-	player_ships[player_id] = ship
-	player_sprites[player_id] = sprite
-	print("✅ Spieler %d registriert" % player_id)
-
-func register_player_destroyed(ship: Node) -> void:
-	destroyed_player_ships.append(ship)
-
+	# Bereits verbundene Geräte hinzufügen
+	for device_id in Input.get_connected_joypads():
+		_on_device_connected(device_id)
 
 # ──────────────────────────────────────────────────────────────
-#   ZUGRIFFSFUNKTIONEN
+#   HANDLER FÜR GERÄTE
 # ──────────────────────────────────────────────────────────────
-func get_player_ship(player_id: int) -> Node:
-	return player_ships.get(player_id, null)
+func _on_device_changed(device_id: int, connected: bool) -> void:
+	if connected:
+		_on_device_connected(device_id)
+	else:
+		_on_device_disconnected(device_id)
 
-func get_player_sprite(player_id: int) -> Node:
-	return player_sprites.get(player_id, null)
+func _on_device_connected(device_id: int) -> void:
+	var p_id: int = Players.join(device_id)
+	if p_id != -1:
+		player_joined.emit(p_id)
+		print("✅ Device", device_id, "joined as Player", p_id)
+	else:
+		print("❌ Device", device_id, "could not join (full or duplicate)")
+
+func _on_device_disconnected(device_id: int) -> void:
+	var p_id: int = Players.get_player_for_device(device_id)
+	if p_id != -1:
+		Players.leave_by_device(device_id)
+		player_left.emit(p_id)
+		print("🚪 Device", device_id, "disconnected from Player", p_id)
+
+# ──────────────────────────────────────────────────────────────
+#   MANUELLE SPIELER-STEUERUNG (OPTIONAL)
+# ──────────────────────────────────────────────────────────────
+func join_keyboard() -> void:
+	var p_id: int = Players.join(0) # 0 = Tastatur
+	if p_id != -1:
+		player_joined.emit(p_id)
+		print("⌨ Keyboard joined as Player", p_id)
+
+func leave_keyboard() -> void:
+	var p_id: int = Players.get_player_for_device(0)
+	if p_id != -1:
+		Players.leave_by_device(0)
+		player_left.emit(p_id)
+		print("⌨ Keyboard left Player", p_id)

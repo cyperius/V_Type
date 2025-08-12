@@ -1,118 +1,96 @@
-# Die Klasse erbt von Area2D, was Kollisionserkennung ermöglicht
-class_name player_ship extends Area2D
-
+# ─── CLASS & SIGNALS ─────────────────────────────────────────────
+class_name PlayerShip extends Area2D
 signal hit_effect_triggered(effect)
 
-# ─── NEU: Modi für das Spieler‐Schiff ──────────────────────────────────────────
-enum PlayerMode {
-	FREE,
-	CIRCLE
-}
-# Wird vom Level‐Script gesetzt (siehe Erklärung unten)
+# ─── ENUMS / CONSTANTS ───────────────────────────────────────────
+enum PlayerMode { FREE, CIRCLE }
+
+# ─── MODE / MOVEMENT ─────────────────────────────────────────────
 var mode := PlayerMode.FREE
-# Für Circle-Mode: Zentrum und Radius (ebenfalls vom Level‐Script zuweisen)
 var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
-# Interne Variable: aktueller Winkel auf dem Kreis
-var angle := 0.0
-# Wie schnell sich der Winkel ändert (Radiant pro Sekunde)
-var angular_speed := 2.0
-# ───────────────────────────────────────────────────────────────────────────────
-
-# Aktuelle Bewegungsrichtung und -geschwindigkeit (x und y Komponenten)
+var angle := 0.0               # aktueller Winkel (für Kreisbewegung)
+var angular_speed := 2.0       # Radiant pro Sekunde
 var velocity := Vector2(240, 240)
 var default_player_state = Color(1, 1, 1)
-var current_player_state = default_player_state 
+var current_player_state = default_player_state
 
-@export var player_id : int = 1
-
-
-# @export macht diese Variablen im Godot Editor sichtbar und einstellbar
-# PackedScene ist ein Typ für vorbereitete Szenen (wie unsere Laser-Projektile)
-@export var laser_beam: PackedScene    # Szene für den normalen Laser
-@export var laser_blast: PackedScene   # Szene für den starken Laser
-
-# Grundgeschwindigkeit des Raumschiffs (Pixel pro Sekunde)
+# ─── PLAYER PROPERTIES ───────────────────────────────────────────
+@export var player_id: int = 1
 @export var max_speed := 600
 var speed := max_speed
 var boost_activated := false
-
 @export var max_health: int = 600
 @onready var health := max_health
-@export var blue_energy : int = 1000
+@export var blue_energy: int = 1000
 var shield_is_activated := false
 var player_is_slowed_down := false
 var controls_are_reversed := false
 @export var damage: int = 10
-#@export var game_over: PackedScene        # Game Over Szene
-@onready var just_been_hit_timer := %BeenHitTimer
-@onready var hit_scene : PackedScene = preload("res://scenes/hit.tscn")
-# Schild um das Schiff mittels PGPUParticles, kann vom Spieler aktiviert werden
-@onready var _particles_shield: GPUParticles2D = %ParticlesShield
-@onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
-# health_ratio bestimmen um für Farbgebung und allenfalls weitere Effekte zu verwenden
-@onready var health_ratio := 1.0
-@onready var explosion_scene: PackedScene = load("res://scenes/explosion_animation.tscn")
-
-# Diese Variablen speichern die aktiven Waffen
-var primary_weapon: PackedScene        # Hauptwaffe
-var secondary_weapon: PackedScene      # Sekundärwaffe
-var projectiles := []                  # Liste aller aktiven Projektile
-
-# Variabeln für Handling von player_death und respawning
 var player_is_dead := false
-var spawn_position := Vector2.ZERO  # wird beim Start gesetzt
+var spawn_position := Vector2.ZERO
+
+# ─── WEAPONS ─────────────────────────────────────────────────────
+@export var laser_beam: PackedScene       # Hauptlaser
+@export var laser_blast: PackedScene      # Starker Laser
+var primary_weapon: PackedScene
+var secondary_weapon: PackedScene
+var projectiles := []
+
+# ─── GRAPHICS / SPRITES ──────────────────────────────────────────
 @onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/enemies/player2_ship.png")
 @onready var ship_sprite: Sprite2D = %ship_sprite
 
-# Diese Funktion wird beim Start der Szene automatisch ausgeführt
+# ─── EFFECTS / PARTICLES / COLLISIONS ─────────────────────────────
+@onready var just_been_hit_timer := %BeenHitTimer
+@onready var hit_scene: PackedScene = preload("res://scenes/hit.tscn")
+@onready var _particles_shield: GPUParticles2D = %ParticlesShield
+@onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
+@onready var explosion_scene: PackedScene = preload("res://scenes/explosion_animation.tscn")
+
+# ─── STATUS / RATIOS ─────────────────────────────────────────────
+@onready var health_ratio := 1.0
+
+
 func _ready():
-
-	# Sobald das Spieler-Schiff instanziiert und bereit ist, registrieren wir es zentral in Global.
-	# Dadurch können andere Skripte gezielt über Global.get_player_ship(player_id) auf diesen Spieler zugreifen.
-	# Zusätzlich speichern wir auch den Sprite-Knoten, z. B. für Farbänderungen oder Effekte.
-	# Der player_id muss vorher korrekt gesetzt worden sein (z. B. im Inspektor).
-
+	# ─── REGISTRIERUNG DES SPIELERS ─────────────────────────────
 	Global.register_player(
-		player_id,                  # numerische ID, z. B. 1 oder 2
-		self,                       # Verweis auf dieses Spieler-Schiff (also die ganze Node)
-		get_node("ship_sprite")     # Verweis auf den Sprite des Schiffs (für visuelle Änderungen)
-)
+		player_id,          # numerische ID (z. B. 1 oder 2)
+		self,               # Referenz auf dieses Schiff
+		ship_sprite         # Referenz auf den Sprite
+	)
 
+	# ─── SKIN / AUSSEHEN SETZEN ─────────────────────────────────
 	if player_id == 2:
 		ship_sprite.texture = player2_skin
 		ship_sprite.scale = Vector2(1.5, 1.2)
-	# else brächte es nicht solange player1 im Inspector sein Sprite zugeordnet kriegt
 	else:
 		ship_sprite.texture = player1_skin
-	
-	
-	var ui_energy = "energy%d" % player_id
-	print ("player_id: " % player_id, ui_energy)
-	# Timer-Signal verbinden – z. B. um nach einem Treffer kurz unverwundbar zu sein oder zu blinken
-	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-	# Signal "hit_effect_triggered" verbinden
-	hit_effect_triggered.connect(_on_hit_effect_triggered)
-	# Debug-Ausgabe: aktueller Health-Wert (wenn health vorher korrekt initialisiert ist)
-	print(health)
+	# (Falls Player 1 im Inspector sein Sprite gesetzt hat, ist else optional)
 
-	# Weist den Waffen-Variablen die entsprechenden Szenen zu
+	# ─── SIGNALVERBINDUNGEN ─────────────────────────────────────
+	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
+	hit_effect_triggered.connect(_on_hit_effect_triggered)
+	area_entered.connect(_on_area_entered)
+
+	# ─── KOLLISIONEN / SCHILD INITIALISIEREN ─────────────────────
+	_shield_collision_shape.disabled = false
+
+	# ─── WAFFEN INITIALISIEREN ──────────────────────────────────
 	primary_weapon = laser_beam
 	secondary_weapon = laser_blast
-	area_entered.connect(_on_area_entered)
-	
-	# Collisionserkennung des Schilds zu Beginn ausschalten
-	_shield_collision_shape.disabled = false
-	
 
-	# ─── NEU: Initialisierung für Circle-Mode ───────────────────────────────
+	# ─── DEBUG-AUSGABEN ─────────────────────────────────────────
+	var ui_energy = "energy%d" % player_id
+	print("player_id:", player_id, "| UI Energy Label:", ui_energy)
+	print("Initial health:", health)
+
+	# ─── CIRCLE MODE SETUP (falls aktiv) ─────────────────────────
 	if mode == PlayerMode.CIRCLE:
-		# Wenn der Level-Code vor _ready() bereits circle_center_position gesetzt hat,
-		# können wir anhand der aktuellen Position den Startwinkel bestimmen:
 		var offset := global_position - circle_center_position
 		angle = offset.angle()
-		
+
 	# ────────────────────────────────────────────────────────────────────────
 
 # Diese Funktion wird jeden Frame ausgeführt
