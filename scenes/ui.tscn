@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://be2saoppwc7v6"]
+[gd_scene load_steps=2 format=3 uid="uid://be2saoppwc7v6"]
 
 [ext_resource type="Script" uid="uid://cqm8p5dq5jjle" path="res://scripts/ui.gd" id="1_h7thw"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_v5wbp"]
-font_size = 48
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -13,30 +10,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h7thw")
-
-[node name="EnemiesDestroyed" type="Label" parent="."]
-layout_mode = 1
-offset_left = 38.0
-offset_top = 23.0
-offset_right = 293.0
-offset_bottom = 158.0
-text = "Enemies destroyed:"
-label_settings = SubResource("LabelSettings_v5wbp")
-
-[node name="Score" type="Label" parent="."]
-layout_mode = 1
-offset_left = 3399.0
-offset_top = 25.0
-offset_right = 3853.0
-offset_bottom = 160.0
-text = "Score:"
-label_settings = SubResource("LabelSettings_v5wbp")
-
-[node name="energy" type="Label" parent="."]
-layout_mode = 0
-offset_left = 752.0
-offset_top = 23.0
-offset_right = 1206.0
-offset_bottom = 158.0
-text = "energy:"
-label_settings = SubResource("LabelSettings_v5wbp")

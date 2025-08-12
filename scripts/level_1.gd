@@ -1,82 +1,70 @@
-extends Node2D  # MainScene basiert auf Node2D
+extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
-signal enemy_destroyed(score: int, energy: int, player_id :int)
+signal enemy_destroyed(score: int, energy: int, player_id: int)
 
-@onready var audio_stream_player = $AudioStreamPlayer
-@onready var boss_timer = $BossTimer
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var boss_timer: Timer = $BossTimer
 @onready var enemy_spawner: Node2D = $EnemySpawner
-@export var amount_of_enemies : int
-@onready var enemies_container : Node2D = $EnemiesContainer
+@export var amount_of_enemies: int
+@onready var enemies_container: Node2D = $EnemiesContainer
 
-
-func _ready():
-# Pos und Modus für alle Spieler setzen:  🔁 Für alle registrierten Spieler im Global-Singleton
+func _ready() -> void:
+	# ── Spieler vorbereiten: für ALLE registrierten Spieler
+	var row := 0
 	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
-		player.mode = player.PlayerMode.FREE
-		player.rotation_degrees = 0
-		player.global_position = Vector2 (500, 1000 + 200 * player_id)
-		player.scale = Vector2(0.25, 0.25)
-	var enemy = preload("res://scenes/enemy_1.tscn").instantiate()
-	# alte Signalschreibweise
-	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
+		var ship := Global.get_player_ship(player_id)
+		if ship == null:
+			print("⚠️ Spieler mit ID %d nicht gefunden!" % player_id)
+			continue
+
+		# Grundzustand für Levelstart
+		ship.mode = ship.PlayerShip.PlayerMode.FREE
+		ship.rotation_degrees = 0
+		ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+		ship.collision_layer = 1
+
+		# Staffelung der Startpositionen
+		ship.global_position = Vector2(500, 1000 + 200 * row)
+		ship.scale = Vector2(0.25, 0.25)
+		ship.show()
+		row += 1
+
+	# ── Enemy‑Spawner Signale
+	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
-	
-	# Referenz auf das Schiff des gewünschten Spielers holen (z. B. Spieler 1 oder 2)
-	var ship = Global.get_player_ship(1)
-	
 
-	# Sicherheitscheck: Gibt es diesen Spieler überhaupt?
-	if ship == null:
-		print("⚠️ Spieler mit ID %d nicht gefunden!" % Global.player_id)
-		return
-	
-	#Vergleiche mit player Werte Rücksetzung oben - Für eine Varainte entscheiden
-	# Setzt den Modus des Spielers (z. B. FREE, CIRCLE) – Achtung: Enum kommt aus dem Spieler selbst!
-	ship.mode = ship.PlayerMode.FREE  # Zugriff über das Schiff selbst
-
-	# Zurücksetzen von Rotation und Kollisionsdaten (z. B. bei Respawn oder Level-Start)
-	ship.rotation_degrees = 0
-	ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-	ship.collision_layer = 1
-	ship.global_position = Vector2(500, 1000)  # z. B. Startposition für Player 1
-	ship.scale = Vector2(0.25, 0.25)
-
-	# Optional: Bewegung zurücksetzen (falls nötig)
-	# ship.speed = ship.max_speed
-
-	# Spieler sichtbar machen (z. B. nach Respawn)
-	ship.show()
-
+	# Beispiel: einen Gegner ins Container hängen (falls gewünscht)
+	var enemy_scene := preload("res://scenes/enemy_1.tscn")
+	var enemy := enemy_scene.instantiate()
 	enemies_container.add_child(enemy)
-	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
-	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
-	#boss_timer.timeout.connect(_on_boss_timer_timeout)
-	
-	
-	#background.size = Vector2(3840, 2880)  # Falls FullHD-Fenstergröße
-	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
 
-# Der "Trick" Der frisch gespawnte "enemy" wird als Node übergeben. So kann auf dessen Signal
-# "enemy_destroyed" zugegriffen werden
+	# Optional: Boss‑Timer
+	# boss_timer.wait_time = 100
+	# boss_timer.timeout.connect(_on_boss_timer_timeout)
+
+# Der frisch gespawnte Gegner wird übergeben → wir verbinden sein Signal
 func _on_enemy_spawned(enemy: Node) -> void:
-	enemy.enemy_destroyed.connect(_on_enemy_destroyed)
-	
-	
-func _on_enemy_destroyed(score: int, energy: int) -> void:
-	emit_signal("enemy_destroyed", score, energy)
-	
-	
-func _on_boss_timer_timeout():
+	# ✳️ Idealfall: Der Enemy sendet bereits (score, energy, player_id).
+	if enemy.has_signal("enemy_destroyed"):
+		# Direkte 1:1‑Weiterleitung
+		enemy.enemy_destroyed.connect(func(score: int, energy: int, player_id: int) -> void:
+			emit_signal("enemy_destroyed", score, energy, player_id))
+	else:
+		print("⚠️ Enemy hat kein 'enemy_destroyed'-Signal.")
+
+# ❗ Falls deine Gegner aktuell NOCH KEINE player_id mitsenden,
+#   kannst du übergangsweise so wrappen (Default: Spieler 1):
+# func _on_enemy_destroyed_legacy(score: int, energy: int) -> void:
+# 	emit_signal("enemy_destroyed", score, energy, 1)
+
+func _on_boss_timer_timeout() -> void:
 	pass
-	
-	
-func _on_boss_defeated():
+
+func _on_boss_defeated() -> void:
 	emit_signal("level_finished", 2, 0, 0)
 	print("boss defeated")
-	
+
 func _on_incoming_boss() -> void:
 	audio_stream_player.stop()

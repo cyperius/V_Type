@@ -1,28 +1,37 @@
-# ─── CLASS & SIGNALS ─────────────────────────────────────────────
-class_name PlayerShip extends Area2D
-signal hit_effect_triggered(effect)
+extends Area2D
+class_name PlayerShip
 
-# ─── ENUMS / CONSTANTS ───────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────
+#   SIGNALS (für Main/UI, statt direkte UI‑Zugriffe)
+# ──────────────────────────────────────────────────────────────
+signal stats_changed(player_id: int, health: int, energy: int)
+signal player_died(player_id: int)
+signal shield_toggled(player_id: int, active: bool)
+
+# ──────────────────────────────────────────────────────────────
+#   ENUMS / MODE
+# ──────────────────────────────────────────────────────────────
 enum PlayerMode { FREE, CIRCLE }
-
-# ─── MODE / MOVEMENT ─────────────────────────────────────────────
 var mode := PlayerMode.FREE
 var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
-var angle := 0.0               # aktueller Winkel (für Kreisbewegung)
-var angular_speed := 2.0       # Radiant pro Sekunde
-var velocity := Vector2(240, 240)
-var default_player_state = Color(1, 1, 1)
-var current_player_state = default_player_state
+var angle := 0.0
+var angular_speed := 2.0
 
-# ─── PLAYER PROPERTIES ───────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────
+#   PLAYER PROPERTIES
+# ──────────────────────────────────────────────────────────────
 @export var player_id: int = 1
-@export var max_speed := 600
-var speed := max_speed
+@export var max_speed: float = 600.0
+var speed: float = max_speed
 var boost_activated := false
+
 @export var max_health: int = 600
-@onready var health := max_health
-@export var blue_energy: int = 1000
+var health: int = max_health
+
+@export var max_energy: int = 1000
+var blue_energy: int = max_energy
+
 var shield_is_activated := false
 var player_is_slowed_down := false
 var controls_are_reversed := false
@@ -30,361 +39,285 @@ var controls_are_reversed := false
 var player_is_dead := false
 var spawn_position := Vector2.ZERO
 
-# ─── WEAPONS ─────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────
+#   WEAPONS
+# ──────────────────────────────────────────────────────────────
 @export var laser_beam: PackedScene       # Hauptlaser
 @export var laser_blast: PackedScene      # Starker Laser
 var primary_weapon: PackedScene
 var secondary_weapon: PackedScene
 var projectiles := []
 
-# ─── GRAPHICS / SPRITES ──────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────
+#   GRAPHICS / FX / COLLISIONS
+# ──────────────────────────────────────────────────────────────
+@onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/enemies/player2_ship.png")
-@onready var ship_sprite: Sprite2D = %ship_sprite
 
-# ─── EFFECTS / PARTICLES / COLLISIONS ─────────────────────────────
-@onready var just_been_hit_timer := %BeenHitTimer
+@onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var hit_scene: PackedScene = preload("res://scenes/hit.tscn")
+@onready var explosion_scene: PackedScene = preload("res://scenes/explosion_animation.tscn")
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
-@onready var explosion_scene: PackedScene = preload("res://scenes/explosion_animation.tscn")
 
-# ─── STATUS / RATIOS ─────────────────────────────────────────────
-@onready var health_ratio := 1.0
+# visueller Status (z. B. fürs Blinken)
+var default_player_state := Color(1, 1, 1)
+var current_player_state := default_player_state
+var health_ratio := 1.0
 
+# ──────────────────────────────────────────────────────────────
+#   READY
+# ──────────────────────────────────────────────────────────────
+func _ready() -> void:
+	# Registrierung zentral hier (Main ruft NICHT mehr register auf)
+	Global.register_player(player_id, self, ship_sprite)
 
-func _ready():
-	# ─── REGISTRIERUNG DES SPIELERS ─────────────────────────────
-	Global.register_player(
-		player_id,          # numerische ID (z. B. 1 oder 2)
-		self,               # Referenz auf dieses Schiff
-		ship_sprite         # Referenz auf den Sprite
-	)
-
-	# ─── SKIN / AUSSEHEN SETZEN ─────────────────────────────────
+	# Skin
 	if player_id == 2:
 		ship_sprite.texture = player2_skin
 		ship_sprite.scale = Vector2(1.5, 1.2)
 	else:
 		ship_sprite.texture = player1_skin
-	# (Falls Player 1 im Inspector sein Sprite gesetzt hat, ist else optional)
 
-	# ─── SIGNALVERBINDUNGEN ─────────────────────────────────────
+	# Signale
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-	hit_effect_triggered.connect(_on_hit_effect_triggered)
 	area_entered.connect(_on_area_entered)
 
-	# ─── KOLLISIONEN / SCHILD INITIALISIEREN ─────────────────────
-	_shield_collision_shape.disabled = false
+	# Schild-Kollision initial aus
+	_shield_collision_shape.disabled = true
 
-	# ─── WAFFEN INITIALISIEREN ──────────────────────────────────
+	# Waffen
 	primary_weapon = laser_beam
 	secondary_weapon = laser_blast
 
-	# ─── DEBUG-AUSGABEN ─────────────────────────────────────────
-	var ui_energy = "energy%d" % player_id
-	print("player_id:", player_id, "| UI Energy Label:", ui_energy)
-	print("Initial health:", health)
-
-	# ─── CIRCLE MODE SETUP (falls aktiv) ─────────────────────────
+	# Circle-Mode Startwinkel
 	if mode == PlayerMode.CIRCLE:
 		var offset := global_position - circle_center_position
 		angle = offset.angle()
 
-	# ────────────────────────────────────────────────────────────────────────
+	# Initiale Stats an Main/UI melden
+	_emit_stats()
 
-# Diese Funktion wird jeden Frame ausgeführt
-# delta ist die Zeit seit dem letzten Frame in Sekunden
+# ──────────────────────────────────────────────────────────────
+#   PROCESS / INPUT
+# ──────────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
-	
-	if Input.is_action_just_pressed("revive") and player_is_dead:
-		revive()
+	if player_is_dead:
+		if Input.is_action_just_pressed("revive"):
+			revive()
+		return
 
 	if Input.is_action_just_pressed("status_report"):
 		status_report()
-		
-		# Beschleunigung: Erhöht die Geschwindigkeit um in beiden Flugmodi
+
+	# Boost
 	if Input.is_action_just_pressed("p%d_accelarate" % player_id):
-		speed *= 1.8
-		angular_speed *= 1.8
-		boost_activated = true
-		
-	# Wenn Beschleunigung losgelassen wird, zurück zur normalen Geschwindigkeit
+		_set_boost(true)
 	if Input.is_action_just_released("p%d_accelarate" % player_id):
-		speed /= 1.8
-		angular_speed /= 1.8
-		boost_activated = false
-		
+		_set_boost(false)
 	if boost_activated:
-		blue_energy -= 50 * delta
-		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
-	
-	# aktiviert den Schild -> braucht Energie, absorbiert Schüsse
-	if Input.is_action_just_pressed("p%d_shield" % player_id) and blue_energy > 0:
+		_drain_energy_per_sec(50.0, delta)
+
+	# Schild
+	if Input.is_action_just_pressed("p%d_shield" % player_id):
 		activate_shield()
-	# Wenn Taste losgelassen, Schild deaktivieren
 	if Input.is_action_just_released("p%d_shield" % player_id):
 		deactivate_shield()
 	if shield_is_activated:
-		# bei aktiviertem Schild wird laufend Energie verbraucht...
-		blue_energy -= 300 * delta
-		# dies wird in der UI angezeigt
-		get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
-		# durch die Verknüpfung von Schildenergie mt Particle_amount wird die 
-		# die Stäreke des Schilds visualisiert
-		_particles_shield.amount_ratio = float(blue_energy) / 1000.0
-		print("amount_ratio: ", _particles_shield.amount_ratio, "blue Energy: ", blue_energy)
-		# und die Schild_collision_shape aktiveirt
-		_shield_collision_shape.disabled = false
+		_drain_energy_per_sec(300.0, delta)
+		_particles_shield.amount_ratio = float(blue_energy) / float(max_energy)
 		if blue_energy <= 0:
 			blue_energy = 0
 			deactivate_shield()
-	else:
-		# Schild_collision_shape deaktivieren, damit nur die player_ship \
-		# collision_shape Treffer registriert
-		_shield_collision_shape.disabled = true
-	
-		# Überprüft Waffeneingaben und löst entsprechende Waffen aus
+		_emit_stats()  # UI live halten
+
+	# Waffen
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
-		# Mechanik falls Einsatz der Waffe Energie verbrauchen soll
-		#if blue_energy < 20:
-			#return
-		#blue_energy -= 20
-		#get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
 		shoot_weapon(primary_weapon)
-		
 	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
 		shoot_weapon(secondary_weapon)
-		
-	# Unterscheidung von PlayerMode
+
+	# Bewegung je nach Modus
 	match mode:
 		PlayerMode.FREE:
-			_process_horizontal(delta)
+			_process_free_move(delta)
 		PlayerMode.CIRCLE:
 			_process_circle(delta)
-		
-		
-# ─── FREE-Mode: Standard Bewegungs- & Schusslogik ─────────────────
-func _process_horizontal(delta: float) -> void:
-	# Bewegungssteuerung des Schiffs
-	var direction := Vector2(0, 0)
+
+# ──────────────────────────────────────────────────────────────
+#   MOVEMENT
+# ──────────────────────────────────────────────────────────────
+func _process_free_move(delta: float) -> void:
+	var direction := Vector2.ZERO
 	if controls_are_reversed:
-		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)  # verkehrt
-		direction.y = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)            # verkehrt
-		print("links ist rechts und oben ist unten")
+		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
+		direction.y = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
 	else:
-		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)  # Links/Rechts
-		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)            # Hoch/Runter
+		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
+		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)
 
-	# Grösse des Fensters erfassen (zwecks Bewegungsbegrenzung)
 	var screensize := get_viewport_rect().size
-
-	# Berechnet die aktuelle Geschwindigkeit
-	velocity = direction * speed
-	# Aktualisiert die Position des Schiffs
+	var velocity := direction * speed
 	position += velocity * delta
-	# Begrenzt den Bewegunsspeilraum auf dei Grösse des (Spiel-)Bildschirms
-	position.x = clampf(position.x, 0, screensize.x)
-	position.y = clampf(position.y, 0, screensize.y)
+	position.x = clampf(position.x, 0.0, screensize.x)
+	position.y = clampf(position.y, 0.0, screensize.y)
 
-
-# ─── CIRCLE-Mode: Schiff bewegt sich auf Kreislinie, immer nach außen gerichtet ───
 func _process_circle(delta: float) -> void:
-	# 1. Eingabe: Links/Rechts ändern den Winkel
 	var input_strength := Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	angle += input_strength * angular_speed * delta
-
-	# 2. Neue Position auf dem Kreis berechnen
 	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
 	global_position = circle_center_position + offset
-
-	# 3. Rotation setzen: Schiff zeigt immer radial nach außen
 	rotation = angle + PI
 
+# ──────────────────────────────────────────────────────────────
+#   COMBAT / HIT / SHIELD
+# ──────────────────────────────────────────────────────────────
+func _on_area_entered(other: Area2D) -> void:
+	# Effekt-Trigger (optional)
+	if "hit_effect" in other:
+		# Du hattest früher ein eigenes Signal – falls nötig, wieder verwenden
+		# emit_signal("hit_effect_triggered", other.hit_effect)
+		_apply_effect_by_name(str(other.hit_effect))
 
-func _on_area_entered(area_that_entered: Area2D) -> void:
-	if "hit_effect" in area_that_entered:
-			emit_signal("hit_effect_triggered", area_that_entered.hit_effect)
-	if "damage" in area_that_entered:
-		var potential_damage_inflicted : int = area_that_entered.damage
-		if shield_is_activated == true:
-			if area_that_entered.is_in_group("projectiles"):
-				shield_absorbing(potential_damage_inflicted)
-			if area_that_entered.is_in_group("enemies"):
-				blue_energy -= potential_damage_inflicted
+	# Damage
+	if "damage" in other:
+		var dmg: int = int(other.damage)
+		if shield_is_activated:
+			if other.is_in_group("projectiles"):
+				shield_absorbing(dmg)  # Schild „heilt“ Energie um Schaden
+			elif other.is_in_group("enemies"):
+				_change_energy(-dmg)
 		else:
-			print("Ich bin getroffen")
 			collision_mask = 0
 			collision_layer = 0
-			player_is_hit(potential_damage_inflicted)
-		if area_that_entered.is_in_group("projectiles"):
+			player_is_hit(dmg)
+
+		# Treffer-Feedback bei Projektilen
+		if other.is_in_group("projectiles"):
 			var hit = hit_scene.instantiate()
 			add_child(hit)
 			hit.scale = Vector2(15, 15)
-			hit.global_position = Vector2(area_that_entered.global_position.x -45, area_that_entered.global_position.y)
-			area_that_entered.queue_free()
-		
+			hit.global_position = Vector2(other.global_position.x - 45, other.global_position.y)
+			other.queue_free()
 
-func player_is_hit(damage: int):
-	print("health: ", health)
-	health -= damage
-	get_tree().current_scene.ui.health.text = "Health: " + str(health)
-	print("damage: ", damage, "ergo new health: ", health)
+func player_is_hit(dmg: int) -> void:
+	_change_health(-dmg)
 	calculate_damage_state()
 	if health <= 0:
-		handle_player_death() # Spieler, unsichtbar, nicht mehr steuerbar, wird dem destroyed_player Array hinzugefügt
-		# falls alle regstrierten Spieler tot sind, GameOver Status auslösen
-		if Global.destroyed_player_ships.size() == Global.player_ships.size():
-			print("1 Spieler tot... player_ship_size: ", Global.player_ships.size()\
-			, "destroyed_player_size: ", Global.destroyed_player_ships.size())
-			await get_tree().create_timer(1.2).timeout
-			GameManager.set_state(GameManager.STATE_GAME_OVER)
-		
-
-	else:	
-		#current_player_state = Color(1, health_ratio, health_ratio)
-		#modulate = current_player_state
-		do_the_been_hit_blinking()
+		handle_player_death()
+	else:
+		_do_been_hit_blink()
 		just_been_hit_timer.start()
 
-
-func calculate_damage_state():
-	# Berechnung des aktuellen Gesundheitszustand im Verhältnis zur maximalen Gesundheit 
+func calculate_damage_state() -> void:
 	health_ratio = float(health) / float(max_health)
-	# zunehmende Rotverfärnbung des player-ships mit abnehmendem Gesundheitszustand
-	
-	
-func do_the_been_hit_blinking():
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
-	tween.set_loops(1)
 
+func _do_been_hit_blink() -> void:
+	var t := create_tween()
+	t.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
+	t.set_loops(1)
 
 func _on_just_been_hit_timer_timeout() -> void:
-	print("ja. ich werde ausgelösat")
 	modulate = current_player_state
 	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 	collision_layer = 1
-	# ("um die Ebenen 3, 4, 5 und 6 in deiner Collision-Maske wieder zu aktivieren, kannst du die Bit-Shift-Notation verwenden.")
 
-#Schildfunktionen
-func activate_shield():
-	print("shield activated")
+# Schild
+func activate_shield() -> void:
+	if shield_is_activated or blue_energy <= 0:
+		return
 	_particles_shield.emitting = true
-	# modulate = Color(0.27, 0.03, 0.87, 1.0)
 	shield_is_activated = true
-	
+	_shield_collision_shape.disabled = false
+	emit_signal("shield_toggled", player_id, true)
 
-func shield_absorbing(absorbed_damage):
-	blue_energy += absorbed_damage
-	get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
-	
-
-func deactivate_shield():
-	print("shield deactivated")
+func deactivate_shield() -> void:
+	if not shield_is_activated:
+		return
 	_particles_shield.emitting = false
 	shield_is_activated = false
-	# modulate = current_player_state
-	
+	_shield_collision_shape.disabled = true
+	emit_signal("shield_toggled", player_id, false)
 
-#Funktion zum Abfeuern einer Waffe
-# weapon: PackedScene - Die Szene des Projektils, das abgefeuert werden soll
-func shoot_weapon(weapon: PackedScene):
+func shield_absorbing(absorbed_damage: int) -> void:
+	_change_energy(+absorbed_damage)
+
+# ──────────────────────────────────────────────────────────────
+#   WEAPONS
+# ──────────────────────────────────────────────────────────────
+func shoot_weapon(weapon: PackedScene) -> void:
 	if not weapon:
-		print("Fehler: Keine Waffe zugewiesen!")
 		return
+	var projectile = weapon.instantiate()
 
-	# Instanziere das Projektil
-	var projectile_instance = weapon.instantiate()
-	
-	# 💡 Übergib die Spieler-ID!
-	projectile_instance.owner_id = player_id
-	
-	# Füge das Projektil der aktuellen Szene hinzu
-	var current_scene = get_tree().current_scene
-	if current_scene:
-		current_scene.add_child(projectile_instance)
-		#print("✅ Projektil erfolgreich zur Szene hinzugefügt!")
+	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
+	if "owner_id" in projectile:
+		projectile.owner_id = player_id
+	elif projectile.has_method("set_owner_id"):
+		projectile.set_owner_id(player_id)
+
+	# Position vom Gunpoint
+	var gunpoint := $Gunpoint
+	projectile.global_position = gunpoint.global_position if gunpoint else global_position
+
+	# In Szene einfügen
+	var root := get_tree().current_scene
+	if root:
+		root.add_child(projectile)
 	else:
-		print("Fehler: Keine aktuelle Szene gefunden!")
-		return
+		add_child(projectile)
 
-	# Verwende den Gunpoint als Referenz für den Startpunkt des Schusses
-	var gunpoint = $Gunpoint
-	if gunpoint:
-		projectile_instance.global_position = gunpoint.global_position
-		#print("Projektil-Position (Gunpoint):", projectile_instance.global_position)
-	else:
-		# Fallback: Nutze die Schiffposition
-		projectile_instance.global_position = global_position
-		print("Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+	projectiles.append(projectile)
+	if projectile.has_method("fire"):
+		projectile.fire()
 
-	# Füge das Projektil der Liste aktiver Projektile hinzu
-	projectiles.append(projectile_instance)
-
-	# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
-	if projectile_instance.has_method("fire"):
-		#print("Fire-Funktion wird aufgerufen!")
-		projectile_instance.fire()
-	else:
-		print("Fehler: Projektil hat keine fire()-Methode!")
-
-
-func status_report() -> void:
-	print("player_global_position: ", global_position)
-
-
-func _on_hit_effect_triggered(effect : String):
-	var effect_table = {
-		"reverse_controls" : _apply_reverse_control,
+# ──────────────────────────────────────────────────────────────
+#   EFFECTS (Reverse, Slow)
+# ──────────────────────────────────────────────────────────────
+func _apply_effect_by_name(effect: String) -> void:
+	var table := {
+		"reverse_controls": _apply_reverse_control,
 		"slow": _apply_slow
 	}
-	
-	if effect_table.has(effect):
-		effect_table[effect].call()
-	else:
-		print("Unbekannter Effekt: ", effect)
-	
+	if table.has(effect):
+		table[effect].call()
 
 func _apply_reverse_control() -> void:
-	print("Steuerung wird umgekehrt!")
-	# Wenn der Effekt noch aktiv ist, kann der Spieler nicht erneut infiziert werden
 	if controls_are_reversed:
 		return
-	# ansonsten: Steuerung umkehren
 	controls_are_reversed = true
-	print("steuerung umgedreht?")
-	await get_tree().create_timer(5).timeout
-	# nach Ablauf des Timers wieder auf normal stellen (allenfalls zusätzliche Immun-Zeit?)
+	await get_tree().create_timer(5.0).timeout
 	controls_are_reversed = false
-	
 
 func _apply_slow() -> void:
 	if player_is_slowed_down:
 		return
-	else:
-		print("Spieler wird verlangsamt.")
-		player_is_slowed_down = true
-		speed /= 2
-		await get_tree().create_timer(1.5).timeout
-		speed *= 2
-		await  get_tree().create_timer(1).timeout
-		player_is_slowed_down = false
-	
-	
-func handle_player_death():
+	player_is_slowed_down = true
+	speed /= 2.0
+	await get_tree().create_timer(1.5).timeout
+	speed *= 2.0
+	await get_tree().create_timer(1.0).timeout
+	player_is_slowed_down = false
+
+# ──────────────────────────────────────────────────────────────
+#   LIFE / RESPAWN
+# ──────────────────────────────────────────────────────────────
+func handle_player_death() -> void:
 	print("Spieler %d ist gestorben!" % player_id)
-	visible = false                     # ausblenden
-	set_process(false)                 # keine Logik mehr ausführen
+	visible = false
+	set_process(false)
 	set_physics_process(false)
-	player_is_dead = true              # Status merken
+	player_is_dead = true
 	Global.destroyed_player_ships.append(self)
-	var player_explosion = explosion_scene.instantiate()
-	get_tree().current_scene.add_child(player_explosion)
-	player_explosion.global_position = global_position
 
+	var boom = explosion_scene.instantiate()
+	get_tree().current_scene.add_child(boom)
+	boom.global_position = global_position
 
-func revive():
+	emit_signal("player_died", player_id)
+
+func revive() -> void:
 	print("Spieler %d wird wiederbelebt!" % player_id)
 	global_position = spawn_position
 	visible = true
@@ -392,7 +325,44 @@ func revive():
 	set_physics_process(true)
 	player_is_dead = false
 	health = max_health
-	blue_energy = 1000
+	blue_energy = max_energy
 	modulate = default_player_state
-	Global.get_tree().current_scene.ui.health.text = "Health: " + str(health)
-	Global.get_tree().current_scene.ui.energy.text = "Energy: " + str(blue_energy)
+	_emit_stats()
+
+# ──────────────────────────────────────────────────────────────
+#   UTILS (Stats & Energie/Health Änderungshelfer)
+# ──────────────────────────────────────────────────────────────
+func _emit_stats() -> void:
+	emit_signal("stats_changed", player_id, health, blue_energy)
+
+func _change_health(delta_hp: int) -> void:
+	health = clamp(health + delta_hp, 0, max_health)
+	_emit_stats()
+
+func _change_energy(delta_energy: int) -> void:
+	blue_energy = clamp(blue_energy + delta_energy, 0, max_energy)
+	_emit_stats()
+
+func _drain_energy_per_sec(rate: float, delta: float) -> void:
+	if blue_energy <= 0:
+		return
+	var drain := int(round(rate * delta))
+	if drain != 0:
+		_change_energy(-drain)
+
+func _set_boost(active: bool) -> void:
+	if boost_activated == active:
+		return
+	boost_activated = active
+	if active:
+		speed *= 1.8
+		angular_speed *= 1.8
+	else:
+		speed /= 1.8
+		angular_speed /= 1.8
+
+# ──────────────────────────────────────────────────────────────
+#   DEBUG
+# ──────────────────────────────────────────────────────────────
+func status_report() -> void:
+	print("player_id:", player_id, " pos:", global_position, " hp:", health, " energy:", blue_energy)
