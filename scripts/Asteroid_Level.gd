@@ -18,9 +18,19 @@ func _ready():
 	asteroid_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	bg.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
 	##background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
-	#Global.getplayer_ship.global_position = Vector2(1000, 1000)
-	#Global.player_ship.mode = Global.player_ship.PlayerMode.FREE
-	#Global.player_ship.rotation_degrees = 0
+	
+# ── Spieler vorbereiten: für ALLE registrierten Spieler
+	for player_id in Global.player_ships.keys():
+		var ship := Global.get_player_ship(player_id)
+		if ship == null:
+			print("⚠️ Spieler mit ID %d nicht gefunden!" % player_id)
+			continue
+
+		# Grundzustand für Levelstart
+		ship.mode = ship.PlayerMode.FREE
+		ship.rotation_degrees = 0
+		ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+		ship.collision_layer = 1
 	
 	
 func _process(delta: float) -> void:
