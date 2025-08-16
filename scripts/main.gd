@@ -91,8 +91,8 @@ func _spawn_player(player_id: int) -> void:
 
 	# 2) Sichtbare Startposition (Viewport‑Mitte + Offset je Spieler)
 	var viewport_size = get_viewport_rect().size
-	var base_position = viewport_size * 0.5
-	var player_offset = Vector2(180 * (player_id - 1), 120 * (player_id - 1))
+	var base_position = viewport_size * 0.05
+	var player_offset = Vector2(180, 360 * (player_id - 1))
 	player_ship.global_position = base_position + player_offset
 
 	# 3) Basiswerte
