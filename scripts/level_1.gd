@@ -10,26 +10,8 @@ signal enemy_destroyed(score: int, energy: int, player_id: int)
 @onready var enemies_container: Node2D = $EnemiesContainer
 
 func _ready() -> void:
-	# ── Spieler vorbereiten: für ALLE registrierten Spieler
-	var row := 0
-	for player_id in Global.player_ships.keys():
-		var ship := Global.get_player_ship(player_id)
-		if ship == null:
-			print("⚠️ Spieler mit ID %d nicht gefunden!" % player_id)
-			continue
-
-		# Grundzustand für Levelstart
-		ship.mode = ship.PlayerMode.FREE
-		ship.rotation_degrees = 0
-		ship.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-		ship.collision_layer = 1
-
-		# Staffelung der Startpositionen
-		ship.global_position = Vector2(500, 1000 + 200 * row)
-		ship.scale = Vector2(0.25, 0.25)
-		ship.show()
-		row += 1
-
+	_place_all_players_in_current_level()
+	
 	# ── Enemy‑Spawner Signale
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
@@ -43,6 +25,35 @@ func _ready() -> void:
 	# Optional: Boss‑Timer
 	# boss_timer.wait_time = 100
 	# boss_timer.timeout.connect(_on_boss_timer_timeout)
+
+func _place_all_players_in_current_level() -> void:
+	for player_id in Global.player_ships.keys():
+		var player := Global.get_player_ship(player_id)
+		if player is PlayerShip:
+			place_player_in_current_level(player, player_id)
+
+
+func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
+	# Level 1: Standard-FREE-Mode, Spawn in Viewport-Mitte + Offset
+
+	# 1) Grundzustände
+	player.mode = player.PlayerMode.FREE
+	player.rotation_degrees = 0
+	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	player.collision_layer = 1
+
+	# 2) Positionierung wie in Main: Mitte + je Spieler versetzter Offset
+	var viewport_size: Vector2 = get_viewport_rect().size
+	var base_position = viewport_size * 0.05
+	var player_offset = Vector2(180, 60 + 240 * (player_id - 1))
+	player.global_position = base_position + player_offset
+
+	# 3) Einheitliche Skalierung für Level 1
+	player.scale = Vector2(0.25, 0.25)
+
+	# 4) Sichtbar schalten
+	player.show()
+
 
 # Der frisch gespawnte Gegner wird übergeben → wir verbinden sein Signal
 func _on_enemy_spawned(enemy: Node) -> void:

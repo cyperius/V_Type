@@ -59,6 +59,11 @@ func _ready() -> void:
 	_update_global_ui()
 	_update_all_players_ui()
 
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("join_game"):
+		_on_player_joined(1)
+	
+	
 # ──────────────────────────────────────────────────────────────
 #   LEVEL WARTEN (nur bis der erste Level hängt)
 # ──────────────────────────────────────────────────────────────
@@ -79,39 +84,59 @@ func _on_player_joined(player_id: int) -> void:
 	_register_player_in_main(player_id)
 	_update_player_ui(player_id)
 
+func _place_all_players_in_current_level() -> void:
+	for player_id in Global.player_ships.keys():
+		var ship := Global.get_player_ship(player_id)
+		if ship is PlayerShip:
+			_place_player_in_current_level(ship, player_id)
+
+
+# Platziert einen Spieler im aktuell geladenen Level (falls Level Methode anbietet),
+# sonst Fallback auf deine bisherige „Mitte + Offset“-Logik.
+func _place_player_in_current_level(player_ship: PlayerShip, player_id: int) -> void:
+	var level := GameManager.current_level_node
+	if level != null and level.has_method("place_player_in_current_level"):
+		level.place_player_in_current_level(player_ship, player_id)
+	else:
+		# Fallback: bisherige Standard-Spawnlogik
+		var viewport_size = get_viewport_rect().size
+		var base_position = viewport_size * 0.05
+		var player_offset = Vector2(180, 60 + 240 * (player_id - 1))
+		player_ship.global_position = base_position + player_offset
+
+
 func _on_player_left(player_id: int) -> void:
 	_remove_player(player_id)
 	_update_global_ui()
 	_update_all_players_ui()
 
+
 func _spawn_player(player_id: int) -> void:
 	# 1) Spielerinstanz
 	var player_ship: PlayerShip = player_scene.instantiate()
 	player_ship.player_id = player_id
+	player_ship.mode = player_ship.PlayerMode.FREE	# Basiszustand; Level kann überschreiben
 
-	# 2) Sichtbare Startposition (Viewport‑Mitte + Offset je Spieler)
-	var viewport_size = get_viewport_rect().size
-	var base_position = viewport_size * 0.05
-	var player_offset = Vector2(180, 360 * (player_id - 1))
-	player_ship.global_position = base_position + player_offset
-
-	# 3) Basiswerte
-	player_ship.scale = Vector2(0.25, 0.25)
-	player_ship.visible = true
-	player_ship.set_process(true)
-	player_ship.set_physics_process(true)
-
-	# 4) Immer unter den persistenten PlayersRoot hängen (überlebt Levelwechsel)
+	# 2) In den Tree einfügen (damit global_position/Center-Bezüge funktionieren)
 	players_root.add_child(player_ship)
 
-	# 5) Global registrieren (falls PlayerShip._ready() noch nicht dran war)
+	# 3) Global registrieren (falls _ready() noch nicht gelaufen ist)
 	Global.player_ships[player_id] = player_ship
 
-	# 6) Live‑UI koppeln (nur falls Signal existiert)
+	# 4) UI koppeln
 	if player_ship.has_signal("stats_changed"):
 		player_ship.stats_changed.connect(func(changed_player_id: int, current_health: int, current_energy: int) -> void:
 			var current_score: int = player_scores.get(changed_player_id, 0)
 			ui.set_player_ui(changed_player_id, current_score, current_energy, current_health))
+
+	# 5) Level-spezifisch platzieren (oder Fallback in der Helper-Funktion)
+	_place_player_in_current_level(player_ship, player_id)
+
+	# 6) Sichtbarkeit/Prozesse aktivieren (Scale NICHT überschreiben, damit Level-Scale erhalten bleibt)
+	player_ship.visible = true
+	player_ship.set_process(true)
+	player_ship.set_physics_process(true)
+
 
 func _register_player_in_main(player_id: int) -> void:
 	player_scores[player_id] = 0
@@ -128,6 +153,8 @@ func _remove_player(player_id: int) -> void:
 	if player_scores.has(player_id):
 		player_scores.erase(player_id)
 
+
+
 # ──────────────────────────────────────────────────────────────
 #   LEVEL-HANDLING
 # ──────────────────────────────────────────────────────────────
@@ -141,10 +168,19 @@ func _connect_level_signals() -> void:
 		current_level.level_finished.connect(_on_level_finished)
 
 func _on_level_loaded() -> void:
-	# Ein Frame warten, bis der neue Level sicher im Tree ist (kosmetisch)
+	# 1) Einen Frame warten, bis der neue Level sicher im Scene-Tree hängt
+	#    (stellt sicher, dass level-spezifische Nodes wie Marker2D bereits existieren).
 	await get_tree().process_frame
-	# Spieler bleiben erhalten, da sie unter PlayersRoot hängen.
-	# Optional: Hier könntest du Kameraziel neu setzen oder Level‑spezifische Dinge tun.
+
+	# 2) Spieler bleiben erhalten, da sie unter PlayersRoot hängen.
+	#    Jetzt alle EXISTIERENDEN Spieler level-spezifisch platzieren
+	#    (ruft pro Spieler level.place_player_in_current_level(), falls vorhanden,
+	#    sonst fallback auf Standard-Spawn in _place_player_in_current_level()).
+	_place_all_players_in_current_level()
+
+	# 3) Optional: Hier Kameraziel/Level-spezifische Einstellungen aktualisieren.
+	#    (z. B. Kamera-Fokus auf ersten aktiven Spieler setzen)
+
 
 # ──────────────────────────────────────────────────────────────
 #   SIGNAL-CALLBACKS

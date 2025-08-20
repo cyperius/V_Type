@@ -13,54 +13,60 @@ extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
+
 func _ready() -> void:
+	# Timer konfigurieren und starten (Level-Logik, unabhängig von Spielern)
 	level_duration.wait_time = level_duration_basis * time_delay
-	level_duration.timeout.connect(_on_level_duration_timeout)
+	if not level_duration.timeout.is_connected(_on_level_duration_timeout):
+		level_duration.timeout.connect(_on_level_duration_timeout)
 
-	# Pos und Modus für alle Spieler setzen:  🔁 Für alle registrierten Spieler im Global-Singleton
-	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
-		player.mode = player.PlayerMode.FREE
-		player.rotation_degrees = 0
-		player.global_position = Vector2 (500, 1000 + 200 * player_id)
-		player.scale = Vector2(0.25, 0.25)
+	spawn_timer.wait_time = 6.0 / time_delay
+	if not spawn_timer.timeout.is_connected(_on_spawn_timer_timeout):
+		spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+	if not spawn_timer.is_inside_tree():
+		add_child(spawn_timer)
 
-	spawn_timer.wait_time = 6 / time_delay
-	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
-	add_child(spawn_timer)
 	spawn_timer.start()
 	level_duration.start()
 
-	# 🔁 Für alle registrierten Spieler im Global-Singleton
+	# Alle bereits vorhandenen Spieler level-spezifisch platzieren
+	_place_all_players_in_current_level()
+
+
+func _place_all_players_in_current_level() -> void:
+	# Platziert jeden registrierten Spieler anhand der Level-Logik
 	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
-		if player == null:
-			continue  # Sicherheitshalber
+		var player := Global.get_player_ship(player_id)
+		if player is PlayerShip:
+			place_player_in_current_level(player, player_id)
 
-		# 1. Skalierung anpassen
-		player.scale = Vector2(0.2, 0.2)
+func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
+	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
 
-		# 2. Circle-Mode aktivieren
-		player.mode = player.PlayerMode.CIRCLE
+	# 1) Modus aktivieren
+	player.mode = player.PlayerMode.CIRCLE
 
-		# 3. Player-Zentrum setzen
-		player.circle_center_position = center_node.global_position
+	# 2) Kreis-Parameter setzen
+	player.circle_center_position = center_node.global_position
+	player.circle_radius = circle_radius
 
-		# 4. Radius setzen
-		player.circle_radius = circle_radius
+	# 3) Startwinkel (gleichmäßig nach aktueller Spieleranzahl)
+	var active_count : int = max(1, Global.player_ships.size())
+	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
+	player.angle = start_angle
 
-		# 5. Startwinkel – optional je Spieler anders
-		var start_angle : float = PI * 2 * float(player_id - 1) / Global.player_ships.size()
-		player.angle = start_angle
+	# 4) Position + Rotation
+	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
+	player.rotation = start_angle + PI
 
-		# 6. Position auf dem Kreis berechnen
-		player.global_position = center_node.global_position + Vector2(cos(start_angle), sin(start_angle)) * circle_radius
+	# 5) Optional: Level-spezifische Skalierung (rein visuell)
+	player.scale = Vector2(0.2, 0.2)
 
-		# 7. Rotation so setzen, dass das Schiff nach innen schaut
-		player.rotation = start_angle + PI
+	# 6) Debug
+	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
+		player_id, player.circle_center_position, player.circle_radius, start_angle
+	])
 
-		# 8. Debug-Ausgabe
-		print("🌀 Spieler %d im Kreis-Modus. Center=%s, Angle=%.2f" % [player_id, player.circle_center_position, start_angle])
 
 
 func _on_level_duration_timeout():
