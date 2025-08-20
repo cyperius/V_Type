@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2jofv3v62qdo"]
+[gd_scene load_steps=6 format=3 uid="uid://d2jofv3v62qdo"]
 
 [ext_resource type="Script" uid="uid://dxvm10wva7ff4" path="res://scripts/laser_blast.gd" id="1_4ouod"]
+[ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_xxmid"]
 [ext_resource type="Texture2D" uid="uid://ctkb2usix7oq2" path="res://assets/graphic_elements/shots/laser_blast1.png" id="3_uwrai"]
 [ext_resource type="Script" uid="uid://v06vu4n3ca8t" path="res://scripts/laser_blast_ray_cast.gd" id="4_xxmid"]
 
@@ -13,7 +14,8 @@ position = Vector2(1, 0)
 collision_layer = 2
 collision_mask = 20
 script = ExtResource("1_4ouod")
-blast_speed = 950
+blast_speed = 800.0
+sfx_stream = ExtResource("2_xxmid")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_uwrai")

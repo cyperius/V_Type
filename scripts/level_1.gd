@@ -10,8 +10,11 @@ signal enemy_destroyed(score: int, energy: int, player_id: int)
 @onready var enemies_container: Node2D = $EnemiesContainer
 
 func _ready() -> void:
+	# Levelstart: Zerstörte IDs zurücksetzen
+	Global.reset_round_state()
+	# Alle registrierten Spieler ins Level setzen
 	_place_all_players_in_current_level()
-	
+
 	# ── Enemy‑Spawner Signale
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)

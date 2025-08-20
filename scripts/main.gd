@@ -113,30 +113,34 @@ func _on_player_left(player_id: int) -> void:
 
 
 func _spawn_player(player_id: int) -> void:
-	# 1) Spielerinstanz
+	# 1) Spielerinstanz erzeugen
 	var player_ship: PlayerShip = player_scene.instantiate()
 	player_ship.player_id = player_id
-	player_ship.mode = player_ship.PlayerMode.FREE	# Basiszustand; Level kann überschreiben
+	player_ship.mode = player_ship.PlayerMode.FREE	# Basiszustand; Level darf überschreiben
 
-	# 2) In den Tree einfügen (damit global_position/Center-Bezüge funktionieren)
+	# 2) In den Tree einfügen (damit Positionen/Kamera/Signale funktionieren)
 	players_root.add_child(player_ship)
 
-	# 3) Global registrieren (falls _ready() noch nicht gelaufen ist)
-	Global.player_ships[player_id] = player_ship
+	# 3) Global korrekt registrieren (ID-basiert, inkl. Sprite/Visual-Referenz wenn vorhanden)
+	var visual_node: Node = _get_visual_node_for_player(player_ship)
+	Global.register_player(player_id, player_ship, visual_node)
 
-	# 4) UI koppeln
+	# 4) UI-Callback verbinden (falls vorhanden)
 	if player_ship.has_signal("stats_changed"):
 		player_ship.stats_changed.connect(func(changed_player_id: int, current_health: int, current_energy: int) -> void:
 			var current_score: int = player_scores.get(changed_player_id, 0)
 			ui.set_player_ui(changed_player_id, current_score, current_energy, current_health))
 
-	# 5) Level-spezifisch platzieren (oder Fallback in der Helper-Funktion)
+	# 5) Level-spezifisch platzieren (oder Fallback)
 	_place_player_in_current_level(player_ship, player_id)
 
-	# 6) Sichtbarkeit/Prozesse aktivieren (Scale NICHT überschreiben, damit Level-Scale erhalten bleibt)
+	# 6) Aktivieren (Sichtbarkeit/Processing)
 	player_ship.visible = true
 	player_ship.set_process(true)
 	player_ship.set_physics_process(true)
+
+	# 7) Lokale UI initialisieren
+	_update_player_ui(player_id)
 
 
 func _register_player_in_main(player_id: int) -> void:
@@ -144,15 +148,30 @@ func _register_player_in_main(player_id: int) -> void:
 	_update_player_ui(player_id)
 
 func _remove_player(player_id: int) -> void:
+	# 1) Lokale Scene-Instanz ggf. aufräumen (nur falls noch existiert)
 	if Global.player_ships.has(player_id):
-		var ship = Global.player_ships[player_id]
+		var ship: Node = Global.player_ships[player_id]
 		if is_instance_valid(ship):
 			ship.queue_free()
-		Global.player_ships.erase(player_id)
-	if Global.player_sprites.has(player_id):
-		Global.player_sprites.erase(player_id)
+
+	# 2) Über Global deregistrieren (entfernt auch Sprite + destroyed-Flag + emittiert Signale)
+	Global.unregister_player(player_id)
+
+	# 3) Lokale Datenstrukturen aufräumen (Score etc.)
 	if player_scores.has(player_id):
 		player_scores.erase(player_id)
+		
+func _get_visual_node_for_player(player_ship: Node) -> Node:
+	# Versuche, einen typischen Visual/Sprite-Knoten zu finden.
+	# Passe die Pfade an deine PlayerShip-Szene an, falls du andere Namen verwendest.
+	if player_ship.has_node("Sprite2D"):
+		return player_ship.get_node("Sprite2D")
+	if player_ship.has_node("AnimatedSprite2D"):
+		return player_ship.get_node("AnimatedSprite2D")
+	# Fallback: nimm das Ship selbst, falls kein dedizierter Sprite-Knoten existiert.
+	return player_ship
+
+
 
 
 
@@ -169,10 +188,12 @@ func _connect_level_signals() -> void:
 		current_level.level_finished.connect(_on_level_finished)
 
 func _on_level_loaded() -> void:
-	# 1) Einen Frame warten, bis der neue Level sicher im Scene-Tree hängt
-	#    (stellt sicher, dass level-spezifische Nodes wie Marker2D bereits existieren).
-	await get_tree().process_frame
+	# 0) Beim Levelwechsel zunächst zerstörte IDs leeren, damit Platzierung nicht als "tot" gilt
+	Global.reset_round_state()
 
+	# 1) Einen Frame warten, bis der neue Level sicher im Scene-Tree hängt
+	await get_tree().process_frame
+	
 	# 2) Spieler bleiben erhalten, da sie unter PlayersRoot hängen.
 	#    Jetzt alle EXISTIERENDEN Spieler level-spezifisch platzieren
 	#    (ruft pro Spieler level.place_player_in_current_level(), falls vorhanden,

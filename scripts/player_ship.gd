@@ -27,9 +27,9 @@ var speed: float = max_speed
 var boost_activated := false
 
 @export var max_health: int = 600
-var health # wird  in _ready-Funktion auf max_health Wert gesetzt
+var health: int							# in _ready() auf max_health gesetzt
 @export var max_energy: int = 1000
-var blue_energy # analog zu health
+var blue_energy: int					# in _ready() auf max_energy gesetzt
 
 var shield_is_activated := false
 var player_is_slowed_down := false
@@ -60,6 +60,10 @@ var projectiles := []
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 
+# Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
+var _backup_collision_layer: int
+var _backup_collision_mask: int
+
 # visueller Status (z. B. fürs Blinken)
 var default_player_state := Color(1, 1, 1)
 var current_player_state := default_player_state
@@ -69,20 +73,23 @@ var health_ratio := 1.0
 #   READY
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
-	# Registrierung zentral hier (Main ruft NICHT mehr register auf)
-	Global.register_player(player_id, self, ship_sprite)
+	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
+	# damit wir keine Doppel-Registrierung haben.
 
-	# stats setzen (erst in -ready-Funktion, damit der Bezug auf den im Editor
-	# gesetzten Wert für max_health (als @export Variable) funktioniert
+	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
-	
-	# Skin
+
+	# Skins
 	if player_id == 2:
 		ship_sprite.texture = player2_skin
 		ship_sprite.scale = Vector2(1.5, 1.2)
 	else:
 		ship_sprite.texture = player1_skin
+
+	# Kollisions-Backup sichern (für Death/Revive)
+	_backup_collision_layer = collision_layer
+	_backup_collision_mask = collision_mask
 
 	# Signale
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
@@ -91,7 +98,7 @@ func _ready() -> void:
 	# Schild-Kollision initial aus
 	_shield_collision_shape.disabled = true
 
-	# Waffen
+	# Waffen wählen
 	primary_weapon = laser_beam
 	secondary_weapon = laser_blast
 
@@ -108,6 +115,7 @@ func _ready() -> void:
 # ──────────────────────────────────────────────────────────────
 func _process(delta: float) -> void:
 	if player_is_dead:
+		# Revive ist eine Spielentscheidung → Taste „revive“ als Beispiel
 		if Input.is_action_just_pressed("revive"):
 			revive()
 		return
@@ -116,9 +124,9 @@ func _process(delta: float) -> void:
 		status_report()
 
 	# Boost
-	if Input.is_action_just_pressed("p%d_accelarate" % player_id):
+	if Input.is_action_just_pressed("p%d_accelerate" % player_id):
 		_set_boost(true)
-	if Input.is_action_just_released("p%d_accelarate" % player_id):
+	if Input.is_action_just_released("p%d_accelerate" % player_id):
 		_set_boost(false)
 	if boost_activated:
 		_drain_energy_per_sec(50.0, delta)
@@ -174,15 +182,12 @@ func _process_circle(delta: float) -> void:
 	global_position = circle_center_position + offset
 	rotation = angle + PI
 
-
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
 # ──────────────────────────────────────────────────────────────
 func _on_area_entered(other: Area2D) -> void:
 	# Effekt-Trigger (optional)
 	if "hit_effect" in other:
-		# Du hattest früher ein eigenes Signal – falls nötig, wieder verwenden
-		# emit_signal("hit_effect_triggered", other.hit_effect)
 		_apply_effect_by_name(str(other.hit_effect))
 
 	# Damage
@@ -194,6 +199,7 @@ func _on_area_entered(other: Area2D) -> void:
 			elif other.is_in_group("enemies"):
 				_change_energy(-dmg)
 		else:
+			# Kurzzeitig nicht kollidieren, damit der Treffer nicht mehrfach zählt
 			collision_mask = 0
 			collision_layer = 0
 			player_is_hit(dmg)
@@ -224,9 +230,10 @@ func _do_been_hit_blink() -> void:
 	t.set_loops(1)
 
 func _on_just_been_hit_timer_timeout() -> void:
+	# Nach dem i-Frames-Blinken Kollisionswerte wiederherstellen
 	modulate = current_player_state
-	collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-	collision_layer = 1
+	collision_mask = _backup_collision_mask
+	collision_layer = _backup_collision_layer
 
 # Schild
 func activate_shield() -> void:
@@ -306,24 +313,35 @@ func _apply_slow() -> void:
 	player_is_slowed_down = false
 
 # ──────────────────────────────────────────────────────────────
-#   LIFE / RESPAWN
+#   LIFE / RESPAWN (ID‑basiert mit Global)
 # ──────────────────────────────────────────────────────────────
 func handle_player_death() -> void:
 	print("Spieler %d ist gestorben!" % player_id)
+
+	# Visuell & logisch deaktivieren
 	visible = false
 	set_process(false)
 	set_physics_process(false)
 	player_is_dead = true
-	Global.destroyed_player_ships.append(self)
 
-	var boom = explosion_scene.instantiate()
-	get_tree().current_scene.add_child(boom)
-	boom.global_position = global_position
+	# Schild sicher aus
+	deactivate_shield()
 
+	# Explosion ins Root legen (nicht als Child des ausgeblendeten Schiffs)
+	var explosion = explosion_scene.instantiate()
+	get_tree().current_scene.add_child(explosion)
+	explosion.global_position = global_position
+
+	# Global: ID als zerstört markieren (ersetzt früheres Append mit Node-Referenz)
+	Global.mark_player_destroyed(player_id)
+
+	# Event für Außenwelt
 	emit_signal("player_died", player_id)
 
 func revive() -> void:
 	print("Spieler %d wird wiederbelebt!" % player_id)
+
+	# Werte zurücksetzen
 	global_position = spawn_position
 	visible = true
 	set_process(true)
@@ -332,6 +350,15 @@ func revive() -> void:
 	health = max_health
 	blue_energy = max_energy
 	modulate = default_player_state
+
+	# Kollisionswerte zuverlässig wiederherstellen
+	collision_layer = _backup_collision_layer
+	collision_mask = _backup_collision_mask
+
+	# Global: ID aus „zerstört“ entfernen (triggert Signale/roster_changed)
+	Global.revive_player(player_id)
+
+	# UI updaten
 	_emit_stats()
 
 # ──────────────────────────────────────────────────────────────
