@@ -6,7 +6,11 @@ extends Area2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 var outer_left_angle_reached = false
 var outer_right_angle_reached = false
+@onready var wings: Area2D = %Wings
 
+
+func _ready() -> void:
+	area_entered.connect(_on_area_entered)
 
 func _process(delta: float) -> void:
 	if outer_left_angle_reached == false:
@@ -26,3 +30,8 @@ func _process(delta: float) -> void:
 		right_wing_anchor.rotation_degrees -= 8
 		if right_wing_anchor.rotation_degrees <= -32:
 			outer_right_angle_reached = false
+			
+func _on_area_entered(area_that_entered):
+	if area_that_entered.is_in_group("projectiles"):
+		
+	

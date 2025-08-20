@@ -70,7 +70,9 @@ rotation = -0.138248
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_37dvw")
-helmet_max_health = 200
+health = 1000
+helmet_max_health = 2000
+speed = 200
 
 [node name="Helmet" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -108,6 +110,7 @@ unique_name_in_owner = true
 position = Vector2(-270.183, -18.3343)
 rotation = -0.0258236
 scale = Vector2(1.38095, 1.33524)
+emitting = false
 amount = 500
 texture = ExtResource("2_37dvw")
 lifetime = 7.33
@@ -150,6 +153,7 @@ unique_name_in_owner = true
 wait_time = 1.5
 
 [node name="Wings" type="Area2D" parent="."]
+unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("9_htw1e")

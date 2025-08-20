@@ -33,8 +33,9 @@ func spawn_vomit_bullet():
 	bullet.velocity = 5000.0 * bullet.global_position.direction_to(boss_zombee.closest_player.global_position)# oder andere Geschwindigkeit
 	
 	
-	
 func vomit_wave():
+	vomit_particles.emitting = true
 	for vomit_bullets in range(15):
 		spawn_vomit_bullet()
 		await get_tree().create_timer(0.03).timeout
+	vomit_particles.emitting = false

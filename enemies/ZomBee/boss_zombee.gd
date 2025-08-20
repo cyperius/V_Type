@@ -82,7 +82,7 @@ func _process(delta: float) -> void:
 	
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
-	if area_that_entered != Global.player_ship:
+	if area_that_entered.is_in_group("projectiles"):
 		angry_zombee()
 
 
@@ -112,7 +112,11 @@ func track_nearest_player():
 func angry_zombee() -> void:
 	var eyes_shader_material := head.material as ShaderMaterial
 	eyes_shader_material.set_shader_parameter("red_color", 1.0)
-	vomit_particles.emitting = true
+	# vomit_wave aktiviert Geschosse für Treffer Logik, sowie die vomit_particles
+	# für den optischen Effekt (und deaktiviert wieder, wenn die wave durch ist)
+	if not helmet:
+		head.vomit_wave()
+	#vomit_particles.emitting = true
 	speed = 1000
 	#vomit_timer.start()
 	anger_timer.start()
@@ -120,7 +124,6 @@ func angry_zombee() -> void:
 	speed = 400
 	#await vomit_timer.timeout 
 	#vomit_particles.emitting = false
-	
 	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	
 
@@ -144,7 +147,7 @@ func _on_helmet_area_entered(area_that_entered: Area2D) -> void:
 
 
 func _on_mouth_area_entered(area_that_entered: Area2D) -> void:
-	if area_that_entered != Global.player_ship:
+	if area_that_entered.is_in_group("projectiles"):
 		angry_zombee()
 
 
@@ -156,7 +159,11 @@ func status_report() -> void:
 
 func _on_timer_timeout() -> void:
 	print("timeout")
-	vomit_particles.emitting
-	print("toggle_emitting")
-	head.vomit_wave()
+	var eyes_shader_material := head.material as ShaderMaterial
+	eyes_shader_material.set_shader_parameter("red_color", 1.0)
+	await get_tree().create_timer(0.8).timeout
+	if not helmet:
+		head.vomit_wave()
+	eyes_shader_material.set_shader_parameter("red_color", 0.0)
+	
 	
