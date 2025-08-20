@@ -33,5 +33,5 @@ func _process(delta: float) -> void:
 			
 func _on_area_entered(area_that_entered):
 	if area_that_entered.is_in_group("projectiles"):
-		
+		set_process(false)
 	

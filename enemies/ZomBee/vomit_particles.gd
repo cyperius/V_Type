@@ -8,7 +8,7 @@ var last_target_position = Vector2.INF
 @onready var head: Sprite2D = %Head
 @onready var direction_2d : Vector2
 @onready var boss_zombee: BossZombee = $".."
-
+@onready var helmet: Area2D = %Helmet
 
 
 func _process(_delta: float) -> void:
@@ -36,6 +36,7 @@ func spawn_vomit_bullet():
 func vomit_wave():
 	vomit_particles.emitting = true
 	for vomit_bullets in range(15):
-		spawn_vomit_bullet()
+		if not helmet: # nur wenn Helm zerstört ist, sollen collision areas abgesondert werden
+			spawn_vomit_bullet()
 		await get_tree().create_timer(0.03).timeout
 	vomit_particles.emitting = false

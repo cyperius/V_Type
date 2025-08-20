@@ -60,10 +60,11 @@ height = 227.38
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omsgk"]
 radius = 5.6167
-height = 15.949
+height = 19.9829
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xadtk"]
-height = 21.952
+radius = 7.72721
+height = 15.6184
 
 [node name="BossZombee" type="Area2D"]
 rotation = -0.138248
@@ -72,7 +73,6 @@ collision_mask = 3
 script = ExtResource("1_37dvw")
 health = 1000
 helmet_max_health = 2000
-speed = 200
 
 [node name="Helmet" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -195,7 +195,7 @@ collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Brain"]
-position = Vector2(-134.115, -108.249)
+position = Vector2(-151.4, -107.614)
 scale = Vector2(20, 9.14762)
 shape = SubResource("CapsuleShape2D_omsgk")
 
@@ -209,7 +209,7 @@ collision_mask = 3
 script = ExtResource("4_10gkv")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Mouth"]
-position = Vector2(-172.336, 30.5049)
+position = Vector2(-165.789, 38.623)
 scale = Vector2(10.5001, 8.26661)
 shape = SubResource("CapsuleShape2D_xadtk")
 disabled = true

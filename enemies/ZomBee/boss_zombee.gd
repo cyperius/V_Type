@@ -21,7 +21,7 @@ var closest_player : Node
 @onready var timer: Timer = $Timer
 @onready var vomit_hit_box: Area2D = %VomitHitBox
 
-# Dictionary, das (ijn reeady-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
+# Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
 var direction 
 var helmet_health
@@ -50,7 +50,8 @@ func _ready() -> void:
 	body.damage = 300
 	mouth.damage = 600
 	brain.damage = 300
-
+	
+	vomit_particles.lifetime = 0.45 # wenn Helm zerstört Verlängerung auf 7.3
 
 func apply_helmet_damage(damage: float):
 	var shader_material := helmet_sprite.material as ShaderMaterial
@@ -90,11 +91,11 @@ func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
 	closest_player = null
 	# INF ist eine vordefnierte Konstante "Infinite". Sinn: 
-	# erst Wert "unendlich" als Disztanz setzen, die dann durhc deie nächste
-	# gemessene (zwingend kleinere) eDistanz ersetzt wird
+	# erst Wert "unendlich" als Disztanz setzen, die dann durhc die nächste
+	# gemessene (zwingend kleinere) Distanz ersetzt wird
 	var min_distance = INF
 	# Für jeden Spieler, die oben im dictionary players erfasst wurde, wird die 
-	# Disztanz zum Boss geprüft...
+	# Distanz zum Boss geprüft...
 	for player_id in players.keys():
 		var player = players[player_id]
 		var dist = global_position.distance_to(player.global_position)
@@ -115,7 +116,8 @@ func angry_zombee() -> void:
 	# vomit_wave aktiviert Geschosse für Treffer Logik, sowie die vomit_particles
 	# für den optischen Effekt (und deaktiviert wieder, wenn die wave durch ist)
 	if not helmet:
-		head.vomit_wave()
+		vomit_particles.lifetime = 7.3
+	head.vomit_wave()
 	#vomit_particles.emitting = true
 	speed = 1000
 	#vomit_timer.start()
@@ -163,7 +165,8 @@ func _on_timer_timeout() -> void:
 	eyes_shader_material.set_shader_parameter("red_color", 1.0)
 	await get_tree().create_timer(0.8).timeout
 	if not helmet:
-		head.vomit_wave()
+		vomit_particles.lifetime = 7.3
+	head.vomit_wave()
 	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	
 	
