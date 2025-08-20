@@ -67,6 +67,8 @@ height = 21.952
 
 [node name="BossZombee" type="Area2D"]
 rotation = -0.138248
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_37dvw")
 helmet_max_health = 200
 
@@ -89,7 +91,6 @@ texture = ExtResource("8_1kd36")
 position = Vector2(-208.848, -146.176)
 scale = Vector2(30.4718, 29.5889)
 shape = SubResource("CircleShape2D_lmhcn")
-disabled = true
 
 [node name="Head" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -135,7 +136,6 @@ position = Vector2(89.0059, 34.483)
 rotation = 1.43494
 scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
-disabled = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_1kd36")
@@ -150,6 +150,8 @@ unique_name_in_owner = true
 wait_time = 1.5
 
 [node name="Wings" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("9_htw1e")
 
 [node name="LeftWingAnchor" type="Marker2D" parent="Wings"]
@@ -192,7 +194,6 @@ script = ExtResource("4_10gkv")
 position = Vector2(-134.115, -108.249)
 scale = Vector2(20, 9.14762)
 shape = SubResource("CapsuleShape2D_omsgk")
-disabled = true
 
 [node name="Mouth" type="Area2D" parent="."]
 unique_name_in_owner = true

@@ -60,7 +60,8 @@ func _ready() -> void:
 	_update_all_players_ui()
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("join_game"):
+	if Input.is_action_just_pressed("join_game") and Global.player_ships == {}:
+		# obiges if-statement entfernen um Mehrfach-Instanzierungen zu erlauben:)
 		_on_player_joined(1)
 	
 	
