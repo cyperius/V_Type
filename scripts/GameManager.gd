@@ -1,10 +1,5 @@
 extends Node
 
-# Pause-Mode Konstanten (Godot 4.4)
-const PAUSE_MODE_INHERIT = 0
-const PAUSE_MODE_STOP    = 1
-const PAUSE_MODE_PROCESS = 2
-
 signal connect_signals
 
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
@@ -53,6 +48,7 @@ func _ready():
 	screen_size = get_viewport().get_visible_rect().size
 	# print("📐 Initiale Fenstergrösse:", screen_size)
 	# print("GameManager bereit, aktueller Zustand:", state)
+	_connect_game_over_watchers()	# ← NEU: auf Global-Events hören
 
 func _process(delta):
 	if Input.is_action_just_pressed("level_1"):
@@ -63,6 +59,31 @@ func _process(delta):
 		jump_to_level(3)
 	if Input.is_action_just_pressed("level_4"):
 		jump_to_level(4)
+
+func _connect_game_over_watchers() -> void:
+	# Alle relevanten Global-Events verbinden (mehrfaches Verbinden vermeiden)
+	if not Global.player_registered.is_connected(_on_roster_changed_check_game_over):
+		Global.player_registered.connect(_on_roster_changed_check_game_over)
+	if not Global.player_unregistered.is_connected(_on_roster_changed_check_game_over):
+		Global.player_unregistered.connect(_on_roster_changed_check_game_over)
+	if not Global.player_destroyed.is_connected(_on_roster_changed_check_game_over):
+		Global.player_destroyed.connect(_on_roster_changed_check_game_over)
+	if not Global.player_revived.is_connected(_on_roster_changed_check_game_over):
+		Global.player_revived.connect(_on_roster_changed_check_game_over)
+	if not Global.roster_changed.is_connected(_on_roster_changed_check_game_over):
+		Global.roster_changed.connect(_on_roster_changed_check_game_over)
+
+	# Einmal initial prüfen (z.B. wenn Szene neu geladen wird)
+	_on_roster_changed_check_game_over()
+
+func _on_roster_changed_check_game_over(_player_id := -1) -> void:
+	# Wenn wir bereits im GameOver sind, nichts mehr tun
+	if state == STATE_GAME_OVER:
+		return
+	# „Alle tot?“ → robust via Global.should_game_over()
+	if Global.should_game_over():
+		set_state(STATE_GAME_OVER)
+
 
 func jump_to_level(level_nr: int) -> void:
 	await AudioManager.fade_out(4)
@@ -120,21 +141,35 @@ func set_state(new_state: String) -> void:
 # Startet das GameOver: räumt auf, pausiert, zeigt Szene
 func _start_game_over() -> void:
 	clear_level()
-	# Instanziere und füge die GameOver-Szene hinzu
-	var game_over_scene: Node2D = game_over_scene_packed.instantiate() as Node2D
+
+	var game_over_scene = game_over_scene_packed.instantiate()
 	game_over_scene.name = "GameOverScene"
-	# Damit die GameOver-Szene auch im pausierten Baum weiterläuft
-	#game_over_scene.pause_mode = Node.PauseMode.PROCESS
+
+	# Godot 4: Node.process_mode statt pause_mode
+	# Läuft nur, wenn der Tree pausiert ist (passt zu get_tree().paused = true):
+	game_over_scene.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	# Alternativ: immer verarbeiten – auch unpausiert:
+	# game_over_scene.process_mode = Node.PROCESS_MODE_ALWAYS
+
 	level_container.add_child(game_over_scene)
-	# Verbindung zum Signal, wenn die Sequenz fertig ist
 	if game_over_scene.has_signal("finished"):
-		game_over_scene.connect("finished", Callable(self, "_on_game_over_finished"))
+		game_over_scene.finished.connect(_on_game_over_finished)
+
+
 
 # Aufruf, wenn GameOver-Szene fertig ist
 func _on_game_over_finished() -> void:
 	if level_container.has_node("GameOverScene"):
 		level_container.get_node("GameOverScene").queue_free()
-	# Lade Main-Szene neu, Main._ready lädt aktuellen Level
+
+	# Spieler-Referenzen und Zustand vollständig leeren,
+	# damit keine freed-Instanzen mehr in Global hängen.
+	Global.clear_all_player_data()
+
+	# (Optional, schadet nicht): Level-Rundenzustand leeren
+	Global.reset_round_state()
+
+	# Main neu laden → startet „frisch“ ohne alte Player-Refs
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 
@@ -158,7 +193,10 @@ func _load_level(level_nr: int) -> void:
 
 	# Instanziieren
 	current_level_node = packed_scene.instantiate()
-
+	
+	# NEU: Sofort prüfen, ob GameOver fällig ist
+	_on_roster_changed_check_game_over()
+	
 	# Persistente Daten übergeben, wenn das Level eine setup-Methode anbietet
 	if current_level_node.has_method("setup"):
 		current_level_node.setup(GameManager.score, GameManager.energy_units, GameManager.lives, GameManager.inventory)

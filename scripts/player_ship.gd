@@ -318,7 +318,7 @@ func _apply_slow() -> void:
 func handle_player_death() -> void:
 	print("Spieler %d ist gestorben!" % player_id)
 
-	# Visuell & logisch deaktivieren
+	# Logisch deaktivieren
 	visible = false
 	set_process(false)
 	set_physics_process(false)
@@ -327,16 +327,20 @@ func handle_player_death() -> void:
 	# Schild sicher aus
 	deactivate_shield()
 
-	# Explosion ins Root legen (nicht als Child des ausgeblendeten Schiffs)
+	# Explosion an Root hängen (läuft weiter, auch wenn dieses Node gestoppt ist)
 	var explosion = explosion_scene.instantiate()
 	get_tree().current_scene.add_child(explosion)
 	explosion.global_position = global_position
 
-	# Global: ID als zerstört markieren (ersetzt früheres Append mit Node-Referenz)
+	# kurz warten nach Zerstörung bis Game_over-Sequenz ausgelöst wird
+	await get_tree().create_timer(4).timeout
+
+	# Jetzt erst als zerstört markieren → triggert GameOver/Pausing erst NACH der Explosion
 	Global.mark_player_destroyed(player_id)
 
 	# Event für Außenwelt
 	emit_signal("player_died", player_id)
+
 
 func revive() -> void:
 	print("Spieler %d wird wiederbelebt!" % player_id)

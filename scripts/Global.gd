@@ -88,7 +88,27 @@ func revive_player(player_id: int) -> void:
 #   ZUGRIFFSFUNKTIONEN
 # ──────────────────────────────────────────────────────────────
 func get_player_ship(player_id: int) -> Node:
-	return player_ships.get(player_id, null)
+	var ship : Node = player_ships.get(player_id, null)
+	if ship != null and !is_instance_valid(ship):
+		# Hängende Referenz sofort aus dem Dictionary entfernen
+		player_ships.erase(player_id)
+		# (optional) zugehörigen Sprite-Eintrag ebenfalls säubern
+		if player_sprites.has(player_id):
+			player_sprites.erase(player_id)
+		return null
+	return ship
+
+func clear_all_player_data() -> void:
+	# Existierende Schiffe sicher freigeben
+	for player_id in player_ships.keys():
+		var ship := player_ships[player_id]
+		if is_instance_valid(ship):
+			ship.queue_free()
+	# Dictionaries komplett leeren
+	player_ships.clear()
+	player_sprites.clear()
+	destroyed_player_ids.clear()
+	emit_signal("roster_changed")
 
 func get_player_sprite(player_id: int) -> Node:
 	return player_sprites.get(player_id, null)
