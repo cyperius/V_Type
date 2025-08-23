@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://13s6p5883lpf"]
+
+[ext_resource type="Script" uid="uid://b12n7upjkbkll" path="res://pause_screen.gd" id="1_gkx8r"]
+
+[node name="PauseScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gkx8r")
