@@ -1,8 +1,78 @@
-[gd_scene load_steps=2 format=3 uid="uid://13s6p5883lpf"]
+[gd_scene load_steps=5 format=3 uid="uid://13s6p5883lpf"]
 
 [ext_resource type="Script" uid="uid://b12n7upjkbkll" path="res://pause_screen.gd" id="1_gkx8r"]
+[ext_resource type="Shader" uid="uid://dp1hn66gsihpv" path="res://assets_kursM9 Kopie/blur.gdshader" id="2_un6tb"]
+[ext_resource type="Theme" uid="uid://cex15tcav7we4" path="res://assets_kursM9 Kopie/pause_screen_theme.tres" id="3_rbgr5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfagd"]
+shader = ExtResource("2_un6tb")
+shader_parameter/blur_amount = 0.0
+shader_parameter/tint = Color(0, 0, 0, 1)
+shader_parameter/tint_strength = 0.0
+shader_parameter/saturation = 1.0
 
 [node name="PauseScreen" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_gkx8r")
+
+[node name="BlurColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_cfagd")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -398.5
+offset_right = 560.0
+offset_bottom = 398.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="PauseMenuTitle" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_rbgr5")
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_rbgr5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PanelContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Resume Game"
+
+[node name="QuitButton" type="Button" parent="PanelContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="MenuButton" type="MenuButton" parent="PanelContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"

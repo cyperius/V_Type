@@ -15,13 +15,15 @@ anchor_mode = 0
 
 [node name="PlayersRoot" type="Node2D" parent="LevelContainer"]
 
-[node name="Shop" type="Node2D" parent="."]
-
-[node name="StartMenu" type="Node2D" parent="."]
-
-[node name="UI" parent="." instance=ExtResource("3_vtdax")]
-
 [node name="InputJoiner" type="Node2D" parent="."]
 script = ExtResource("3_sugp2")
 
-[editable path="UI"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Shop" type="Node2D" parent="CanvasLayer"]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("3_vtdax")]
+
+[node name="StartMenu" type="Node2D" parent="CanvasLayer"]
+
+[editable path="CanvasLayer/UI"]

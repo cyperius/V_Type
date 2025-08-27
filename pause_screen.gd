@@ -22,7 +22,7 @@ var _is_currently_opening := false
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-
+ 
 	menu_opened_amount = 0.0
 
 	_resume_button.pressed.connect(toggle)

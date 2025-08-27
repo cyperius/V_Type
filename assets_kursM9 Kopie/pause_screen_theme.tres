@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=4 format=3 uid="uid://cex15tcav7we4"]
 
-[ext_resource type="FontFile" uid="uid://vxbfcnef0pvq" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="1_3vyc6"]
+[ext_resource type="FontFile" uid="uid://vxbfcnef0pvq" path="res://assets_kursM9 Kopie/fonts/rubik/Rubik-Bold.ttf" id="1_3vyc6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_evojq"]
 content_margin_left = 20.0
