@@ -21,9 +21,12 @@ script = ExtResource("3_sugp2")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Shop" type="Node2D" parent="CanvasLayer"]
+unique_name_in_owner = true
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("3_vtdax")]
+unique_name_in_owner = true
 
 [node name="StartMenu" type="Node2D" parent="CanvasLayer"]
+unique_name_in_owner = true
 
 [editable path="CanvasLayer/UI"]

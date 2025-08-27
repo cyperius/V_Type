@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://13s6p5883lpf"]
+[gd_scene load_steps=5 format=3 uid="uid://c2tmypibhc0hh"]
 
 [ext_resource type="Script" uid="uid://b12n7upjkbkll" path="res://pause_screen.gd" id="1_gkx8r"]
-[ext_resource type="Shader" uid="uid://dp1hn66gsihpv" path="res://assets_kursM9 Kopie/blur.gdshader" id="2_un6tb"]
+[ext_resource type="Shader" path="res://assets_kursM9 Kopie/blur.gdshader" id="2_un6tb"]
 [ext_resource type="Theme" uid="uid://cex15tcav7we4" path="res://assets_kursM9 Kopie/pause_screen_theme.tres" id="3_rbgr5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cfagd"]

@@ -17,7 +17,7 @@ var player_scores: Dictionary = {}	# player_id → score
 # ──────────────────────────────────────────────────────────────
 @onready var level_container: Node = $LevelContainer
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot	# <— fester Node im Editor
-@onready var ui: Control = $UI
+@onready var ui: Control = %UI
 var input_joiner: Node = null
 @onready var player_scene: PackedScene = preload("res://scenes/player_ship.tscn")
 
