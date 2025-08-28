@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var health : int = 2000
+@export var health : int = 200
 @export var sfx_stream: AudioStream
 @export var sfx_name : String
 @export var weapon := PackedScene

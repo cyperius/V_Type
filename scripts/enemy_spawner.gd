@@ -24,25 +24,32 @@ signal incoming_boss
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
 
 @onready var enemy_counter : int = 0
-
-#spawn Rate bei '1' starten und pro Durchlauf um 0.2 erhöhen
-@onready var spawn_rate : float = 0.8 + GameManager.loop_counter/5
-
+var number_of_players : int
+var spawn_rate : float
+var boss_spawned = false
 
 
 func _ready() -> void:
+	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
-	timer.wait_time = 2 / spawn_rate
-	timer2.wait_time = 3 / spawn_rate
 	
+	
+func set_spawn_rate() -> void:
+	number_of_players = Global.player_ships.size()
+	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
+	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players
+	timer.wait_time = 3 / spawn_rate
+	timer2.wait_time = 4 / spawn_rate
+
 
 func _process(delta: float) -> void:
-	if enemy_counter == level_1.amount_of_enemies:
+	if enemy_counter >= level_1.amount_of_enemies and boss_spawned == false:
 		here_comes_the_boss()
 	
 
 func _on_timer_timeout():
+	print("timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(0, 5)
 	var enemy = enemy_blueprint.instantiate()
 	emit_signal("enemy_spawned", enemy)
@@ -72,6 +79,7 @@ func _on_timer2_timeout():
 	
 	
 func here_comes_the_boss():
+	boss_spawned = true
 	emit_signal("incoming_boss")
 	enemy_counter += 1
 	timer.stop()
@@ -80,6 +88,8 @@ func here_comes_the_boss():
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	boss.global_position = Vector2(7000, 1100)
+	# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
+	boss.health = boss.health * number_of_players
 
 func _on_boss_defeated():
 	emit_signal("boss_defeated")

@@ -76,3 +76,4 @@ func _on_level_duration_timeout():
 func _on_spawn_timer_timeout():
 	var new_circle_enemy = circle_enemy_1.instantiate()
 	add_child(new_circle_enemy)
+	

@@ -28,7 +28,6 @@ position = Vector2(4792, 1920)
 gizmo_extents = 69.5
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.14
 autostart = true
 
 [node name="Timer2" type="Timer" parent="."]

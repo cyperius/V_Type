@@ -15,6 +15,11 @@ func _ready() -> void:
 	# Alle registrierten Spieler ins Level setzen
 	_place_all_players_in_current_level()
 
+	# ── Global Signale
+	#das Global.roster_changed Signal feuert, wenn die Anz. Spieler geändert hat
+	# wenn dies der Fall, werden gewisse Level Pramter angepasst -> func _on_number...
+	Global.roster_changed.connect(_on_number_of_players_changed)
+
 	# ── Enemy‑Spawner Signale
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
@@ -82,3 +87,6 @@ func _on_boss_defeated() -> void:
 
 func _on_incoming_boss() -> void:
 	audio_stream_player.stop()
+	
+func _on_number_of_players_changed() -> void:
+	enemy_spawner.set_spawn_rate()

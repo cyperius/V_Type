@@ -50,6 +50,7 @@ func register_player(player_id: int, ship: Node, sprite: Node) -> void:
 	emit_signal("player_registered", player_id)
 	emit_signal("roster_changed")
 	print("✅ Spieler %d registriert" % player_id)
+	print(player_ships.size())
 
 func unregister_player(player_id: int) -> void:
 	# Spieler verlässt das Level/Spielerpool

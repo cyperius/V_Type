@@ -47,11 +47,14 @@ func _process(delta: float) -> void:
 
 func _on_shoot_timer_timeout():
 	audio_stream_player_2d.play()
-	var shot = circle_shot_scene.instantiate()
-	# scale des instantiierten Schusses entspricht dem scale des enemies (siehe oben 4.)
-	shot.scale = scale
-	shot.position = global_position
-	# Schussinstanz dem Level übergeben, damit er nicht mit dem enemy mitrotiert
-	var parent = get_parent()
-	parent.add_child(shot)
-	
+	# Je höher die Anz. Spieler, umso grösser die Chance, dass ein Schuss ausgelöst wird
+	var shot_probability = randf_range(1, 3 - 0.5 * Global.player_ships.size())
+	if shot_probability <= 1.8:
+		var shot = circle_shot_scene.instantiate()
+		# scale des instantiierten Schusses entspricht dem scale des enemies (siehe oben 4.)
+		shot.scale = scale
+		shot.position = global_position
+		# Schussinstanz dem Level übergeben, damit er nicht mit dem enemy mitrotiert
+		var parent = get_parent()
+		parent.add_child(shot)
+		
