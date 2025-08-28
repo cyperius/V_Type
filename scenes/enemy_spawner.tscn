@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dc0cvebmpglmy" path="res://scripts/enemy_spawner.gd" id="1_8i475"]
 
 [node name="EnemySpawner" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_8i475")
 
 [node name="SpawnPositions" type="Node2D" parent="."]

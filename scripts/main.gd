@@ -244,3 +244,8 @@ func _update_player_ui(player_id: int) -> void:
 		energy_count = ship.blue_energy
 		health_count = ship.health
 	ui.set_player_ui(player_id, score_count, energy_count, health_count)
+
+func _input(event):
+	if event.is_action_pressed("pause"):
+		get_tree().paused = true
+		print("paused gesetzt!")

@@ -10,6 +10,7 @@ _data = {
 point_count = 22
 
 [node name="Path2D" type="Path2D"]
+process_mode = 1
 scale = Vector2(2.8, 2.8)
 curve = SubResource("Curve2D_ehqj4")
 script = ExtResource("1_l7txs")

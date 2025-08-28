@@ -2,7 +2,7 @@
 extends Control
 
 @onready var _blur_color_rect: ColorRect = %BlurColorRect
-@onready var _ui_panel_container: PanelContainer = %UIPanelContainer
+@onready var _ui_panel_container: PanelContainer = %PanelContainer
 
 ## Controls how much the menu is opened. This isn't actually used in the running game
 ## but it allows us to preview the menu animation in the editor.
@@ -51,6 +51,7 @@ func set_menu_opened_amount(amount: float) -> void:
 func toggle() -> void:
 	# Switch the flag to the opposite value
 	_is_currently_opening = not _is_currently_opening
+	
 
 	var duration := animation_duration
 	# If there's a tween, and it is animating, we want to kill it.
@@ -71,4 +72,5 @@ func toggle() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
+		print("esc erkannt")
 		toggle()

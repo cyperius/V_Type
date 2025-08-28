@@ -71,11 +71,12 @@ fill_from = Vector2(-1, 0)
 fill_to = Vector2(3, 2)
 
 [node name="PlayerShip" type="Area2D"]
+process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
 scale = Vector2(0.25, 0.25)
 collision_mask = 60
 script = ExtResource("1_6i3ro")
-max_health = 100
+max_health = 10000
 laser_beam = ExtResource("2_othpc")
 laser_blast = ExtResource("3_igyjx")
 

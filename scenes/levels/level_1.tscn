@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="4_nvxsf"]
 
 [node name="Level_1" type="Node2D"]
+process_mode = 1
 script = ExtResource("1_cjh6t")
 amount_of_enemies = 2
 

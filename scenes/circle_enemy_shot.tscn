@@ -7,6 +7,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vqoh"]
 
 [node name="CircleEnemyShot" type="Area2D"]
+process_mode = 1
 collision_layer = 8
 script = ExtResource("1_4d17e")
 damage = 300
