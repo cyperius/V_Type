@@ -80,6 +80,8 @@ func here_comes_the_boss():
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	boss.global_position = Vector2(7000, 1100)
+	# boss.Health abhängig von Spieleranzahl (zum Zeitpunkt des Spawnens)
+	boss.health *= Global.player_ships.size()
 
 func _on_boss_defeated():
 	emit_signal("boss_defeated")
