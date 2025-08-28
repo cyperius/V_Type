@@ -23,4 +23,5 @@ progress = 5085.48
 loop = false
 
 [node name="Mech_Enemy" parent="PathFollow2D" instance=ExtResource("2_g5qxn")]
+process_mode = 0
 collision_mask = 3
