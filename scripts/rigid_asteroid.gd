@@ -4,7 +4,7 @@ signal enemy_destroyed(score: int, energy: int)
 signal asteroid_destroyed(size)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var collision_shape_2d_1: CollisionShape2D = %CollisionShape2D1
 @onready var area2d = $Area2D
 @onready var explosion_animation_scene = preload("res://scenes/explosion_animation.tscn")
 @export var explosion_scale : float = 0.5
@@ -42,10 +42,10 @@ func _ready() -> void:
 	damage *= astroid_scale
 
 	# Kollision anpassen (z. B. CircleShape2D)
-	if collision_shape.shape is CircleShape2D:
-		var shape = collision_shape.shape.duplicate() as CircleShape2D
+	if collision_shape_2d_1.shape is CircleShape2D:
+		var shape = collision_shape_2d_1.shape.duplicate() as CircleShape2D
 		shape.radius *= astroid_scale
-		collision_shape.shape = shape
+		collision_shape_2d_1.shape = shape
 
 	# Masse basierend auf Volumen-
 	mass = astroid_scale * astroid_scale * astroid_scale
