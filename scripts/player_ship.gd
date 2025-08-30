@@ -53,6 +53,7 @@ var projectiles := []
 @onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/enemies/player2_ship.png")
+@onready var player3_skin = preload("res://assets/graphic_elements/player/Luftfahrzeug.png")
 
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var hit_scene: PackedScene = preload("res://scenes/hit.tscn")
@@ -80,12 +81,17 @@ func _ready() -> void:
 	health = max_health
 	blue_energy = max_energy
 
-	# Skins
+	# Skins 
 	if player_id == 2:
 		ship_sprite.texture = player2_skin
-		ship_sprite.scale = Vector2(1.5, 1.2)
+		ship_sprite.scale = Vector2(1, 1.4)
+	elif player_id == 3:
+		ship_sprite.texture = player3_skin
+		ship_sprite.scale = Vector2(0.8, 0.9)
 	else:
 		ship_sprite.texture = player1_skin
+		ship_sprite.scale = Vector2(0.6, 0.6)
+		
 
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
