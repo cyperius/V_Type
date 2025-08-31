@@ -69,6 +69,10 @@ func _on_area_entered(area: Area2D) -> void:
 		area.player_is_hit(int(damage))
 	elif "apply_damage" in area:
 		area.apply_damage(int(damage))
+		# apply score existiert im Moment noch nicht 
+		# Idee: der owner des Schusses und die zu addierende Score
+		# muss weiter gegeben werden (als "Platzhalter_Mechanik" hier mal 
+		# damge = score angenommen
 		area.apply_score(int(damage), int(owner_id))
 	# Ansonsten ist das Ziel „passiv“ → nur Effekte ohne Schaden
 
