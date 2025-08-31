@@ -30,6 +30,7 @@ var boost_activated := false
 var health: int							# in _ready() auf max_health gesetzt
 @export var max_energy: int = 1000
 var blue_energy: int					# in _ready() auf max_energy gesetzt
+var score : int = 0
 
 var shield_is_activated := false
 var player_is_slowed_down := false

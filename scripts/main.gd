@@ -45,6 +45,7 @@ func _ready() -> void:
 	GameManager._load_level(GameManager.current_level)
 	_connect_level_signals()
 	await _ensure_level_ready()
+	
 
 	# 4) Bereits aktive Spieler spawnen (Pads evtl. schon vor _ready() verbunden)
 	var initial_ids: Array = []
@@ -69,11 +70,24 @@ func _physics_process(delta: float) -> void:
 #   LEVEL WARTEN (nur bis der erste Level hängt)
 # ──────────────────────────────────────────────────────────────
 func _ensure_level_ready() -> void:
-	var attempts := 0
-	while level_container.get_child_count() == 0 and attempts < 120:
+	var attempts: int = 0
+	while attempts < 180:
+		# Warten, bis EIN Kind unter LevelContainer existiert, das NICHT PlayersRoot ist
+		var level_is_present: bool = false
+		for child in level_container.get_children():
+			# Sicherstellen, dass wir PlayersRoot überspringen
+			if child != players_root:
+				level_is_present = true
+				break
+
+		# Optional noch robuster: Wenn GameManager die Instanz referenziert, reicht das
+		if level_is_present or GameManager.current_level_node != null:
+			return
+
 		await get_tree().process_frame
 		attempts += 1
-	# Kein weiteres Handling nötig: PlayersRoot ist persistent und bleibt bestehen.
+	# Falls wir hier landen, gibt es (noch) keinen Level; kein zusätzliches Handling nötig
+
 
 # ──────────────────────────────────────────────────────────────
 #   SPIELER-HANDLING
@@ -142,7 +156,6 @@ func _spawn_player(player_id: int) -> void:
 	# 7) Lokale UI initialisieren
 	_update_player_ui(player_id)
 
-
 func _register_player_in_main(player_id: int) -> void:
 	player_scores[player_id] = 0
 	_update_player_ui(player_id)
@@ -178,14 +191,34 @@ func _get_visual_node_for_player(player_ship: Node) -> Node:
 # ──────────────────────────────────────────────────────────────
 #   LEVEL-HANDLING
 # ──────────────────────────────────────────────────────────────
+
 func _connect_level_signals() -> void:
-	if level_container.get_child_count() == 0:
+	print("main: connect_level_signals – Kinder im LevelContainer:", level_container.get_child_count())
+
+	var current_level: Node = null
+
+	# 1) Bevorzugt über GameManager (verlässlichste Quelle)
+	if GameManager.current_level_node != null:
+		current_level = GameManager.current_level_node
+	else:
+		# 2) Fallback: erstes Kind unter LevelContainer, das nicht PlayersRoot ist
+		for child in level_container.get_children():
+			if child != players_root:
+				current_level = child
+				break
+
+	if current_level == null:
+		print("⚠️ Kein Level-Node gefunden (noch nicht geladen?)")
 		return
-	var current_level: Node = level_container.get_child(0)
+
+	# 3) Signale verbinden, wenn vorhanden
 	if current_level.has_signal("enemy_destroyed"):
+		print("main: (signal enemy_destroyed im Level gefunden)")
 		current_level.enemy_destroyed.connect(_on_enemy_destroyed)
+
 	if current_level.has_signal("level_finished"):
 		current_level.level_finished.connect(_on_level_finished)
+
 
 func _on_level_loaded() -> void:
 	# 0) Beim Levelwechsel zunächst zerstörte IDs leeren, damit Platzierung nicht als "tot" gilt
@@ -208,6 +241,7 @@ func _on_level_loaded() -> void:
 #   SIGNAL-CALLBACKS
 # ──────────────────────────────────────────────────────────────
 func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
+	print("main: enemy Destroyed")
 	total_destroyed_enemies += 1
 	if not player_scores.has(player_id):
 		player_scores[player_id] = 0
@@ -216,6 +250,7 @@ func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
 		var ship = Global.player_ships[player_id]
 		if ship is PlayerShip:
 			ship.blue_energy += energy
+			ship.score += score
 	_update_global_ui()
 	_update_player_ui(player_id)
 
@@ -243,6 +278,7 @@ func _update_player_ui(player_id: int) -> void:
 	if ship is PlayerShip:
 		energy_count = ship.blue_energy
 		health_count = ship.health
+		score_count = ship.score
 	ui.set_player_ui(player_id, score_count, energy_count, health_count)
 
 func _input(event):

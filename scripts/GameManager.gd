@@ -24,7 +24,7 @@ var energy_units  : int        = 0
 var lives         : int        = 3
 var loop_counter  : float      = 1.0
 # Aktuelles Level als Zahl
-var current_level : int        = 1
+var current_level : int = 1    
 
 # Reihenfolge der Level–Szenen
 var level_paths   : Array      = [

@@ -69,6 +69,7 @@ func _on_area_entered(area: Area2D) -> void:
 		area.player_is_hit(int(damage))
 	elif "apply_damage" in area:
 		area.apply_damage(int(damage))
+		area.apply_score(int(damage), int(owner_id))
 	# Ansonsten ist das Ziel „passiv“ → nur Effekte ohne Schaden
 
 	# Projektil nach dem Treffer entfernen

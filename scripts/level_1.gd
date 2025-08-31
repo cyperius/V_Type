@@ -67,9 +67,12 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 func _on_enemy_spawned(enemy: Node) -> void:
 	# ✳️ Idealfall: Der Enemy sendet bereits (score, energy, player_id).
 	if enemy.has_signal("enemy_destroyed"):
+		print("level1: enemy_spawned and connected enemy_destroyed signal")
 		# Direkte 1:1‑Weiterleitung
 		enemy.enemy_destroyed.connect(func(score: int, energy: int, player_id: int) -> void:
+			print("level1: line 73")
 			emit_signal("enemy_destroyed", score, energy, player_id))
+			
 	else:
 		print("⚠️ Enemy hat kein 'enemy_destroyed'-Signal.")
 
