@@ -8,11 +8,13 @@ shader = ExtResource("1_rftyf")
 shader_parameter/speed = 0.1
 
 [node name="background_Control" type="Control"]
+process_mode = 1
 z_index = -1
 layout_mode = 3
 anchors_preset = 0
 
 [node name="background_TextureRect" type="TextureRect" parent="."]
+process_mode = 1
 texture_repeat = 2
 material = SubResource("ShaderMaterial_d8trb")
 layout_mode = 0
