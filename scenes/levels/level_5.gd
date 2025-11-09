@@ -11,7 +11,7 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready():
-	var enemy = preload("res://scenes/enemy5.tscn").instantiate()
+	var enemy = preload("res://scenes/enemy_4.tscn").instantiate()
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)

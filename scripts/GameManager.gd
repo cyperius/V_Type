@@ -32,6 +32,7 @@ var level_paths   : Array      = [
 	"res://scenes/levels/rigid_asteroid_level.tscn",
 	"res://scenes/levels/level_3.tscn",
 	"res://scenes/levels/level_4.tscn",
+	"res://scenes/levels/level_5.tscn"
 	# …weitere Levels hier anhängen
 ]
 
@@ -59,6 +60,8 @@ func _process(delta):
 		jump_to_level(3)
 	if Input.is_action_just_pressed("level_4"):
 		jump_to_level(4)
+	if Input.is_action_just_pressed("level_5"):
+		jump_to_level(5)
 
 func _connect_game_over_watchers() -> void:
 	# Alle relevanten Global-Events verbinden (mehrfaches Verbinden vermeiden)
