@@ -6,7 +6,7 @@ signal level_finished(level_nr: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
-@export var basic_spawn_rate : int
+@export var basic_spawn_rate : int = 1
 @export var enemy1 : PackedScene
 @export var enemy2_with_path : PackedScene
 @export var enemy3 : PackedScene

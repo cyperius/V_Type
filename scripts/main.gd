@@ -26,6 +26,7 @@ var input_joiner: Node = null
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
+	print("registreirte Spieler beim level laden: ", Global.player_ships)
 	# 1) InputJoiner als Node in der Szene erwarten (einfach & zuverlässig)
 	if has_node("InputJoiner"):
 		input_joiner = $InputJoiner

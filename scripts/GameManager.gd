@@ -208,12 +208,10 @@ func _load_level(level_nr: int) -> void:
 	level_container.add_child(current_level_node)
 
 	# Signal fürs Level-Ende verbinden (Godot 4-Style)
-	Main._connect_level_signals()
-	# Signale sollten mit obiger zeile alle verbunden werden
-	#if current_level_node.has_signal("level_finished"):
-		#current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
-	#if current_level_node.has_signal("enemy_destroyed"):
-		#emit_signal("connect_signals")
+	
+	if current_level_node.has_signal("level_finished"):
+		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
+	
 		
 
 func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy: int = 0) -> void:

@@ -10,7 +10,7 @@
 [node name="Level_1" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_cjh6t")
-amount_of_enemies = 30
+amount_of_enemies = 6
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ffuqo")]
 enemy1 = ExtResource("3_sk5k4")
