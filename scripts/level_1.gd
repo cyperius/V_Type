@@ -3,11 +3,13 @@ extends Node2D
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 signal enemy_destroyed(score: int, energy: int, player_id: int)
 
+@export var amount_of_enemies: int
+
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var boss_timer: Timer = $BossTimer
 @onready var enemy_spawner: Node2D = $EnemySpawner
-@export var amount_of_enemies: int
 @onready var enemies_container: Node2D = $EnemiesContainer
+@onready var spawned_enemies = 0
 
 func _ready() -> void:
 	# Levelstart: Zerstörte IDs zurücksetzen

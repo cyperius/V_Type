@@ -6,6 +6,16 @@ signal level_finished(level_nr: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
+@export var basic_spawn_rate : int
+@export var enemy1 : PackedScene
+@export var enemy2_with_path : PackedScene
+@export var enemy3 : PackedScene
+@export var enemy4_with_path : PackedScene
+@export var enemy5 : PackedScene
+@export var enemy6_with_path : PackedScene
+@export var enemy7 : PackedScene
+@export var enemy8_with_path : PackedScene
+
 
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
@@ -36,22 +46,28 @@ func _ready() -> void:
 	
 	
 func set_spawn_rate() -> void:
+	# default Wert (für den fall, dass noch kein Spieler im Spiel ist)
+	# evtl. funktioniert die Anpassung der Spawn rate, wenn dei Speielranzahl ändert
+	# bzw, deren reale Umsetzung noch nicht
+	spawn_rate = basic_spawn_rate
 	number_of_players = Global.player_ships.size()
 	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
-	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players
+	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate
 	timer.wait_time = 3 / spawn_rate
 	timer2.wait_time = 4 / spawn_rate
 
 
 func _process(delta: float) -> void:
-	if enemy_counter >= level_1.amount_of_enemies and boss_spawned == false:
+	var current_level = get_parent()
+	# es fehlt noch die Sicherheitsabfrage, ob "amount_of_ememies" existiert 
+	if enemy_counter >= current_level.amount_of_enemies and boss_spawned == false:
 		here_comes_the_boss()
 	
 
 func _on_timer_timeout():
 	print("timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(0, 5)
-	var enemy = enemy_blueprint.instantiate()
+	var enemy = enemy1.instantiate()
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
@@ -67,7 +83,7 @@ func _on_timer_timeout():
 	
 func _on_timer2_timeout():
 	var spawn_pos_nr = randi_range(1, 5)
-	var path_enemy = path_enemy_blueprint.instantiate()
+	var path_enemy = enemy2_with_path.instantiate()
 	emit_signal("enemy_spawned", path_enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...

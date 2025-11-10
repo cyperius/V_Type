@@ -20,6 +20,7 @@ var player_scores: Dictionary = {}	# player_id → score
 @onready var ui: Control = %UI
 var input_joiner: Node = null
 @onready var player_scene: PackedScene = preload("res://scenes/player_ship.tscn")
+@onready var camera: Camera2D = %Camera2D
 
 # ──────────────────────────────────────────────────────────────
 #   LEBENSZYKLUS
@@ -219,6 +220,9 @@ func _connect_level_signals() -> void:
 	if current_level.has_signal("level_finished"):
 		current_level.level_finished.connect(_on_level_finished)
 
+	if current_level.has_signal("zoom_requested"):
+		print("main: (signal zoom_requested im Level gefunden)")
+		current_level.zoom_requested.connect(_on_zoom_requested)
 
 func _on_level_loaded() -> void:
 	# 0) Beim Levelwechsel zunächst zerstörte IDs leeren, damit Platzierung nicht als "tot" gilt
@@ -256,6 +260,12 @@ func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
 
 func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_energy: int = 0) -> void:
 	pass
+
+func _on_zoom_requested(zoomfactor_x: float, zoomfactor_y: float) -> void:
+	camera.zoom.x = zoomfactor_x
+	camera.zoom.y = zoomfactor_y
+	print("zoom_request_received in main")
+
 
 # ──────────────────────────────────────────────────────────────
 #   UI-HILFSFUNKTIONEN

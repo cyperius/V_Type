@@ -25,6 +25,7 @@ AudioManager="*res://scenes/AudioManager.tscn"
 Global="*res://scripts/Global.gd"
 GameManager="*res://scripts/GameManager.gd"
 Players="*res://Autoloads&GameManaging/Players.gd"
+Main="*res://scenes/main.tscn"
 
 [display]
 

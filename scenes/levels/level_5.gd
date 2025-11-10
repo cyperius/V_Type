@@ -2,15 +2,18 @@ extends Node2D  # MainScene basiert auf Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 signal enemy_destroyed(score: int, energy: int)
+signal zoom_requested(zoomfactor_x: float, zoomfactor_y : float)
 
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer
 @onready var enemy_spawner: Node2D = $EnemySpawner
 @export var amount_of_enemies : int
 @onready var enemies_container : Node2D = $EnemiesContainer
+@onready var zoom_out_timer: Timer = $ZoomOutTimer
 
 
 func _ready():
+	zoom_out_timer.timeout.connect(_on_zoom_out_timer_timeout)
 	var enemy = preload("res://scenes/enemy_4.tscn").instantiate()
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
@@ -52,8 +55,12 @@ func _on_boss_timer_timeout():
 	
 func _on_boss_defeated():
 	GameManager.loop_counter += 1
-	emit_signal("level_finished", 1, 0, 0)
+	emit_signal("level_finished", 1, 0, 0) 
 	print("boss defeated")
 	
 func _on_incoming_boss() -> void:
 	audio_stream_player.stop()
+
+func _on_zoom_out_timer_timeout() -> void:
+	emit_signal("zoom_requested", 0.5, 1)
+	print("zoom_requested signal emitted")

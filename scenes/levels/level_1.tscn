@@ -1,16 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddamewq24ewbi"]
+[gd_scene load_steps=7 format=3 uid="uid://ddamewq24ewbi"]
 
 [ext_resource type="Script" uid="uid://kt7eculq1haq" path="res://scripts/level_1.gd" id="1_cjh6t"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_ffuqo"]
+[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://scenes/enemy_1.tscn" id="3_sk5k4"]
 [ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="4_2g2jk"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="4_nvxsf"]
+[ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://scenes/enemy_with_path.tscn" id="4_oc4kc"]
 
 [node name="Level_1" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_cjh6t")
-amount_of_enemies = 4
+amount_of_enemies = 30
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ffuqo")]
+enemy1 = ExtResource("3_sk5k4")
+enemy2_with_path = ExtResource("4_oc4kc")
 
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
