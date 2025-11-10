@@ -1,6 +1,6 @@
 extends Node
 
-signal connect_signals
+signal level_loaded
 
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
@@ -211,6 +211,8 @@ func _load_level(level_nr: int) -> void:
 	
 	if current_level_node.has_signal("level_finished"):
 		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
+		
+	emit_signal("level_loaded")
 	
 		
 

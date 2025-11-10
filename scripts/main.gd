@@ -26,6 +26,7 @@ var input_joiner: Node = null
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
+	GameManager.level_loaded.connect(_on_level_loaded)
 	print("registreirte Spieler beim level laden: ", Global.player_ships)
 	# 1) InputJoiner als Node in der Szene erwarten (einfach & zuverlässig)
 	if has_node("InputJoiner"):
@@ -237,6 +238,9 @@ func _on_level_loaded() -> void:
 	#    (ruft pro Spieler level.place_player_in_current_level(), falls vorhanden,
 	#    sonst fallback auf Standard-Spawn in _place_player_in_current_level()).
 	_place_all_players_in_current_level()
+	
+#	  3) Signale des Levels verbinden
+	_connect_level_signals()
 
 	# 3) Optional: Hier Kameraziel/Level-spezifische Einstellungen aktualisieren.
 	#    (z. B. Kamera-Fokus auf ersten aktiven Spieler setzen)
