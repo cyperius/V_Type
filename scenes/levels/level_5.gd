@@ -62,5 +62,5 @@ func _on_incoming_boss() -> void:
 	audio_stream_player.stop()
 
 func _on_zoom_out_timer_timeout() -> void:
-	emit_signal("zoom_requested", 0.5, 1)
+	emit_signal("zoom_requested", 0.5, 0.5)
 	print("zoom_requested signal emitted")

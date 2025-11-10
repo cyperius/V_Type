@@ -267,9 +267,10 @@ func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_en
 	pass
 
 func _on_zoom_requested(zoomfactor_x: float, zoomfactor_y: float) -> void:
-	camera.zoom.x = zoomfactor_x
-	camera.zoom.y = zoomfactor_y
-	print("zoom_request_received in main")
+	var tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(camera, "zoom:x", zoomfactor_x, 10)
+	tween.tween_property(camera, "zoom:y", zoomfactor_y, 10)
 
 
 # ──────────────────────────────────────────────────────────────
