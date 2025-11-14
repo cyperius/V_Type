@@ -2,21 +2,39 @@ extends Node2D  # MainScene basiert auf Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 signal enemy_destroyed(score: int, energy: int)
-signal zoom_requested(zoomfactor_x: float, zoomfactor_y : float)
+signal zoom_requested(zoomfactor_x: float, zoomfactor_y : float, zoom_time: int)
 
-@onready var audio_stream_player = $AudioStreamPlayer
+@onready var audio_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer
-@onready var enemy_spawner: Node2D = $EnemySpawner
+@onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @export var amount_of_enemies : int
 @onready var enemies_container : Node2D = $EnemiesContainer
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 
 
+# Liste von Zeitmarken (in Sekunden)
+var time_stamps: Dictionary = {
+	16.75: "enemies_appear",
+	64.00: "zoom_out",
+	
+}
+
+# Damit jede Zeitmarke nur einmal ausgelöst wird
+var time_stamps_already_triggered: Dictionary = {}
+
+# Referenz auf das Playback-Objekt für genaue Zeitmessung
+var audio_wiedergabe: AudioStreamPlayback = null
+
 func _ready():
-	zoom_out_timer.timeout.connect(_on_zoom_out_timer_timeout)
+		# Playback-Objekt holen
+	audio_wiedergabe = audio_player.get_stream_playback()
+
+	# Sicherstellen, dass wir frisch beginnen
+	time_stamps_already_triggered.clear()
+	
 	var enemy = preload("res://scenes/enemy_4.tscn").instantiate()
 	# alte Signalschreibweise
-	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
+	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # Cannot call method 'connect' on a null value.
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
 	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
@@ -42,6 +60,29 @@ func _ready():
 
 # Der "Trick" Der frisch gespawnte "enemy" wird als Node übergeben. So kann auf dessen Signal
 # "enemy_destroyed" zugegriffen werden
+
+
+func _process(delta: float) -> void:
+	if audio_player.playing and audio_wiedergabe:
+		var aktuelle_audio_zeit: float = audio_wiedergabe.get_playback_position()
+
+		# Alle Zeitmarken durchgehen
+		for time_stamp in time_stamps.keys():
+			if aktuelle_audio_zeit >= time_stamp and not time_stamps_already_triggered.get(time_stamp, false):
+				var event_name : String = time_stamps[time_stamp]
+				loese_audio_ereignis_aus(event_name)
+				time_stamps_already_triggered[time_stamp] = true
+
+
+func loese_audio_ereignis_aus(method_to_call: String) -> void:
+	match method_to_call:
+		"enemies_appear":
+			enemies_appear()
+			print("enemies!!!!")
+		"zoom_out":
+			zoom_out(0.5, 0.5, 34)
+
+
 func _on_enemy_spawned(enemy: Node) -> void:
 	enemy.enemy_destroyed.connect(_on_enemy_destroyed)
 	
@@ -59,8 +100,15 @@ func _on_boss_defeated():
 	print("boss defeated")
 	
 func _on_incoming_boss() -> void:
-	audio_stream_player.stop()
+	audio_player.stop()
 
-func _on_zoom_out_timer_timeout() -> void:
-	emit_signal("zoom_requested", 0.5, 0.5)
+
+func zoom_out(x_faxtor : float, y_factor : float, zoom_time: int) -> void:
+	emit_signal("zoom_requested", x_faxtor, y_factor, zoom_time)
 	print("zoom_requested signal emitted")
+	
+
+func enemies_appear():
+	print("enemies_appear_function_activated")
+	enemy_spawner.set_spawn_rate(5)
+	

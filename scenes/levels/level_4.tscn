@@ -14,8 +14,10 @@ amount_of_enemies = 40
 script = ExtResource("3_5vn0v")
 
 [node name="EnemiesContainer" type="Node2D" parent="."]
+visible = false
 
 [node name="background_Control" parent="." instance=ExtResource("3_rej77")]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

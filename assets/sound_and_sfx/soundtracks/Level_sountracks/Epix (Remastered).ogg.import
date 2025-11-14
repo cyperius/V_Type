@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://3n8b5wif6nvs"
+path="res://.godot/imported/Epix (Remastered).ogg-6adf1e4b57a708506b6ed5f5f212a3a5.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Epix (Remastered).ogg"
+dest_files=["res://.godot/imported/Epix (Remastered).ogg-6adf1e4b57a708506b6ed5f5f212a3a5.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

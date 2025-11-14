@@ -50,8 +50,12 @@ func _process(delta: float) -> void:
 		position.y += delta * 950
 	position.x -= delta * speed
 	
+	if position.x < -300:
+		queue_free()
+	
 
 func _on_shoot_timer_timeout():
+	audio_stream_player_2d.volume_db = -10
 	audio_stream_player_2d.play()
 	var shot = shot_scene.instantiate()
 	shot.global_position = _gun_point.global_position

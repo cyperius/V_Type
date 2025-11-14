@@ -3,17 +3,12 @@
 [ext_resource type="Script" uid="uid://0fdvlvoamtyn" path="res://scenes/levels/level_5.gd" id="1_fi56y"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://scenes/enemy_spawner.tscn" id="2_hldbq"]
 [ext_resource type="PackedScene" uid="uid://cmesqo88lutx0" path="res://scenes/enemy5.tscn" id="3_fi56y"]
+[ext_resource type="AudioStream" uid="uid://bevtp8nmr7tjd" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_long_late_stage.ogg" id="3_hldbq"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://scenes/background.tscn" id="4_mxx4w"]
-[ext_resource type="AudioStream" uid="uid://y3eqqc102n8c" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.wav" id="5_vvoq0"]
 
 [node name="Level_5" type="Node2D"]
 script = ExtResource("1_fi56y")
-amount_of_enemies = 30
-
-[node name="EnemySpawner" parent="." instance=ExtResource("2_hldbq")]
-basic_spawn_rate = 5
-enemy1 = ExtResource("3_fi56y")
-enemy2_with_path = ExtResource("3_fi56y")
+amount_of_enemies = 1000
 
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
@@ -35,10 +30,15 @@ one_shot = true
 autostart = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_vvoq0")
+stream = ExtResource("3_hldbq")
 autoplay = true
 
 [node name="ZoomOutTimer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
 autostart = true
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_hldbq")]
+basic_spawn_rate = 2
+enemy1 = ExtResource("3_fi56y")
+enemy2_with_path = ExtResource("3_fi56y")

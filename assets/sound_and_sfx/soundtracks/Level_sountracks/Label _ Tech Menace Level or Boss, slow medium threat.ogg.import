@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bev2rog5akym5"
+path="res://.godot/imported/Label _ Tech Menace Level or Boss, slow medium threat.ogg-9bd13156b02a591918c12a3fc8f757bc.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label _ Tech Menace Level or Boss, slow medium threat.ogg"
+dest_files=["res://.godot/imported/Label _ Tech Menace Level or Boss, slow medium threat.ogg-9bd13156b02a591918c12a3fc8f757bc.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

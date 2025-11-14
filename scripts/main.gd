@@ -266,11 +266,11 @@ func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
 func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_energy: int = 0) -> void:
 	pass
 
-func _on_zoom_requested(zoomfactor_x: float, zoomfactor_y: float) -> void:
+func _on_zoom_requested(zoomfactor_x: float, zoomfactor_y: float, zoom_time: int) -> void:
 	var tween = create_tween()
 	tween.set_parallel()
-	tween.tween_property(camera, "zoom:x", zoomfactor_x, 10)
-	tween.tween_property(camera, "zoom:y", zoomfactor_y, 10)
+	tween.tween_property(camera, "zoom:x", zoomfactor_x, zoom_time)
+	tween.tween_property(camera, "zoom:y", zoomfactor_y, zoom_time)
 
 
 # ──────────────────────────────────────────────────────────────

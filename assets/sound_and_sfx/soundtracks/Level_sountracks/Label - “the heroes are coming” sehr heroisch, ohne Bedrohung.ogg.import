@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c1txgut8f1hq7"
+path="res://.godot/imported/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.ogg-900ea6217701e30cfcdf5e541348292f.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.ogg"
+dest_files=["res://.godot/imported/Label - “the heroes are coming” sehr heroisch, ohne Bedrohung.ogg-900ea6217701e30cfcdf5e541348292f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

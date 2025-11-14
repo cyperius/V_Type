@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://7ofod2oonqtl"
+path="res://.godot/imported/Blazing Horizons.ogg-009c4aa8e336ee65ee6c985bcb528332.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Blazing Horizons.ogg"
+dest_files=["res://.godot/imported/Blazing Horizons.ogg-009c4aa8e336ee65ee6c985bcb528332.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
