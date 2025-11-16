@@ -5,6 +5,7 @@ extends Control
 # ──────────────────────────────────────────────────────────────
 @onready var destroyed_enemies_counter: Label = $EnemiesDestroyed
 
+
 # Hält die HUD-Zeilen pro Spieler: player_id → Label
 var player_rows: Dictionary = {}
 
@@ -45,6 +46,9 @@ func set_destroyed_enemies(total: int) -> void:
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
+	
+	GameManager.reference_to_ui = self
+	
 	# Vorhandene Spieler bei Spielstart initialisieren
 	for player_id in Global.player_ships.keys():
 		_ensure_player_row(player_id)

@@ -81,6 +81,11 @@ var health_ratio := 1.0
 func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
+	
+	# Referenz im GameManger kreieren (die Variable player_ship_reference gibt es
+	# dort schon mit dem Wert 'null' der nun überschrieben wird
+	GameManager.reference_to_player_ship = self
+	GameManager.create_player_ship_reference()
 
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
