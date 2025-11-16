@@ -1,5 +1,5 @@
-extends Area2D
-class_name PlayerShip
+class_name PlayerShip extends Area2D
+
 
 # ──────────────────────────────────────────────────────────────
 #   SIGNALS (für Main/UI, statt direkte UI‑Zugriffe)
@@ -45,10 +45,10 @@ var spawn_position := Vector2.ZERO
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
 # ──────────────────────────────────────────────────────────────
-@export var laser_beam: PackedScene       # Hauptlaser
-@export var laser_blast: PackedScene      # Starker Laser
-var primary_weapon: PackedScene
-var secondary_weapon: PackedScene
+@export var primary_weapon: PackedScene
+@export var secondary_weapon: PackedScene
+
+
 var projectiles := []
 
 # ──────────────────────────────────────────────────────────────
@@ -111,11 +111,7 @@ func _ready() -> void:
 
 	# Schild-Kollision initial aus
 	_shield_collision_shape.disabled = true
-
-	# Waffen wählen
-	primary_weapon = laser_beam
-	secondary_weapon = laser_blast
-
+	
 	# Circle-Mode Startwinkel
 	if mode == PlayerMode.CIRCLE:
 		var offset := global_position - circle_center_position
@@ -158,7 +154,7 @@ func _process(delta: float) -> void:
 			deactivate_shield()
 		_emit_stats()  # UI live halten
 
-	# Waffen
+	# Waffen  Invalid type in function 'shoot_weapon' in base 'Area2D (PlayerShip)'. The Object-derived class of argument 1 (previously freed) is not a subclass of the expected argument class.
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
 		shoot_weapon(primary_weapon)
 	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
@@ -226,8 +222,8 @@ func _on_area_entered(other: Area2D) -> void:
 			hit.global_position = Vector2(other.global_position.x - 45, other.global_position.y)
 			other.queue_free()
 
-func player_is_hit(dmg: int) -> void:
-	_change_health(-dmg)
+func player_is_hit(damage: int) -> void:
+	_change_health(-damage)
 	calculate_damage_state()
 	if health <= 0:
 		handle_player_death()
@@ -279,7 +275,7 @@ func shoot_weapon(weapon: PackedScene) -> void:
 
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
 	if "owner_id" in projectile:
-		print("owner id in projectil?")
+		print("owner id in projectil!")
 		projectile.owner_id = player_id
 	elif projectile.has_method("set_owner_id"):
 		projectile.set_owner_id(player_id)

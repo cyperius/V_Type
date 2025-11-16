@@ -31,9 +31,9 @@ func _ensure_player_row(player_id: int) -> Label:
 #   ÖFFENTLICHE API
 # ──────────────────────────────────────────────────────────────
 # Wird von main.gd aufgerufen, um den UI-Eintrag eines Spielers zu aktualisieren
-func set_player_ui(pid: int, score: int, energy: int, health: int) -> void:
-	var row := _ensure_player_row(pid)
-	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [pid, score, energy, health]
+func set_player_ui(player_id: int, score: int, energy: int, health: int) -> void:
+	var row := _ensure_player_row(player_id)
+	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [player_id, score, energy, health]
 
 # Globalen Gegnerzähler setzen
 func set_destroyed_enemies(total: int) -> void:

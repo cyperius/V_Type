@@ -1,7 +1,8 @@
 extends Area2D
 
 # ─── Exporte für Konfiguration im Editor oder zur Laufzeit ───────────────
-@export var owner_id: int = -1				# Spieler-ID, der das Projektil abgefeuert hat
+@export var owner_id: int = -1				# Spieler-ID, der das Projektil abgefeuert hat, beim Feuern
+											# wird von player_ship.gd her die richtigen ID überschrieben
 @export var speed: float = 400.0			# Fluggeschwindigkeit
 @export var damage: int = 10				# Schaden des Projektils
 @export var sfx_stream: AudioStream			# Optional: direkter Soundeffekt
@@ -20,7 +21,7 @@ func _ready() -> void:
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	var shooter: PlayerShip = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
-		circle_mode_enabled = (shooter.mode == shooter.PlayerMode.CIRCLE)
+		circle_mode_enabled = (shooter.mode == shooter.PlayerMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der PlayerMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
 			# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
 			var offset: Vector2 = shooter.global_position - shooter.circle_center_position
@@ -55,7 +56,7 @@ func _physics_process(delta: float) -> void:
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
 func _on_area_entered(area: Area2D) -> void:
 	# Friendly Fire verhindern: eigenes Schiff ignorieren
-	if area is PlayerShip and area.player_id == owner_id:
+	if area is PlayerShip:
 		return
 
 	# Treffer-VFX (nicht für Asteroiden, falls du dort keinen Effekt willst)
@@ -68,12 +69,12 @@ func _on_area_entered(area: Area2D) -> void:
 	if "player_is_hit" in area:
 		area.player_is_hit(int(damage))
 	elif "apply_damage" in area:
-		area.apply_damage(int(damage))
+		area.apply_damage(damage, owner_id) # Invalid call to function 'apply_damage' in base 'Area2D (enemy)'. Expected 2 arguments.
 		# apply score existiert im Moment noch nicht 
 		# Idee: der owner des Schusses und die zu addierende Score
 		# muss weiter gegeben werden (als "Platzhalter_Mechanik" hier mal 
 		# damge = score angenommen
-		area.apply_score(int(damage), int(owner_id))
+		#area.apply_score(int(damage), int(owner_id))
 	# Ansonsten ist das Ziel „passiv“ → nur Effekte ohne Schaden
 
 	# Projektil nach dem Treffer entfernen
