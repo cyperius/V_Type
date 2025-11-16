@@ -39,6 +39,9 @@ var controls_are_reversed := false
 var player_is_dead := false
 var spawn_position := Vector2.ZERO
 
+@export var shield_energy_drain : int = 100
+@export var boost_energy_drain : int = 20
+
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
 # ──────────────────────────────────────────────────────────────
@@ -140,7 +143,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("p%d_accelerate" % player_id):
 		_set_boost(false)
 	if boost_activated:
-		_drain_energy_per_sec(50.0, delta)
+		_drain_energy_per_sec(boost_energy_drain, delta)
 
 	# Schild
 	if Input.is_action_just_pressed("p%d_shield" % player_id):
@@ -148,7 +151,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released("p%d_shield" % player_id):
 		deactivate_shield()
 	if shield_is_activated:
-		_drain_energy_per_sec(300.0, delta)
+		_drain_energy_per_sec(shield_energy_drain, delta)
 		_particles_shield.amount_ratio = float(blue_energy) / float(max_energy)
 		if blue_energy <= 0:
 			blue_energy = 0
@@ -276,6 +279,7 @@ func shoot_weapon(weapon: PackedScene) -> void:
 
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
 	if "owner_id" in projectile:
+		print("owner id in projectil?")
 		projectile.owner_id = player_id
 	elif projectile.has_method("set_owner_id"):
 		projectile.set_owner_id(player_id)
