@@ -6,6 +6,9 @@ signal level_finished(level_nr: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
+@export var timer_basic_wait_time : int = 3
+@export var timer2_basic_wait_time : int = 4
+
 @export var basic_spawn_rate : int = 1
 @export var enemy1 : PackedScene
 @export var enemy2_with_path : PackedScene
@@ -22,7 +25,8 @@ signal incoming_boss
 @onready var randomizer = RandomNumberGenerator.new()
 @onready var enemy_blueprint = preload("res://enemies&obstacles/enemy_1.tscn")
 @onready var path_enemy_blueprint = preload("res://enemies&obstacles/enemy_with_path.tscn")
-@onready var level_1 = $".."
+@onready var level = $".."
+
 
 # Vorteil dieser Schreibweise: Die Verbindung stimmt, egal welcher Szene dieses
 # Skript angehängt ist, solange es dort auch einen EnemiesContainer gibt
@@ -37,9 +41,13 @@ signal incoming_boss
 var number_of_players : int
 var spawn_rate : float
 var boss_spawned = false
+var current_level : Node
+var at_least_one_enemy_spawned := false
 
 
 func _ready() -> void:
+	
+	current_level = get_parent()
 	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
@@ -53,18 +61,20 @@ func set_spawn_rate() -> void:
 	number_of_players = Global.player_ships.size()
 	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
 	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate
-	timer.wait_time = 3 / spawn_rate
-	timer2.wait_time = 4 / spawn_rate
+	timer.wait_time = timer_basic_wait_time / spawn_rate
+	timer2.wait_time = timer2_basic_wait_time / spawn_rate
 
 
 func _process(delta: float) -> void:
-	var current_level = get_parent()
-	# es fehlt noch die Sicherheitsabfrage, ob "amount_of_ememies" existiert 
-	if enemy_counter >= current_level.amount_of_enemies and boss_spawned == false:
-		here_comes_the_boss()
 	
+	# Sicherheitsabfrage, ob mind. 1 enemy gespawnt ist (nur damit genug Zeit da ist um in current_level
+	# den aktuellen level zu referenzieren und ob "amount_of_ememies" existiert 
+	if at_least_one_enemy_spawned:
+		if enemy_counter >= current_level.amount_of_enemies and boss_spawned == false:
+			here_comes_the_boss()
 
 func _on_timer_timeout():
+	at_least_one_enemy_spawned = true
 	print("timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(0, 5)
 	var enemy = enemy1.instantiate()

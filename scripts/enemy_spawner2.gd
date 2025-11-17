@@ -65,10 +65,10 @@ func _process(delta: float) -> void:
 func _on_timer_timeout():
 	print("timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(0, positions_count-1)
+	# die im Inspector zugeordnete PackedScene für enemy1 wird instantiert
 	var enemy = enemy1.instantiate()
 	emit_signal("enemy_spawned", enemy)
-	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
-	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
+	
 	enemies_container.add_child(enemy)
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
