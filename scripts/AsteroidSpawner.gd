@@ -1,9 +1,9 @@
 extends Node2D  # MainScene basiert auf Node2D
 
-
 signal asteroid_destroyed(size)
-signal enemy_spawned(enemy: Node)
-@onready var asteroid : PackedScene = preload("res://scenes/rigid_asteroid.tscn")
+signal asteroid_spawned(asteroid: Node)
+
+@onready var asteroid : PackedScene = preload("res://enemies&obstacles/rigid_asteroid.tscn")
 @onready var spawn_timer = $Timer
 @onready var ui : Control = $UI
 @onready var astroid_level : Node2D = $".."
@@ -20,12 +20,13 @@ var asteroid_counter = 0
 func _ready():
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	randomize()
-	asteroid_destroyed.connect(Callable(get_parent(), "_on_destroyed_asteroid"))
+	#asteroid_destroyed.connect(Callable(get_parent(), "_on_destroyed_asteroid"))
 	spawn_timer.wait_time = 0.25 / spawn_rate
 	
 	
 func _on_spawn_timer_timeout() -> void:
-	var new_asteroid = asteroid.instantiate()
+	var new_asteroid : RigidAsteroid = asteroid.instantiate()
+	new_asteroid.asteroid_destroyed.connect(_on_asteroid_destroyed)
 	print("spawn")
 	
 	# Bei jedem Durchgang, wird die Menge der Asteroiden um Faktor 0.5 erhöht 
@@ -61,7 +62,7 @@ func _on_spawn_timer_timeout() -> void:
 		spawn_timer.stop()
 	
 	add_child(new_asteroid)
-	emit_signal("enemy_spawned", new_asteroid)
+	emit_signal("asteroid_spawned", new_asteroid)
 	asteroid_counter += 1
 	
 	

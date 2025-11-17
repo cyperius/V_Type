@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://bltk058wgbio0"]
+
+[ext_resource type="Script" uid="uid://3srl3nw13yrx" path="res://scripts/circle_enemy_shot.gd" id="1_fqt5k"]
+[ext_resource type="AudioStream" uid="uid://daf7ccvxjc5dy" path="res://assets/sound_and_sfx/sound_effects/Laser.wav" id="2_nvnl2"]
+[ext_resource type="Texture2D" uid="uid://dy1y3j1scbswe" path="res://assets/graphic_elements/shots/red_blast.png" id="3_isyg0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vqoh"]
+
+[node name="CircleEnemyShot" type="Area2D"]
+process_mode = 1
+collision_layer = 8
+script = ExtResource("1_fqt5k")
+damage = 300
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_nvnl2")
+volume_db = -20.316
+autoplay = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_isyg0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2.6975, 2.70787)
+shape = SubResource("CircleShape2D_5vqoh")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(234, -95)

@@ -31,11 +31,11 @@ var player_scores: Dictionary = {}	# player_id → score
 
 # Reihenfolge der Level–Szenen
 var level_paths   : Array      = [
-	"res://scenes/levels/level_1.tscn",
-	"res://scenes/levels/rigid_asteroid_level.tscn",
-	"res://scenes/levels/level_3.tscn",
-	"res://scenes/levels/level_4.tscn",
-	"res://scenes/levels/level_5.tscn"
+	"res://levels/level_1.tscn",
+	"res://levels/level_2.tscn",
+	"res://levels/level_3.tscn",
+	"res://levels/level_4.tscn",
+	"res://levels/level_5.tscn"
 	# …weitere Levels hier anhängen
 ]
 
@@ -52,7 +52,7 @@ var level_container: Node = null
 var current_level_node: Node = null
 
 # GameOver-Szene (PackedScene) für spätere Instanziierung
-var game_over_scene_packed: PackedScene = preload("res://scenes/game_over.tscn")
+var game_over_scene_packed: PackedScene = preload("res://game_world/game_over.tscn")
 
 
 func _ready():

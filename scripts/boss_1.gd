@@ -8,7 +8,7 @@ extends Area2D
 @export var boss_soundtrack : AudioStream
 @onready var audio2d = $AudioStreamPlayer2D
 @export var damage : int = 50
-@onready var explosion_animation = preload("res://scenes/explosion_animation.tscn").instantiate()
+@onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
 @export var energy_left : int = 5
 @export var score_count : int = 100
 
@@ -16,7 +16,7 @@ signal enemy_destroyed(score: int, energy: int)
 
 var shoot_timer = Timer.new()
 var change_pos_timer = Timer.new()
-var enemy_weapon = preload("res://scenes/enemy_shots_basic.tscn")
+var enemy_weapon = preload("res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn")
 var projectiles = []
 var game_over = preload("res://scripts/game_over.gd")
 var new_y = 1000 # Globale Variable für die Zielposition

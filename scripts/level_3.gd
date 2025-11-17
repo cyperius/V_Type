@@ -6,7 +6,7 @@ extends Node2D
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var level_duration = $Timer
 @onready var spawn_timer = Timer.new()
-@onready var circle_enemy_1 : PackedScene = preload("res://scenes/enemy_circle_1.tscn")
+@onready var circle_enemy_1 : PackedScene = preload("res://enemies&obstacles/enemy_circle_1.tscn")
 @export var winkel_geschwindigkeit : float = 6
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
 @onready var center_node = $Center

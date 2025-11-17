@@ -10,7 +10,7 @@ extends Area2D
 @export var volume: float = 1.0				# Lautstärke
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
-@onready var enemy_hit_scene: PackedScene = preload("res://scenes/hit.tscn")
+@onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit.tscn")
 
 var velocity: Vector2 = Vector2.ZERO
 var circle_center_position: Vector2 = Vector2.ZERO

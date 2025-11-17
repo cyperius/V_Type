@@ -15,7 +15,7 @@ signal player_removed(player_id: int)
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot	# <— fester Node im Editor
 @onready var ui: Control = %UI
 var input_joiner: Node = null
-@onready var player_scene: PackedScene = preload("res://scenes/player_ship.tscn")
+@onready var player_scene: PackedScene = preload("res://players/player_ship.tscn")
 @onready var camera: Camera2D = %Camera2D
 
 # ──────────────────────────────────────────────────────────────

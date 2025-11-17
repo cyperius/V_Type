@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://dqud88glri484"]
+
+[ext_resource type="Script" uid="uid://cyiilswpncqgw" path="res://scripts/enemy_circle_1.gd" id="1_c3dbg"]
+[ext_resource type="AudioStream" uid="uid://daf7ccvxjc5dy" path="res://assets/sound_and_sfx/sound_effects/Laser.wav" id="2_5a4bh"]
+[ext_resource type="Texture2D" uid="uid://bm7ghfng4yupa" path="res://assets/graphic_elements/enemies/ship4.png" id="2_7ohan"]
+[ext_resource type="PackedScene" uid="uid://bltk058wgbio0" path="res://enemies&obstacles/enemy_utilities/circle_enemy_shot.tscn" id="2_phuov"]
+[ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_1ikvq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0e2c5"]
+radius = 25.1855
+
+[node name="CircleEnemy1" type="Area2D"]
+process_mode = 1
+scale = Vector2(0.05, 0.05)
+collision_layer = 4
+collision_mask = 19
+script = ExtResource("1_c3dbg")
+circle_shot_scene = ExtResource("2_phuov")
+shot_sound = ExtResource("2_5a4bh")
+shot_scene = ExtResource("3_1ikvq")
+damage = 200
+score_count = 200
+energy_left = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-7.48681, -2.03993)
+rotation = -1.37881
+scale = Vector2(0.841019, 1.02687)
+texture = ExtResource("2_7ohan")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-15, -5)
+scale = Vector2(9.52928, -10.1648)
+shape = SubResource("CircleShape2D_0e2c5")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 1.5

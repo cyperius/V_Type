@@ -10,9 +10,9 @@ signal incoming_boss
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
 @onready var randomizer = RandomNumberGenerator.new()
-@onready var enemy_blueprint = preload("res://scenes/enemy_4.tscn")
-@onready var path_zombee = preload("res://scenes/enemy_with_path_4.tscn")
-@onready var level_1 = $".."
+@onready var enemy_blueprint = preload("res://enemies&obstacles/enemy_4.tscn")
+@onready var path_zombee = preload("res://enemies&obstacles/enemy_with_path_4.tscn")
+@onready var level_4 = $".."
 
 # Vorteil dieser Schreibweise: Die Verbindung stimmt, egal welcher Szene dieses
 # Skript angehängt ist, solange es dort auch einen EnemiesContainer gibt
@@ -38,7 +38,7 @@ func _ready() -> void:
 	
 
 func _process(delta: float) -> void:
-	if enemy_counter == level_1.amount_of_enemies:
+	if enemy_counter == level_4.amount_of_enemies:
 		here_comes_the_boss()
 	
 
@@ -76,7 +76,7 @@ func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
-	var boss = preload("res://enemies/ZomBee/boss_zombee.tscn").instantiate()
+	var boss = preload("res://enemies&obstacles/bosses/ZomBee/boss_zombee.tscn").instantiate()
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	boss.global_position = Vector2(7000, 1100)

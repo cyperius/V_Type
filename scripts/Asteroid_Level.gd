@@ -6,7 +6,7 @@ signal enemy_destroyed(score: int, energy: int)
 @export var asteroids_amount_basic : int = 300
 @onready var audio_stream_player = $AudioStreamPlayer
 @onready var bg = $background_Control
-@onready var asteroid : PackedScene = preload("res://scenes/rigid_asteroid.tscn")
+@onready var asteroid : PackedScene = preload("res://enemies&obstacles/rigid_asteroid.tscn")
 @onready var spawn_timer = $Timer
 @onready var asteroid_spawner: Node2D = %AsteroidSpawner
 @onready var score: int = 0
@@ -15,7 +15,7 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready():
-	asteroid_spawner.enemy_spawned.connect(_on_enemy_spawned)
+	asteroid_spawner.asteroid_destroyed.connect(_on_asteroid_destroyed)
 	bg.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
 	##background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
 	
@@ -39,11 +39,6 @@ func _process(delta: float) -> void:
 		emit_signal("level_finished", 3, score, 0)
 	
 	
-func _on_enemy_spawned(enemy: Node) -> void:
-	# print("asteroid_destroyed_sigbal_connected") check
-	enemy.enemy_destroyed.connect(_on_enemy_destroyed)
-
-
-func _on_enemy_destroyed(score: int, energy:int):
-	print("take the fucking score!", score)
-	emit_signal("enemy_destroyed", score, energy)
+func _on_asteroid_destroyed(size) -> void:
+	print("take the fucking score!", size)
+	emit_signal("enemy_destroyed", 100, 100)

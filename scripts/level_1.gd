@@ -29,7 +29,7 @@ func _ready() -> void:
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 
 	# Beispiel: einen Gegner ins Container hängen (falls gewünscht)
-	var enemy_scene := preload("res://scenes/enemy_1.tscn")
+	var enemy_scene := preload("res://enemies&obstacles/enemy_1.tscn")
 	var enemy := enemy_scene.instantiate()
 	enemies_container.add_child(enemy)
 

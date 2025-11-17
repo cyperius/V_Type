@@ -61,8 +61,8 @@ var projectiles := []
 @onready var player2_skin = preload("res://assets/graphic_elements/player/golden_ship.png")
 
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
-@onready var hit_scene: PackedScene = preload("res://scenes/hit.tscn")
-@onready var explosion_scene: PackedScene = preload("res://scenes/explosion_animation.tscn")
+@onready var hit_scene: PackedScene = preload("res://game_world/hit.tscn")
+@onready var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 

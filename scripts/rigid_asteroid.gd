@@ -1,12 +1,12 @@
-extends RigidBody2D
+class_name RigidAsteroid extends RigidBody2D
 
 signal enemy_destroyed(score: int, energy: int)
-signal asteroid_destroyed(size)
+signal asteroid_destroyed(size: int)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d_1: CollisionShape2D = %CollisionShape2D1
 @onready var area2d = $Area2D
-@onready var explosion_animation_scene = preload("res://scenes/explosion_animation.tscn")
+@onready var explosion_animation_scene = preload("res://game_world/explosion_animation.tscn")
 @export var explosion_scale : float = 0.5
 @export var health = 200
 @export var speed = 500
@@ -24,7 +24,8 @@ const SCREEN_SIZE = Vector2(3840, 2160)
 
 func _ready() -> void:
 	animated_sprite.play("astroid_rotating")
-	asteroid_destroyed.connect(Callable(get_parent(), "_on_asteroid_destroyed"))
+	#asteroid_destroyed.connect(Callable(get_parent(), "_on_asteroid_destroyed"))
+	# besser beim Spawnen (im AsteoidSpawner) verbinden
 	add_to_group("enemies")
 
 	can_sleep = false
@@ -108,5 +109,5 @@ func take_damage(damage) -> void:
 		explosion_animation.speed_scale = 2
 		explosion_animation.position = global_position
 		emit_signal("asteroid_destroyed", scale_factor_rounded)
-		emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
+		#emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
 		queue_free()

@@ -98,7 +98,7 @@ func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
-	var boss = preload("res://scenes/boss_1.tscn").instantiate()
+	var boss = preload("res://enemies&obstacles/bosses/boss_1.tscn").instantiate()
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	boss.global_position = Vector2(7000, 1100)
