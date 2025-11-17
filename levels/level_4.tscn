@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhio164itgbs8"]
+[gd_scene load_steps=9 format=3 uid="uid://bhio164itgbs8"]
 
 [ext_resource type="Script" uid="uid://c5hsgfbjrpxai" path="res://scripts/level_4.gd" id="1_anwe6"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_anwe6"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="3_rej77"]
 [ext_resource type="Script" uid="uid://dc0cvebmpglmy" path="res://scripts/enemy_spawner.gd" id="3_t6q73"]
 [ext_resource type="PackedScene" uid="uid://c8jntkhlu4ljn" path="res://enemies&obstacles/enemy_4.tscn" id="4_0fd8o"]
+[ext_resource type="PackedScene" uid="uid://dgkhgx4gb10tq" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.tscn" id="4_dmnu2"]
 [ext_resource type="AudioStream" uid="uid://y3eqqc102n8c" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.wav" id="5_anwe6"]
 [ext_resource type="PackedScene" uid="uid://cbjidl008eqlo" path="res://enemies&obstacles/enemy_with_path_4.tscn" id="5_dmnu2"]
 
@@ -16,6 +17,7 @@ amount_of_enemies = 40
 script = ExtResource("3_t6q73")
 timer_basic_wait_time = 2
 timer2_basic_wait_time = 3
+level_boss = ExtResource("4_dmnu2")
 basic_spawn_rate = 2
 enemy1 = ExtResource("4_0fd8o")
 enemy2_with_path = ExtResource("5_dmnu2")

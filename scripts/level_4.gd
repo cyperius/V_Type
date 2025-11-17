@@ -11,7 +11,7 @@ signal enemy_destroyed(score: int, energy: int)
 
 
 func _ready():
-	var enemy = preload("res://enemies&obstacles/enemy5.tscn").instantiate()
+	#var enemy = preload("res://enemies&obstacles/enemy5.tscn").instantiate() # braucht es wohl nicht mehr
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
@@ -28,7 +28,7 @@ func _ready():
 		player.scale = Vector2(0.25, 0.25)
 	#Global.player_ship.speed = Global.player_ship.max_speed
 		player.show()
-	enemies_container.add_child(enemy)
+	#enemies_container.add_child(enemy) # barcut es wohl nicht mehr
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
 	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)

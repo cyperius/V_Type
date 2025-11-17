@@ -9,6 +9,7 @@ signal incoming_boss
 @export var timer_basic_wait_time : int = 3
 @export var timer2_basic_wait_time : int = 4
 
+@export var level_boss : PackedScene
 @export var basic_spawn_rate : int = 1
 @export var enemy1 : PackedScene
 @export var enemy2_with_path : PackedScene
@@ -46,7 +47,7 @@ var at_least_one_enemy_spawned := false
 
 
 func _ready() -> void:
-	
+	 
 	current_level = get_parent()
 	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
@@ -110,7 +111,10 @@ func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
-	var boss = preload("res://enemies&obstacles/bosses/boss_1.tscn").instantiate()
+	# level_boss ist eine Exportvariable, der im Inspector eine PackedScene zugeorndet wird
+	# Daraus wird nun eine Instanz erstellt mit Name boss erstellt
+	var boss = level_boss.instantiate()
+	# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 	get_tree().current_scene.add_child(boss)
 	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	boss.global_position = Vector2(7000, 1100)
