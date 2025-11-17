@@ -11,6 +11,7 @@ signal enemy_destroyed(score: int, energy: int, player_id: int)
 @onready var enemies_container: Node2D = $EnemiesContainer
 @onready var spawned_enemies = 0
 
+
 func _ready() -> void:
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
@@ -72,16 +73,11 @@ func _on_enemy_spawned(enemy: Node) -> void:
 		print("level1: enemy_spawned and connected enemy_destroyed signal")
 		# Direkte 1:1‑Weiterleitung
 		enemy.enemy_destroyed.connect(func(score: int, energy: int, player_id: int) -> void:
-			print("level1: line 73")
 			emit_signal("enemy_destroyed", score, energy, player_id))
 			
 	else:
 		print("⚠️ Enemy hat kein 'enemy_destroyed'-Signal.")
 
-# ❗ Falls deine Gegner aktuell NOCH KEINE player_id mitsenden,
-#   kannst du übergangsweise so wrappen (Default: Spieler 1):
-# func _on_enemy_destroyed_legacy(score: int, energy: int) -> void:
-# 	emit_signal("enemy_destroyed", score, energy, 1)
 
 func _on_boss_timer_timeout() -> void:
 	pass

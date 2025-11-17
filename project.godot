@@ -21,9 +21,9 @@ buses/default_bus_layout="res://ressources/default_bus_layout.tres"
 
 [autoload]
 
-AudioManager="*res://scenes/AudioManager.tscn"
-Global="*res://scripts/Global.gd"
-GameManager="*res://scripts/GameManager.gd"
+AudioManager="*res://Autoloads&GameManaging/AudioManager.tscn"
+Global="*res://Autoloads&GameManaging/Global.gd"
+GameManager="*res://Autoloads&GameManaging/GameManager.gd"
 Players="*res://Autoloads&GameManaging/Players.gd"
 
 [display]

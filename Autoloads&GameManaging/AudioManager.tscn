@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://codc628yqohk5"]
 
-[ext_resource type="Script" uid="uid://bc4st1ovamqaw" path="res://scripts/AudioManager.gd" id="1_l26h6"]
+[ext_resource type="Script" uid="uid://bc4st1ovamqaw" path="res://Autoloads&GameManaging/AudioManager.gd" id="1_l26h6"]
 [ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="2_qt57o"]
 
 [node name="Node2D" type="Node2D"]
