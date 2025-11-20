@@ -1,4 +1,4 @@
-class_name EnemySpawner extends Node2D
+extends Node2D
 
 signal boss_defeated
 signal level_finished(level_nr: int)

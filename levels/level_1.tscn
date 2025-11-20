@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddamewq24ewbi"]
+[gd_scene load_steps=8 format=3 uid="uid://ddamewq24ewbi"]
 
 [ext_resource type="Script" uid="uid://kt7eculq1haq" path="res://scripts/level_1.gd" id="1_btoec"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_gwceb"]
 [ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="3_btoec"]
-[ext_resource type="Script" uid="uid://dc0cvebmpglmy" path="res://scripts/enemy_spawner.gd" id="3_l53as"]
 [ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="4_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://tn7oan56ea6u" path="res://enemies&obstacles/bosses/boss_1.tscn" id="4_08mmt"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="5_08mmt"]
@@ -15,16 +14,32 @@ script = ExtResource("1_btoec")
 amount_of_enemies = 6
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_gwceb")]
-script = ExtResource("3_l53as")
-timer_basic_wait_time = 3
-timer2_basic_wait_time = 4
 level_boss = ExtResource("4_08mmt")
 enemy1 = ExtResource("3_btoec")
 enemy2_with_path = ExtResource("4_3sk1a")
 
+[node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
+position = Vector2(1752, 1778)
+
+[node name="Marker2D2" parent="EnemySpawner/SpawnPositions" index="1"]
+position = Vector2(2244, 1817)
+
+[node name="Marker2D3" parent="EnemySpawner/SpawnPositions" index="2"]
+position = Vector2(2086, 1590)
+
+[node name="Marker2D4" parent="EnemySpawner/SpawnPositions" index="3"]
+position = Vector2(2993, 1817)
+
+[node name="Marker2D5" parent="EnemySpawner/SpawnPositions" index="4"]
+position = Vector2(3086, 1570)
+
+[node name="Marker2D6" parent="EnemySpawner/SpawnPositions" index="5"]
+position = Vector2(2551, 1536)
+
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
 [node name="background_Control" parent="." instance=ExtResource("5_08mmt")]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,3 +62,5 @@ autoplay = true
 [node name="Players" type="Node2D" parent="."]
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
+
+[editable path="EnemySpawner"]

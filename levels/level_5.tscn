@@ -42,3 +42,5 @@ autostart = true
 basic_spawn_rate = 2
 enemy1 = ExtResource("3_fi56y")
 enemy2_with_path = ExtResource("3_fi56y")
+
+[editable path="EnemySpawner"]
