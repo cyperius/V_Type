@@ -64,6 +64,8 @@ func set_spawn_rate() -> void:
 	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate
 	timer.wait_time = timer_basic_wait_time / spawn_rate
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
+	print("spawn_rate = ", spawn_rate, "number of palyers = ", number_of_players)
+	print(" is the timer1 waittime: ", timer.wait_time, timer2.wait_time, " ist the timer2 time")
 
 
 func _process(delta: float) -> void:

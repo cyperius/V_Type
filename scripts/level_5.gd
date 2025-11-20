@@ -41,7 +41,6 @@ func _ready():
 	# Sicherstellen, dass wir frisch beginnen
 	time_stamps_already_triggered.clear()
 	
-	var enemy = preload("res://levels/level_5.tscn").instantiate()
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # Cannot call method 'connect' on a null value.
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
@@ -58,7 +57,7 @@ func _ready():
 		player.scale = Vector2(0.25, 0.25)
 	#Global.player_ship.speed = Global.player_ship.max_speed
 		player.show()
-	enemies_container.add_child(enemy)
+	
 	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
 	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
