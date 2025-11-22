@@ -22,6 +22,7 @@ var closest_player : Node
 @onready var anger_timer: Timer = %AngerTimer
 @onready var timer: Timer = $Timer
 @onready var vomit_hit_box: Area2D = %VomitHitBox
+@onready var space_ball : SpaceBall
 
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
@@ -30,6 +31,7 @@ var helmet_health
 
 
 func _ready() -> void:
+	print ("bee spawned")
 	add_to_group("enemies")
 	# Durch alle registrierten Spieler in Global gehen
 	for player_id in Global.player_ships.keys():
@@ -37,6 +39,11 @@ func _ready() -> void:
 		if player:
 			# Spieler in das Dictionary eintragen
 			players[player_id] = player
+			
+	var current_scene = get_tree().current_scene
+	if current_scene.has_node("Ball"):
+		space_ball = current_scene.get_node("Ball")
+		
 		
 	timer.timeout.connect(_on_timer_timeout)
 	helmet_health = helmet_max_health
@@ -76,6 +83,7 @@ func apply_helmet_damage(damage: float):
 
 func _process(delta: float) -> void:
 	
+	print(space_ball.global_position) # Invalid access to property or key 'global_position' on a base object of type 'null instance'.
 	if Input.is_action_just_pressed("status_report"):
 		status_report()
 	# hier noch anpassen, das wirklich der Spieler mit der kürzesten Distanz referenziert wird
@@ -109,7 +117,10 @@ func track_nearest_player():
 			closest_player = player
 	
 	if closest_player:
-		direction = global_position.direction_to(closest_player.global_position)
+		if global_position.distance_to(space_ball.global_position) < global_position.distance_to(closest_player.global_position):
+			direction = global_position.direction_to(space_ball.global_position)
+		else:
+			direction = global_position.direction_to(closest_player.global_position)
 
 
 func angry_zombee() -> void:
