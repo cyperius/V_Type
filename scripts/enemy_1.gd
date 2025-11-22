@@ -1,6 +1,6 @@
 class_name enemy extends Area2D
 
-signal enemy_destroyed(score: int, energy: int, player_id: int)
+#signal enemy_destroyed(score: int, energy: int, player_id: int) # Signal wird neu direkt in GameManger aufgerufen
 signal add_score (score: int)
 
 @export var health_points: int = 10
@@ -60,7 +60,7 @@ func apply_damage(damage_amount, owner_id) -> void:
 	health_points -= damage_dealt
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
-	emit_signal("add_score", score)
+	GameManager.emit_signal("enemy_destroyed", score, energy_left, owner_id)
 	if health_points <= 0:
 		die()
 		
@@ -75,7 +75,7 @@ func die() -> void:
 	print("enemy1.gd -line 39: enemy_destroyes_signal 
 	HIER WIRD DIE PLAYER_ID AKTUELL ALS '1' UEBERGEBEN; ES BRAUCHT EIN SIGNAL VOM 
 	SCHUSS; WELCHES DEN ENEMY TRIFFT; DER DIE PLAYER ID (OWNER_ID) WEITERREICHT")
-	emit_signal("enemy_destroyed", score_count, energy_left, 1)
+	GameManager.emit_signal("enemy_destroyed", score_count, energy_left, 1)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

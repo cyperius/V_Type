@@ -1,6 +1,7 @@
 extends Node
 
 signal level_loaded
+signal enemy_destroyed(score: int, energy: int, player_id: int)
 
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
@@ -60,13 +61,14 @@ func _ready():
 	# print("📐 Initiale Fenstergrösse:", screen_size)
 	# print("GameManager bereit, aktueller Zustand:", state)
 	_connect_game_over_watchers()	# ← NEU: auf Global-Events hören
+	enemy_destroyed.connect(_on_enemy_destroyed)
 	
 	
 	# 5) UI initialisieren
 	_update_global_ui()
 	_update_all_players_ui()
 	
-
+# wird in main aufgerufen
 func _register_player_score_and_update_ui(player_id: int) -> void:
 	player_scores[player_id] = 0
 	_update_player_ui(player_id)
@@ -304,7 +306,7 @@ func _update_all_players_ui() -> void:
 func _update_player_ui(player_id: int) -> void:
 	if not reference_to_ui:
 		return
-	var score_count: int = player_scores.get(player_id, 0)
+	var score_count: int = player_scores.get(player_id, 0) # 
 	var energy_count: int = 0
 	var health_count: int = 0
 	var ship = Global.player_ships.get(player_id, null)

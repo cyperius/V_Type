@@ -161,9 +161,9 @@ func _process(delta: float) -> void:
 
 	# Waffen  Invalid type in function 'shoot_weapon' in base 'Area2D (PlayerShip)'. The Object-derived class of argument 1 (previously freed) is not a subclass of the expected argument class.
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
-		shoot_weapon(primary_weapon)
+		shoot_weapon(primary_weapon, player_id)
 	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
-		shoot_weapon(secondary_weapon)
+		shoot_weapon(secondary_weapon, player_id)
 
 	# Bewegung je nach Modus
 	match mode:
@@ -273,7 +273,7 @@ func shield_absorbing(absorbed_damage: int) -> void:
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
 # ──────────────────────────────────────────────────────────────
-func shoot_weapon(weapon: PackedScene) -> void:
+func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 	if not weapon:
 		return
 	var projectile = weapon.instantiate()

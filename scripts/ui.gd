@@ -10,6 +10,9 @@ extends Control
 var player_rows: Dictionary = {}
 
 
+
+
+
 # ──────────────────────────────────────────────────────────────
 #   HELFER
 # ──────────────────────────────────────────────────────────────
@@ -47,7 +50,9 @@ func set_destroyed_enemies(total: int) -> void:
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
 	
-	GameManager.reference_to_ui = self
+	GameManager.reference_to_ui = self # überprüfen, was hgenau Zweck dieser verbindung ist, bzw. wie sie funktioniert.
+	
+	
 	
 	# Vorhandene Spieler bei Spielstart initialisieren
 	for player_id in Global.player_ships.keys():

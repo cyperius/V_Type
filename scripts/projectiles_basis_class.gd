@@ -64,6 +64,8 @@ func _on_area_entered(area: Area2D) -> void:
 		var enemy_hit = enemy_hit_scene.instantiate()
 		get_tree().current_scene.add_child(enemy_hit)
 		enemy_hit.global_position = global_position
+		
+	
 
 	# Schaden anwenden, wenn das Ziel eine passende API anbietet
 	if "player_is_hit" in area:
