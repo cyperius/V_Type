@@ -28,7 +28,7 @@ basic_speed = 600
 energy_left = 50
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-rotation = -1.37881
+rotation = -0.022404
 texture = ExtResource("4_rwlnn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

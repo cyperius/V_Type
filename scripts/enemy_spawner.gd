@@ -64,10 +64,8 @@ func set_spawn_rate(spawn_rate: int =1) -> void:
 	spawn_rate = basic_spawn_rate
 	number_of_players = Global.player_ships.size()
 	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
-	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players + 1 * basic_spawn_rate
-	print("basic_spawn_rate = ", basic_spawn_rate)
-	print(" loop counter= ", (0.8 + GameManager.loop_counter/5))
-	print(number_of_players)
+	spawn_rate = clamp(1, ((0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate), 4)
+	print("number_of_players = ", number_of_players)
 	timer.wait_time = timer_basic_wait_time / spawn_rate
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
 	print("spawn_rate = ", spawn_rate, "number of palyers = ", number_of_players)
