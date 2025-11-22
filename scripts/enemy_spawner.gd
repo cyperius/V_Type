@@ -37,9 +37,11 @@ signal incoming_boss
 @onready var enemy_positions = enemy_positions_node.get_children()
 # so erhält man einen array, mit den child_nodes des Node SpawnPositions 
 # (welcher hier der Variable enemy_positions_node zugewiesen ist)
+# mit einer weiteren Hierarchie/ordnungsebene für Gruppen von Marker2DNodes 
+# könnte man auch verschiedene Phasen zuordnen (z.B. enemy_positions_wave1... )
 
 @onready var enemy_counter : int = 0
-var number_of_players : int
+var number_of_players : int 
 var spawn_rate : float
 var boss_spawned = false
 var current_level : Node
@@ -49,19 +51,23 @@ var at_least_one_enemy_spawned := false
 func _ready() -> void:
 	 
 	current_level = get_parent()
+	number_of_players = 1
 	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
 	
 	
-func set_spawn_rate() -> void:
+func set_spawn_rate(spawn_rate: int =1) -> void:
 	# default Wert (für den fall, dass noch kein Spieler im Spiel ist)
 	# evtl. funktioniert die Anpassung der Spawn rate, wenn dei Speielranzahl ändert
 	# bzw, deren reale Umsetzung noch nicht
 	spawn_rate = basic_spawn_rate
 	number_of_players = Global.player_ships.size()
 	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
-	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate
+	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players + 1 * basic_spawn_rate
+	print("basic_spawn_rate = ", basic_spawn_rate)
+	print(" loop counter= ", (0.8 + GameManager.loop_counter/5))
+	print(number_of_players)
 	timer.wait_time = timer_basic_wait_time / spawn_rate
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
 	print("spawn_rate = ", spawn_rate, "number of palyers = ", number_of_players)

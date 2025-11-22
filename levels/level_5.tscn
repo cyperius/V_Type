@@ -43,4 +43,75 @@ basic_spawn_rate = 2
 enemy1 = ExtResource("3_fi56y")
 enemy2_with_path = ExtResource("3_fi56y")
 
+[node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
+position = Vector2(2715, 353)
+
+[node name="Marker2D2" parent="EnemySpawner/SpawnPositions" index="1"]
+position = Vector2(2917, 4264)
+
+[node name="Marker2D3" parent="EnemySpawner/SpawnPositions" index="2"]
+position = Vector2(2480, 748)
+
+[node name="Marker2D4" parent="EnemySpawner/SpawnPositions" index="3"]
+position = Vector2(2675, 1209)
+
+[node name="Marker2D5" parent="EnemySpawner/SpawnPositions" index="4"]
+position = Vector2(2858, 1758)
+
+[node name="Marker2D6" parent="EnemySpawner/SpawnPositions" index="5"]
+position = Vector2(2296, 1932)
+
+[node name="Marker2D13" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="6"]
+position = Vector2(2286, 2620)
+
+[node name="Marker2D14" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="7"]
+position = Vector2(2331, 4044)
+
+[node name="Marker2D15" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="8"]
+position = Vector2(2835, 3734)
+
+[node name="Marker2D16" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="9"]
+position = Vector2(2347, 3446)
+
+[node name="Marker2D17" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="10"]
+position = Vector2(2839, 2950)
+gizmo_extents = 69.5
+
+[node name="Marker2D7" parent="EnemySpawner/SpawnPositions" index="11"]
+position = Vector2(6201, 2748)
+
+[node name="Marker2D8" parent="EnemySpawner/SpawnPositions" index="12"]
+position = Vector2(7040, 2968)
+
+[node name="Marker2D9" parent="EnemySpawner/SpawnPositions" index="13"]
+position = Vector2(6471, 3426)
+
+[node name="Marker2D10" parent="EnemySpawner/SpawnPositions" index="14"]
+position = Vector2(7216.5, 1720)
+
+[node name="Marker2D11" parent="EnemySpawner/SpawnPositions" index="15"]
+position = Vector2(7216.5, 3960)
+
+[node name="Marker2D12" parent="EnemySpawner/SpawnPositions" index="16"]
+position = Vector2(6478, 4237)
+
+[node name="Marker2D18" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="17"]
+position = Vector2(6354, 876)
+
+[node name="Marker2D19" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="18"]
+position = Vector2(7133, 3493)
+
+[node name="Marker2D20" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="19"]
+position = Vector2(6195, 1481)
+
+[node name="Marker2D21" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="20"]
+position = Vector2(6685, 343)
+
+[node name="Marker2D22" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="21"]
+position = Vector2(6673, 1901)
+
+[node name="Marker2D23" type="Marker2D" parent="EnemySpawner/SpawnPositions" index="22"]
+position = Vector2(7087, 695)
+gizmo_extents = 69.5
+
 [editable path="EnemySpawner"]

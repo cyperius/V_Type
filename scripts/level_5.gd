@@ -6,7 +6,7 @@ signal zoom_requested(zoomfactor_x: float, zoomfactor_y : float, zoom_time: int)
 
 @onready var audio_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer
-@onready var enemy_spawner: EnemySpawner = $EnemySpawner
+@onready var enemy_spawner = $EnemySpawner
 @export var amount_of_enemies : int
 @onready var enemies_container : Node2D = $EnemiesContainer
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
