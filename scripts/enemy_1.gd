@@ -1,7 +1,5 @@
 class_name enemy extends Area2D
 
-#signal enemy_destroyed(score: int, energy: int, player_id: int) # Signal wird neu direkt in GameManger aufgerufen
-signal add_score (score: int)
 
 @export var health_points: int = 10
 @export var shot_sound : AudioStream 
@@ -64,18 +62,12 @@ func apply_damage(damage_amount, owner_id) -> void:
 	if health_points <= 0:
 		die()
 		
-
+		
 func die() -> void:
 	#AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
-	# evtl.  noch prüfen, ob der Kollisionspartner ein PlayerShip ist
-	
-	print("enemy1.gd -line 39: enemy_destroyes_signal 
-	HIER WIRD DIE PLAYER_ID AKTUELL ALS '1' UEBERGEBEN; ES BRAUCHT EIN SIGNAL VOM 
-	SCHUSS; WELCHES DEN ENEMY TRIFFT; DER DIE PLAYER ID (OWNER_ID) WEITERREICHT")
-	GameManager.emit_signal("enemy_destroyed", score_count, energy_left, 1)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()
