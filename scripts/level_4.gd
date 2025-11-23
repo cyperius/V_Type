@@ -15,7 +15,7 @@ func _ready():
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Objekte behandelt, daher so schreibbar)
-	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
+	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned) 
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 	# neu:  🔁 Für alle registrierten Spieler im Global-Singleton
 	for player_id in Global.player_ships.keys():
@@ -38,10 +38,10 @@ func _ready():
 	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
 
 # Der "Trick" Der frisch gespawnte "enemy" wird als Node übergeben. So kann auf dessen Signal
-# "enemy_destroyed" zugegriffen werden
-func _on_enemy_spawned(enemy: Node) -> void:
-	enemy.enemy_destroyed.connect(_on_enemy_destroyed)
-	
+# "enemy_destroyed" zugegriffen werden # aktuell braucht es das aber nicht mehr, weil der zerstörte
+# enemy direkt via  GameManager.enemy_destroyed sendet
+func _on_enemy_spawned(enemy: Node) -> void: # neu: direkt
+	pass
 	
 func _on_enemy_destroyed(score: int, energy: int) -> void:
 	emit_signal("enemy_destroyed", score, energy)

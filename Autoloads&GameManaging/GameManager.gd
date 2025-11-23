@@ -1,7 +1,7 @@
 extends Node
 
 signal level_loaded
-signal enemy_destroyed(score: int, energy: int, player_id: int)
+signal enemy_destroyed(score: int, energy: int, player_id: int) # durch enemies aufgerufen
 
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
@@ -284,8 +284,10 @@ func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
 		player_scores[player_id] = 0
 	player_scores[player_id] += score
 	if Global.player_ships.has(player_id):
+		print("line286: check")
 		var ship = Global.player_ships[player_id]
 		if ship is PlayerShip:
+			print("line289: check")
 			ship.blue_energy += energy
 			ship.score += score
 	_update_global_ui()
@@ -307,10 +309,10 @@ func _update_player_ui(player_id: int) -> void:
 	if not reference_to_ui:
 		return
 	var score_count: int = player_scores.get(player_id, 0) # 
-	var energy_count: int = 0
+	var energy_count: int = 0  # wieso wird hier 0 0 gesetzt??
 	var health_count: int = 0
 	var ship = Global.player_ships.get(player_id, null)
-	if ship is PlayerShip:
+	if ship is PlayerShip:   # ship wird bisschen weiter oben in func _on_enemy_destroyed definiert
 		energy_count = ship.blue_energy
 		health_count = ship.health
 		score_count = ship.score

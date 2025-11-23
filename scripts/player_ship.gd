@@ -123,7 +123,7 @@ func _ready() -> void:
 		angle = offset.angle()
 
 	# Initiale Stats an Main/UI melden
-	_emit_stats()
+	#_emit_stats()
 
 # ──────────────────────────────────────────────────────────────
 #   PROCESS / INPUT
@@ -157,7 +157,7 @@ func _process(delta: float) -> void:
 		if blue_energy <= 0:
 			blue_energy = 0
 			deactivate_shield()
-		_emit_stats()  # UI live halten
+		#_emit_stats()  # UI live halten
 
 	# Waffen  Invalid type in function 'shoot_weapon' in base 'Area2D (PlayerShip)'. The Object-derived class of argument 1 (previously freed) is not a subclass of the expected argument class.
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
@@ -385,12 +385,15 @@ func revive() -> void:
 #   UTILS (Stats & Energie/Health Änderungshelfer)
 # ──────────────────────────────────────────────────────────────
 func _emit_stats() -> void:
-	emit_signal("stats_changed", player_id, health, blue_energy)
+	#emit_signal("stats_changed", player_id, health, blue_energy)
+	pass # evtl. so ab'ndern, dass nur die 'nderungen weitergeleleitet werden 
+	# entweder als einzelne signale, oder mit default wert 0, wenn kein anderer wert übergeben
+	
 
 func _change_health(delta_hp: int) -> void:
 	health = clamp(health + delta_hp, 0, max_health)
 	_emit_stats()
-
+#
 func _change_energy(delta_energy: int) -> void:
 	blue_energy = clamp(blue_energy + delta_energy, 0, max_energy)
 	_emit_stats()
@@ -401,6 +404,7 @@ func _drain_energy_per_sec(rate: float, delta: float) -> void:
 	var drain := int(round(rate * delta))
 	if drain != 0:
 		_change_energy(-drain)
+
 
 func _set_boost(active: bool) -> void:
 	if boost_activated == active:
