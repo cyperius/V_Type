@@ -2,6 +2,9 @@ extends Node
 
 signal level_loaded
 signal enemy_destroyed(score: int, energy: int, player_id: int) # durch enemies aufgerufen
+signal stats_changed (player_id, health, blue_energy) # in func _ready weiterverbunden.. aber die
+# Funktion _on_stats_changed dazu fehlt noch; evtl. stattdessen direkt zu direkt _update_player_ui verbinden?
+
 
 # Manche Notification-Konstanten wie `NOTIFICATION_ENTER_TREE`, `NOTIFICATION_READY` oder `EXIT_TREE`
 # sind in Godot intern bereits im Node definiert – auch wenn sie im Editor nicht immer direkt sichtbar sind.
@@ -61,6 +64,9 @@ func _ready():
 	# print("📐 Initiale Fenstergrösse:", screen_size)
 	# print("GameManager bereit, aktueller Zustand:", state)
 	_connect_game_over_watchers()	# ← NEU: auf Global-Events hören
+	
+	# Signale verbinden
+	stats_changed.connect(_on_stats_changed)
 	enemy_destroyed.connect(_on_enemy_destroyed)
 	
 	

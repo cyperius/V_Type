@@ -1,6 +1,5 @@
 class_name PlayerShip extends Area2D
 
-
 # ──────────────────────────────────────────────────────────────
 #   SIGNALS (für Main/UI, statt direkte UI‑Zugriffe)
 # ──────────────────────────────────────────────────────────────
