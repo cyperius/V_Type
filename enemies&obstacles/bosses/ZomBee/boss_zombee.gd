@@ -118,9 +118,11 @@ func track_nearest_player():
 	
 	if closest_player:
 		if global_position.distance_to(space_ball.global_position) < global_position.distance_to(closest_player.global_position):
-			direction = global_position.direction_to(space_ball.global_position)
+			if global_position.distance_to(space_ball.global_position) > 100:
+				direction = global_position.direction_to(space_ball.global_position)
 		else:
-			direction = global_position.direction_to(closest_player.global_position)
+			if global_position.distance_to(closest_player.global_position) > 100:
+				direction = global_position.direction_to(closest_player.global_position)
 
 
 func angry_zombee() -> void:

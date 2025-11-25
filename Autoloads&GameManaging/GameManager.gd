@@ -65,10 +65,6 @@ func _ready():
 	# print("GameManager bereit, aktueller Zustand:", state)
 	_connect_game_over_watchers()	# ← NEU: auf Global-Events hören
 	
-	# Signale verbinden
-	stats_changed.connect(_on_stats_changed)
-	enemy_destroyed.connect(_on_enemy_destroyed)
-	
 	
 	# 5) UI initialisieren
 	_update_global_ui()
@@ -303,8 +299,7 @@ func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
 #   UI-HILFSFUNKTIONEN
 # ──────────────────────────────────────────────────────────────
 func _update_global_ui() -> void:
-	if reference_to_ui and reference_to_ui.destroyed_enemies_counter:
-		reference_to_ui.destroyed_enemies_counter.text = "Enemies destroyed: %d" % total_destroyed_enemies
+	pass	
 
 func _update_all_players_ui() -> void:
 	for player_id in Global.player_ships.keys():
@@ -315,7 +310,7 @@ func _update_player_ui(player_id: int) -> void:
 	if not reference_to_ui:
 		return
 	var score_count: int = player_scores.get(player_id, 0) # 
-	var energy_count: int = 0  # wieso wird hier 0 0 gesetzt??
+	var energy_count: int = 0  # wird gleich unten mit dem richtugen Wert überschrieben ('= 0 notwendig?"
 	var health_count: int = 0
 	var ship = Global.player_ships.get(player_id, null)
 	if ship is PlayerShip:   # ship wird bisschen weiter oben in func _on_enemy_destroyed definiert
