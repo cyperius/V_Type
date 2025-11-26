@@ -25,7 +25,6 @@ shot_sound = ExtResource("2_e6246")
 shot_scene = ExtResource("2_f688s")
 damage = 200
 basic_speed = 600
-energy_left = 50
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = -1.37881

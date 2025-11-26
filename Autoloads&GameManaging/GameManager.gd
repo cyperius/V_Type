@@ -43,12 +43,6 @@ var level_paths   : Array      = [
 	# …weitere Levels hier anhängen
 ]
 
-# Referenz auf das player_ship, wird in player_ship.gd übergeben
-var reference_to_player_ship: PlayerShip = null
-
-# Referenz auf ui wird in ui.gd übergeben
-var reference_to_ui: Node = null
-
 # Referenz auf den Container in Main, wird von Main übergeben
 var level_container: Node = null
 

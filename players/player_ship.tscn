@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
-[ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/enemies/space_ship1.png" id="4_df6tw"]
+[ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/player/space_ship1.png" id="4_df6tw"]
 [ext_resource type="Script" uid="uid://3rcg1dm60hpv" path="res://scripts/particle_damage.gd" id="5_rk2pp"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jnu13"]

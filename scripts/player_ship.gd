@@ -55,7 +55,7 @@ var projectiles := []
 # ──────────────────────────────────────────────────────────────
 @onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
-@onready var player4_skin = preload("res://assets/graphic_elements/enemies/player2_ship.png")
+@onready var player4_skin = preload("res://assets/graphic_elements/player/player2_ship.png")
 @onready var player3_skin = preload("res://assets/graphic_elements/player/Luftfahrzeug.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/player/golden_ship.png")
 
@@ -81,11 +81,6 @@ func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
-	# Referenz im GameManger kreieren (die Variable player_ship_reference gibt es
-	# dort schon mit dem Wert 'null' der nun überschrieben wird
-	GameManager.reference_to_player_ship = self
-
-
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
@@ -384,9 +379,7 @@ func revive() -> void:
 #   UTILS (Stats & Energie/Health Änderungshelfer)
 # ──────────────────────────────────────────────────────────────
 func _emit_stats() -> void:
-	#emit_signal("stats_changed", player_id, health, blue_energy)
-	pass # evtl. so ab'ndern, dass nur die 'nderungen weitergeleleitet werden 
-	# entweder als einzelne signale, oder mit default wert 0, wenn kein anderer wert übergeben
+	GameManager._update_player_ui(player_id)
 	
 
 func _change_health(delta_hp: int) -> void:

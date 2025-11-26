@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dr7emaistul8"
-path="res://.godot/imported/space_ship1.png-1cb3d821dc0d4cb71908ab7a74ac40d1.ctex"
+path="res://.godot/imported/space_ship1.png-de16118dba84147e6b8d064ff5dc4f51.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic_elements/enemies/space_ship1.png"
-dest_files=["res://.godot/imported/space_ship1.png-1cb3d821dc0d4cb71908ab7a74ac40d1.ctex"]
+source_file="res://assets/graphic_elements/player/space_ship1.png"
+dest_files=["res://.godot/imported/space_ship1.png-de16118dba84147e6b8d064ff5dc4f51.ctex"]
 
 [params]
 
