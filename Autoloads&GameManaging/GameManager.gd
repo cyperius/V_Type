@@ -2,7 +2,7 @@ extends Node
 
 signal level_loaded
 signal enemy_destroyed(score: int, energy: int, player_id: int) # durch enemies aufgerufen
-signal stats_changed (player_id, health, blue_energy) # in func _ready weiterverbunden.. aber die
+signal player_stats_changed (player_id: int, score: int, energy: int, health: int) # in func _ready weiterverbunden.. aber die
 # Funktion _on_stats_changed dazu fehlt noch; evtl. stattdessen direkt zu direkt _update_player_ui verbinden?
 
 
@@ -75,6 +75,7 @@ func _register_player_score_and_update_ui(player_id: int) -> void:
 	player_scores[player_id] = 0
 	_update_player_ui(player_id)
 
+
 func _on_player_removed(player_id) -> void:
 # 3) Lokale Datenstrukturen aufräumen (Score etc.)
 	if player_scores.has(player_id):
@@ -92,13 +93,6 @@ func _process(delta):
 		jump_to_level(4)
 	if Input.is_action_just_pressed("level_5"):
 		jump_to_level(5)
-
-
-func create_player_ship_reference() -> void:
-	reference_to_player_ship.stats_changed.connect(func(changed_player_id: int, current_health: int, current_energy: int) -> void:
-		var current_score: int = player_scores.get(changed_player_id, 0)
-		#Invalid access to property or key 'player_scores' on a base object of type 'Area2D (PlayerShip)'.
-		reference_to_ui.set_player_ui(changed_player_id, current_score, current_energy, current_health))
 
 
 func _connect_game_over_watchers() -> void:
@@ -307,8 +301,6 @@ func _update_all_players_ui() -> void:
 
 
 func _update_player_ui(player_id: int) -> void:
-	if not reference_to_ui:
-		return
 	var score_count: int = player_scores.get(player_id, 0) # 
 	var energy_count: int = 0  # wird gleich unten mit dem richtugen Wert überschrieben ('= 0 notwendig?"
 	var health_count: int = 0
@@ -317,4 +309,4 @@ func _update_player_ui(player_id: int) -> void:
 		energy_count = ship.blue_energy
 		health_count = ship.health
 		score_count = ship.score
-	reference_to_ui.set_player_ui(player_id, score_count, energy_count, health_count)
+	emit_signal("player_stats_changed", player_id, score_count, energy_count, health_count)

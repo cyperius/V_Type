@@ -31,6 +31,9 @@ func _ready() -> void:
 		push_warning("⚠️ Kein InputJoiner-Node unter Main gefunden.")
 		input_joiner = null
 
+	# 1.5 Signale vom Players verbinden
+	Players.player_joined.connect(_on_player_joined)
+
 	# 2) Signale vom InputJoiner verbinden
 	if input_joiner:
 		input_joiner.player_joined.connect(_on_player_joined)
@@ -46,14 +49,14 @@ func _ready() -> void:
 	await _ensure_level_ready()
 	
 
-	# 4) Bereits aktive Spieler spawnen (Pads evtl. schon vor _ready() verbunden)
-	var initial_ids: Array = []
-	if input_joiner and input_joiner.has_method("get_active_player_ids"):
-		initial_ids = input_joiner.get_active_player_ids()
-	else:
-		initial_ids = Players.get_active_player_ids()	# Fallback über Autoload
-	for player_id in initial_ids:
-		_on_player_joined(player_id)
+	## 4) Bereits aktive Spieler spawnen (Pads evtl. schon vor _ready() verbunden)
+	#var initial_ids: Array = []
+	#if input_joiner and input_joiner.has_method("get_active_player_ids"):
+		#initial_ids = input_joiner.get_active_player_ids()
+	#else:
+		#initial_ids = Players.get_active_player_ids()	# Fallback über Autoload
+	#for player_id in initial_ids:
+		#_on_player_joined(player_id)
 		
 	# 5) weitere Signale verbinden
 	player_removed.connect(GameManager._on_player_removed)
@@ -62,7 +65,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("join_game") and Global.player_ships == {}:
 		# obiges if-statement entfernen um Mehrfach-Instanzierungen zu erlauben:)
-		_on_player_joined(1)
+		_on_player_joined(1, 0)
 	
 	
 # ──────────────────────────────────────────────────────────────
@@ -91,7 +94,7 @@ func _ensure_level_ready() -> void:
 # ──────────────────────────────────────────────────────────────
 #   SPIELER-HANDLING
 # ──────────────────────────────────────────────────────────────
-func _on_player_joined(player_id: int) -> void:
+func _on_player_joined(player_id: int, device_id: int) -> void:
 	if level_container.get_child_count() == 0:
 		await _ensure_level_ready()
 	_spawn_player(player_id)

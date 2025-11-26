@@ -34,9 +34,11 @@ func _ensure_player_row(player_id: int) -> Label:
 # ──────────────────────────────────────────────────────────────
 #   ÖFFENTLICHE API
 # ──────────────────────────────────────────────────────────────
-# Wird von main.gd aufgerufen, um den UI-Eintrag eines Spielers zu aktualisieren
+# alt: Wird von main.gd aufgerufen, um den UI-Eintrag eines Spielers zu aktualisieren
+# neu: soll via Signal vom GameManager aufgerufen werden
 func set_player_ui(player_id: int, score: int, energy: int, health: int) -> void:
 	var row := _ensure_player_row(player_id)
+	print("set_player_ui for palyer: ", player_id)
 	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [player_id, score, energy, health]
 
 # Globalen Gegnerzähler setzen
@@ -50,7 +52,7 @@ func set_destroyed_enemies(total: int) -> void:
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
 	
-	GameManager.reference_to_ui = self # überprüfen, was hgenau Zweck dieser verbindung ist, bzw. wie sie funktioniert.
+	GameManager.player_stats_changed.connect(set_player_ui)
 	
 	
 	

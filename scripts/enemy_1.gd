@@ -58,7 +58,7 @@ func apply_damage(damage_amount, owner_id) -> void:
 	health_points -= damage_dealt
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
-	GameManager.emit_signal("enemy_destroyed", score, energy_left, owner_id)
+	GameManager._on_enemy_destroyed(score, energy_left, owner_id)
 	if health_points <= 0:
 		die()
 		

@@ -27,7 +27,7 @@ func join(device_id: int) -> int:
 	# Falls Gerät schon drin → ID zurückgeben
 	if device_to_player.has(device_id):
 		return device_to_player[device_id]
-
+	print("func Players.join() mit device_id: ", device_id, " aufgerufen") # funktioniert 26.11.25 16:55
 	var free_id := _next_free_player_id()
 	if free_id == -1:
 		print("No free player slots available!")
@@ -39,6 +39,7 @@ func join(device_id: int) -> int:
 	player_joined.emit(free_id, device_id)
 	mapping_changed.emit()
 	print("Player joined: ID =", free_id, " Device =", device_id)
+
 	return free_id
 
 func leave_by_player(player_id: int) -> void:

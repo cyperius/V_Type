@@ -24,6 +24,7 @@ func _ready() -> void:
 func _on_device_changed(device_id: int, connected: bool) -> void:
 	if connected:
 		_on_device_connected(device_id)
+		print("device connected")
 	else:
 		_on_device_disconnected(device_id)
 
