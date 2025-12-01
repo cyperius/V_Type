@@ -54,10 +54,20 @@ var projectiles := []
 #   GRAPHICS / FX / COLLISIONS
 # ──────────────────────────────────────────────────────────────
 @onready var ship_sprite: Sprite2D = %ship_sprite
-@onready var player1_skin = preload("res://assets/graphic_elements/enemies/space_ship1.png")
-@onready var player4_skin = preload("res://assets/graphic_elements/player/player2_ship.png")
-@onready var player3_skin = preload("res://assets/graphic_elements/player/Luftfahrzeug.png")
-@onready var player2_skin = preload("res://assets/graphic_elements/player/golden_ship.png")
+@onready var player1_skin = preload("res://assets/graphic_elements/player/space_ship1_sideview.png")
+@onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways.png")
+@onready var player3_skin = preload("res://assets/graphic_elements/player/player3_ship_sideways.png")
+@onready var player2_skin = preload("res://assets/graphic_elements/player/golden_ship_sideways.png")
+@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/space_ship1_leichte_Bauchseite.png")
+@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/space_ship1_rueckenseite.png")
+@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/golden_ship_bauchlage.png")
+@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/golden_ship_rueckenlage.png")
+@onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
+@onready var player3_diving_skin = preload("res://assets/graphic_elements/player/player3_ship_rueckenlage.png")
+
+
+
+var skins := []
 
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var hit_scene: PackedScene = preload("res://game_world/hit.tscn")
@@ -68,6 +78,8 @@ var projectiles := []
 # Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
 var _backup_collision_layer: int
 var _backup_collision_mask: int
+
+
 
 # visueller Status (z. B. fürs Blinken)
 var default_player_state := Color(1, 1, 1)
@@ -85,19 +97,31 @@ func _ready() -> void:
 	health = max_health
 	blue_energy = max_energy
 
-	# Skins 
-	if player_id == 2:
-		ship_sprite.texture = player2_skin
-		ship_sprite.scale = Vector2(0.6, 0.6)
-	elif player_id == 3:
-		ship_sprite.texture = player3_skin
-		ship_sprite.scale = Vector2(0.8, 0.9)
-	elif player_id == 4:
-		ship_sprite.texture = player4_skin
-		ship_sprite.scale = Vector2(1, 1.4)
-	else:
-		ship_sprite.texture = player1_skin
-		ship_sprite.scale = Vector2(0.6, 0.6)
+	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
+		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "scale": Vector2(0.7, 0.7)}},
+		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "scale": Vector2(0.7, 0.7)}},
+		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin,"scale": Vector2(0.6, 0.6)}},
+		{"looks": {"neutral": player4_skin, "scale": Vector2(1, 1.4)}},
+		]
+	
+	set_skin("neutral") # setzt die passende skin, der player id_entsprechend
+
+		#
+	## Skins 
+	#if player_id == 2:
+		#ship_sprite.texture = player2_skin
+		#ship_sprite.scale = Vector2(0.6, 0.6)
+	#elif player_id == 3:
+		#ship_sprite.texture = player3_skin
+		#ship_sprite.scale = Vector2(0.8, 0.9)
+	#elif player_id == 4:
+		#ship_sprite.texture = player4_skin
+		#ship_sprite.scale = Vector2(1, 1.4)
+	#else:
+		#ship_sprite.texture = player1_skin
+		#ship_sprite.scale = Vector2(0.6, 0.6)
+		#
+	
 		
 
 	# Kollisions-Backup sichern (für Death/Revive)
@@ -119,6 +143,10 @@ func _ready() -> void:
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()
 
+
+func set_skin(mode: String) -> void:
+	ship_sprite.texture = skins[player_id-1]["looks"][mode]
+	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
 # ──────────────────────────────────────────────────────────────
 #   PROCESS / INPUT
 # ──────────────────────────────────────────────────────────────
@@ -177,7 +205,16 @@ func _process_free_move(delta: float) -> void:
 	else:
 		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
 		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)
-
+		
+	if direction.y < 0:
+		set_skin("rising")
+		print("rising")
+	elif direction.y > 0:
+		set_skin("sinking")
+		print("sinking")
+	else:
+		set_skin("neutral")
+		
 	var screensize := get_viewport_rect().size
 	var velocity := direction * speed
 	position += velocity * delta

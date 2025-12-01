@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b826dv1g073lm"
-path="res://.godot/imported/Luftfahrzeug.png-6122cde28b698b04f3864baeee2bf01c.ctex"
+uid="uid://jg7s4mdgqphc"
+path="res://.godot/imported/player3_ship_sideways.png-664d3a41c258de1e1ba7db91c86ad339.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic_elements/player/Luftfahrzeug.png"
-dest_files=["res://.godot/imported/Luftfahrzeug.png-6122cde28b698b04f3864baeee2bf01c.ctex"]
+source_file="res://assets/graphic_elements/player/player3_ship_sideways.png"
+dest_files=["res://.godot/imported/player3_ship_sideways.png-664d3a41c258de1e1ba7db91c86ad339.ctex"]
 
 [params]
 
