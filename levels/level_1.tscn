@@ -19,22 +19,40 @@ enemy1 = ExtResource("3_btoec")
 enemy2_with_path = ExtResource("4_3sk1a")
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
-position = Vector2(1752, 1778)
+position = Vector2(4032, 1783)
 
 [node name="Marker2D2" parent="EnemySpawner/SpawnPositions" index="1"]
-position = Vector2(2244, 1817)
+position = Vector2(4524, 1822)
 
 [node name="Marker2D3" parent="EnemySpawner/SpawnPositions" index="2"]
-position = Vector2(2086, 1590)
+position = Vector2(4583, 467)
 
 [node name="Marker2D4" parent="EnemySpawner/SpawnPositions" index="3"]
-position = Vector2(2993, 1817)
+position = Vector2(4495, 1389)
 
 [node name="Marker2D5" parent="EnemySpawner/SpawnPositions" index="4"]
-position = Vector2(3086, 1570)
+position = Vector2(4356, 1023)
 
 [node name="Marker2D6" parent="EnemySpawner/SpawnPositions" index="5"]
-position = Vector2(2551, 1536)
+position = Vector2(4097, 206)
+
+[node name="Marker2D7" parent="EnemySpawner/SpawnPositions" index="6"]
+position = Vector2(5379.5, 423)
+
+[node name="Marker2D8" parent="EnemySpawner/SpawnPositions" index="7"]
+position = Vector2(5379.5, 743)
+
+[node name="Marker2D9" parent="EnemySpawner/SpawnPositions" index="8"]
+position = Vector2(5291, 1186)
+
+[node name="Marker2D10" parent="EnemySpawner/SpawnPositions" index="9"]
+position = Vector2(5320, 84)
+
+[node name="Marker2D11" parent="EnemySpawner/SpawnPositions" index="10"]
+position = Vector2(5286, 1703)
+
+[node name="Marker2D12" parent="EnemySpawner/SpawnPositions" index="11"]
+position = Vector2(5350, 2121)
 
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
@@ -42,9 +60,9 @@ position = Vector2(2551, 1536)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -270.0
+offset_left = -82.0
 offset_top = -54.0
-offset_right = -270.0
+offset_right = -82.0
 offset_bottom = -54.0
 grow_horizontal = 2
 grow_vertical = 2

@@ -379,7 +379,7 @@ func handle_player_death() -> void:
 	get_tree().current_scene.add_child(explosion)
 	explosion.global_position = global_position
 
-	# kurz warten nach Zerstörung bis Game_over-Sequenz ausgelöst wird
+	# kurz warten nach Zerstörung bis diese weitergeleitet wird
 	await get_tree().create_timer(4).timeout
 
 	# Jetzt erst als zerstört markieren → triggert GameOver/Pausing erst NACH der Explosion

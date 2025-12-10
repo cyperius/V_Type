@@ -1,0 +1,204 @@
+[gd_scene load_steps=5 format=3 uid="uid://dotwejj00ynpr"]
+
+[ext_resource type="Script" uid="uid://ql3hci5nyf1c" path="res://levels/level_6.gd" id="1_qskt5"]
+[ext_resource type="Script" uid="uid://brg2ryempbb5e" path="res://scripts/enemy_invader_spawnergd.gd" id="2_qskt5"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="6_kx1xp"]
+[ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="7_m516p"]
+
+[node name="Level_6" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_qskt5")
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+process_mode = 1
+position = Vector2(-7, -750)
+script = ExtResource("2_qskt5")
+timer2_basic_wait_time = 30
+
+[node name="SpawnPositions" type="Node2D" parent="EnemySpawner"]
+position = Vector2(14, 7)
+
+[node name="Marker2D" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(360, -360)
+
+[node name="Marker2D2" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(720, -360)
+
+[node name="Marker2D3" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1080, -360)
+
+[node name="Marker2D4" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1440, -360)
+
+[node name="Marker2D5" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1800, -360)
+
+[node name="Marker2D6" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2160, -360)
+gizmo_extents = 69.5
+
+[node name="Marker2D7" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2520, -360)
+
+[node name="Marker2D8" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2880, -360)
+
+[node name="Marker2D9" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3240, -360)
+
+[node name="Marker2D10" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3600, -360)
+
+[node name="Marker2D11" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(0, -360)
+
+[node name="Marker2D12" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3960, -360)
+gizmo_extents = 69.5
+
+[node name="Marker2D13" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(367, -619.5)
+
+[node name="Marker2D14" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(727, -619.5)
+
+[node name="Marker2D15" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1087, -619.5)
+
+[node name="Marker2D16" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1447, -619.5)
+
+[node name="Marker2D17" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1807, -619.5)
+
+[node name="Marker2D18" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2167, -619.5)
+gizmo_extents = 69.5
+
+[node name="Marker2D19" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2527, -619.5)
+
+[node name="Marker2D20" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2887, -619.5)
+
+[node name="Marker2D21" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3247, -619.5)
+
+[node name="Marker2D22" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3607, -619.5)
+
+[node name="Marker2D23" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(7, -619.5)
+
+[node name="Marker2D24" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3967, -619.5)
+gizmo_extents = 69.5
+
+[node name="Marker2D25" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(360, -901)
+
+[node name="Marker2D26" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(720, -901)
+
+[node name="Marker2D27" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1080, -901)
+
+[node name="Marker2D28" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1440, -901)
+
+[node name="Marker2D29" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1800, -901)
+
+[node name="Marker2D30" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2160, -901)
+gizmo_extents = 69.5
+
+[node name="Marker2D31" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2520, -901)
+
+[node name="Marker2D32" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2880, -901)
+
+[node name="Marker2D33" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3240, -901)
+
+[node name="Marker2D34" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3600, -901)
+
+[node name="Marker2D35" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(0, -901)
+
+[node name="Marker2D36" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3960, -901)
+gizmo_extents = 69.5
+
+[node name="Marker2D37" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(367, -1160.5)
+
+[node name="Marker2D38" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(727, -1160.5)
+
+[node name="Marker2D39" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1087, -1160.5)
+
+[node name="Marker2D40" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1447, -1160.5)
+
+[node name="Marker2D41" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(1807, -1160.5)
+
+[node name="Marker2D42" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2167, -1160.5)
+gizmo_extents = 69.5
+
+[node name="Marker2D43" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2527, -1160.5)
+
+[node name="Marker2D44" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(2887, -1160.5)
+
+[node name="Marker2D45" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3247, -1160.5)
+
+[node name="Marker2D46" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3607, -1160.5)
+
+[node name="Marker2D47" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(7, -1160.5)
+
+[node name="Marker2D48" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+position = Vector2(3967, -1160.5)
+gizmo_extents = 69.5
+
+[node name="Timer" type="Timer" parent="EnemySpawner"]
+autostart = true
+
+[node name="Timer2" type="Timer" parent="EnemySpawner"]
+wait_time = 10.0
+autostart = true
+
+[node name="EnemiesContainer" type="Node2D" parent="."]
+
+[node name="background_Control" parent="." instance=ExtResource("6_kx1xp")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -82.0
+offset_top = -54.0
+offset_right = -82.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 6.322
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_m516p")
+autoplay = true
+
+[node name="Players" type="Node2D" parent="."]
+
+[connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]

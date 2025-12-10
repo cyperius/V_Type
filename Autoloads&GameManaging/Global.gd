@@ -74,6 +74,7 @@ func mark_player_destroyed(player_id: int) -> void:
 	if destroyed_player_ids.has(player_id):
 		return
 	destroyed_player_ids[player_id] = true
+	#player_ships.erase(player_id)  # Habe ich neu eingefügt 1.12.2025
 	emit_signal("player_destroyed", player_id)
 	emit_signal("roster_changed")
 	print("💥 Spieler %d zerstört" % player_id)
@@ -114,7 +115,7 @@ func clear_all_player_data() -> void:
 func get_player_sprite(player_id: int) -> Node:
 	return player_sprites.get(player_id, null)
 
-func is_player_destroyed(player_id: int) -> bool:
+func is_destryed(player_id: int) -> bool:
 	return destroyed_player_ids.has(player_id)
 
 func get_total_players() -> int:
@@ -132,11 +133,11 @@ func get_alive_player_ids() -> Array[int]:
 
 ## Zentrale Game-Over-Bedingung: robust gegenüber dynamischem Join/Leave.
 func should_game_over() -> bool:
-	var total_players := get_total_players()
+	var total_players := get_total_players() # zählt alle Spieler, die im aktuellen Spiel mitgespielt haben
 	if total_players <= 0:
 		# Keine aktiven Spieler → kein Game Over erzwingen (oder abhängig von deiner Design-Entscheidung)
 		return false
-	return get_destroyed_count() >= total_players
+	return get_destroyed_count() >= total_players # gleich viele (oder mehr) Spieler zerstört als mitgespielt haben? gibt true oder false zurück
 
 # ──────────────────────────────────────────────────────────────
 #   RUNDE / LEVELSTART

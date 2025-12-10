@@ -146,64 +146,85 @@ func clear_level():
 # State-Management + GameOver-Pause
 # -------------------------
 
-# Setzt alle persistenten Werte zurück und springt zurück auf Level 1
-func reset_game_state() -> void:
+# Setzt alle persistenten Werte zurück. Wenn mit true (default) aufgerufen:
+# Restart in Level 1, mit "false" aufrufen, um im aktuellen Level zu respawnen
+func reset_game_state(full_reset: bool = true) -> void:
 	score = 0
 	energy_units = 0
 	lives = 3
 	inventory.clear()
-	current_level = 1
+
+	if full_reset:
+		current_level = 1
 	
 
-# Zentraler State-Wechsler
+# -------------------------
+# State-Management + GameOver-Pause
+# -------------------------
+
 func set_state(new_state: String) -> void:
 	state = new_state
 	match state:
 		STATE_PLAYING:
-			get_tree().paused = false  # Spiel läuft weiter
+			get_tree().paused = false
 		STATE_PAUSED:
-			get_tree().paused = true   # Gesamt anhalten
+			get_tree().paused = true
 		STATE_GAME_OVER:
-			get_tree().paused = true   # Anhalten aller Nodes
+			get_tree().paused = true
 			_start_game_over()
 
-# Startet das GameOver: räumt auf, pausiert, zeigt Szene
+
 func _start_game_over() -> void:
 	clear_level()
 
 	var game_over_scene = game_over_scene_packed.instantiate()
 	game_over_scene.name = "GameOverScene"
 
-	# Godot 4: Node.process_mode statt pause_mode
-	# Läuft nur, wenn der Tree pausiert ist (passt zu get_tree().paused = true):
+	# GameOver-UI darf laufen, obwohl der Tree pausiert ist
 	game_over_scene.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	# Alternativ: immer verarbeiten – auch unpausiert:
-	# game_over_scene.process_mode = Node.PROCESS_MODE_ALWAYS
 
 	level_container.add_child(game_over_scene)
+
 	if game_over_scene.has_signal("finished"):
 		game_over_scene.finished.connect(_on_game_over_finished)
 
 
-
-# Aufruf, wenn GameOver-Szene fertig ist
 func _on_game_over_finished() -> void:
-	if level_container.has_node("GameOverScene"):
+	print("▶ Game Over finished – Reset & Reload Current Scene")
+
+	# 1) GameOver-Szene entfernen
+	if level_container and level_container.has_node("GameOverScene"):
 		level_container.get_node("GameOverScene").queue_free()
 
-	# Spieler-Referenzen und Zustand vollständig leeren,
-	# damit keine freed-Instanzen mehr in Global hängen.
+	# 2) Globalen Zustand aufräumen
 	Global.clear_all_player_data()
-
-	# (Optional, schadet nicht): Level-Rundenzustand leeren
 	Global.reset_round_state()
 
-	# Main neu laden → startet „frisch“ ohne alte Player-Refs
+	# 3) Player-Mapping zurücksetzen (sehr wichtig!)
+	if Players:
+		Players.reset_all()
+
+	# 4) GameManager zurücksetzen
+	# Hier nur "Soft-Reset" mit "false": Werte zurücksetzen, aber current_level behalten
+	reset_game_state(false)
+	state = STATE_MENU
+
+	# 5) Tree wieder freigeben
+	get_tree().paused = false
+
+	# 6) Szene RELOADEN (statt change_scene_to_file)
+	await get_tree().process_frame
+	_restart_to_main()
+	var err := get_tree().reload_current_scene()
+	print("reload_current_scene result:", err)
+
+	
+
+func _restart_to_main() -> void:
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 
 func _load_level(level_nr: int) -> void:
-	
 	#instanziierte Objekte nach Typ entfernen (siehe clean_level() Funktion)
 	clear_level()
 	
@@ -213,6 +234,7 @@ func _load_level(level_nr: int) -> void:
 
 	# Pfad aus Autoload holen (Array, 0-basiert)
 	var path: String = GameManager.level_paths[level_nr - 1]
+	
 
 	# Szene dynamisch laden und als PackedScene casten
 	var packed_scene := ResourceLoader.load(path) as PackedScene

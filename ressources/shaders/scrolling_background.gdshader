@@ -7,4 +7,3 @@ void fragment() {
     uv.x += TIME * speed;
     COLOR = texture(TEXTURE, uv);
 }
-

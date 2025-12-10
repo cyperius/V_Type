@@ -76,7 +76,8 @@ self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
 scale = Vector2(0.25, 0.25)
 collision_mask = 60
 script = ExtResource("1_l3jmy")
-max_health = 2000
+max_health = 300
+max_energy = 500
 primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
 
