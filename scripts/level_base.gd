@@ -7,6 +7,8 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export var amount_of_enemies: int
 @export var level_nr : int = 1
 @export var boss_timer: Timer 
+@export_range(0, 270, 90) var player_rotation := 0
+
 
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
