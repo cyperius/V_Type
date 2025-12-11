@@ -37,7 +37,7 @@ func _ready() -> void:
 	enemies_container.add_child(enemy)
 
 	# Optional: Boss‑Timer
-	boss_timer.timeout.connect(_on_boss_timer_timeout)
+	#boss_timer.timeout.connect(_on_boss_timer_timeout)
 
 
 func _place_all_players_in_current_level() -> void:

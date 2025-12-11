@@ -17,5 +17,4 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	position.x -= speed * delta * speed_level
-	
+	position.y += speed * delta * speed_level

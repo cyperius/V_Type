@@ -8,6 +8,7 @@ class_name enemy extends Area2D
 @export var basic_speed : int = 50
 @export var score_count : int = 100
 @export var energy_left : int = 5
+@export var chance_of_shooting : int = 1
 
 @onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
 @onready var explosion_size : float = 5
@@ -45,11 +46,13 @@ func _process(delta: float) -> void:
 	
 
 func _on_shoot_timer_timeout():
-	audio_stream_player_2d.volume_db = -10
-	audio_stream_player_2d.play()
-	var shot = shot_scene.instantiate()
-	shot.global_position = _gun_point.global_position
-	get_parent().add_child(shot)
+	if randi_range(1, chance_of_shooting) == 1:
+		audio_stream_player_2d.volume_db = -10
+		audio_stream_player_2d.play()
+		var shot = shot_scene.instantiate()
+		shot.global_position = _gun_point.global_position
+		get_parent().add_child(shot)
+	
 
 
 func apply_damage(damage_amount, owner_id) -> void:
