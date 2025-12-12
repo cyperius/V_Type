@@ -1,30 +1,22 @@
 extends LevelBase
 
-#signal just_touched_left_boarder
-#signal just_touched_right_boarder
+func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
+	# Level 1: Standard-FREE-Mode, Spawn in Viewport-Mitte + Offset
 
+	# 1) Grundzustände
+	player.mode = player.PlayerMode.FREE
+	player.rotation_degrees = 270
+	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+	player.collision_layer = 1
 
-@onready var last_touched_right_boarder := false
-@onready var last_touched_left_boarder := true
-@onready var left_boarder: Area2D = %left_boarder
-@onready var right_boarder: Area2D = %right_boarder
-#
-#func _ready() -> void:
-	
-	#left_boarder.area_entered.connect(_on_left_boarder_entered)
-	#right_boarder.area_entered.connect(_on_right_boarder_entered)
-	
+	# 2) Positionierung wie in Main: Mitte + je Spieler versetzter Offset
+	var viewport_size: Vector2 = get_viewport_rect().size
+	var base_position = viewport_size * 0.05
+	var player_offset = Vector2(180, 60 + 240 * (player_id - 1))
+	player.global_position = base_position + player_offset
 
-#
-#func _on_left_boarder_entered() -> void:
-	#emit_signal("just_touched_left_boarder")
-	#last_touched_left_boarder = true
-	#last_touched_right_boarder = false
-	#
-	#
-#func _on_right_boarder_entered() -> void:
-	#last_touched_right_boarder = true
-	#last_touched_left_boarder = false
-	
+	# 3) Einheitliche Skalierung für Level 1
+	player.scale = Vector2(0.25, 0.25)
 
-	
+	# 4) Sichtbar schalten
+	player.show()

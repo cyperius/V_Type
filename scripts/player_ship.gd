@@ -65,7 +65,10 @@ var projectiles := []
 @onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
 @onready var player3_diving_skin = preload("res://assets/graphic_elements/player/player3_ship_rueckenlage.png")
 
-
+@onready var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
+@onready var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
+@onready var player3_top_down = preload("res://assets/graphic_elements/player/player3_ship.png")
+@onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship.png")
 
 var skins := []
 
@@ -98,31 +101,14 @@ func _ready() -> void:
 	blue_energy = max_energy
 
 	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
-		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "scale": Vector2(0.7, 0.7)}},
-		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "scale": Vector2(0.7, 0.7)}},
-		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin,"scale": Vector2(0.6, 0.6)}},
-		{"looks": {"neutral": player4_skin, "scale": Vector2(1, 1.4)}},
+		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "top_down": player1_top_down, "scale": Vector2(0.7, 0.7)}},
+		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "top_down": player2_top_down, "scale": Vector2(0.7, 0.7)}},
+		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin, "top_down": player3_top_down, "scale": Vector2(0.6, 0.6)}},
+		{"looks": {"neutral": player4_skin, "top_down": player4_top_down, "scale": Vector2(1, 1.4)}},
 		]
 	
 	set_skin("neutral") # setzt die passende skin, der player id_entsprechend
 
-		#
-	## Skins 
-	#if player_id == 2:
-		#ship_sprite.texture = player2_skin
-		#ship_sprite.scale = Vector2(0.6, 0.6)
-	#elif player_id == 3:
-		#ship_sprite.texture = player3_skin
-		#ship_sprite.scale = Vector2(0.8, 0.9)
-	#elif player_id == 4:
-		#ship_sprite.texture = player4_skin
-		#ship_sprite.scale = Vector2(1, 1.4)
-	#else:
-		#ship_sprite.texture = player1_skin
-		#ship_sprite.scale = Vector2(0.6, 0.6)
-		#
-	
-		
 
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
@@ -208,10 +194,8 @@ func _process_free_move(delta: float) -> void:
 		
 	if direction.y < 0:
 		set_skin("rising")
-		print("rising")
 	elif direction.y > 0:
 		set_skin("sinking")
-		print("sinking")
 	else:
 		set_skin("neutral")
 		
@@ -220,6 +204,7 @@ func _process_free_move(delta: float) -> void:
 	position += velocity * delta
 	position.x = clampf(position.x, 0.0, screensize.x)
 	position.y = clampf(position.y, 0.0, screensize.y)
+
 
 func _process_circle(delta: float) -> void:
 	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)
