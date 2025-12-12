@@ -49,7 +49,7 @@ func _ready():
 	# neu:  🔁 Für alle registrierten Spieler im Global-Singleton
 	for player_id in Global.player_ships.keys():
 		var player = Global.get_player_ship(player_id)
-		player.mode = player.PlayerMode.FREE
+		player.mode = player.FlightMode.LEFT_RIGHT
 		player.rotation_degrees = 0
 		#player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 		#player.collision_layer = 1
@@ -124,10 +124,10 @@ func _place_all_players_in_current_level() -> void:
 
 
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
-	# Level 5: Standard-FREE-Mode, Spawn in Viewport-Mitte + Offset
+	# Level 5: Standard-LEFT_RIGHT-Mode, Spawn in Viewport-Mitte + Offset
 
 	# 1) Grundzustände
-	player.mode = player.PlayerMode.FREE
+	player.mode = player.FlightMode.LEFT_RIGHT
 	player.rotation_degrees = 0
 	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 	player.collision_layer = 1

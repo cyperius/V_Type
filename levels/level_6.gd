@@ -4,7 +4,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# Level 1: Standard-FREE-Mode, Spawn in Viewport-Mitte + Offset
 
 	# 1) Grundzustände
-	player.mode = player.PlayerMode.FREE
+	player.mode = player.FlightMode.LEFT_RIGHT
 	player.rotation_degrees = 270
 	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 	player.collision_layer = 1

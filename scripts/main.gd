@@ -137,7 +137,7 @@ func _spawn_player(player_id: int) -> void:
 
 	var ship: PlayerShip = player_scene.instantiate()
 	ship.player_id = player_id
-	ship.mode = ship.PlayerMode.FREE
+	ship.mode = ship.FlightMode.LEFT_RIGHT
 
 	players_root.add_child(ship)
 

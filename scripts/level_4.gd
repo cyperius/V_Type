@@ -20,7 +20,7 @@ func _ready():
 	# neu:  🔁 Für alle registrierten Spieler im Global-Singleton
 	for player_id in Global.player_ships.keys():
 		var player = Global.get_player_ship(player_id)
-		player.mode = player.PlayerMode.FREE
+		player.mode = player.FlightMode.LEFT_RIGHT
 		player.rotation_degrees = 0
 		#player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
 		#player.collision_layer = 1

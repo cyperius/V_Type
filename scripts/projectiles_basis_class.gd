@@ -21,7 +21,7 @@ func _ready() -> void:
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	var shooter: PlayerShip = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
-		circle_mode_enabled = (shooter.mode == shooter.PlayerMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der PlayerMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
+		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der PlayerMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
 			# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
 			var offset: Vector2 = shooter.global_position - shooter.circle_center_position

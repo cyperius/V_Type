@@ -44,7 +44,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
 
 	# 1) Modus aktivieren
-	player.mode = player.PlayerMode.CIRCLE
+	player.mode = player.FlightMode.CIRCLE
 
 	# 2) Kreis-Parameter setzen
 	player.circle_center_position = center_node.global_position

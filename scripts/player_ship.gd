@@ -10,8 +10,9 @@ signal shield_toggled(player_id: int, active: bool)
 # ──────────────────────────────────────────────────────────────
 #   ENUMS / MODE
 # ──────────────────────────────────────────────────────────────
-enum PlayerMode { FREE, CIRCLE }
-var mode := PlayerMode.FREE
+enum FlightMode { LEFT_RIGHT, RIGHT_LEFT, DOWN_UP, UP_DOWN, CIRCLE, FREE }
+
+var mode := FlightMode.LEFT_RIGHT
 var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
 var angle := 0.0
@@ -107,9 +108,6 @@ func _ready() -> void:
 		{"looks": {"neutral": player4_skin, "top_down": player4_top_down, "scale": Vector2(1, 1.4)}},
 		]
 	
-	set_skin("neutral") # setzt die passende skin, der player id_entsprechend
-
-
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
 	_backup_collision_mask = collision_mask
@@ -122,9 +120,12 @@ func _ready() -> void:
 	_shield_collision_shape.disabled = true
 	
 	# Circle-Mode Startwinkel
-	if mode == PlayerMode.CIRCLE:
+	if mode == FlightMode.CIRCLE:
 		var offset := global_position - circle_center_position
 		angle = offset.angle()
+		ship_sprite.texture = skins[player_id-1]["looks"]["top_down"]
+	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
+		
 
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()
@@ -175,15 +176,15 @@ func _process(delta: float) -> void:
 
 	# Bewegung je nach Modus
 	match mode:
-		PlayerMode.FREE:
-			_process_free_move(delta)
-		PlayerMode.CIRCLE:
+		FlightMode.LEFT_RIGHT:
+			_process_left_right_move(delta)
+		FlightMode.CIRCLE:
 			_process_circle(delta)
 
 # ──────────────────────────────────────────────────────────────
 #   MOVEMENT
 # ──────────────────────────────────────────────────────────────
-func _process_free_move(delta: float) -> void:
+func _process_left_right_move(delta: float) -> void:
 	var direction := Vector2.ZERO
 	if controls_are_reversed:
 		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
