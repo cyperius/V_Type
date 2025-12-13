@@ -23,7 +23,8 @@ signal incoming_boss
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
 @onready var randomizer = RandomNumberGenerator.new()
-@onready var invader_counter : int = 0
+@onready var breakout_path_a: Path2D = get_parent().get_node("Paths/BreakoutPathA")
+@onready var breakout_path_b: Path2D = get_parent().get_node("Paths/BreakoutPathB")
 
 
 # Vorteil dieser Schreibweise: Die Verbindung stimmt, egal welcher Szene dieses
@@ -66,6 +67,24 @@ func set_spawn_rate(spawn_rate: int =1) -> void:
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
 	print("spawn_rate = ", spawn_rate, "number of palyers = ", number_of_players)
 	print(" is the timer1 waittime: ", timer.wait_time, timer2.wait_time, " ist the timer2 time")
+	
+	# Jeder Invader bekommt seinen eigenen follow
+func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
+	var follow := PathFollow2D.new()
+	follow.loop = false
+
+	# Start versetzen, damit nicht alle exakt gleich starten
+	follow.progress_ratio = randf()
+
+	# Damit follow die Kurve von path_2d benutzt, muss er darunter hängen
+	path_2d.add_child(follow)
+
+	# Invader muss diese Methode haben
+	if invader.has_method("set_breakout_path_follow"):
+		invader.set_breakout_path_follow(follow)
+	else:
+		push_warning("Invader hat keine Methode set_breakout_path_follow(path_follow).")
+
 
 
 func _process(delta: float) -> void:
@@ -82,7 +101,8 @@ func _on_timer_timeout():
 		var enemy = enemy1.instantiate()
 		enemies_container.add_child(enemy)
 		enemy.position = enemy_position.position
-		invader_counter += 1
+		enemy_counter += 1
+		_assign_unique_breakout_follow(enemy, breakout_path_a)
 	
 	
 func _on_timer2_timeout():

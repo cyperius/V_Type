@@ -43,6 +43,7 @@ func _process(delta: float) -> void:
 	
 	if position.x < -300:
 		queue_free()
+		
 	
 
 func _on_shoot_timer_timeout():
@@ -61,7 +62,7 @@ func apply_damage(damage_amount, owner_id) -> void:
 	health_points -= damage_dealt
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
-	GameManager._on_enemy_destroyed(score, energy_left, owner_id)
+	GameManager._on_enemy_hit(score, energy_left, owner_id)
 	if health_points <= 0:
 		die()
 		

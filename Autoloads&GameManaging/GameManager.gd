@@ -292,7 +292,7 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 # ──────────────────────────────────────────────────────────────
 #   SIGNAL-CALLBACKS
 # ──────────────────────────────────────────────────────────────
-func _on_enemy_destroyed(score: int, energy: int, player_id: int) -> void:
+func _on_enemy_hit(score: int, energy: int, player_id: int) -> void:
 	print("main: enemy Destroyed")
 	total_destroyed_enemies += 1
 	if not player_scores.has(player_id):

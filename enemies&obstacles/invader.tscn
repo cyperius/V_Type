@@ -34,3 +34,7 @@ position = Vector2(1, 49)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 
 [node name="ShootTimer" type="Timer" parent="."]
+
+[node name="BehaviourTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true

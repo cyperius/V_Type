@@ -16,8 +16,8 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	var player_offset = Vector2(180 + 240 * (player_id - 1), 1840)
 	player.global_position = base_position + player_offset
 
-	# 3) Einheitliche Skalierung für Level 1
-	player.scale = Vector2(0.25, 0.25)
+	# 3) Einheitliche Skalierung für Level 6
+	player.scale = Vector2(0.15, 0.15)
 
 	
 	# 4) Sichtbar schalten
