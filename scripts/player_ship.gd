@@ -119,13 +119,18 @@ func _ready() -> void:
 	# Schild-Kollision initial aus
 	_shield_collision_shape.disabled = true
 	
-	# Circle-Mode Startwinkel
-	if mode == FlightMode.CIRCLE:
-		var offset := global_position - circle_center_position
-		angle = offset.angle()
+	## Circle-Mode Startwinkel und skin / bleibt aktuell 12.12.25 23.18 wirkungslos
+	#if mode == FlightMode.CIRCLE:
+		#var offset := global_position - circle_center_position
+		#angle = offset.angle()
+		#ship_sprite.texture = skins[player_id-1]["looks"]["top_down"]
+	
+	# DOWN_UP Mode skin -> == FlightMode scheint in der ready Funktion nciht zu funktionieren
+	# -> Timing Problem
+	if mode == FlightMode.DOWN_UP: 
 		ship_sprite.texture = skins[player_id-1]["looks"]["top_down"]
-	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
 		
+		ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
 
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()
@@ -180,6 +185,8 @@ func _process(delta: float) -> void:
 			_process_left_right_move(delta)
 		FlightMode.CIRCLE:
 			_process_circle(delta)
+		FlightMode.DOWN_UP:
+			_process_left_right_move(delta)
 
 # ──────────────────────────────────────────────────────────────
 #   MOVEMENT
@@ -192,13 +199,14 @@ func _process_left_right_move(delta: float) -> void:
 	else:
 		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
 		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)
-		
-	if direction.y < 0:
-		set_skin("rising")
-	elif direction.y > 0:
-		set_skin("sinking")
-	else:
-		set_skin("neutral")
+	
+	if mode == FlightMode.LEFT_RIGHT:
+		if direction.y < 0:
+			set_skin("rising")
+		elif direction.y > 0:
+			set_skin("sinking")
+		else:
+			set_skin("neutral")
 		
 	var screensize := get_viewport_rect().size
 	var velocity := direction * speed
@@ -212,7 +220,10 @@ func _process_circle(delta: float) -> void:
 	angle += input_strength * angular_speed * delta
 	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
 	global_position = circle_center_position + offset
-	rotation = angle + PI
+	rotation = angle + PI # Die Anpassunf auf 2.5 PI war nötig um die 
+	# Ausrichtung des ships nach innen zu erreichen
+	
+	
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD

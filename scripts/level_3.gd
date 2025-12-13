@@ -53,21 +53,23 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 3) Startwinkel (gleichmäßig nach aktueller Spieleranzahl)
 	var active_count : int = max(1, Global.player_ships.size())
 	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
-	player.angle = start_angle
+	player.angle = start_angle + 2 * PI
 
 	# 4) Position + Rotation
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
-	player.rotation = start_angle + PI
+	player.global_rotation_degrees = start_angle + PI
 
 	# 5) Optional: Level-spezifische Skalierung (rein visuell)
 	player.scale = Vector2(0.2, 0.2)
+	
+	# 6) Level-spezifische skin und Ausrichtung setzen
+	player.set_skin("top_down")
+	
 
 	# 6) Debug
 	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
 		player_id, player.circle_center_position, player.circle_radius, start_angle
 	])
-
-
 
 func _on_level_duration_timeout():
 	emit_signal("level_finished", 4, 0, 0)
