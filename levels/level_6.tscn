@@ -10,7 +10,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_fpvgn"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -20, 12, -1273.06, -550.665, 1273.06, 550.665, -1741.09, 1302.82, -729.015, -752.575, 729.015, 752.575, 1413.88, 2238.32, 0, 0, 0, 0, -4427.68, 3499.33)
+"points": PackedVector2Array(0, 0, 0, 0, 27.248, 194.433, -1273.06, -550.665, 1273.06, 550.665, -1741.09, 1302.82, -729.015, -752.575, 729.015, 752.575, 1105.76, 2292.85, 0, 0, 0, 0, -3596.74, 2996.26)
 }
 point_count = 4
 
@@ -130,8 +130,8 @@ autostart = true
 [node name="Paths" type="Node2D" parent="."]
 
 [node name="BreakoutPathA" type="Path2D" parent="Paths"]
-position = Vector2(-1396.95, -288.659)
-scale = Vector2(0.452619, 0.804915)
+position = Vector2(2584, 213)
+scale = Vector2(0.477099, 0.802334)
 curve = SubResource("Curve2D_fpvgn")
 
 [node name="BreakoutPathB" type="Path2D" parent="Paths"]
@@ -183,7 +183,7 @@ collision_layer = 32
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="left_boarder"]
-position = Vector2(-324.5, 713.5)
+position = Vector2(-311, 633)
 shape = SubResource("RectangleShape2D_qskt5")
 
 [node name="right_boarder" type="Area2D" parent="."]
