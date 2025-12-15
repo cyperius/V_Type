@@ -13,20 +13,7 @@ extends Area2D
 
 
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
-	add_to_group("one_hit_enemies")
 	add_to_group("enemies")
-	
-	
-func _on_area_entered(other: Area2D) -> void:
-	if "damage" and "owner_id" in other: 
-		apply_damage(other.damage, other.owner_id)
-	AudioManager.play_sfx_string("explosion")
-	get_tree().current_scene.add_child(explosion_animation)
-	explosion_animation.position = global_position
-	if "damage" and "owner_id" in other: 
-		apply_damage(other.damage, other.owner_id)
-	
 	
 	
 func apply_damage(damage_amount, owner_id) -> void:
@@ -41,8 +28,9 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 		
 func die() -> void:
-	#AudioManager.play_sfx_string("explosion")
+	AudioManager.play_sfx_string("explosion")
 	get_tree().current_scene.add_child(explosion_animation)
+	explosion_animation.position = global_position
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

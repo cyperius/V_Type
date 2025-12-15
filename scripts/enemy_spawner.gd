@@ -2,7 +2,6 @@ extends Node2D
 
 signal boss_defeated
 signal level_finished(level_nr: int)
-#signal enemy_destroyed(score: int, energy: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
@@ -117,15 +116,21 @@ func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
+	
 	# level_boss ist eine Exportvariable, der im Inspector eine PackedScene zugeorndet wird
 	# Daraus wird nun eine Instanz erstellt mit Name boss erstellt
-	var boss = level_boss.instantiate()
-	# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
-	get_tree().current_scene.add_child(boss)
-	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-	boss.global_position = Vector2(7000, 1100)
-	# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
-	boss.health = boss.health * number_of_players
+	# zuerst wird noch geprüft, ob ein level_boss gesetzt wurde
+	if level_boss == null:
+		_on_boss_defeated() # falls kein Boss gesetzt wurde, lösen wir direkt das defeated_signal aus
+		# damit der Level beendet wird. 14.12.22025 evtl. Bezeichnung ändern oder separates Signal zum levelbeeenden?
+	else: # wenn also ein Boss für level_boss gesetzt wurde (ganz oben "preload")
+		var boss = level_boss.instantiate()
+		# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
+		get_tree().current_scene.add_child(boss)
+		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
+		boss.global_position = Vector2(7000, 1100)
+		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
+		boss.health = boss.health * number_of_players
 
 func _on_boss_defeated():
 	emit_signal("boss_defeated")

@@ -21,7 +21,6 @@ var evasive_mode_on = false
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
-	add_to_group("one_hit_enemies")
 	add_to_group("enemies")
 	add_to_group("evaders")
 	add_child(shoot_timer)
@@ -31,9 +30,8 @@ func _ready() -> void:
 	
 	
 func _on_area_entered(other: Area2D) -> void:
-	if "damage" and "owner_id" in other: 
+	if other.has_method("apply_damage"): 
 		apply_damage(other.damage, other.owner_id)
-	
 	
 	
 func _process(delta: float) -> void:
@@ -44,7 +42,6 @@ func _process(delta: float) -> void:
 	if position.x < -300:
 		queue_free()
 		
-	
 
 func _on_shoot_timer_timeout():
 	if randi_range(1, chance_of_shooting) == 1:
@@ -54,7 +51,6 @@ func _on_shoot_timer_timeout():
 		shot.global_position = _gun_point.global_position
 		get_parent().add_child(shot)
 	
-
 
 func apply_damage(damage_amount, owner_id) -> void:
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)

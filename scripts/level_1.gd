@@ -1,7 +1,6 @@
 extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
-#signal enemy_destroyed(score: int, energy: int, player_id: int)
 
 @export var amount_of_enemies: int
 
@@ -64,20 +63,6 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 
 	# 4) Sichtbar schalten
 	player.show()
-
-
-## Der frisch gespawnte Gegner wird übergeben → wir verbinden sein Signal
-#func _on_enemy_spawned(enemy: Node) -> void:
-	## ✳️ Idealfall: Der Enemy sendet bereits (score, energy, player_id).
-	#if enemy.has_signal("enemy_destroyed"):
-		#print("level1: enemy_spawned and connected enemy_destroyed signal")
-		## Direkte 1:1‑Weiterleitung
-		#enemy.enemy_destroyed.connect(func(score: int, energy: int, player_id: int) -> void:
-			#emit_signal("enemy_destroyed", score, energy, player_id))
-			#
-	#else:
-		#print("⚠️ Enemy hat kein 'enemy_destroyed'-Signal.")
-
 
 func _on_boss_timer_timeout() -> void:
 	pass

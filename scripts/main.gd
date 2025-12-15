@@ -202,11 +202,7 @@ func _connect_level_signals() -> void:
 	if level == null:
 		print("⚠️ Kein Level gefunden für Signalverbindung.")
 		return
-
 	print("main: connect_level_signals – Kinder:", level_container.get_child_count())
-
-	if level.has_signal("enemy_destroyed"):
-		level.enemy_destroyed.connect(GameManager._on_enemy_destroyed)
 
 	if level.has_signal("level_finished"):
 		level.level_finished.connect(_on_level_finished)
@@ -224,10 +220,8 @@ func _on_level_loaded() -> void:
 
 	_connect_level_signals()
 
-
 func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_energy: int = 0) -> void:
 	pass
-
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 	var tw = create_tween()

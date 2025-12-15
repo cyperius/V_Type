@@ -11,8 +11,7 @@ signal shield_toggled(player_id: int, active: bool)
 #   ENUMS / MODE
 # ──────────────────────────────────────────────────────────────
 enum FlightMode { LEFT_RIGHT, RIGHT_LEFT, DOWN_UP, UP_DOWN, CIRCLE, FREE }
-
-var mode := FlightMode.LEFT_RIGHT
+var mode : FlightMode
 var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
 var angle := 0.0
@@ -70,8 +69,8 @@ var projectiles := []
 @onready var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
 @onready var player3_top_down = preload("res://assets/graphic_elements/player/player3_ship.png")
 @onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship.png")
+var skins
 
-var skins := []
 
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var hit_scene: PackedScene = preload("res://game_world/hit.tscn")
@@ -127,10 +126,10 @@ func _ready() -> void:
 	
 	# DOWN_UP Mode skin -> == FlightMode scheint in der ready Funktion nciht zu funktionieren
 	# -> Timing Problem
-	if mode == FlightMode.DOWN_UP: 
-		ship_sprite.texture = skins[player_id-1]["looks"]["top_down"]
-		
-		ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
+	if mode == FlightMode.DOWN_UP:
+		set_skin("top_down")
+		#ship_sprite.texture = skins[player_id-1]["looks"]["top_down"]
+		#ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
 
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()

@@ -1,9 +1,10 @@
 extends Node2D  # MainScene basiert auf Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
-signal enemy_destroyed(score: int, energy: int, player_id: int)
 signal zoom_requested(zoomfactor_x: float, zoomfactor_y : float, zoom_time: int)
 
+
+@export var level_nr : int = 5
 @onready var audio_player = $AudioStreamPlayer
 @onready var boss_timer = $BossTimer
 @onready var enemy_spawner = $EnemySpawner
@@ -44,31 +45,18 @@ func _ready():
 	# alte Signalschreibweise
 	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # Cannot call method 'connect' on a null value.
 	# neue Signalschreibweise (seit Godot 4.2 werden Signale als Obkete behandelt, daher so schreibbar)
-	enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 	# neu:  🔁 Für alle registrierten Spieler im Global-Singleton
 	for player_id in Global.player_ships.keys():
 		var player = Global.get_player_ship(player_id)
 		player.mode = player.FlightMode.LEFT_RIGHT
 		player.rotation_degrees = 0
-		#player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
-		#player.collision_layer = 1
+		player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5)
+		player.collision_layer = 1
 		player.global_position = Vector2 (500, 1000 + 200 * player_id)
 		player.scale = Vector2(0.25, 0.25)
-	#Global.player_ship.speed = Global.player_ship.max_speed
 		player.show()
 	
-	#falls Boss zu fixer Zeit gespawnt werden soll reaktivieren:
-	#boss_timer.wait_time = 100 # kann im Editor überschrieben werden
-	#boss_timer.timeout.connect(_on_boss_timer_timeout)
-	
-	
-	#background.size = Vector2(3840, 2880)  # Falls FullHD-Fenstergröße
-	#background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
-
-# Der "Trick" Der frisch gespawnte "enemy" wird als Node übergeben. So kann auf dessen Signal
-# "enemy_destroyed" zugegriffen werden
-
 
 func _process(delta: float) -> void:
 	if audio_player.playing and audio_wiedergabe:
@@ -91,16 +79,11 @@ func loese_audio_ereignis_aus(method_to_call: String) -> void:
 			zoom_out(0.5, 0.5, 34)
 
 	
-func _on_enemy_destroyed(score: int, energy: int, player_id) -> void:
-	emit_signal("enemy_destroyed", score, energy, player_id)
-	
 func _on_boss_timer_timeout():
 	pass
 	
-	
 func _on_boss_defeated():
-	GameManager.loop_counter += 1
-	emit_signal("level_finished", 1, 0, 0) 
+	emit_signal("level_finished", level_nr + 1, 0, 0) 
 	print("boss defeated")
 	
 func _on_incoming_boss() -> void:
@@ -115,6 +98,7 @@ func zoom_out(x_faxtor : float, y_factor : float, zoom_time: int) -> void:
 func enemies_appear():
 	print("enemies_appear_function_activated")
 	enemy_spawner.set_spawn_rate(5)
+	
 	
 func _place_all_players_in_current_level() -> void:
 	for player_id in Global.player_ships.keys():
@@ -144,19 +128,6 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 4) Sichtbar schalten
 	player.show()
 
-
-# Der frisch gespawnte Gegner wird übergeben → wir verbinden sein Signal
-func _on_enemy_spawned(enemy: Node) -> void:
-	# ✳️ Idealfall: Der Enemy sendet bereits (score, energy, player_id).
-	if enemy.has_signal("enemy_destroyed"):
-		print("level5: enemy_spawned and connected enemy_destroyed signal")
-		# Direkte 1:1‑Weiterleitung
-		enemy.enemy_destroyed.connect(func(score: int, energy: int, player_id: int) -> void:
-			emit_signal("enemy_destroyed", score, energy, player_id))
-			
-	else:
-		print("⚠️ Enemy hat kein 'enemy_destroyed'-Signal.")
-		
 
 func _on_number_of_players_changed() -> void:
 	enemy_spawner.set_spawn_rate()

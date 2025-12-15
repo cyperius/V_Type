@@ -24,6 +24,10 @@ process_mode = 1
 script = ExtResource("1_qskt5")
 amount_of_enemies = 72
 level_nr = 6
+ship_scale = 0.15
+player_rotation = 270
+flight_mode = 2
+skin = "top_down"
 
 [node name="EnemySpawner" type="Node2D" parent="."]
 process_mode = 1

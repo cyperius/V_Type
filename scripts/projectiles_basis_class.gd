@@ -60,31 +60,26 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
-func _on_area_entered(area: Area2D) -> void:
+func _on_area_entered(other: Area2D) -> void:
 	# Friendly Fire verhindern: eigenes Schiff ignorieren
-	if area is PlayerShip:
+	if other is PlayerShip:
 		return
 
 	# Treffer-VFX (nicht für Asteroiden, falls du dort keinen Effekt willst)
-	if not area.is_in_group("asteroids"):
+	if not other.is_in_group("asteroids"):
 		var enemy_hit = enemy_hit_scene.instantiate()
 		get_tree().current_scene.add_child(enemy_hit)
 		enemy_hit.global_position = global_position
 		
 	
-
 	# Schaden anwenden, wenn das Ziel eine passende API anbietet
-	if "player_is_hit" in area:
-		area.player_is_hit(int(damage))
-	elif "apply_damage" in area:
-		area.apply_damage(damage, owner_id) # Invalid call to function 'apply_damage' in base 'Area2D (enemy)'. Expected 2 arguments.
-		# apply score existiert im Moment noch nicht 
-		# Idee: der owner des Schusses und die zu addierende Score
-		# muss weiter gegeben werden (als "Platzhalter_Mechanik" hier mal 
-		# damge = score angenommen
-		#area.apply_score(int(damage), int(owner_id))
+	# das wäre für allfälliges freindly_fire. Im Moment ungenutzt 14.12.2025
+	if other.has_method("player_is_hit"):
+		other.player_is_hit(int(damage))
+	elif other.has_method("apply_damage"):
+		other.apply_damage(damage, owner_id) 
 	# Ansonsten ist das Ziel „passiv“ → nur Effekte ohne Schaden
-
+	
 	# Projektil nach dem Treffer entfernen
 	queue_free()
 
