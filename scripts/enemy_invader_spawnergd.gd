@@ -101,19 +101,19 @@ func _on_timer2_timeout() -> void:
 
 
 func here_comes_the_boss() -> void:
-	boss_spawned = true
-	emit_signal("incoming_boss")
-
-	enemy_counter += 1
-	timer.stop()
-	timer2.stop()
-
-	var boss = level_boss.instantiate()
-	get_tree().current_scene.add_child(boss)
-
-	boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-	boss.global_position = Vector2(7000, 1100)
-	boss.health = boss.health * number_of_players
+	if level_boss == null:
+		emit_signal("boss_defeated")
+	else:
+		boss_spawned = true
+		emit_signal("incoming_boss")
+		enemy_counter += 1
+		timer.stop()
+		timer2.stop()
+		var boss = level_boss.instantiate()
+		get_tree().current_scene.add_child(boss)
+		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
+		boss.global_position = Vector2(7000, 1100)
+		boss.health = boss.health * number_of_players
 
 
 func _on_boss_defeated() -> void:

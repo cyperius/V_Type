@@ -11,7 +11,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export_range(0.1, 0.5, 0.05) var ship_scale : float = 0.25
 enum Rotations { R0 = 0, R90 = 90, R180 = 180, R270 = 270 }
 @export var player_rotation: Rotations = Rotations.R0
-@export var flight_mode: PlayerShip.FlightMode = PlayerShip.FlightMode.CIRCLE
+@export var flight_mode: PlayerShip.FlightMode = PlayerShip.FlightMode.LEFT_RIGHT
 @export_enum("neutral", "top_down") var skin = "neutral"
 var base_position : Vector2 # wird hier definiert, damit unten der Wert für base_position 
 # dem "match FLIGHTMode" entsprechend gesetzt werden kann und danach
@@ -21,9 +21,12 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 @onready var enemy_spawner: Node2D = $EnemySpawner
 @onready var enemies_container: Node2D = $EnemiesContainer
 @onready var spawned_enemies = 0
+@onready var background: Control = $background_Control
 
 
 func _ready() -> void:
+	# Grösse des Hintergrunds setzen
+	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
 	# Alle registrierten Spieler ins Level setzen
@@ -77,10 +80,12 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	
 	match flight_mode:
 		PlayerShip.FlightMode.DOWN_UP:	
-			base_position = Vector2(viewport_size.y * 0.9, viewport_size.x * 0.05)
+			base_position = Vector2(background.size.x * 0.4, background.size.y * 0.9)
+			print("flight mode is..", PlayerShip.FlightMode.DOWN_UP)
 			
 		PlayerShip.FlightMode.LEFT_RIGHT:
 			base_position = viewport_size * 0.05
+			print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
 			
 	player.global_position = base_position + player_offset
 			
