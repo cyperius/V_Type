@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bhio164itgbs8"]
 
-[ext_resource type="Script" uid="uid://c5hsgfbjrpxai" path="res://scripts/level_4.gd" id="1_anwe6"]
+[ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_0fd8o"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_anwe6"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="3_rej77"]
 [ext_resource type="PackedScene" uid="uid://c8jntkhlu4ljn" path="res://enemies&obstacles/enemy_4.tscn" id="4_0fd8o"]
@@ -9,8 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://cbjidl008eqlo" path="res://enemies&obstacles/enemy_with_path_4.tscn" id="5_dmnu2"]
 
 [node name="Level_4" type="Node2D"]
-script = ExtResource("1_anwe6")
-amount_of_enemies = 2
+script = ExtResource("1_0fd8o")
+amount_of_enemies = 20
+level_nr = 4
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_anwe6")]
 timer_basic_wait_time = 2
