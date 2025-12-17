@@ -3,9 +3,11 @@ extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
-
+# Festlegung der Level Parameter #
 @export var amount_of_enemies: int
 @export var level_nr : int = 1
+@export var last_level := false
+
 
 # -- levelspezifische optics und Platzierung für das player_ship -- #
 @export_range(0.1, 0.5, 0.05) var ship_scale : float = 0.25
@@ -17,6 +19,7 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 # dem "match FLIGHTMode" entsprechend gesetzt werden kann und danach
 # "player.global_position = base_position + player_offset" nur 1x geschrieben werden muss
 
+# Referenzen zu Nodes
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var enemy_spawner: Node2D = $EnemySpawner
 @onready var enemies_container: Node2D = $EnemiesContainer
@@ -27,6 +30,7 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 func _ready() -> void:
 	# Grösse des Hintergrunds setzen
 	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
+	
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
 	# Alle registrierten Spieler ins Level setzen
@@ -42,11 +46,6 @@ func _ready() -> void:
 	#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 
-	# Beispiel: einen Gegner ins Container hängen (falls gewünscht)
-	var enemy_scene := preload("res://enemies&obstacles/enemy_1.tscn")
-	var enemy := enemy_scene.instantiate()
-	enemies_container.add_child(enemy)
-
 	# Optional: Boss‑Timer
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
 
@@ -56,12 +55,11 @@ func _place_all_players_in_current_level() -> void:
 		var player := Global.get_player_ship(player_id)
 		if player is PlayerShip:
 			place_player_in_current_level(player, player_id)
-			print(" nr of players: ", player_id)
+			# print(" (level_base.gd): nr of players : ", player_id)
 
 
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
-	# Level 1: Standard-LEFT_RIGHT-Mode, Spawn in Viewport-Mitte + Offset
-
+	
 	# 1) Grundzustände (Player Rotation und Flight Mode im Inspector setzen)
 	player.mode = flight_mode # Verhalten definiert im player_ship.gd
 	player.rotation_degrees = player_rotation
@@ -69,23 +67,23 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 1 wird 2 Bits nach links geschoben; ergibt: 000100 (binär) → Layer 3
 	# player reagier also auf collision_mask (1 << 2) =3; auf (1 << 3) = 4; usw.
 	player.collision_layer = 1
-	print(" i'm placed in the level (player ", player, ")")
+	# print(" i'm placed in the level (player ", player, ")")
 
 	# 2) Positionierung im Level 
 	# Erfassung Bildschirmgrösse und Defintion Offset pro Spieler
-	var viewport_size: Vector2 = get_viewport_rect().size
+	var viewport_size: Vector2 = get_viewport_rect().size # 15.12.2025: aktuell arbeite ich mit background.size
 	var player_offset = Vector2(180, 60 + 240 * (player_id - 1))
 	
 	# Positionierung gemäss FlightMiode (im Inspector setzen)
-	
 	match flight_mode:
 		PlayerShip.FlightMode.DOWN_UP:	
-			base_position = Vector2(background.size.x * 0.4, background.size.y * 0.9)
-			print("flight mode is..", PlayerShip.FlightMode.DOWN_UP)
+			base_position = Vector2(viewport_size.x * 0.4, viewport_size.y * 0.9)
+			# print("flight mode is..", PlayerShip.FlightMode.DOWN_UP)
 			
 		PlayerShip.FlightMode.LEFT_RIGHT:
-			base_position = viewport_size * 0.05
-			print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
+			base_position = Vector2(viewport_size.x * 0.1, viewport_size.y * 0.2)
+			# print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
+			print("my placed position: ", player.global_position)
 			
 	player.global_position = base_position + player_offset
 			
@@ -98,6 +96,9 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	
 	# 5) je nach Level passende Skin setzen (aich im Inspector)
 	player.set_skin(skin)
+	
+	# 6) player Signale verbinden
+	player.connect_signals()
 
 
 func _on_boss_timer_timeout() -> void:
@@ -105,7 +106,12 @@ func _on_boss_timer_timeout() -> void:
 
 
 func _on_boss_defeated() -> void:
-	emit_signal("level_finished", level_nr + 1, 0, 0)
+	if last_level: # wenn der Level via Inspector als letzter Level markiert ist: 
+		# loop_counter um1 erhöhen und zurück zu wieder Level1
+		GameManager.loop_counter += 1
+		emit_signal("level_finished", 1, 0, 0)
+	else: # ansonsten den nächsten Level laden
+		emit_signal("level_finished", level_nr + 1, 0, 0)
 	print("boss defeated")
 
 

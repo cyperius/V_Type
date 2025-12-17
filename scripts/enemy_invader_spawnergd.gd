@@ -1,7 +1,6 @@
 extends Node2D
 
 signal boss_defeated
-signal level_finished(level_nr: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
@@ -63,9 +62,10 @@ func set_spawn_rate(spawn_rate: int = 1) -> void:
 
 
 func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
-	# Pro Invader ein eigener PathFollow2D (damit mehrere gleichzeitig ausbrechen koennen)
 	var follow: PathFollow2D = PathFollow2D.new()
-	follow.loop = false
+	follow.loop = true
+
+	# Optional: random Start ist ok, wird beim Breakout eh ueberschrieben
 	follow.progress_ratio = randf()
 
 	path_2d.add_child(follow)
@@ -73,7 +73,7 @@ func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
 	if invader.has_method("set_breakout_path_follow"):
 		invader.set_breakout_path_follow(follow)
 	else:
-		push_warning("Invader hat keine set_breakout_path_follow()-Methode. Szene: " + str(invader.get_scene_file_path()))
+		push_warning("Invader hat keine set_breakout_path_follow()-Methode.")
 
 
 func _process(delta: float) -> void:
@@ -89,10 +89,8 @@ func _on_timer_timeout() -> void:
 		var enemy = enemy1.instantiate()
 		enemies_container.add_child(enemy)
 		enemy.position = enemy_position.position
-
 		enemy_counter += 1
-
-		# Jedem Invader eine eigene Follow-Referenz geben (Pfad A)
+	
 		_assign_unique_breakout_follow(enemy, breakout_path_a)
 
 

@@ -10,9 +10,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_fpvgn"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 27.248, 194.433, -1273.06, -550.665, 1273.06, 550.665, -1741.09, 1302.82, -729.015, -752.575, 729.015, 752.575, 1105.76, 2292.85, 0, 0, 0, 0, -3596.74, 2996.26)
+"points": PackedVector2Array(-737.792, 59.8255, 737.792, -59.8255, 27.248, 194.433, 0, 0, 0, 0, 1613.92, 912.338, -669.412, -605.505, 669.412, 605.505, -1741.09, 1302.82, -729.015, -752.575, 729.015, 752.575, 1105.76, 2292.85, -4.192, 0, 4.192, 0, -3596.74, 2996.26, 2511.01, 94.7236, -2511.01, -94.7236, -3768.61, 2063.98, 96.416, 391.358, -96.416, -391.358, -4347.11, 1161.61, 0, 0, 0, 0, 27.248, 194.433)
 }
-point_count = 4
+point_count = 8
 
 [sub_resource type="Curve2D" id="Curve2D_xn6mk"]
 
@@ -24,6 +24,7 @@ process_mode = 1
 script = ExtResource("1_qskt5")
 amount_of_enemies = 36
 level_nr = 6
+last_level = true
 ship_scale = 0.15
 player_rotation = 270
 flight_mode = 2
@@ -134,8 +135,8 @@ autostart = true
 [node name="Paths" type="Node2D" parent="."]
 
 [node name="BreakoutPathA" type="Path2D" parent="Paths"]
-position = Vector2(2584, 213)
-scale = Vector2(0.477099, 0.802334)
+position = Vector2(2747, 539)
+scale = Vector2(0.481615, 0.577532)
 curve = SubResource("Curve2D_fpvgn")
 
 [node name="BreakoutPathB" type="Path2D" parent="Paths"]
@@ -199,5 +200,3 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="right_boarder"]
 position = Vector2(-324.5, 713.5)
 shape = SubResource("RectangleShape2D_qskt5")
-
-[connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]

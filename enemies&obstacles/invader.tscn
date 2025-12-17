@@ -36,5 +36,5 @@ position = Vector2(1, 49)
 [node name="ShootTimer" type="Timer" parent="."]
 
 [node name="BehaviourTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 8.0
 autostart = true

@@ -8,7 +8,7 @@ signal player_died(player_id: int)
 signal shield_toggled(player_id: int, active: bool)
 
 # ──────────────────────────────────────────────────────────────
-#   ENUMS / MODE
+#   ENUMS / MODE / Global Variables
 # ──────────────────────────────────────────────────────────────
 enum FlightMode { LEFT_RIGHT, RIGHT_LEFT, DOWN_UP, UP_DOWN, CIRCLE, FREE }
 var mode : FlightMode
@@ -16,6 +16,8 @@ var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
 var angle := 0.0
 var angular_speed := 2.0
+var zoom_factor : Vector2 = Vector2(1, 1)
+
 
 # ──────────────────────────────────────────────────────────────
 #   PLAYER PROPERTIES
@@ -83,7 +85,6 @@ var _backup_collision_layer: int
 var _backup_collision_mask: int
 
 
-
 # visueller Status (z. B. fürs Blinken)
 var default_player_state := Color(1, 1, 1)
 var current_player_state := default_player_state
@@ -100,6 +101,8 @@ func _ready() -> void:
 	health = max_health
 	blue_energy = max_energy
 
+	
+
 	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
 		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "top_down": player1_top_down, "scale": Vector2(0.7, 0.7)}},
 		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "top_down": player2_top_down, "scale": Vector2(0.7, 0.7)}},
@@ -110,10 +113,6 @@ func _ready() -> void:
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
 	_backup_collision_mask = collision_mask
-
-	# Signale
-	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-	area_entered.connect(_on_area_entered)
 
 	# Schild-Kollision initial aus
 	_shield_collision_shape.disabled = true
@@ -134,6 +133,15 @@ func _ready() -> void:
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()
 
+
+func connect_signals() -> void:
+	print("connecte signals")
+	var level := GameManager.current_level_node
+	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
+	area_entered.connect(_on_area_entered)
+	if level.has_signal("zoom_requested"):
+		print("see the signal...")
+		level.zoom_requested.connect(_on_zoom_requested)
 
 func set_skin(mode: String) -> void:
 	ship_sprite.texture = skins[player_id-1]["looks"][mode]
@@ -206,13 +214,15 @@ func _process_left_right_move(delta: float) -> void:
 			set_skin("sinking")
 		else:
 			set_skin("neutral")
-		
-	var screensize := get_viewport_rect().size
+	
+	
+	var screen_width := get_viewport_rect().size.x / zoom_factor.x
+	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
 	var velocity := direction * speed
 	position += velocity * delta
-	position.x = clampf(position.x, 0.0, screensize.x)
-	position.y = clampf(position.y, 0.0, screensize.y)
-
+	position.x = clampf(position.x, 0.0, screen_width)
+	position.y = clampf(position.y, 0.0, screen_hight)
+	
 
 func _process_circle(delta: float) -> void:
 	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)
@@ -307,7 +317,7 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
 	if "owner_id" in projectile:
-		print("owner id in projectil!")
+		# print("(player_ship.gd): owner id in projectil!")
 		projectile.owner_id = player_id
 	elif projectile.has_method("set_owner_id"):
 		projectile.set_owner_id(player_id)
@@ -442,8 +452,17 @@ func _set_boost(active: bool) -> void:
 		speed /= 1.8
 		angular_speed /= 1.8
 
+
+func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
+	print("player_ship received zoom signal)")
+	var tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "zoom_factor:x", zx, t)
+	tween.tween_property(self, "zoom_factor:y", zy, t)
+
+
 # ──────────────────────────────────────────────────────────────
 #   DEBUG
 # ──────────────────────────────────────────────────────────────
 func status_report() -> void:
-	print("player_id:", player_id, " pos:", global_position, " hp:", health, " energy:", blue_energy)
+	print("player_id:", player_id, " pos:", global_position, "screensize: ", get_viewport_rect().size, " hp:", health, " energy:", blue_energy)

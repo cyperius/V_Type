@@ -262,7 +262,7 @@ func _load_level(level_nr: int) -> void:
 	
 	if current_level_node.has_signal("level_finished"):
 		current_level_node.connect("level_finished", Callable(self, "_on_level_finished"))
-		
+	
 	emit_signal("level_loaded")
 	
 		

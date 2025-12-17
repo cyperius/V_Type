@@ -21,13 +21,19 @@ var input_joiner: Node = null
 
 # Nur einmal Level laden – niemals mehrfach
 var level_loaded_once := false
+var tw = create_tween()   # tw wird später einen tween referenzieren (mit create_tween() )
+# tw es ist als globale Variable definiert, damit der tween von einer anderen Funktion 
+# her, gestoppt werden kann -> tw.kill()
 
 
 # ──────────────────────────────────────────────────────────────
 #   READY
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
-	print("Main.gd READY – registrierte Spieler:", Global.player_ships)
+	#print("Main.gd READY – registrierte Spieler:", Global.player_ships)
+	
+	# Level loaded Signal des GameManagers verbinden
+	GameManager.level_loaded.connect(_on_level_loaded)
 
 	# InputJoiner suchen
 	if has_node("InputJoiner"):
@@ -79,7 +85,7 @@ func _physics_process(delta: float) -> void:
 #   SPIELER JOIN
 # ──────────────────────────────────────────────
 func _on_player_joined(player_id: int, device_id: int) -> void:
-	print("✅ _on_player_joined aufgerufen, player_id:", player_id, " device_id:", device_id)
+	# print("✅ _on_player_joined aufgerufen, player_id:", player_id, " device_id:", device_id)
 
 
 	# WICHTIG: Erster Spieler? → Dann Level laden
@@ -99,7 +105,7 @@ func _on_player_joined(player_id: int, device_id: int) -> void:
 #   LEVEL LADEN
 # ──────────────────────────────────────────────────────────────
 func _load_game_level() -> void:
-	print("⭐ Lade Level, weil Spieler existieren …")
+	# print("⭐ Lade Level, weil Spieler existieren …")
 
 	# GameManager vorbereiten
 	GameManager.set_state(GameManager.STATE_PLAYING)
@@ -133,7 +139,7 @@ func _ensure_level_ready() -> void:
 #   SPIELER SPAWNEN / LEFT
 # ──────────────────────────────────────────────────────────────
 func _spawn_player(player_id: int) -> void:
-	print("🚀 Spawn Player:", player_id)
+	# print("🚀 Spawn Player:", player_id)
 
 	var ship: PlayerShip = player_scene.instantiate()
 	ship.player_id = player_id
@@ -202,7 +208,7 @@ func _connect_level_signals() -> void:
 	if level == null:
 		print("⚠️ Kein Level gefunden für Signalverbindung.")
 		return
-	print("main: connect_level_signals – Kinder:", level_container.get_child_count())
+	# print("main: connect_level_signals – Kinder:", level_container.get_child_count())
 
 	if level.has_signal("level_finished"):
 		level.level_finished.connect(_on_level_finished)
@@ -212,6 +218,8 @@ func _connect_level_signals() -> void:
 
 
 func _on_level_loaded() -> void:
+	tw.kill()
+	camera.zoom = Vector2(1, 1)
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
 	for player_id in Global.player_ships.keys():
@@ -224,7 +232,8 @@ func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_en
 	pass
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
-	var tw = create_tween()
+	# print("received zoom signal)")
+	tw = create_tween()
 	tw.set_parallel()
 	tw.tween_property(camera, "zoom:x", zx, t)
 	tw.tween_property(camera, "zoom:y", zy, t)

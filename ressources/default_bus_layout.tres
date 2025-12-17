@@ -1,9 +1,20 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://dlhcts2nxnerk"]
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://dlhcts2nxnerk"]
 
 [sub_resource type="AudioEffectPhaser" id="AudioEffectPhaser_vql6a"]
 resource_name = "Phaser"
 
+[sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_opb4m"]
+resource_name = "Distortion"
+
+[sub_resource type="AudioEffectFilter" id="AudioEffectFilter_opb4m"]
+resource_name = "Filter"
+
 [resource]
+bus/0/bypass_fx = true
 bus/0/volume_db = 1.15826
 bus/0/effect/0/effect = SubResource("AudioEffectPhaser_vql6a")
 bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectDistortion_opb4m")
+bus/0/effect/1/enabled = false
+bus/0/effect/2/effect = SubResource("AudioEffectFilter_opb4m")
+bus/0/effect/2/enabled = false

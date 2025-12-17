@@ -9,7 +9,6 @@ var hive_brain: Node = null
 var just_changed_direction: bool = false
 var attack_mode: bool = false
 
-@onready var direction: int = -1
 @onready var behaviour_timer: Timer = $BehaviourTimer
 
 
@@ -27,15 +26,14 @@ func _ready() -> void:
 	if hive_brain and hive_brain.has_signal("change_direction"):
 		hive_brain.change_direction.connect(_on_change_direction)
 
-	# Signal nur EINMAL verbinden (nicht bei jedem Border-Touch)
+	# Signale verbinden
 	just_touched_boarder.connect(hive_brain._on_just_touched_boarder)
-
 	behaviour_timer.timeout.connect(_on_behaviour_change)
-
+	
 
 func _process(delta: float) -> void:
 	if not attack_mode:
-		position.x += delta * speed * direction
+		position.x += delta * speed * direction.x
 		if position.y > 2000:
 			queue_free()
 		return
@@ -48,8 +46,15 @@ func _process(delta: float) -> void:
 
 	breakout_path_follow.progress += breakout_speed * delta
 	global_position = breakout_path_follow.global_position
+	# rotation = breakout_path_follow.rotation # 17.12.2025 aktuell ungenutzt / funktioniert schlecht
+	# aber bei Bedarf damit experimentieren
 
-
+# Diese Funktion wird durch folgende Funktion den Enemy_spawner im Level ausgelöst: 
+# func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
+# dort gescheiht (gekürzt):
+# 1) var follow: PathFollow2D = PathFollow2D.new() -> 
+# 2) path_2d.add_child(follow) -> path_2d ist ein Node im SceneTree des Enemy_spawner und kriegt hier das child (follow)
+# 3) invader.set_breakout_path_follow(follow)
 func set_breakout_path_follow(path_follow: PathFollow2D) -> void:
 	breakout_path_follow = path_follow
 
@@ -87,10 +92,28 @@ func _on_change_direction() -> void:
 
 
 func _on_behaviour_change() -> void:
-	# Nur ausbrechen, wenn der Spawner wirklich einen Follow zugewiesen hat
-	if randi_range(1, 12) == 1:
-		if breakout_path_follow == null or not is_instance_valid(breakout_path_follow):
-			push_warning("Breakout versucht, aber breakout_path_follow ist nicht gesetzt.")
-			return
+	if attack_mode: # wenn der invader schon im attach mode ist, abbrechen
+		return
 
-		attack_mode = true
+	if randi_range(1, 24) != 1: # Wahrscheinlohckeit, dass attack mode ausgelöst wird
+		return
+
+	if breakout_path_follow == null or not is_instance_valid(breakout_path_follow):
+		push_warning("Breakout versucht, aber breakout_path_follow ist nicht gesetzt.")
+		return
+	
+	
+	var path_2d := breakout_path_follow.get_parent() as Path2D  # parent wird gefunden! Ablauf: 
+	# 1) in diesem Script wird oben die globale Variable mit "var breakout_path_follow: PathFollow2D = null" gesetzt
+	# 2) die oben definierte "func set_breakout_path_follow()" wird durch den Enemy_Spawner ausgelöst
+	# 3) im Enemy_Spawner wird wiederum ein Follow2D kreiert und dieser als child dem "Path2D" im Level zugeordnet
+	# 4) "breakout_path_follow" kriegt nur durch die Funktion -> 2) eine Referenz auf eben diesen -> 3) Follow 2D mit dem Path2d als parent
+	if path_2d == null or path_2d.curve == null:
+		push_warning("Breakout: Path2D oder Curve fehlt.")
+		return
+
+	var local_point := path_2d.to_local(global_position)
+	var closest_offset := path_2d.curve.get_closest_offset(local_point)
+	breakout_path_follow.progress = closest_offset
+
+	attack_mode = true

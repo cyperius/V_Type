@@ -5,6 +5,7 @@ signal level_finished(level_nr: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
+
 @export var timer_basic_wait_time : int = 3
 @export var timer2_basic_wait_time : int = 4
 
@@ -45,30 +46,32 @@ var spawn_rate : float
 var boss_spawned = false
 var current_level : Node
 var at_least_one_enemy_spawned := false
-
+var spawn_positions_count
 
 func _ready() -> void:
-	 
+	spawn_positions_count = enemy_positions.size()
 	current_level = get_parent()
-	number_of_players = 1
+	number_of_players = 1 # damit sicher von Anfang an eine spawnrate gesetzt werden kann
 	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
 	
 	
-func set_spawn_rate(spawn_rate: int =1) -> void:
+func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 	# default Wert (für den fall, dass noch kein Spieler im Spiel ist)
-	# evtl. funktioniert die Anpassung der Spawn rate, wenn dei Speielranzahl ändert
+	# evtl. funktioniert die Anpassung der Spawn rate, wenn die Spieleranzahl ändert
 	# bzw, deren reale Umsetzung noch nicht
-	spawn_rate = basic_spawn_rate
 	number_of_players = Global.player_ships.size()
-	#spawn Rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
-	spawn_rate = clamp(1, ((0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate), 4)
-	print("number_of_players = ", number_of_players)
+	# basic_spawn_rate bei '1' (pro Spieler) starten und pro Durchlauf um 0.2 erhöhen
+	# zusätzliche Anpassung durch spawn_rate_multiplayer Parameter möglich 
+	spawn_rate = (0.8 + GameManager.loop_counter/5) * number_of_players * basic_spawn_rate * spawn_rate_multiplyer
+	# Je höher die spawn_rate umso kürzer die spawn_time
 	timer.wait_time = timer_basic_wait_time / spawn_rate
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
-	print("spawn_rate = ", spawn_rate, "number of palyers = ", number_of_players)
-	print(" is the timer1 waittime: ", timer.wait_time, timer2.wait_time, " ist the timer2 time")
+	print("spawn_rate = ", spawn_rate)
+	print("number of players = ", number_of_players)
+	print("the timer1 wait_time is: ", timer.wait_time)
+	print("the timer2 wait_time is: ", timer2.wait_time)
 
 
 func _process(delta: float) -> void:
@@ -81,33 +84,43 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout():
 	at_least_one_enemy_spawned = true
-	print("timeout -> normaler enemy?")
-	var spawn_pos_nr = randi_range(0, 5)
+	# print("(enemy.gd): timeout -> normaler enemy?")
+	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
 	var enemy = enemy1.instantiate()
+	enemy.position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
-	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
+	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...5
 	enemies_container.add_child(enemy)
+	get_tree().current_scene.name 
+
+	self.get_path()
+
+	get_parent().get_path()
+	get_instance_id()
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
-	enemy.position = enemy_positions[spawn_pos_nr].position
-	#print(enemy.position)
+	
+	print(enemy.position)
 	enemy_counter += 1
 	#enemy.speed += enemy_counter * 10
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
 	
 	
 func _on_timer2_timeout():
-	var spawn_pos_nr = randi_range(1, 5)
-	var path_enemy = enemy2_with_path.instantiate()
-	emit_signal("enemy_spawned", path_enemy)
-	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
-	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
-	enemies_container.add_child(path_enemy)
-	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
-	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
-	path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y/2.8
-	enemy_counter += 1
+	if enemy2_with_path == null:
+		return
+	else:
+		var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
+		var path_enemy = enemy2_with_path.instantiate()
+		emit_signal("enemy_spawned", path_enemy)
+		# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
+		# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
+		enemies_container.add_child(path_enemy)
+		# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
+		# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
+		path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y/2.8
+		enemy_counter += 1
 	
 	
 func here_comes_the_boss():

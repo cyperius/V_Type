@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cmesqo88lutx0"]
 
-[ext_resource type="Script" uid="uid://d27u07raui764" path="res://scripts/enemy_1.gd" id="1_t7wyn"]
-[ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_wt277"]
+[ext_resource type="Script" uid="uid://cac3cegrlfy7p" path="res://scripts/enemy_5.gd" id="1_skfhp"]
+[ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_ewv5y"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_ytml0"]
 [ext_resource type="Texture2D" uid="uid://b1sqw8m8etpsd" path="res://assets/graphic_elements/enemies/enemy5.png" id="4_t7wyn"]
 
@@ -13,13 +13,11 @@ height = 574.753
 process_mode = 1
 scale = Vector2(0.2, 0.2)
 collision_layer = 4
-collision_mask = 19
-script = ExtResource("1_t7wyn")
-shot_sound = ExtResource("2_wt277")
+collision_mask = 23
+script = ExtResource("1_skfhp")
+health_points = 20
+shot_sound = ExtResource("2_ewv5y")
 shot_scene = ExtResource("3_ytml0")
-damage = 200
-basic_speed = 600
-energy_left = 50
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = -1.37881

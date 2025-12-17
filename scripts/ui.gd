@@ -34,11 +34,11 @@ func _ensure_player_row(player_id: int) -> Label:
 # ──────────────────────────────────────────────────────────────
 #   ÖFFENTLICHE API
 # ──────────────────────────────────────────────────────────────
-# alt: Wird von main.gd aufgerufen, um den UI-Eintrag eines Spielers zu aktualisieren
-# neu: soll via Signal vom GameManager aufgerufen werden
+
+# wird via Signal vom GameManager aufgerufen werden
 func set_player_ui(player_id: int, score: int, energy: int, health: int) -> void:
 	var row := _ensure_player_row(player_id)
-	print("set_player_ui for palyer: ", player_id)
+	# print("set_player_ui for player: ", player_id)
 	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [player_id, score, energy, health]
 
 # Globalen Gegnerzähler setzen
@@ -53,8 +53,6 @@ func set_destroyed_enemies(total: int) -> void:
 func _ready() -> void:
 	
 	GameManager.player_stats_changed.connect(set_player_ui)
-	
-	
 	
 	# Vorhandene Spieler bei Spielstart initialisieren
 	for player_id in Global.player_ships.keys():

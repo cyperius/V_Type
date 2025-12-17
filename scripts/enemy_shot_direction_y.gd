@@ -18,3 +18,5 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	position.y += speed * delta * speed_level
+	if position.y >= 3600:
+		queue_free()

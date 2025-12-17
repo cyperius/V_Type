@@ -15,7 +15,3 @@ func _process(delta: float) -> void:
 	path.progress_ratio -= delta * 0.1 * GameManager.loop_counter
 	if path.progress_ratio <= 0:
 		queue_free()
-
-func _on_enemy_destroyed(score: int, energy: int) -> void:
-	emit_signal("enemy_destroyed", score, energy)
-	
