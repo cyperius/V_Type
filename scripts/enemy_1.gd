@@ -11,7 +11,7 @@ class_name enemy extends Area2D
 @export var energy_left : int = 5
 @export var chance_of_shooting : int = 1
 
-@onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
+@onready var explosion_animation_scene = preload("res://game_world/explosion_animation.tscn")
 @onready var explosion_size : float = 5
 @onready var x_speed = x_basic_speed * GameManager.loop_counter
 @onready var y_speed = y_basic_speed * GameManager.loop_counter
@@ -27,19 +27,28 @@ var closest_player : Node
 var players : Dictionary = {}
 var direction : Vector2 = Vector2(-1, -1)
 var evasive_mode_on = false
+var player_shot_owner_id : int =- 1
+var is_player_tracking_active := false
+
 
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	add_to_group("enemies")
 	add_to_group("evaders")
-	add_child(shoot_timer)
-	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
-	shoot_timer.start()
-	audio_stream_player_2d.stream = shot_sound
-	current_level = get_parent().get_parent() 
-	print("-------------node? ", current_level)# 15.12.2025 get_parent().get_parent() ist schlechte..
+	# add_child(shoot_timer) # redundant: der entsprechende Node sit bereits im Scene Tree
+	if shoot_timer:
+		shoot_timer.timeout.connect(_on_shoot_timer_timeout)
+		shoot_timer.start()
+	if audio_stream_player_2d:
+		audio_stream_player_2d.stream = shot_sound
+	
+	
+	#current_level = get_parent().get_parent() 
+	# 15.12.2025 get_parent().get_parent() ist schlechte..
 	# praxis, also bei gelegenheit stabiler machen..
+	# 17.12.2025 Versuch: 
+	current_level = get_tree().get_first_node_in_group("levels")
 	
 	# 1) -- für Angriff auf Spieler -- #
 	# Durch alle registrierten Spieler in Global gehen
@@ -63,13 +72,17 @@ func connect_signals() -> void:
 	
 
 func _on_area_entered(other: Area2D) -> void:
-	if other.has_method("apply_damage"): 
-		if other is PlayerShip:
+	if other is PlayerShip:
+		apply_damage(other.damage, other.player_id)
+	elif other.is_in_group("evaders"):    
+		apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
+# wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
+# player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
+# dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
+	else:
+		if "damage" in other and "owner_id" in other:
 			apply_damage(other.damage, other.owner_id)
-		else:
-			apply_damage(other.damage, 1) # 1 ist Platzhalter. Im idealfall müsste 
-			# der den zusammenstoss verursachende spieler seine ID weiter geben
-		
+	
 	
 func _process(delta: float) -> void:
 	
@@ -79,8 +92,11 @@ func _process(delta: float) -> void:
 	position.x += delta * x_speed * direction.x
 	position.y += delta * y_speed * direction.y
 	
-	if "do_target_player" in current_level:
-		if current_level.do_target_player == true:
+	
+	#if "do_target_player" in current_level:
+		#if current_level.do_target_player == true:
+		
+	if is_player_tracking_active:
 			track_nearest_player()
 	
 	
@@ -132,8 +148,9 @@ func apply_damage(damage_amount, owner_id) -> void:
 	if health_points <= 0:
 		die()
 		
+		
 func die() -> void:
-	#AudioManager.play_sfx_string("explosion")
+	var explosion_animation = explosion_animation_scene.instantiate()
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene load_steps=25 format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.gd" id="1_37dvw"]
 [ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b484nhvetjg6n" path="res://enemies&obstacles/bosses/ZomBee/ZombeeKopf.png" id="2_lmhcn"]
 [ext_resource type="Texture2D" uid="uid://jx1yhbia0ut7" path="res://enemies&obstacles/bosses/ZomBee/both_eyes_shapes.png" id="3_lmhcn"]
 [ext_resource type="Script" uid="uid://coo7uy72pptcc" path="res://enemies&obstacles/bosses/ZomBee/damage_area.gd" id="4_10gkv"]
-[ext_resource type="AudioStream" uid="uid://cfsl5asvtp44p" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_another_dangerous_Boss.wav" id="5_1kd36"]
 [ext_resource type="Texture2D" uid="uid://dvvuikt16msry" path="res://enemies&obstacles/bosses/ZomBee/ZomBeeKoerper_angepasst.png" id="5_wvp36"]
 [ext_resource type="Shader" uid="uid://bu1shne253ga" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.gdshader" id="6_grjcn"]
 [ext_resource type="Texture2D" uid="uid://b7glrx6wb160k" path="res://enemies&obstacles/bosses/ZomBee/ZomBeeHelmetCrackTexture.png" id="7_j251n"]
@@ -142,7 +141,6 @@ scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_1kd36")
 autoplay = true
 
 [node name="VomitTimer" type="Timer" parent="."]

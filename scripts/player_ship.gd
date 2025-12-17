@@ -318,7 +318,7 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
 	if "owner_id" in projectile:
 		# print("(player_ship.gd): owner id in projectil!")
-		projectile.owner_id = player_id
+		projectile.owner_id = player_id # beim abfeuern, wird also die owner_id dem Schuss mitgegeben
 	elif projectile.has_method("set_owner_id"):
 		projectile.set_owner_id(player_id)
 

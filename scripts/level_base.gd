@@ -28,6 +28,7 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 
 
 func _ready() -> void:
+	add_to_group("levels")
 	# Grösse des Hintergrunds setzen
 	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
 	
@@ -71,7 +72,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 
 	# 2) Positionierung im Level 
 	# Erfassung Bildschirmgrösse und Defintion Offset pro Spieler
-	var viewport_size: Vector2 = get_viewport_rect().size # 15.12.2025: aktuell arbeite ich mit background.size
+	var viewport_size: Vector2 = get_viewport_rect().size 
 	var player_offset = Vector2(180, 60 + 240 * (player_id - 1))
 	
 	# Positionierung gemäss FlightMiode (im Inspector setzen)

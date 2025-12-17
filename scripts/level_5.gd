@@ -10,9 +10,9 @@ signal player_target_activated
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
-	2: "enemies_appear", # 16.75
+	16.75: "enemies_appear", # 16.75
 	64.0: "zoom_out",
-	10: "target_player", # ca. 76
+	76: "target_player", # ca. 76
 }
 
 var time_stamps_already_triggered: Dictionary = {}
@@ -20,7 +20,8 @@ var audio_wiedergabe: AudioStreamPlayback = null
 
 
 func _ready() -> void:
-
+	super._ready()
+	
 	audio_wiedergabe = audio_stream_player.get_stream_playback()
 	time_stamps_already_triggered.clear()
 

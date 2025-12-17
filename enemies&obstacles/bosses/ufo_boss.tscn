@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://iyew0gat3x6d"]
+
+[ext_resource type="Script" uid="uid://bqfchpcmm8hq4" path="res://scripts/ufo_boss.gd" id="1_rgdwt"]
+[ext_resource type="Texture2D" uid="uid://67sogt3blgtn" path="res://assets/graphic_elements/enemies/FlyingSaucerBoss.png" id="2_60pcy"]
+[ext_resource type="AudioStream" uid="uid://dqc8ff3hrrr0" path="res://assets/sound_and_sfx/sound_effects/laser_blast.wav" id="2_dmnxk"]
+[ext_resource type="AudioStream" uid="uid://cf6rw2vokvd32" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label Survival or adhs Boss.ogg" id="3_60pcy"]
+[ext_resource type="PackedScene" uid="uid://c8jntkhlu4ljn" path="res://enemies&obstacles/enemy_4.tscn" id="4_dmnxk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uugqy"]
+radius = 10.3975
+
+[node name="UfoBoss" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_rgdwt")
+speed = 1200
+boss_soundtrack = ExtResource("3_60pcy")
+health_points = 10000
+shot_sound = ExtResource("2_dmnxk")
+shot_scene = ExtResource("4_dmnxk")
+x_basic_speed = 0
+score_count = 5000
+energy_left = 1000
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+scale = Vector2(34.368, 32.8)
+shape = SubResource("CircleShape2D_uugqy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_60pcy")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_60pcy")
+autoplay = true
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="ShotStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_dmnxk")

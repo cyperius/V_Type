@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cf6rw2vokvd32"
+path="res://.godot/imported/Label Survival or adhs Boss.ogg-e1b29cf4f19c4079497358c630dc6706.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label Survival or adhs Boss.ogg"
+dest_files=["res://.godot/imported/Label Survival or adhs Boss.ogg-e1b29cf4f19c4079497358c630dc6706.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

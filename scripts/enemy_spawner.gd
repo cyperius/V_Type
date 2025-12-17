@@ -87,6 +87,7 @@ func _on_timer_timeout():
 	# print("(enemy.gd): timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
 	var enemy = enemy1.instantiate()
+	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
 	enemy.position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
@@ -141,7 +142,7 @@ func here_comes_the_boss():
 		# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-		boss.global_position = Vector2(7000, 1100)
+		boss.global_position = Vector2(2000, 1100) # 7000, 1100
 		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
 		boss.health = boss.health * number_of_players
 
