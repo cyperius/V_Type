@@ -6,13 +6,13 @@ signal player_target_activated
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
 
-var do_target_player := false
+@export var do_target_player := false
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
-	16.75: "enemies_appear",
+	2: "enemies_appear", # 16.75
 	64.0: "zoom_out",
-	76.5: "target_player",
+	10: "target_player", # ca. 76
 }
 
 var time_stamps_already_triggered: Dictionary = {}
@@ -20,7 +20,6 @@ var audio_wiedergabe: AudioStreamPlayback = null
 
 
 func _ready() -> void:
-	super._ready()
 
 	audio_wiedergabe = audio_stream_player.get_stream_playback()
 	time_stamps_already_triggered.clear()
@@ -56,21 +55,22 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		_:
 			push_warning("Unbekanntes Timeline-Event: %s" % event_name)
 
-
-func start_attacking_player() -> void:
-	emit_signal("player_target_activated")
-
-
-func _on_player_target_activated() -> void:
-	do_target_player = true
+	
+func enemies_appear() -> void:
+	enemy_spawner.set_spawn_rate(5)
 
 
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
 	emit_signal("zoom_requested", x_factor, y_factor, zoom_time)
 
 
-func enemies_appear() -> void:
-	enemy_spawner.set_spawn_rate(5)
+func start_attacking_player() -> void:
+	emit_signal("player_target_activated")
+
+
+func _on_player_target_activated() -> void:
+	print("level5.gd: on_player_target reached")
+	do_target_player = true
 
 
 func _on_incoming_boss() -> void:

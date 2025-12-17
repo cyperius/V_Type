@@ -15,7 +15,6 @@ scale = Vector2(0.2, 0.2)
 collision_layer = 4
 collision_mask = 23
 script = ExtResource("1_skfhp")
-health_points = 20
 shot_sound = ExtResource("2_ewv5y")
 shot_scene = ExtResource("3_ytml0")
 

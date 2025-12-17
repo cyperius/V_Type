@@ -5,25 +5,29 @@ class_name enemy extends Area2D
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
 @export var damage = 500
-@export var basic_speed : int = 50
+@export var x_basic_speed : int = 500
+@export var y_basic_speed : int = 0
 @export var score_count : int = 100
 @export var energy_left : int = 5
 @export var chance_of_shooting : int = 1
 
 @onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
 @onready var explosion_size : float = 5
-@onready var speed = basic_speed * GameManager.loop_counter
+@onready var x_speed = x_basic_speed * GameManager.loop_counter
+@onready var y_speed = y_basic_speed * GameManager.loop_counter
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 @onready var _gun_point: Marker2D = %GunPoint
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var space_ball : SpaceBall # für Angriff aus space_ball
 @onready var current_level : Node # wird in ready_function gesetzt
 
+
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
-var direction : Vector2 = Vector2(1, 1)
+var direction : Vector2 = Vector2(-1, -1)
 var evasive_mode_on = false
+
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
@@ -34,7 +38,7 @@ func _ready() -> void:
 	shoot_timer.start()
 	audio_stream_player_2d.stream = shot_sound
 	current_level = get_parent().get_parent() 
-	print("node? ", current_level)# 15.12.2025 get_parent().get_parent() ist schlechte..
+	print("-------------node? ", current_level)# 15.12.2025 get_parent().get_parent() ist schlechte..
 	# praxis, also bei gelegenheit stabiler machen..
 	
 	# 1) -- für Angriff auf Spieler -- #
@@ -52,6 +56,12 @@ func _ready() -> void:
 		space_ball = current_scene.get_node("Ball")
 	# 2) -- oben: für Angriff auf space_ball -- #
 	
+	connect_signals()
+	
+func connect_signals() -> void:
+	pass
+	
+
 func _on_area_entered(other: Area2D) -> void:
 	if other.has_method("apply_damage"): 
 		if other is PlayerShip:
@@ -66,14 +76,18 @@ func _process(delta: float) -> void:
 	if position.x < -300:
 		queue_free()
 		
-	position.x -= delta * speed
-	position.y += delta * speed * direction.y
+	position.x += delta * x_speed * direction.x
+	position.y += delta * y_speed * direction.y
 	
-	track_nearest_player()
+	if "do_target_player" in current_level:
+		if current_level.do_target_player == true:
+			track_nearest_player()
+	
 	
 	if evasive_mode_on:
 		position.y += delta * 2000
 		position.x += delta * 1000
+	
 	
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"

@@ -117,7 +117,6 @@ func _on_boss_defeated() -> void:
 
 func _on_incoming_boss() -> void:
 	audio_stream_player.stop()
-	
-	
+		
 func _on_number_of_players_changed() -> void:
 	enemy_spawner.set_spawn_rate()

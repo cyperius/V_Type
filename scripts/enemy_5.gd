@@ -1,18 +1,10 @@
-extends enemy
+extends "res://scripts/enemy_1.gd"
 
-func _process(delta: float) -> void:
+
+func connect_signals() -> void:
+	print("----enemy5.gd try to connect signal")
+	current_level.player_target_activated.connect(_on_target_player_activated)
 	
-	if position.x < -300:
-		queue_free()
-		
-	position.x -= delta * speed
-	position.y += delta * speed * direction.y
-	
-	track_nearest_player()
-	
-	if evasive_mode_on:
-		position.y += delta * 2000
-		position.x += delta * 1000
 	
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
@@ -36,3 +28,8 @@ func track_nearest_player():
 	if closest_player:
 		if global_position.distance_to(closest_player.global_position) > 100:
 			direction = global_position.direction_to(closest_player.global_position)
+
+
+func _on_target_player_activated() -> void:
+	print("enemy5.gd: signal 'palyer_targeted received'")
+	y_speed = 100
