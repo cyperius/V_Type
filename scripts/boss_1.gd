@@ -1,26 +1,52 @@
+class_name Boss
 extends Area2D
 
-@export var health : int = 200
-@export var sfx_stream: AudioStream
-@export var sfx_name : String
-@export var weapon := PackedScene
-@export var follow_path = false
+signal boss_defeated
+
+@export var health_points: int = 10
+@export var shot_sound : AudioStream 
+@export var shot_scene : PackedScene
+@export var damage = 500
+@export var x_basic_speed : int = 500
+@export var y_basic_speed : int = 0
+@export var score_count : int = 100
+@export var energy_left : int = 20
+@export var chance_of_shooting : int = 1
+
+@onready var explosion_animation_scene = preload("res://game_world/explosion_animation.tscn")
+@onready var x_speed = x_basic_speed * GameManager.loop_counter
+@onready var y_speed = y_basic_speed * GameManager.loop_counter
+#@onready var audio_stream_player_2d = $AudioStreamPlayer2D
+#@onready var _gun_point: Marker2D = %GunPoint
+@onready var shoot_timer: Timer = $ShootTimer
+@onready var gun_points: Node2D = $GunPoints
+var projectile_instance # globale Variable für Schussinstanz
+
+#@onready var space_ball : SpaceBall # für Angriff aus space_ball
+#@onready var current_level : Node # wird in ready_function gesetzt
+
+
+var closest_player : Node
+# Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
+var players : Dictionary = {}
+var direction : Vector2 = Vector2(-1, -1)
+var evasive_mode_on = false
+#var player_shot_owner_id : int =- 1
+#var is_player_tracking_active := false
+
+
+# ----
+
+#@export var sfx_stream: AudioStream
+#@export var weapon := PackedScene
 @export var boss_soundtrack : AudioStream
 @onready var audio2d = $AudioStreamPlayer2D
-@export var damage : int = 50
-@onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
-@export var energy_left : int = 5
-@export var score_count : int = 100
 
-signal enemy_destroyed(score: int, energy: int)
-
-var shoot_timer = Timer.new()
 var change_pos_timer = Timer.new()
 var enemy_weapon = preload("res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn")
 var projectiles = []
-var game_over = preload("res://scripts/game_over.gd")
 var new_y = 1000 # Globale Variable für die Zielposition
-signal boss_defeated()
+
 
 
 
@@ -28,12 +54,6 @@ signal boss_defeated()
 func _ready() -> void:
 	add_to_group("enemies")
 	area_entered.connect(_on_area_entered)
-	# Timer konfigurieren:>>
-	shoot_timer.wait_time = 2
-	shoot_timer.one_shot = false
-	shoot_timer.autostart = true
-	add_child(shoot_timer) 
-	shoot_timer.timeout.connect(_shot)
 	audio2d.stream = boss_soundtrack
 	fade_in_sound()
 	add_to_group("enemies")
@@ -44,6 +64,8 @@ func _ready() -> void:
 	change_pos_timer.autostart = true
 	add_child(change_pos_timer)
 	change_pos_timer.timeout.connect(_position_change)
+	
+	shoot_timer.timeout.connect(_shot)
 	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -65,11 +87,9 @@ func _position_change() -> void:
 		new_y = randi_range(position.y - 300, position.y + 300) 
 		
 func _shot() -> void:
-	if sfx_stream:
-		AudioManager.play_sfx(sfx_stream)
-	else:
-		AudioManager.play_sfx_string(sfx_name)
-	_shoot(enemy_weapon)
+	if shot_sound:
+		AudioManager.play_sfx(shot_sound)
+	_shoot(shot_scene)
 # Funktion zum Abfeuern einer Waffe
 # weapon: PackedScene - Die Szene des Projektils, das abgefeuert werden soll
 
@@ -80,74 +100,82 @@ func _shoot(weapon: PackedScene) -> void:
 		return
 	var enemy_weapon = weapon
 	# Instanziere das Projektil
-	var projectile_instance1 = enemy_weapon.instantiate()
-	var projectile_instance2 = enemy_weapon.instantiate()
-	var projectile_instance3 = enemy_weapon.instantiate()
 	
-	# Verwende den Gunpoint als Referenz für den Startpunkt des Schusses
-	var gunpoint1 = $Gunpoint1
-	var gunpoint2 = $Gunpoint2
-	var gunpoint3 = $Gunpoint3
-	# Füge das Projektil der aktuellen Szene hinzu
 	var current_scene = get_tree().current_scene
 	if current_scene:
-		# print("hello")
-		if gunpoint1:
-			# print("Gunpoint1 here")
-			current_scene.add_child(projectile_instance1)
-			projectile_instance1.global_position = gunpoint1.global_position
-			
-		else: 
-			print("kein Gunpoint1 gefunden")
-		if gunpoint2:
-			current_scene.add_child(projectile_instance2)
-			projectile_instance2.global_position = gunpoint2.global_position
-		else: 
-			print("kein Gunpoint2 gefunden")
-		if gunpoint3:
-			current_scene.add_child(projectile_instance3)
-			projectile_instance3.global_position = gunpoint3.global_position
-		else: 
-			print("kein Gunppoint3 gefunden")
-		# print("✅ Projektil(e) erfolgreich zur Szene hinzugefügt!")
+		var gun_points_positions : Array = gun_points.get_children()
+		if gun_points_positions:
+			for gunpoint in gun_points_positions: # pro defniertem GunPoint ein Projektil instantiieren
+				var projectile_instance = enemy_weapon.instantiate()
+				var gun_start_point = gunpoint.get_child(0, true)
+				var shot_direction : Vector2
+				if gun_start_point:
+					print("boss1.gd: found startGunPoint: ", gun_start_point)
+					shot_direction = gunpoint.position.direction_to(gun_start_point.position)
+					print("boss1.gd: shot direction: = ", shot_direction)
+					projectile_instance.direction = shot_direction
+					print("boss1: projectile_instance.direction: ", projectile_instance.direction)
+				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
+				# Verwende gunpoints als Referenzen für Startpunkte des Schusses
+				projectile_instance.global_position = gunpoint.global_position
+				print("boss1: projectile_instance.direction: ", shot_direction == projectile_instance.direction)
+				
+				# Füge das Projektil der Liste aktiver Projektile hinzu
+				projectiles.append(projectile_instance)
+		else: # wenn keine gunpoints -> Fallback: Nutze die Schiffposition
+			var projectile_instance = enemy_weapon.instantiate()
+			current_scene.add_child(projectile_instance) #
+			projectile_instance.global_position = global_position
+			print("boss1.gd: Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
 	else:
-		print("Fehler: Keine aktuelle Szene gefunden!")
-		# Fallback: Nutze die Schiffposition
-		projectile_instance1.global_position = global_position
-		print("Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance1.global_position)
-
-	# Füge das Projektil der Liste aktiver Projektile hinzu
-	projectiles.append(projectile_instance1)
-	projectiles.append(projectile_instance2)
-	projectiles.append(projectile_instance3)
-
-	# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
-	if projectile_instance1.has_method("fire"):
-		# print("Fire-Funktion wird aufgerufen!")
-		projectile_instance1.fire()
-	else:
-		pass
-		# print("Fehler: Projektil hat keine fire()-Methode!")
-#
-func _on_area_entered(area_that_entered: Area2D) -> void:
-	# print("getroffen")
-	var damage_inflicted = area_that_entered.damage
-	enemy_is_hit(damage_inflicted)
-	#
-	#
-func enemy_is_hit(damage) -> void:
-	health -= damage
-	if health <= 0:
-		AudioManager.play_sfx_string("explosion", 25)
-		get_tree().current_scene.add_child(explosion_animation)
-		explosion_animation.position = global_position
-		explosion_animation.scale = Vector2(25, 25)
-		explosion_animation.speed_scale = 0.5
-		emit_signal("boss_defeated")
-		get_tree().current_scene.emit_signal("enemy_destroyed", score_count, energy_left)
-		queue_free()
+		print("boss1.gd: Fehler: Keine aktuelle Szene gefunden!")
 		
+		# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
+		if projectile_instance.has_method("fire"):
+			print("boss1.gd: Fire-Funktion wird aufgerufen!")
+			projectile_instance.fire()
+		else:
+			pass
+			print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
 	
+func _on_area_entered(other: Area2D) -> void:
+	if other is PlayerShip:
+		apply_damage(other.damage, other.player_id)
+	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
+	#elif other.is_in_group("evaders"):    
+		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
+# wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
+# player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
+# dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
+	else:
+		if "damage" in other and "owner_id" in other:
+			apply_damage(other.damage, other.owner_id)
+	
+		
+func apply_damage(damage_amount, owner_id) -> void:
+	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
+	var damage_dealt = clamp(damage_amount, 0, health_points)
+	health_points -= damage_dealt
+	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
+	var score = damage_dealt
+	GameManager._on_enemy_hit(score, energy_left, owner_id)
+	if health_points <= 0:
+		die()
+	
+		
+func die() -> void:
+	AudioManager.play_sfx_string("explosion", 25)
+	var explosion_animation = explosion_animation_scene.instantiate()
+	get_tree().current_scene.add_child(explosion_animation)
+	explosion_animation.position = global_position
+	explosion_animation.scale = Vector2(25, 25)
+	explosion_animation.speed_scale = 0.5
+	emit_signal("boss_defeated")
+	await get_tree().create_timer(0.05).timeout
+	queue_free()
+
+
+
 func fade_in_sound(duration : float = 5):
 	audio2d.volume_db = -80
 	audio2d.play()

@@ -1,19 +1,26 @@
-extends enemy
+extends Boss
 
-@export var speed := 700
-@export var round_shot : PackedScene
-@export var boss_soundtrack : AudioStream
+# boss stats
+
+# speed and movement
+@export var basic_speed := 700
+@onready var speed = basic_speed * GameManager.loop_counter
+
+# weapon system
+
+# sound and graphics
+@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var shot_stream_player_2d: AudioStreamPlayer2D = $ShotStreamPlayer2D
+
+# boss specific needs
 @export var boarder_margin : int = 50
-@export var health : int = 7000
-
 var corners : Array
 var corner_reached := false
 var next_corner 
 var viewport_size : Vector2
 
-@onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
-@onready var shot_stream_player_2d: AudioStreamPlayer2D = $ShotStreamPlayer2D
+# weitere Funktionalitäten bei Bedarf
 
 
 func _ready() -> void:
@@ -24,22 +31,17 @@ func _ready() -> void:
 	var corner_right_down := Vector2(viewport_size.x - boarder_margin, viewport_size.y - boarder_margin)
 	var corner_right_up := Vector2(viewport_size.x - boarder_margin, boarder_margin)
 	corners = [corner_left_down, corner_left_up, corner_right_down, corner_right_up]
-	
-	super._ready()
 	fly_to_next_corner()
-
-
+	
+	super._ready() # 20.12.2025 allenfalls wieder aktivieren, falls bei Umstellung auf basisboss-Klasse
+	
+	
 func _process(delta: float) -> void:
-	rotation_degrees += 20 * delta
-	global_position += speed * direction * delta
-	if global_position.x > 3700 or global_position.x < 150:
-		fly_to_next_corner()
-	if global_position.y > 2050 or global_position.y < 100:
-		fly_to_next_corner()
-	if global_position.distance_to(next_corner) <= 150:
+	rotation_degrees += 200 * delta
+	global_position = global_position.move_toward(next_corner, basic_speed * delta)
+	if global_position == next_corner:
 		fly_to_next_corner()
 		
-	
 
 func fly_to_next_corner() -> void:
 	print("ufo_boss.gd: flying to next corner")

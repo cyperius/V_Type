@@ -144,8 +144,10 @@ func here_comes_the_boss():
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 		boss.global_position = Vector2(2000, 1100) # 7000, 1100
 		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
-		boss.health = boss.health * number_of_players
+		boss.health_points = boss.health_points * number_of_players
+
 
 func _on_boss_defeated():
+	print("enemy_spawner_received_boss_defeated")
 	emit_signal("boss_defeated")
 	

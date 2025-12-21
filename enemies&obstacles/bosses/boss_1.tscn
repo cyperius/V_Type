@@ -13,13 +13,12 @@ points = PackedVector2Array(-435, -414, -161, -40, -378, -67, -243, 19, -404, 46
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_kd5r2")
-health = 100
-sfx_stream = ExtResource("2_yguwa")
-sfx_name = "\"laser_beam\""
-weapon = ExtResource("3_1ohr7")
-boss_soundtrack = ExtResource("4_jqv7l")
+health_points = 500
+shot_sound = ExtResource("2_yguwa")
+shot_scene = ExtResource("3_1ohr7")
 damage = 300
 score_count = 5000
+boss_soundtrack = ExtResource("4_jqv7l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-16, -88)
@@ -34,13 +33,15 @@ shape = SubResource("ConvexPolygonShape2D_2ng8k")
 [node name="Ship3" type="Sprite2D" parent="."]
 texture = ExtResource("4_gdapw")
 
-[node name="Gunpoint1" type="Node2D" parent="."]
+[node name="GunPoints" type="Node2D" parent="."]
+
+[node name="GunPoint1" type="Node2D" parent="GunPoints"]
 position = Vector2(-194, 9)
 
-[node name="Gunpoint2" type="Node2D" parent="."]
+[node name="GunPoint2" type="Node2D" parent="GunPoints"]
 position = Vector2(-9, -382)
 
-[node name="Gunpoint3" type="Node2D" parent="."]
+[node name="GunPoint3" type="Node2D" parent="GunPoints"]
 position = Vector2(-17, 401)
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -52,3 +53,7 @@ autoplay = true
 max_distance = 5000.0
 attenuation = 0.249999
 panning_strength = 2.02
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 3.688
+autostart = true
