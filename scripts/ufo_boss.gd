@@ -10,10 +10,17 @@ signal collision_detected(collision_position: Vector2)
 
 # weapon system
 
+#shield system
+@onready var _particles_shield: GPUParticles2D = $ParticlesShield
+@onready var _shield_area_2d: Area2D = $ShieldArea2D
+@onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D
+
+
 # sound and graphics
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var shot_stream_player_2d: AudioStreamPlayer2D = $ShotStreamPlayer2D
+
 
 # boss specific needs
 @export var boarder_margin : int = 50
@@ -34,6 +41,8 @@ var lost_control:= false
 func _ready() -> void:
 	add_to_group("evaders")
 	collision_detected.connect(_on_collision_detected)
+	_shield_collision_shape.disabled = true
+	_shield_area_2d.area_entered.connect(_on_shield_area_entered)
 	fly_to_next_corner()
 	
 	super._ready() # 20.12.2025 allenfalls wieder aktivieren, falls bei Umstellung auf basisboss-Klasse
@@ -70,9 +79,26 @@ func _on_shoot_timer_timeout():
 		get_parent().add_child(shot)
 		
 		
-func _on_collision_detected(collision_spot):
-	if global_position.x - collision_spot.x > 0:
-		target_corner = corner_right_up
-	else:
-		target_corner = corner_left_up
+func _on_collision_detected(shot_type: Node, collision_spot):
+	if shot_type is LaserBeam: # wenn der Schuss ein Laserbeam: evasive_mode aktivieren
+		evasive_mode_on = true        # und Fluchtziel aufgrund Schussposition bestimmen
+		print("ufo.gd: LaserBeam erkannt")
+		if global_position.x - collision_spot.x > 0:
+			target_corner = corner_right_up
+		else:
+			target_corner = corner_left_up
+	if shot_type is LaserBlast:
+		activate_shield()
+		
+		
+func activate_shield() -> void:
+	_particles_shield.emitting = true
+	_shield_collision_shape.disabled = false
+	#emit_signal("shield_toggled", player_id, true)
+	await get_tree().create_timer(1.5).timeout
+	_shield_collision_shape.disabled = true
+	_particles_shield.emitting = false
 	
+	
+func _on_shield_area_entered(other: Area2D) -> void:
+	other.queue_free()

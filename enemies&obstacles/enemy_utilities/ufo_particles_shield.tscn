@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctbcqymdlhs6"]
+
+[sub_resource type="Gradient" id="Gradient_7ni5w"]
+offsets = PackedFloat32Array(0, 0.54065)
+colors = PackedColorArray(0.156863, 0.607843, 0.866667, 1, 0.145098, 0.0784314, 0.658824, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yf02v"]
+gradient = SubResource("Gradient_7ni5w")
+
+[sub_resource type="CurveTexture" id="CurveTexture_g8niy"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_evoqb"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(4, 3, 1)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 227.03
+emission_ring_inner_radius = 208.36
+emission_ring_cone_angle = 7.4
+angle_min = 135.6
+angle_max = 135.6
+spread = 8.212
+initial_velocity_min = 31.67
+initial_velocity_max = 127.09
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 0.0570001
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -100.0
+radial_accel_max = -47.0
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = 0.479998
+scale_min = 0.0
+scale_max = 4.0
+scale_over_velocity_max = 27.7
+color = Color(0.470588, 0.780392, 0.988235, 1)
+color_initial_ramp = SubResource("GradientTexture1D_yf02v")
+emission_curve = SubResource("CurveTexture_g8niy")
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+anim_speed_max = 13.3
+anim_offset_min = 0.8107
+anim_offset_max = 1.0
+turbulence_enabled = true
+turbulence_noise_strength = 1.18
+turbulence_noise_scale = 7.558
+turbulence_noise_speed = Vector3(10, 0, 0)
+turbulence_noise_speed_random = 1.97
+sub_emitter_mode = 1
+sub_emitter_frequency = 4.0
+
+[node name="ParticlesShield" type="GPUParticles2D"]
+emitting = false
+amount = 2000
+lifetime = 1.08
+speed_scale = 34.71
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_evoqb")

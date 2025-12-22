@@ -1,6 +1,6 @@
 class_name enemy extends Area2D
 
-signal collision_detected(collision_position: Vector2)
+signal collision_detected(enemy: Node, collision_position: Vector2)
 
 @export var health_points: int = 10
 @export var shot_sound : AudioStream 
@@ -86,11 +86,12 @@ func _on_area_entered(other: Area2D) -> void:
 			apply_damage(other.damage, other.owner_id)
 
 
-func _on_collision_detected(collision_spot: Vector2):
-	var tween = get_tree().create_tween()
-	tween.set_parallel()
-	tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
-	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
+func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
+	if shot_type is LaserBlast:
+		var tween = get_tree().create_tween()
+		tween.set_parallel()
+		tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
+		tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
 
 	
 func _process(delta: float) -> void:

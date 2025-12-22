@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://iyew0gat3x6d"]
+[gd_scene load_steps=14 format=3 uid="uid://iyew0gat3x6d"]
 
 [ext_resource type="Script" uid="uid://bqfchpcmm8hq4" path="res://scripts/ufo_boss.gd" id="1_rgdwt"]
 [ext_resource type="Texture2D" uid="uid://67sogt3blgtn" path="res://assets/graphic_elements/enemies/FlyingSaucerBoss.png" id="2_60pcy"]
@@ -6,9 +6,42 @@
 [ext_resource type="AudioStream" uid="uid://dqc8ff3hrrr0" path="res://assets/sound_and_sfx/sound_effects/laser_blast.wav" id="2_dmnxk"]
 [ext_resource type="AudioStream" uid="uid://cf6rw2vokvd32" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label Survival or adhs Boss.ogg" id="3_60pcy"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_dmnxk"]
+[ext_resource type="PackedScene" uid="uid://ctbcqymdlhs6" path="res://enemies&obstacles/enemy_utilities/ufo_particles_shield.tscn" id="7_m7rku"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uugqy"]
 radius = 10.3975
+
+[sub_resource type="Gradient" id="Gradient_rn2gb"]
+offsets = PackedFloat32Array(0.171429, 0.977444)
+colors = PackedColorArray(0.0840034, 0.705078, 0.108264, 1, 0.113667, 0.701172, 0.136616, 1)
+metadata/_snap_count = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mtd46"]
+noise_type = 4
+frequency = 0.2184
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qulwg"]
+width = 12
+height = 12
+color_ramp = SubResource("Gradient_rn2gb")
+noise = SubResource("FastNoiseLite_mtd46")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f61wb"]
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0.02, 0.01, 1)
+emission_shape = 3
+emission_box_extents = Vector3(0.15, 0.1, 1)
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 51.95
+gravity = Vector3(0, -40, 0)
+tangential_accel_min = -50.0
+tangential_accel_max = 50.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qsxpm"]
+size = Vector2(86.5, 4.7)
 
 [node name="UfoBoss" type="Area2D"]
 collision_layer = 4
@@ -85,3 +118,26 @@ position = Vector2(-2, 2)
 position = Vector2(273, -281)
 
 [node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint8"]
+
+[node name="ParticlesShield" parent="." instance=ExtResource("7_m7rku")]
+texture_filter = 2
+position = Vector2(3, 367)
+scale = Vector2(140431, -19500.4)
+amount = 1500
+texture = SubResource("NoiseTexture2D_qulwg")
+lifetime = 0.25
+speed_scale = 10.23
+trail_enabled = true
+trail_sections = 2
+process_material = SubResource("ParticleProcessMaterial_f61wb")
+
+[node name="ShieldArea2D" type="Area2D" parent="."]
+
+[node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="ShieldArea2D"]
+unique_name_in_owner = true
+position = Vector2(3, 365)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_qsxpm")
+disabled = true
+one_way_collision = true
+one_way_collision_margin = 1.9

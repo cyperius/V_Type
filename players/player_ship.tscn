@@ -1,14 +1,24 @@
-[gd_scene load_steps=13 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene load_steps=14 format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dr7emaistul8" path="res://assets/graphic_elements/player/space_ship1.png" id="4_df6tw"]
+[ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
 [ext_resource type="Script" uid="uid://3rcg1dm60hpv" path="res://scripts/particle_damage.gd" id="5_rk2pp"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jnu13"]
 radius = 628.0
 height = 1256.0
+
+[sub_resource type="Gradient" id="Gradient_g8niy"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_evoqb"]
+gradient = SubResource("Gradient_g8niy")
+width = 2
+height = 1
+fill_from = Vector2(-1, 0)
+fill_to = Vector2(3, 2)
 
 [sub_resource type="Gradient" id="Gradient_7ni5w"]
 offsets = PackedFloat32Array(0, 0.54065)
@@ -61,15 +71,6 @@ turbulence_noise_speed_random = 1.97
 sub_emitter_mode = 1
 sub_emitter_frequency = 4.0
 
-[sub_resource type="Gradient" id="Gradient_g8niy"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_evoqb"]
-gradient = SubResource("Gradient_g8niy")
-width = 2
-height = 1
-fill_from = Vector2(-1, 0)
-fill_to = Vector2(3, 2)
-
 [node name="PlayerShip" type="Area2D"]
 process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
@@ -110,14 +111,8 @@ one_shot = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="ParticlesShield" type="GPUParticles2D" parent="."]
+[node name="ParticlesShield" parent="." instance=ExtResource("5_5icsl")]
 unique_name_in_owner = true
-emitting = false
-amount = 2000
-lifetime = 1.08
-speed_scale = 34.71
-collision_base_size = 0.0
-process_material = SubResource("ParticleProcessMaterial_evoqb")
 
 [node name="ParticleDamage" type="GPUParticles2D" parent="."]
 unique_name_in_owner = true
