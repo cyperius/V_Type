@@ -26,7 +26,7 @@ position = Vector2(1.5, -0.5)
 shape = SubResource("RectangleShape2D_lef15")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-target_position = Vector2(300, 0)
+target_position = Vector2(500, 0)
 collision_mask = 4
 collide_with_areas = true
 script = ExtResource("4_odjvy")

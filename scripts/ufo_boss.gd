@@ -101,4 +101,5 @@ func activate_shield() -> void:
 	
 	
 func _on_shield_area_entered(other: Area2D) -> void:
+	print("ufo.gd: ", other, "entered Area")
 	other.queue_free()

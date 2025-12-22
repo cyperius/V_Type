@@ -132,6 +132,8 @@ trail_sections = 2
 process_material = SubResource("ParticleProcessMaterial_f61wb")
 
 [node name="ShieldArea2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
 
 [node name="ShieldCollisionShape2D" type="CollisionShape2D" parent="ShieldArea2D"]
 unique_name_in_owner = true
@@ -139,5 +141,4 @@ position = Vector2(3, 365)
 scale = Vector2(10, 10)
 shape = SubResource("RectangleShape2D_qsxpm")
 disabled = true
-one_way_collision = true
 one_way_collision_margin = 1.9
