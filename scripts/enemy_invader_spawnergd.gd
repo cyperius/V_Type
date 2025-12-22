@@ -111,7 +111,7 @@ func here_comes_the_boss() -> void:
 		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 		boss.global_position = Vector2(7000, 1100)
-		boss.health = boss.health * number_of_players
+		boss.health_points = boss.health_points * number_of_players
 
 
 func _on_boss_defeated() -> void:

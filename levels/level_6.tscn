@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dotwejj00ynpr"]
+[gd_scene load_steps=12 format=3 uid="uid://dotwejj00ynpr"]
 
 [ext_resource type="Script" uid="uid://ql3hci5nyf1c" path="res://levels/level_6.gd" id="1_qskt5"]
 [ext_resource type="Script" uid="uid://brg2ryempbb5e" path="res://scripts/enemy_invader_spawnergd.gd" id="2_qskt5"]
 [ext_resource type="Script" uid="uid://0b70ph6xoehu" path="res://scripts/enemies_container.gd" id="3_8tsbn"]
 [ext_resource type="PackedScene" uid="uid://bjtnv3grwen6" path="res://enemies&obstacles/invader.tscn" id="3_rqsg2"]
+[ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_xn6mk"]
 [ext_resource type="Script" uid="uid://cgdf1sx7vnilt" path="res://game_world/background.gd" id="5_fpvgn"]
 [ext_resource type="AudioStream" uid="uid://pcvg6tfqpo8g" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/uplifting.ogg" id="6_rqsg2"]
 [ext_resource type="Texture2D" uid="uid://bokxsq44mok5l" path="res://assets/graphic_elements/backgrounds/earth_orbit_in_space.png" id="6_xn6mk"]
@@ -22,7 +23,7 @@ size = Vector2(229, 4359)
 [node name="Level_6" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_qskt5")
-amount_of_enemies = 36
+amount_of_enemies = 20
 level_nr = 6
 last_level = true
 ship_scale = 0.15
@@ -36,6 +37,7 @@ position = Vector2(-456, -680)
 script = ExtResource("2_qskt5")
 timer_basic_wait_time = 60
 timer2_basic_wait_time = 100
+level_boss = ExtResource("3_xn6mk")
 enemy1 = ExtResource("3_rqsg2")
 
 [node name="SpawnPositions" type="Node2D" parent="EnemySpawner"]

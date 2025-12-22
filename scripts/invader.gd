@@ -33,7 +33,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if not attack_mode:
-		position.x += delta * speed * direction.x
+		position.x += delta * x_speed * direction.x
 		if position.y > 2000:
 			queue_free()
 		return
@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 
 # Diese Funktion wird durch folgende Funktion den Enemy_spawner im Level ausgelöst: 
 # func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
-# dort gescheiht (gekürzt):
+# dort geschieht (gekürzt):
 # 1) var follow: PathFollow2D = PathFollow2D.new() -> 
 # 2) path_2d.add_child(follow) -> path_2d ist ein Node im SceneTree des Enemy_spawner und kriegt hier das child (follow)
 # 3) invader.set_breakout_path_follow(follow)

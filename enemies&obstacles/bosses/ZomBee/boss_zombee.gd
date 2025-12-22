@@ -2,7 +2,7 @@ class_name BossZombee extends Area2D
 
 signal boss_defeated
 
-@export var health := 10000
+@export var health_points := 10000
 @export var helmet_max_health : int
 @export var speed := 400
 @export var accelaration := 1200
@@ -146,9 +146,9 @@ func angry_zombee() -> void:
 
 func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 	if "damage" in area_that_entered:
-		health -= area_that_entered.damage
+		health_points -= area_that_entered.damage
 	
-	if health < 0:
+	if health_points < 0:
 		emit_signal("boss_defeated")
 		var explosion_animation = explosion_scene.instantiate()
 		get_tree().current_scene.add_child(explosion_animation)

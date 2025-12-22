@@ -17,12 +17,12 @@ damage = 300
 sfx_stream = ExtResource("2_5rcgx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(6.10873e-06, -1.6875)
-rotation = 1.5708
+position = Vector2(-192, 1)
+rotation = 1.57952
 scale = Vector2(5.352, 5)
 texture = ExtResource("2_3hlow")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(26.5, -0.5)
+position = Vector2(-169, 0)
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_foi4l")

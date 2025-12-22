@@ -107,14 +107,15 @@ func _shoot(weapon: PackedScene) -> void:
 		if gun_points_positions:
 			for gunpoint in gun_points_positions: # pro defniertem GunPoint ein Projektil instantiieren
 				var projectile_instance = enemy_weapon.instantiate()
-				var gun_start_point = gunpoint.get_child(0, true)
+				var gun_start_point = gunpoint.get_child(0, true) # prüfen, ob es einen GunStartPoint gibt
 				var shot_direction : Vector2
-				if gun_start_point:
+				if gun_start_point: # wenn ja, Schussrichtung = Richtung GunStartPoint -> GunPoint
 					print("boss1.gd: found startGunPoint: ", gun_start_point)
 					shot_direction = gunpoint.position.direction_to(gun_start_point.position)
 					print("boss1.gd: shot direction: = ", shot_direction)
-					projectile_instance.direction = shot_direction
+					projectile_instance.direction = shot_direction 
 					print("boss1: projectile_instance.direction: ", projectile_instance.direction)
+					projectile_instance.shot_orientation = shot_direction.angle()
 				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
 				# Verwende gunpoints als Referenzen für Startpunkte des Schusses
 				projectile_instance.global_position = gunpoint.global_position

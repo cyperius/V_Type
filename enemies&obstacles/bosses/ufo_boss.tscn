@@ -14,7 +14,7 @@ radius = 10.3975
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_rgdwt")
-basic_speed = 2000
+basic_speed = 1400
 health_points = 2000
 shot_sound = ExtResource("2_123t1")
 shot_scene = ExtResource("3_dmnxk")
@@ -45,16 +45,43 @@ stream = ExtResource("2_dmnxk")
 [node name="GunPoints" type="Node2D" parent="."]
 
 [node name="GunPoint1" type="Node2D" parent="GunPoints"]
-position = Vector2(-417, -11)
+position = Vector2(399, 3)
 
 [node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint1"]
-position = Vector2(153, 143)
 
 [node name="GunPoint2" type="Node2D" parent="GunPoints"]
-position = Vector2(433, -7)
+position = Vector2(254, 231)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint2"]
 
 [node name="GunPoint3" type="Node2D" parent="GunPoints"]
-position = Vector2(-7, 353)
+position = Vector2(7, 306)
 
 [node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint3"]
-position = Vector2(168, -105)
+
+[node name="GunPoint4" type="Node2D" parent="GunPoints"]
+position = Vector2(-274, 206)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint4"]
+
+[node name="GunPoint5" type="Node2D" parent="GunPoints"]
+position = Vector2(-375, -13)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint5"]
+position = Vector2(416, 0)
+
+[node name="GunPoint6" type="Node2D" parent="GunPoints"]
+position = Vector2(-287, -248)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint6"]
+
+[node name="GunPoint7" type="Node2D" parent="GunPoints"]
+position = Vector2(0, -350)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint7"]
+position = Vector2(-2, 2)
+
+[node name="GunPoint8" type="Node2D" parent="GunPoints"]
+position = Vector2(273, -281)
+
+[node name="GunStartPoint" type="Node2D" parent="GunPoints/GunPoint8"]
