@@ -1,3 +1,4 @@
+class_name LaserBlast
 extends "res://scripts/projectiles_basis_class.gd"
 
 @export var blast_scale: Vector2 = Vector2(1, 1)

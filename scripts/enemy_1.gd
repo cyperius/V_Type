@@ -1,5 +1,6 @@
 class_name enemy extends Area2D
 
+signal collision_detected(collision_position: Vector2)
 
 @export var health_points: int = 10
 @export var shot_sound : AudioStream 
@@ -36,7 +37,8 @@ func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	add_to_group("enemies")
 	add_to_group("evaders")
-	# add_child(shoot_timer) # redundant: der entsprechende Node sit bereits im Scene Tree
+	collision_detected.connect(_on_collision_detected)
+	
 	if shoot_timer:
 		shoot_timer.timeout.connect(_on_shoot_timer_timeout)
 		shoot_timer.start()
@@ -82,7 +84,14 @@ func _on_area_entered(other: Area2D) -> void:
 	else:
 		if "damage" in other and "owner_id" in other:
 			apply_damage(other.damage, other.owner_id)
-	
+
+
+func _on_collision_detected(collision_spot: Vector2):
+	var tween = get_tree().create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
+	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
+
 	
 func _process(delta: float) -> void:
 	
@@ -99,10 +108,6 @@ func _process(delta: float) -> void:
 	if is_player_tracking_active:
 			track_nearest_player()
 	
-	
-	if evasive_mode_on:
-		position.y += delta * 2000
-		position.x += delta * 1000
 	
 	
 func track_nearest_player():

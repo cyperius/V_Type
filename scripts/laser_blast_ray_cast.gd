@@ -7,8 +7,10 @@ func _physics_process(_delta: float) -> void:
 	if is_colliding():
 		var collider = get_collider()
 		print("colliding with: ", collider)
-		if collider.is_in_group("evaders"):
-			if collider.has_signal("collision_detected"):
+		if collider.is_in_group("evaders"): 
+			# gegebenfalls Signal beim Collider auslösen und Position des Schusses mitgeben
+			# um ebtsprechendes Ausweicheverhalten zu aktivieren
+			if collider.has_signal("collision_detected"): 
 				collider.emit_signal("collision_detected", laser_blast.global_position)
 			collider.evasive_mode_on = true
 			if "player_shot_owner_id" in collider:  # diese Mechanik noch bei Bossen einrichten, bei gegenr die nicht auf enemy.gd basieren
