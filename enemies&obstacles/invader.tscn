@@ -15,6 +15,7 @@ script = ExtResource("1_ux1s5")
 health_points = 120
 shot_sound = ExtResource("2_oej14")
 shot_scene = ExtResource("3_oej14")
+y_basic_speed = 200
 chance_of_shooting = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

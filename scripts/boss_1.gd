@@ -3,7 +3,7 @@ extends Area2D
 
 signal boss_defeated
 
-@export var health_points: int = 10
+@export var health_points: float = 10
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
 @export var damage = 500
@@ -96,7 +96,7 @@ func _shot() -> void:
 func _shoot(weapon: PackedScene) -> void:
 	# print("weapon fired")
 	if not weapon:
-		print("Fehler: Keine Waffe zugewiesen!")
+		#print("Fehler: Keine Waffe zugewiesen!")
 		return
 	var enemy_weapon = weapon
 	# Instanziere das Projektil
@@ -110,16 +110,16 @@ func _shoot(weapon: PackedScene) -> void:
 				var gun_start_point = gunpoint.get_child(0, true) # prüfen, ob es einen GunStartPoint gibt
 				var shot_direction : Vector2
 				if gun_start_point: # wenn ja, Schussrichtung = Richtung GunStartPoint -> GunPoint
-					print("boss1.gd: found startGunPoint: ", gun_start_point)
+					#print("boss1.gd: found startGunPoint: ", gun_start_point)
 					shot_direction = gunpoint.position.direction_to(gun_start_point.position)
-					print("boss1.gd: shot direction: = ", shot_direction)
+					#print("boss1.gd: shot direction: = ", shot_direction)
 					projectile_instance.direction = shot_direction 
-					print("boss1: projectile_instance.direction: ", projectile_instance.direction)
+					#print("boss1: projectile_instance.direction: ", projectile_instance.direction)
 					projectile_instance.shot_orientation = shot_direction.angle()
 				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
 				# Verwende gunpoints als Referenzen für Startpunkte des Schusses
 				projectile_instance.global_position = gunpoint.global_position
-				print("boss1: projectile_instance.direction: ", shot_direction == projectile_instance.direction)
+				#print("boss1: projectile_instance.direction: ", shot_direction == projectile_instance.direction)
 				
 				# Füge das Projektil der Liste aktiver Projektile hinzu
 				projectiles.append(projectile_instance)
@@ -127,17 +127,17 @@ func _shoot(weapon: PackedScene) -> void:
 			var projectile_instance = enemy_weapon.instantiate()
 			current_scene.add_child(projectile_instance) #
 			projectile_instance.global_position = global_position
-			print("boss1.gd: Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+			#print("boss1.gd: Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
 	else:
-		print("boss1.gd: Fehler: Keine aktuelle Szene gefunden!")
+		#print("boss1.gd: Fehler: Keine aktuelle Szene gefunden!")
 		
 		# Rufe, falls vorhanden, die fire()-Methode des Projektils auf
 		if projectile_instance.has_method("fire"):
-			print("boss1.gd: Fire-Funktion wird aufgerufen!")
+			#print("boss1.gd: Fire-Funktion wird aufgerufen!")
 			projectile_instance.fire()
 		else:
 			pass
-			print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
+			#print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
 	
 func _on_area_entered(other: Area2D) -> void:
 	if other is PlayerShip:

@@ -74,14 +74,6 @@ func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 	print("the timer2 wait_time is: ", timer2.wait_time)
 
 
-func _process(delta: float) -> void:
-	
-	# Sicherheitsabfrage, ob mind. 1 enemy gespawnt ist (nur damit genug Zeit da ist um in current_level
-	# den aktuellen level zu referenzieren und ob "amount_of_ememies" existiert 
-	if at_least_one_enemy_spawned:
-		if enemy_counter >= current_level.amount_of_enemies and boss_spawned == false:
-			here_comes_the_boss()
-
 func _on_timer_timeout():
 	at_least_one_enemy_spawned = true
 	# print("(enemy.gd): timeout -> normaler enemy?")

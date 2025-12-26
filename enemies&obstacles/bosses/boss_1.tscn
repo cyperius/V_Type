@@ -13,7 +13,6 @@ points = PackedVector2Array(-435, -414, -161, -40, -378, -67, -243, 19, -404, 46
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_kd5r2")
-health_points = 500
 shot_sound = ExtResource("2_yguwa")
 shot_scene = ExtResource("3_1ohr7")
 damage = 300

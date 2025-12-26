@@ -1,6 +1,7 @@
 extends Boss
 
 signal collision_detected(collision_position: Vector2)
+signal been_hit
 
 # boss stats
 
@@ -20,9 +21,11 @@ signal collision_detected(collision_position: Vector2)
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var shot_stream_player_2d: AudioStreamPlayer2D = $ShotStreamPlayer2D
+@export var normal_soundtrack : AudioStream
+@export var lost_control_soundtrack : AudioStream
 
 
-# boss specific needs
+# specifications for movement and behaviour
 @export var boarder_margin : int = 50
 @onready var viewport_size = get_viewport_rect().size
 @onready var corner_left_up := Vector2(boarder_margin, boarder_margin)
@@ -34,24 +37,36 @@ var next_corner
 var corner_reached := false
 var target_corner : Vector2
 var lost_control:= false
+var start_health_points : int 
+var health_ratio : float # 25.12.2025: wird in der process function aktuell gehalten
+# besser wäre es nur bei einem Treffer berechen zu lassen..
+var lost_control_timer : Timer = Timer.new()
 
 # weitere Funktionalitäten bei Bedarf
 
 
 func _ready() -> void:
+	been_hit.connect(_on_been_hit)
 	add_to_group("evaders")
 	collision_detected.connect(_on_collision_detected)
 	_shield_collision_shape.disabled = true
 	_shield_area_2d.area_entered.connect(_on_shield_area_entered)
+	start_health_points = health_points
+	health_ratio = health_points / start_health_points
+	print("health_points: ", health_points, "start_health_points= ", start_health_points, "health_ratio = ", health_ratio)
+	lost_control_timer.wait_time = 20 # wird in process_function aktiviert wenn health_ratio
+	audio_stream_player.stream = normal_soundtrack 
+	audio_stream_player.play()
 	fly_to_next_corner()
-	
-	super._ready() # 20.12.2025 allenfalls wieder aktivieren, falls bei Umstellung auf basisboss-Klasse
+	super._ready() 
 	
 	
 func _process(delta: float) -> void:
+		
+			
 	if lost_control:
 		rotation_degrees += 200 * delta
-		global_position = global_position.move_toward(next_corner, basic_speed * delta)
+		global_position = global_position.move_toward(next_corner, (basic_speed / 2) * delta)
 		if global_position == next_corner:
 			fly_to_next_corner()
 	
@@ -65,7 +80,6 @@ func _process(delta: float) -> void:
 
 
 func fly_to_next_corner() -> void:
-	print("ufo_boss.gd: flying to next corner")
 	next_corner = corners.pick_random()
 	direction = global_position.direction_to(next_corner)
 
@@ -80,15 +94,17 @@ func _on_shoot_timer_timeout():
 		
 		
 func _on_collision_detected(shot_type: Node, collision_spot):
-	if shot_type is LaserBeam: # wenn der Schuss ein Laserbeam: evasive_mode aktivieren
-		evasive_mode_on = true        # und Fluchtziel aufgrund Schussposition bestimmen
-		print("ufo.gd: LaserBeam erkannt")
-		if global_position.x - collision_spot.x > 0:
-			target_corner = corner_right_up
-		else:
-			target_corner = corner_left_up
-	if shot_type is LaserBlast:
-		activate_shield()
+	if not lost_control:
+		if shot_type is LaserBeam: # wenn der Schuss ein Laserbeam: evasive_mode aktivieren
+			evasive_mode_on = true        # und Fluchtziel aufgrund Schussposition bestimmen
+			if global_position.x - collision_spot.x > 0:
+				target_corner = corner_right_up
+			else:
+				target_corner = corner_left_up
+		if shot_type is LaserBlast:
+			if shot_type.global_position.y > global_position.y + 350:
+				activate_shield()
+		
 		
 		
 func activate_shield() -> void:
@@ -103,3 +119,39 @@ func activate_shield() -> void:
 func _on_shield_area_entered(other: Area2D) -> void:
 	print("ufo.gd: ", other, "entered Area")
 	other.queue_free()
+	
+	
+func _on_been_hit() -> void:
+	if health_points / start_health_points < 0.8:
+		lost_control = true
+		
+		
+func _on_area_entered(other: Area2D) -> void:
+	if other is PlayerShip:
+		apply_damage(other.damage, other.player_id)
+	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
+	#elif other.is_in_group("evaders"):    
+		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
+# wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
+# player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
+# dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
+	else:
+		if "damage" in other and "owner_id" in other:
+			apply_damage(other.damage, other.owner_id)
+			health_ratio = health_points / start_health_points
+			print("been hit, health_ratio = ", health_ratio)
+			if health_ratio <= 0.9 and health_ratio > 0.6 or health_ratio <= 0.5 and health_ratio > 0.1 :
+				lost_control = true
+				print("lost control")
+				# ohne diese Zeile, würde der neue Soundtrack immer wieder von Neuem getriggert
+				if audio_stream_player.stream == normal_soundtrack: 
+					audio_stream_player.stream = lost_control_soundtrack
+					audio_stream_player.play()
+			else:
+				lost_control = false
+				rotation_degrees = 0
+				if audio_stream_player.stream == lost_control_soundtrack:
+					audio_stream_player.stream = normal_soundtrack
+					audio_stream_player.play()
+				
+				

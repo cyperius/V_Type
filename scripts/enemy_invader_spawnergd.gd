@@ -76,11 +76,6 @@ func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
 		push_warning("Invader hat keine set_breakout_path_follow()-Methode.")
 
 
-func _process(delta: float) -> void:
-	if at_least_one_enemy_spawned:
-		if enemy_counter >= current_level.amount_of_enemies and boss_spawned == false:
-			here_comes_the_boss()
-
 
 func _on_timer_timeout() -> void:
 	at_least_one_enemy_spawned = true

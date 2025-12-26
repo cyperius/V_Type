@@ -3,6 +3,8 @@ extends enemy
 signal just_touched_boarder
 
 @export var breakout_speed: int = 500
+@export var behaviour_change_chance_1_to_ : int = 24
+
 
 var breakout_path_follow: PathFollow2D = null
 var hive_brain: Node = null
@@ -10,6 +12,7 @@ var just_changed_direction: bool = false
 var attack_mode: bool = false
 
 @onready var behaviour_timer: Timer = $BehaviourTimer
+var dive_mode := false
 
 
 func _ready() -> void:
@@ -22,21 +25,32 @@ func _ready() -> void:
 
 	audio_stream_player_2d.stream = shot_sound
 
-	hive_brain = get_parent()
-	if hive_brain and hive_brain.has_signal("change_direction"):
-		hive_brain.change_direction.connect(_on_change_direction)
+	# von aussen zu empfangende Signale verbinden
+	hive_brain = get_parent() # EnemiesContainer ist das hive_brain
+	if hive_brain:
+		if hive_brain.has_signal("change_direction"):
+			hive_brain.change_direction.connect(_on_change_direction)
+		if hive_brain.has_signal("chance_of_behaviour_chance_changed"):
+			hive_brain.chance_of_behaviour_chance_changed.connect(_on_behaviour_chance_changed)
 
 	# Signale verbinden
 	just_touched_boarder.connect(hive_brain._on_just_touched_boarder)
 	behaviour_timer.timeout.connect(_on_behaviour_change)
 	
+	
 
 func _process(delta: float) -> void:
+	
 	if not attack_mode:
 		position.x += delta * x_speed * direction.x
+		if dive_mode == true:
+			position.y += delta * y_speed
+			print("position.y : ", position.y)
 		if position.y > 2000:
 			queue_free()
 		return
+		
+	
 
 	# --- Attack / Breakout Mode ---
 	if breakout_path_follow == null or not is_instance_valid(breakout_path_follow):
@@ -91,11 +105,18 @@ func _on_change_direction() -> void:
 	just_changed_direction = false
 
 
+func _on_behaviour_chance_changed(chance_1_to : int) -> void:
+	# Wahrscheinlichkeit auf Verhaltenswechsel anpassen ('1' mitgeben für 100% Wahrscheinlichkeit)
+	#behaviour_change_chance_1_to_ = chance_1_to
+	# zusätzlich dive_mode auslösen 23.12.2025: Auslösung hier ist "quick&dirty" Lösung
+	dive_mode = true
+	
+
 func _on_behaviour_change() -> void:
 	if attack_mode: # wenn der invader schon im attach mode ist, abbrechen
 		return
 
-	if randi_range(1, 24) != 1: # Wahrscheinlohckeit, dass attack mode ausgelöst wird
+	if randi_range(1, behaviour_change_chance_1_to_) != 1: # Wahrscheinlohckeit, dass attack mode ausgelöst wird
 		return
 
 	if breakout_path_follow == null or not is_instance_valid(breakout_path_follow):
@@ -117,3 +138,4 @@ func _on_behaviour_change() -> void:
 	breakout_path_follow.progress = closest_offset
 
 	attack_mode = true
+	

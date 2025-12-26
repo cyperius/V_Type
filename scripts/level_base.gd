@@ -51,6 +51,14 @@ func _ready() -> void:
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
 
 
+func _process(delta: float) -> void:
+	# Sicherheitsabfrage, ob mind. 1 enemy gespawnt ist (nur damit genug Zeit da ist, um in current_level
+	# den aktuellen level zu referenzieren und ob "amount_of_ememies" existiert 
+	if enemy_spawner.at_least_one_enemy_spawned:
+		if enemy_spawner.enemy_counter >= amount_of_enemies and enemy_spawner.boss_spawned == false:
+			enemy_spawner.here_comes_the_boss()
+			
+
 func _place_all_players_in_current_level() -> void:
 	for player_id in Global.player_ships.keys():
 		var player := Global.get_player_ship(player_id)
