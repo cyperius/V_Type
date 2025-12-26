@@ -1,4 +1,6 @@
 extends Area2D
+signal wings_hit
+
 @onready var left_wing_anchor: Marker2D = %LeftWingAnchor
 @onready var left_wing: Sprite2D = %LeftWing
 @onready var right_wing_anchor: Marker2D = %RightWingAnchor
@@ -10,7 +12,8 @@ var outer_right_angle_reached = false
 
 
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
+	#area_entered.connect(_on_area_entered)
+	pass
 
 func _process(delta: float) -> void:
 	if outer_left_angle_reached == false:
@@ -31,7 +34,8 @@ func _process(delta: float) -> void:
 		if right_wing_anchor.rotation_degrees <= -32:
 			outer_right_angle_reached = false
 			
-func _on_area_entered(area_that_entered):
-	if area_that_entered.is_in_group("projectiles"):
-		set_process(false)
-	
+#func _on_area_entered(area_that_entered):
+	#if area_that_entered.is_in_group("projectiles"):
+		#set_process(false)
+		#emit_signal("wings_hit")
+	#

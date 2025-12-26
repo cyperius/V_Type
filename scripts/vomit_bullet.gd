@@ -1,7 +1,7 @@
 extends Area2D
 
 var velocity: Vector2 = Vector2.ZERO
-const LIFETIME := 8.0  # Sekunde
+const LIFETIME := 7.0  # Sekunde
 var timer := 0.0
 @export var hit_effect : String = "reverse_controls"
 

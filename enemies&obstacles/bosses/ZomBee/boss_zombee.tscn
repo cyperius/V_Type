@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene load_steps=26 format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.gd" id="1_37dvw"]
 [ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cdi3g7o6xv8qc" path="res://enemies&obstacles/bosses/ZomBee/ZomBeeFluegelLinks.png" id="10_7qxdt"]
 [ext_resource type="Script" uid="uid://bm2wmwyr7781y" path="res://enemies&obstacles/bosses/ZomBee/vomit_particles.gd" id="10_wvp36"]
 [ext_resource type="Texture2D" uid="uid://b5wsxshc2jjv1" path="res://enemies&obstacles/bosses/ZomBee/fluegel_rechts1.png" id="11_lmhcn"]
+[ext_resource type="AudioStream" uid="uid://d0jo2lbyfmvhb" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label_early_Boss.ogg" id="13_417op"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ul4f8"]
 shader = ExtResource("6_grjcn")
@@ -140,6 +141,7 @@ scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_417op")
 autoplay = true
 
 [node name="VomitTimer" type="Timer" parent="."]

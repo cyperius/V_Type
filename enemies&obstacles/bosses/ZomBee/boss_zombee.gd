@@ -18,6 +18,7 @@ var closest_player : Node
 @onready var body_sprite: Sprite2D = $BodySprite
 @onready var helmet_sprite: Sprite2D = %HelmetSprite
 @onready var helmet: Area2D = %Helmet
+@onready var wings: Area2D = %Wings
 @onready var head: Sprite2D = %Head
 @onready var anger_timer: Timer = %AngerTimer
 @onready var timer: Timer = $Timer
@@ -28,6 +29,7 @@ var closest_player : Node
 var players : Dictionary = {}
 var direction 
 var helmet_health
+var wings_paralyzed = false
 
 
 func _ready() -> void:
@@ -51,10 +53,12 @@ func _ready() -> void:
 	shader_material.set_shader_parameter("crack_strength", 0.0)
 	var eyes_shader_material := body_sprite.material as ShaderMaterial
 	eyes_shader_material.set_shader_parameter("red_color", 0.0)
+	# bodyparts Signale verbinden 
 	body.area_entered.connect(_on_body_area_entered)
 	brain.area_entered.connect(_on_brain_area_entered)
-	mouth.area_entered.connect(_on_mouth_area_entered)
+	#mouth.area_entered.connect(_on_mouth_area_entered) # 26.12.2025: für den Moment deaktiviert, da zu schwierig
 	helmet.area_entered.connect(_on_helmet_area_entered)
+	wings.area_entered.connect(_on_wings_area_entered)
 	
 	body.damage = 300
 	mouth.damage = 600
@@ -83,18 +87,27 @@ func apply_helmet_damage(damage: float):
 
 func _process(delta: float) -> void:
 	
-	print(space_ball.global_position) # Invalid access to property or key 'global_position' on a base object of type 'null instance'.
 	if Input.is_action_just_pressed("status_report"):
 		status_report()
-	# hier noch anpassen, das wirklich der Spieler mit der kürzesten Distanz referenziert wird
-	track_nearest_player()
-	global_position += direction * speed * delta
-	rotation = direction.angle() - PI
-	
+		
+	track_nearest_player() # immer den nächsten Spieler tracken für akurates Zielen
+	if not vomit_particles.emitting:  # aber bewegen nur, wenn Flügel sich bewgen und gerade nicht gekotzt wird
+		if wings_paralyzed == false: 
+			global_position += direction * speed * delta
+			rotation = direction.angle() - PI
+		
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
 	if area_that_entered.is_in_group("projectiles"):
 		angry_zombee()
+
+func _on_wings_area_entered(other: Area2D) -> void:
+	if other.is_in_group("projectiles"):
+		wings.set_process(false)
+		wings_paralyzed = true
+		await get_tree().create_timer(5).timeout
+		wings.set_process(true)
+		wings_paralyzed = false
 
 
 func track_nearest_player():
@@ -133,14 +146,14 @@ func angry_zombee() -> void:
 	if not helmet:
 		vomit_particles.lifetime = 7.3
 	head.vomit_wave()
-	#vomit_particles.emitting = true
-	speed = 1000
+	vomit_particles.emitting = true
+	speed = 800
 	#vomit_timer.start()
 	anger_timer.start()
 	await anger_timer.timeout
 	speed = 400
-	#await vomit_timer.timeout 
-	#vomit_particles.emitting = false
+	await vomit_timer.timeout 
+	vomit_particles.emitting = false
 	eyes_shader_material.set_shader_parameter("red_color", 0.0)
 	
 
@@ -160,9 +173,7 @@ func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 	
 func _on_helmet_area_entered(area_that_entered: Area2D) -> void:		
 	apply_helmet_damage(area_that_entered.damage)
-	print("hit the fucking helmet!!")
-	print("helmet_health: ", helmet_health)
-
+	
 
 func _on_mouth_area_entered(area_that_entered: Area2D) -> void:
 	if area_that_entered.is_in_group("projectiles"):
@@ -176,7 +187,6 @@ func status_report() -> void:
 
 
 func _on_timer_timeout() -> void:
-	print("timeout")
 	var eyes_shader_material := head.material as ShaderMaterial
 	eyes_shader_material.set_shader_parameter("red_color", 1.0)
 	await get_tree().create_timer(0.8).timeout
