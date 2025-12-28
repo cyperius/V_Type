@@ -10,7 +10,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 
 # -- levelspezifische optics und Platzierung für das player_ship -- #
-@export_range(0.1, 0.5, 0.05) var ship_scale : float = 0.25
+@export_range(0.1, 2.0, 0.05) var ship_scale : float = 1
 enum Rotations { R0 = 0, R90 = 90, R180 = 180, R270 = 270 }
 @export var player_rotation: Rotations = Rotations.R0
 @export var flight_mode: PlayerShip.FlightMode = PlayerShip.FlightMode.LEFT_RIGHT

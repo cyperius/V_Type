@@ -56,14 +56,14 @@ var projectiles := []
 #   GRAPHICS / FX / COLLISIONS
 # ──────────────────────────────────────────────────────────────
 @onready var ship_sprite: Sprite2D = %ship_sprite
-@onready var player1_skin = preload("res://assets/graphic_elements/player/space_ship1_sideview.png")
+@onready var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
 @onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways.png")
 @onready var player3_skin = preload("res://assets/graphic_elements/player/player3_ship_sideways.png")
-@onready var player2_skin = preload("res://assets/graphic_elements/player/golden_ship_sideways.png")
-@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/space_ship1_leichte_Bauchseite.png")
-@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/space_ship1_rueckenseite.png")
-@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/golden_ship_bauchlage.png")
-@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/golden_ship_rueckenlage.png")
+@onready var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
+@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
+@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
+@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
+@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
 @onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
 @onready var player3_diving_skin = preload("res://assets/graphic_elements/player/player3_ship_rueckenlage.png")
 

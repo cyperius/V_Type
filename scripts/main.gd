@@ -30,6 +30,7 @@ var tw = create_tween()   # tw wird später einen tween referenzieren (mit creat
 #   READY
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
+	
 	#print("Main.gd READY – registrierte Spieler:", Global.player_ships)
 	
 	# Level loaded Signal des GameManagers verbinden

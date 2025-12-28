@@ -18,7 +18,8 @@ var scaling_factor
 
 func _ready() -> void:
 	super._ready()
-	var center_node = $"../Center"
+	var center_node = $"../Center" # Was hier referenziert Im parent dieses Nodes gibt es 
+	# einen ChildNode (also ein Sibling dieses Nodes) der "Center" heisst
 	circle_center_position = center_node.global_position
 	
 	
@@ -46,10 +47,10 @@ func _process(delta: float) -> void:
 
 
 func _on_shoot_timer_timeout():
-	audio_stream_player_2d.play()
 	# Je höher die Anz. Spieler, umso grösser die Chance, dass ein Schuss ausgelöst wird
 	var shot_probability = randf_range(1, 3 - 0.5 * Global.player_ships.size())
 	if shot_probability <= 1.8:
+		audio_stream_player_2d.play()
 		var shot = circle_shot_scene.instantiate()
 		# scale des instantiierten Schusses entspricht dem scale des enemies (siehe oben 4.)
 		shot.scale = scale
