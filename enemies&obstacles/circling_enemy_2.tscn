@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cceyqccs75s6e"]
+[gd_scene load_steps=7 format=3 uid="uid://cceyqccs75s6e"]
 
 [ext_resource type="Script" uid="uid://t7qfemfkj4wb" path="res://scripts/circle_movement.gd" id="1_ti7ft"]
-[ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_fxx5g"]
 [ext_resource type="AudioStream" uid="uid://dqc8ff3hrrr0" path="res://assets/sound_and_sfx/sound_effects/laser_blast.wav" id="2_w12ld"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_rgv8d"]
 [ext_resource type="Texture2D" uid="uid://xjbbdelekl3r" path="res://assets/graphic_elements/enemies/AlienSquirrel.png" id="4_q64av"]
@@ -20,7 +19,6 @@ scale = Vector2(0.2, 0.2)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_ti7ft")
-shot_sound = ExtResource("2_fxx5g")
 shot_scene = ExtResource("3_rgv8d")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

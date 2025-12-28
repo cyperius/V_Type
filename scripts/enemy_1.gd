@@ -106,8 +106,8 @@ func _process(delta: float) -> void:
 	#if "do_target_player" in current_level:
 		#if current_level.do_target_player == true:
 		
-	if is_player_tracking_active:
-			track_nearest_player()
+	if is_player_tracking_active == true:
+		track_nearest_player()
 	
 	
 	
