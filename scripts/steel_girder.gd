@@ -1,0 +1,2 @@
+class_name SteelGirder
+extends RigidBody2D
