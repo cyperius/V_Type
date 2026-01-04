@@ -99,7 +99,7 @@ unique_name_in_owner = true
 
 [node name="AnimatableSteelGirder" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
 unique_name_in_owner = true
-position = Vector2(5714, 1368)
+position = Vector2(5729, 1390)
 rotation = -1.67752
 scale = Vector2(1, 1)
 collision_layer = 64
