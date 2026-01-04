@@ -68,10 +68,10 @@ func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 	# Je höher die spawn_rate umso kürzer die spawn_time
 	timer.wait_time = timer_basic_wait_time / spawn_rate
 	timer2.wait_time = timer2_basic_wait_time / spawn_rate
-	print("spawn_rate = ", spawn_rate)
-	print("number of players = ", number_of_players)
-	print("the timer1 wait_time is: ", timer.wait_time)
-	print("the timer2 wait_time is: ", timer2.wait_time)
+	#print("spawn_rate = ", spawn_rate)
+	#print("number of players = ", number_of_players)
+	#print("the timer1 wait_time is: ", timer.wait_time)
+	#print("the timer2 wait_time is: ", timer2.wait_time)
 
 
 func _on_timer_timeout():

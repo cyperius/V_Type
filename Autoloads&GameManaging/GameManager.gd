@@ -41,6 +41,7 @@ var level_paths   : Array      = [
 	"res://levels/level_4.tscn",
 	"res://levels/level_5.tscn",
 	"res://levels/level_6.tscn",
+	"res://levels/level_7_mech_world.tscn"
 	# …weitere Levels hier anhängen
 ]
 
@@ -90,6 +91,14 @@ func _process(delta):
 		jump_to_level(5)
 	if Input.is_action_just_pressed("level_6"):
 		jump_to_level(6)
+	if Input.is_action_just_pressed("level_7"):
+		jump_to_level(7)
+	if Input.is_action_just_pressed("level_8"):
+		jump_to_level(8)
+	if Input.is_action_just_pressed("level_9"):
+		jump_to_level(9)
+	if Input.is_action_just_pressed("level_10"):
+		jump_to_level(10)
 		
 
 func _connect_game_over_watchers() -> void:
@@ -237,6 +246,8 @@ func _load_level(level_nr: int) -> void:
 
 	# Pfad aus Autoload holen (Array, 0-basiert)
 	var path: String = GameManager.level_paths[level_nr - 1]
+	
+	print("GameManager: loadel level: ", level_nr)
 	
 
 	# Szene dynamisch laden und als PackedScene casten

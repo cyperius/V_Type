@@ -1,0 +1,169 @@
+[gd_scene load_steps=10 format=3 uid="uid://y5ym5i2u8ai4"]
+
+[ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="1_ww2ft"]
+[ext_resource type="Texture2D" uid="uid://bf0up823jwmgf" path="res://assets/graphic_elements/enemies/Mech_joint.png" id="2_8xna7"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mcpsi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1880s"]
+size = Vector2(21, 201)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bumxs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4nsc6"]
+size = Vector2(14.885, 7.06712)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dyua0"]
+size = Vector2(19.4785, 4.67901)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4m2yv"]
+size = Vector2(19.4785, 4.67901)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14lw4"]
+size = Vector2(21.5, 201)
+
+[node name="RigidMechJoint2" type="RigidBody2D"]
+rotation = -0.202458
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+gravity_scale = 0.0
+
+[node name="RigidMetalArm7" type="RigidBody2D" parent="."]
+z_index = -1
+position = Vector2(-284.244, 245.866)
+rotation = 0.811578
+scale = Vector2(1, 1)
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm7"]
+position = Vector2(-14.1153, -25.8023)
+rotation = 1.58825
+scale = Vector2(2, 2)
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm7"]
+visible = false
+position = Vector2(-1, -1)
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_1880s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8xna7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-1, -5)
+scale = Vector2(11.52, 11)
+shape = SubResource("CircleShape2D_bumxs")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(102.891, -101.068)
+rotation = 0.763477
+scale = Vector2(3.84, 11.24)
+shape = SubResource("RectangleShape2D_4nsc6")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-103, -103)
+rotation = -2.39631
+scale = Vector2(4.22763, 11.7405)
+shape = SubResource("RectangleShape2D_dyua0")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(102, 84)
+rotation = -2.39631
+scale = Vector2(4.22763, 11.7405)
+shape = SubResource("RectangleShape2D_4m2yv")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-103, 84)
+rotation = 0.763477
+scale = Vector2(3.84, 11.24)
+shape = SubResource("RectangleShape2D_4nsc6")
+
+[node name="RigidMetalArm4" type="RigidBody2D" parent="."]
+z_index = -1
+position = Vector2(235, -220)
+rotation = 0.811578
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm4"]
+position = Vector2(-14.1153, -25.8023)
+rotation = 1.58825
+scale = Vector2(2, 2)
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm4"]
+visible = false
+position = Vector2(-1, -1)
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_1880s")
+
+[node name="RigidMetalArm" type="RigidBody2D" parent="."]
+z_index = -1
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm"]
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm"]
+visible = false
+position = Vector2(-1, -4.75)
+rotation = 1.5708
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_14lw4")
+
+[node name="RigidMetalArm2" type="RigidBody2D" parent="."]
+z_index = -1
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm2"]
+position = Vector2(-6, -1)
+rotation = 1.5708
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm2"]
+visible = false
+position = Vector2(-1, -1)
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_1880s")
+
+[node name="RigidMetalArm5" type="RigidBody2D" parent="."]
+z_index = -1
+position = Vector2(303, 21.9999)
+rotation = 0.811578
+scale = Vector2(1, 1)
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm5"]
+position = Vector2(103.329, 164.229)
+rotation = 3.08923
+scale = Vector2(2, 2)
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm5"]
+visible = false
+position = Vector2(-1, -1)
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_1880s")
+
+[node name="RigidMetalArm6" type="RigidBody2D" parent="."]
+z_index = -1
+position = Vector2(-185, -435)
+rotation = 0.811578
+scale = Vector2(1, 1)
+physics_material_override = SubResource("PhysicsMaterial_mcpsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm6"]
+position = Vector2(103.329, 164.229)
+rotation = 3.08923
+scale = Vector2(2, 2)
+texture = ExtResource("1_ww2ft")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidMetalArm6"]
+visible = false
+position = Vector2(-1, -1)
+scale = Vector2(1, 1.04284)
+shape = SubResource("RectangleShape2D_1880s")

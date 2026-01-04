@@ -1,0 +1,397 @@
+[gd_scene load_steps=13 format=3 uid="uid://205qxsk0wtf7"]
+
+[ext_resource type="Script" uid="uid://cho8lhhdep0tq" path="res://scripts/level_7_mech_world.gd" id="1_k1k2u"]
+[ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_0psfu"]
+[ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_k1k2u"]
+[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="4_57v3o"]
+[ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="5_mcpsi"]
+[ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_bumxs"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="7_4nsc6"]
+[ext_resource type="AudioStream" uid="uid://dooxkahr0t1ts" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_Midlevel_progressiv.ogg" id="8_k1k2u"]
+[ext_resource type="Script" uid="uid://4sdyplld42a" path="res://game_world/mech_world.gd" id="9_k1k2u"]
+[ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="10_57v3o"]
+[ext_resource type="Script" uid="uid://c6dq340cxh7xq" path="res://scripts/griders_area_2d.gd" id="11_57v3o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1k2u"]
+size = Vector2(703.225, 78.7984)
+
+[node name="Level_7" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_k1k2u")
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_0psfu")]
+level_boss = ExtResource("3_k1k2u")
+enemy1 = ExtResource("4_57v3o")
+enemy2_with_path = ExtResource("5_mcpsi")
+enemy3 = ExtResource("6_bumxs")
+
+[node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
+position = Vector2(4032, 1783)
+
+[node name="Marker2D2" parent="EnemySpawner/SpawnPositions" index="1"]
+position = Vector2(4524, 1822)
+
+[node name="Marker2D3" parent="EnemySpawner/SpawnPositions" index="2"]
+position = Vector2(4583, 467)
+
+[node name="Marker2D4" parent="EnemySpawner/SpawnPositions" index="3"]
+position = Vector2(4495, 1389)
+
+[node name="Marker2D5" parent="EnemySpawner/SpawnPositions" index="4"]
+position = Vector2(4356, 1023)
+
+[node name="Marker2D6" parent="EnemySpawner/SpawnPositions" index="5"]
+position = Vector2(4097, 206)
+
+[node name="Marker2D7" parent="EnemySpawner/SpawnPositions" index="6"]
+position = Vector2(5379.5, 423)
+
+[node name="Marker2D8" parent="EnemySpawner/SpawnPositions" index="7"]
+position = Vector2(5379.5, 743)
+
+[node name="Marker2D9" parent="EnemySpawner/SpawnPositions" index="8"]
+position = Vector2(5291, 1186)
+
+[node name="Marker2D10" parent="EnemySpawner/SpawnPositions" index="9"]
+position = Vector2(5320, 84)
+
+[node name="Marker2D11" parent="EnemySpawner/SpawnPositions" index="10"]
+position = Vector2(5286, 1703)
+
+[node name="Marker2D12" parent="EnemySpawner/SpawnPositions" index="11"]
+position = Vector2(5350, 2121)
+
+[node name="Timer" parent="EnemySpawner" index="1"]
+wait_time = 4096.0
+
+[node name="Timer2" parent="EnemySpawner" index="2"]
+wait_time = 4096.0
+
+[node name="EnemiesContainer" type="Node2D" parent="."]
+
+[node name="background_Control" parent="." instance=ExtResource("7_4nsc6")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -143.0
+offset_top = -70.0
+offset_right = -143.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 6.322
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_k1k2u")
+autoplay = true
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="MechWorld" type="Node2D" parent="."]
+script = ExtResource("9_k1k2u")
+
+[node name="SteelGirders" type="Node2D" parent="MechWorld"]
+unique_name_in_owner = true
+
+[node name="AnimatableSteelGirder" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(5714, 1368)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder5" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(3531, 2053)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder5"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder5"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder5"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder5/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder6" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(4049, 783)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder6"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder6"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder6"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder6/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder7" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(5274, 621)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder7"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder7"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder7"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder7/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder8" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(3868, 1646)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder8"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder8"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder8"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder8/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder9" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(4915, 1098)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder9"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder9"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder9"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder9/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder10" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(3401, 380)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder10"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder10"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder10"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder10/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder11" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(6517, 1875)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder11"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder11"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder11"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder11/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder12" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(6143, 424)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder12"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder12"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder12"]
+collision_layer = 68
+collision_mask = 71
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder12/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder2" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(4778, 1905)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder2"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder2"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder2"]
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder2/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder3" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(4349, 554)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder3"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder3"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder3"]
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder3/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="AnimatableSteelGirder4" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
+unique_name_in_owner = true
+position = Vector2(2884, 1610)
+rotation = -1.67752
+scale = Vector2(1, 1)
+collision_layer = 64
+collision_mask = 195
+sync_to_physics = false
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder4"]
+position = Vector2(-0.141578, 20.0988)
+scale = Vector2(3.49222, 3.48893)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder4"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[node name="Area2D" type="Area2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder4"]
+script = ExtResource("11_57v3o")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder4/Area2D"]
+shape = SubResource("RectangleShape2D_k1k2u")
+
+[connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
+
+[editable path="EnemySpawner"]
+[editable path="background_Control"]

@@ -347,3 +347,5 @@ activate_ball={
 2d_physics/layer_4="enemy_shots"
 2d_physics/layer_5="asteroids"
 2d_physics/layer_6="boarders"
+2d_physics/layer_7="world"
+2d_physics/layer_8="ball"

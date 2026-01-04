@@ -17,7 +17,7 @@ height = 423.91
 [node name="PlayerShip" type="Area2D"]
 process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
-collision_mask = 60
+collision_mask = 124
 script = ExtResource("1_l3jmy")
 max_health = 20000
 max_energy = 500
@@ -53,4 +53,3 @@ one_shot = true
 [node name="ParticlesShield" parent="." instance=ExtResource("5_5icsl")]
 unique_name_in_owner = true
 scale = Vector2(0.242723, 0.189479)
-emitting = true

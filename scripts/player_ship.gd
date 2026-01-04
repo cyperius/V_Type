@@ -248,7 +248,7 @@ func _on_area_entered(other: Area2D) -> void:
 		if shield_is_activated:
 			if other.is_in_group("projectiles"):
 				shield_absorbing(dmg)  # Schild „heilt“ Energie um Schaden
-			elif other.is_in_group("enemies"):
+			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
 		else:
 			# Kurzzeitig nicht kollidieren, damit der Treffer nicht mehrfach zählt
