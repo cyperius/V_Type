@@ -58,7 +58,7 @@ func _ready() -> void:
 	angle = randf_range(deg_to_rad(170), deg_to_rad(190))
 	
 
-# Bewegung und Drehung setzenﬁ
+# Bewegung und Drehung setzen2
 	linear_velocity = direction * speed
 	angular_velocity = randf_range(-3.0, 3.0)
 

@@ -250,11 +250,13 @@ func _on_area_entered(other: Area2D) -> void:
 				shield_absorbing(dmg)  # Schild „heilt“ Energie um Schaden
 			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
+				
 		else:
 			# Kurzzeitig nicht kollidieren, damit der Treffer nicht mehrfach zählt
 			collision_mask = 0
 			collision_layer = 0
 			player_is_hit(dmg)
+			print("player_ship.gd: see the grider")
 
 		# Treffer-Feedback bei Projektilen
 		if other.is_in_group("projectiles"):

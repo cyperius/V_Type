@@ -35,10 +35,8 @@ func _ready() -> void:
 		girders_stats[girder]["move_direction_y"] = 0
 		girders_stats[girder]["rotation_direction"] = rotation_direction
 		set_girder_stats_range()
-		var girder_area = girder.get_node("Area2D")
-		girder_area.area_entered.connect(_on_area_entered)
-		girder.is_in_group("obstacles")
-		
+		girder.area_entered.connect(_on_area_entered)
+		girder.add_to_group("obstacles")
 	
 			
 func _physics_process(delta: float) -> void:
