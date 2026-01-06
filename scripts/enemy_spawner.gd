@@ -153,6 +153,8 @@ func here_comes_the_boss():
 	enemy_counter += 1
 	timer.stop()
 	timer2.stop()
+	if timer3:
+		timer3.stop()
 	
 	# level_boss ist eine Exportvariable, der im Inspector eine PackedScene zugeorndet wird
 	# Daraus wird nun eine Instanz erstellt mit Name boss erstellt
@@ -165,7 +167,7 @@ func here_comes_the_boss():
 		# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-		boss.global_position = Vector2(2000, 1100) # 7000, 1100
+		boss.global_position = Vector2(5000, 1100) # 7000, 1100
 		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
 		boss.health_points = boss.health_points * number_of_players
 

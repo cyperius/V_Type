@@ -15,7 +15,8 @@ var time_stamps: Dictionary = {
 	120.5: "phase_4_relax_a_bit", # 120.5
 	154: "phase_5_intense_again", #154
 	192: "phase_6_relax_again", # 192
-	212: "phase_7_ending" # 212
+	212: "phase_7_ending", # 212,
+	272: "here_comes_the_boss",
 }
 
 var time_stamps_already_triggered: Dictionary = {}
@@ -75,6 +76,8 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			timer_2.wait_time = 1.5
 			enemy_spawner.timer3.paused = false
 			enemy_spawner.timer3.wait_time = 2
+		"here_comes_the_boss":
+			enemy_spawner.here_comes_the_boss()
 			
 			
 		_:

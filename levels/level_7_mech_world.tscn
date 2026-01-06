@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cho8lhhdep0tq" path="res://scripts/level_7_mech_world.gd" id="1_k1k2u"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_0psfu"]
-[ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_k1k2u"]
+[ext_resource type="PackedScene" uid="uid://tn7oan56ea6u" path="res://enemies&obstacles/bosses/boss_1.tscn" id="3_57v3o"]
 [ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="4_57v3o"]
 [ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="5_mcpsi"]
 [ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_bumxs"]
@@ -18,9 +18,10 @@ size = Vector2(618.389, 69.228)
 [node name="Level_7" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_k1k2u")
+level_nr = 7
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_0psfu")]
-level_boss = ExtResource("3_k1k2u")
+level_boss = ExtResource("3_57v3o")
 enemy1 = ExtResource("4_57v3o")
 enemy2_with_path = ExtResource("5_mcpsi")
 enemy3 = ExtResource("6_bumxs")

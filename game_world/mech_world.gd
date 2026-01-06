@@ -80,6 +80,9 @@ func _physics_process(delta: float) -> void:
 					girders_stats[girder]["rotation_speed"] = randf_range(min_rotation_speed, max_rotation_speed)
 					girders_stats[girder]["move_direction_y"] = randf_range(-1 * move_direction_y_range, move_direction_y_range)
 					girders_stats[girder]["rotation_direction"] = [1, -1].pick_random()
+				else:
+					girders_stats[girder]["move_speed"] = 0
+					girders_stats[girder]["rotation_speed"] = 0
 			
 				
 		
@@ -91,7 +94,7 @@ func _physics_process(delta: float) -> void:
 			if girder.global_position.x <= -200 or girder.global_position.y > 2600: 
 				# wenn ausserhalb des Bildes: respawnen und neue Zufallsstats setzen 
 				girder.global_position.x = randi_range(2000, 4000)
-				girder.global_position.y = -300
+				girder.global_position.y = -400
 				if phase2_fadeout == false:
 					set_girder_stats_range() # respawnen, Werte-range erweitern, danach werden Werte zufällig gesetzt
 					girders_stats[girder]["move_speed"] = randi_range(min_move_speed_factor, chosen_max_move_speed_factor) * basic_move_speed
@@ -99,8 +102,8 @@ func _physics_process(delta: float) -> void:
 					girders_stats[girder]["move_direction_y"] = randf_range(0.5, move_direction_y_range)
 					girders_stats[girder]["rotation_direction"] = [1, -1].pick_random()
 				else:
-					pass
-					
+					girders_stats[girder]["move_speed"] = 0
+					girders_stats[girder]["rotation_speed"] = 0
 		
 			
 			
