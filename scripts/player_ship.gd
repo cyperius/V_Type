@@ -42,6 +42,7 @@ var spawn_position := Vector2.ZERO
 
 @export var shield_energy_drain : int = 100
 @export var boost_energy_drain : int = 20
+@export var absorbing_factor : float = 0.2
 
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
@@ -247,7 +248,7 @@ func _on_area_entered(other: Area2D) -> void:
 		var dmg: int = int(other.damage)
 		if shield_is_activated:
 			if other.is_in_group("projectiles"):
-				shield_absorbing(dmg)  # Schild „heilt“ Energie um Schaden
+				shield_absorbing(dmg / absorbing_factor)  # Schild „heilt“ Energie um einen Viertel des Schadens
 			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
 				
