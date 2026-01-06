@@ -19,7 +19,7 @@ shader = ExtResource("8_j7wy4")
 shader_parameter/speed = 0.1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4giuu"]
-size = Vector2(571, 108)
+size = Vector2(1023, 105)
 
 [node name="TheVoid" type="Node2D"]
 process_mode = 1
@@ -128,28 +128,66 @@ script = ExtResource("11_2ov36")
 
 [node name="SteelGirders" type="Node2D" parent="MechWorld"]
 unique_name_in_owner = true
+position = Vector2(3466, 1087)
 
 [node name="SteelGirder" type="RigidBody2D" parent="MechWorld/SteelGirders"]
+position = Vector2(286, -706)
+gravity_scale = 0.0
+angular_velocity = 6.28319
 script = ExtResource("12_x7kdv")
 metadata/_custom_type_script = "uid://dbh3td24uiqvs"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder"]
+position = Vector2(-2, -27.5)
 shape = SubResource("RectangleShape2D_4giuu")
 
 [node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder"]
-top_level = true
-position = Vector2(1282, 703)
 scale = Vector2(5, 5)
 texture = ExtResource("10_sp0my")
 
 [node name="SteelGirder2" type="RigidBody2D" parent="MechWorld/SteelGirders"]
-position = Vector2(1987, 833)
+position = Vector2(341, 405)
+gravity_scale = 0.0
+angular_velocity = -3.14159
 script = ExtResource("12_x7kdv")
 metadata/_custom_type_script = "uid://dbh3td24uiqvs"
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder2"]
+position = Vector2(-2, -27.5)
+shape = SubResource("RectangleShape2D_4giuu")
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder2"]
+scale = Vector2(5, 5)
+texture = ExtResource("10_sp0my")
+
 [node name="SteelGirder3" type="RigidBody2D" parent="MechWorld/SteelGirders"]
-position = Vector2(1466, 939)
+position = Vector2(-475, -428)
+gravity_scale = 0.0
+angular_velocity = 9.42478
 script = ExtResource("12_x7kdv")
 metadata/_custom_type_script = "uid://dbh3td24uiqvs"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder3"]
+position = Vector2(-2, -27.5)
+shape = SubResource("RectangleShape2D_4giuu")
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder3"]
+scale = Vector2(5, 5)
+texture = ExtResource("10_sp0my")
+
+[node name="SteelGirder4" type="RigidBody2D" parent="MechWorld/SteelGirders"]
+gravity_scale = 0.0
+angular_velocity = -2.0944
+script = ExtResource("12_x7kdv")
+metadata/_custom_type_script = "uid://dbh3td24uiqvs"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder4"]
+position = Vector2(-2, -27.5)
+shape = SubResource("RectangleShape2D_4giuu")
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder4"]
+position = Vector2(-8, -32)
+scale = Vector2(5, 5)
+texture = ExtResource("10_sp0my")
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]

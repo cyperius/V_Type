@@ -9,7 +9,7 @@ var chosen_max_move_speed_factor : float
 
 
 #Referenzen zu MechWorld Nodes
-@onready var animatable_steel_girder: AnimatableBody2D = %AnimatableSteelGirder
+
 @onready var steel_girders: Node2D = %SteelGirders
 
 #

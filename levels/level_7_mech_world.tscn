@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://205qxsk0wtf7"]
+[gd_scene load_steps=13 format=3 uid="uid://205qxsk0wtf7"]
 
 [ext_resource type="Script" uid="uid://cho8lhhdep0tq" path="res://scripts/level_7_mech_world.gd" id="1_k1k2u"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_0psfu"]
@@ -10,7 +10,6 @@
 [ext_resource type="AudioStream" uid="uid://dooxkahr0t1ts" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_Midlevel_progressiv.ogg" id="8_k1k2u"]
 [ext_resource type="Script" uid="uid://4sdyplld42a" path="res://game_world/mech_world.gd" id="9_k1k2u"]
 [ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="10_57v3o"]
-[ext_resource type="PackedScene" uid="uid://cjuuiscrvfvc2" path="res://enemies&obstacles/mech_world/steel_girder.tscn" id="10_mcpsi"]
 [ext_resource type="Script" uid="uid://c6dq340cxh7xq" path="res://scripts/griders_area_2d.gd" id="11_57v3o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1k2u"]
@@ -98,11 +97,6 @@ script = ExtResource("9_k1k2u")
 [node name="SteelGirders" type="Node2D" parent="MechWorld"]
 unique_name_in_owner = true
 
-[node name="AnimatableSteelGirder" parent="MechWorld/SteelGirders" instance=ExtResource("10_mcpsi")]
-unique_name_in_owner = true
-position = Vector2(5729, 1390)
-scale = Vector2(1, 1)
-
 [node name="AnimatableSteelGirder5" type="AnimatableBody2D" parent="MechWorld/SteelGirders"]
 unique_name_in_owner = true
 position = Vector2(3531, 2053)
@@ -110,7 +104,6 @@ rotation = -1.67752
 scale = Vector2(1, 1)
 collision_layer = 64
 collision_mask = 195
-sync_to_physics = false
 
 [node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/AnimatableSteelGirder5"]
 position = Vector2(-0.141578, 20.0988)
