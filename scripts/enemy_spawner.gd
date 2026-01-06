@@ -9,6 +9,7 @@ signal incoming_boss
 @export var timer_basic_wait_time : int = 3
 @export var timer2_basic_wait_time : int = 4
 
+
 @export var level_boss : PackedScene
 @export var basic_spawn_rate : int = 1
 @export var enemy1 : PackedScene
@@ -23,6 +24,9 @@ signal incoming_boss
 
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
+var timer3 : Timer # so wird timer3 als globale Variable definiert - das klappt unabhängig davon
+# ob sie tatsächlcih mit einem Wert ausgestattet wird. Somit kann, wenn ihr denn später in diesem Skript einen 
+# Wert / eine referenz zugeordnet wird darauf zugegriffen werden
 @onready var randomizer = RandomNumberGenerator.new()
 @onready var enemy_blueprint = preload("res://enemies&obstacles/enemy_1.tscn")
 @onready var path_enemy_blueprint = preload("res://enemies&obstacles/enemy_with_path.tscn")
@@ -55,6 +59,9 @@ func _ready() -> void:
 	set_spawn_rate()
 	timer.timeout.connect(_on_timer_timeout)
 	timer2.timeout.connect(_on_timer2_timeout)
+	if self.has_node("%Timer3"):
+		timer3 = get_node("%Timer3")
+		timer3.timeout.connect(_on_timer3_timeout)
 	
 	
 func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
@@ -78,7 +85,7 @@ func _on_timer_timeout():
 	at_least_one_enemy_spawned = true
 	# print("(enemy.gd): timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
-	var enemy = enemy3.instantiate()
+	var enemy = enemy1.instantiate()
 	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
 	enemy.position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
@@ -94,7 +101,7 @@ func _on_timer_timeout():
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	
-	print(enemy.position)
+	#print(enemy.position)
 	enemy_counter += 1
 	#enemy.speed += enemy_counter * 10
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
@@ -115,7 +122,31 @@ func _on_timer2_timeout():
 		path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y/2.8
 		enemy_counter += 1
 	
+func _on_timer3_timeout() -> void:
+	at_least_one_enemy_spawned = true
+	# print("(enemy.gd): timeout -> normaler enemy?")
+	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
+	var enemy = enemy3.instantiate()
+	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
+	enemy.position = enemy_positions[spawn_pos_nr].global_position
+	emit_signal("enemy_spawned", enemy)
+	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
+	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...5
+	enemies_container.add_child(enemy)
+	get_tree().current_scene.name 
+
+	self.get_path()
+
+	get_parent().get_path()
+	get_instance_id()
+	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
+	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	
+	#print(enemy.position)
+	enemy_counter += 1
+
+
+
 func here_comes_the_boss():
 	boss_spawned = true
 	emit_signal("incoming_boss")

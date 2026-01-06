@@ -12,8 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="10_57v3o"]
 [ext_resource type="Script" uid="uid://bc6i86ur5qygm" path="res://scripts/steel_girder_area_2d.gd" id="10_mcpsi"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1k2u"]
-size = Vector2(703.225, 78.7984)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_57v3o"]
+size = Vector2(618.389, 69.228)
 
 [node name="Level_7" type="Node2D"]
 process_mode = 1
@@ -67,6 +67,11 @@ wait_time = 4096.0
 [node name="Timer2" parent="EnemySpawner" index="2"]
 wait_time = 4096.0
 
+[node name="Timer3" type="Timer" parent="EnemySpawner"]
+unique_name_in_owner = true
+wait_time = 4096.0
+autostart = true
+
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
 [node name="background_Control" parent="." instance=ExtResource("7_4nsc6")]
@@ -79,6 +84,10 @@ offset_right = -143.0
 offset_bottom = -70.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="background_TextureRect" parent="background_Control" index="0"]
+offset_left = 24.0
+offset_right = 4248.0
 
 [node name="BossTimer" type="Timer" parent="."]
 wait_time = 6.322
@@ -94,168 +103,268 @@ autoplay = true
 [node name="MechWorld" type="Node2D" parent="."]
 script = ExtResource("9_k1k2u")
 
-[node name="SteelGirders" type="Node2D" parent="MechWorld"]
+[node name="SteelGirdersGroup1" type="Node2D" parent="MechWorld"]
 unique_name_in_owner = true
 
-[node name="SteelGirder" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(3531, 2053)
+[node name="SteelGirder" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(4198, 995)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder2" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(3860, 1642)
+[node name="SteelGirder2" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(4721, 297)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder2"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder2"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder2"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder2"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder3" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(4234, 1243)
+[node name="SteelGirder3" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(4912, 1557)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder3"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder3"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder3"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder3"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder4" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(4549, 899)
+[node name="SteelGirder4" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(5365, 796)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder4"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder4"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder4"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder4"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder5" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(4771, 521)
+[node name="SteelGirder5" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(5819, 1050)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder5"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder5"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder5"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder5"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder6" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(5041, 118)
+[node name="SteelGirder6" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(6225, 354)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder6"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder6"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder6"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder6"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder7" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(4208, 2057)
+[node name="SteelGirder7" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(4356, 1892)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder7"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder7"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder7"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder7"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder8" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(4859, 1413)
+[node name="SteelGirder8" type="Area2D" parent="MechWorld/SteelGirdersGroup1"]
+position = Vector2(4582, 1309)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder8"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder8"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder8"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup1/SteelGirder8"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder9" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(5226, 1890)
+[node name="SteelGirdersGroup2" type="Node2D" parent="MechWorld"]
+unique_name_in_owner = true
+position = Vector2(-1441, -2294)
+
+[node name="SteelGirder" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(4198, 995)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder9"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder9"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
-[node name="SteelGirder10" type="Area2D" parent="MechWorld/SteelGirders"]
-position = Vector2(3868, 273)
+[node name="SteelGirder2" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(4721, 297)
 rotation = -1.67752
-scale = Vector2(1, 1)
-collision_layer = 64
+collision_layer = 68
 collision_mask = 195
 script = ExtResource("10_mcpsi")
+damage = 100
 
-[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirders/SteelGirder10"]
-position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder2"]
+scale = Vector2(3, 2.998)
 texture = ExtResource("10_57v3o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirders/SteelGirder10"]
-shape = SubResource("RectangleShape2D_k1k2u")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder2"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder3" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(4912, 1557)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder3"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder3"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder4" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(5365, 796)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder4"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder4"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder5" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(5819, 1050)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder5"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder5"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder6" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(6225, 354)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder6"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder6"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder7" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(4356, 1892)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder7"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder7"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
+
+[node name="SteelGirder8" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
+position = Vector2(4582, 1309)
+rotation = -1.67752
+collision_layer = 68
+collision_mask = 195
+script = ExtResource("10_mcpsi")
+damage = 100
+
+[node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder8"]
+scale = Vector2(3, 2.998)
+texture = ExtResource("10_57v3o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder8"]
+position = Vector2(2.91172, -17.7913)
+shape = SubResource("RectangleShape2D_57v3o")
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
 

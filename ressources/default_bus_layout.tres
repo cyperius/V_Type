@@ -10,6 +10,8 @@ resource_name = "Distortion"
 resource_name = "Filter"
 
 [resource]
+bus/0/solo = true
+bus/0/mute = true
 bus/0/bypass_fx = true
 bus/0/volume_db = 1.15826
 bus/0/effect/0/effect = SubResource("AudioEffectPhaser_vql6a")
@@ -18,3 +20,9 @@ bus/0/effect/1/effect = SubResource("AudioEffectDistortion_opb4m")
 bus/0/effect/1/enabled = false
 bus/0/effect/2/effect = SubResource("AudioEffectFilter_opb4m")
 bus/0/effect/2/enabled = false
+bus/1/name = &"New Bus"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
