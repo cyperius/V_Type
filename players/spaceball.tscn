@@ -18,16 +18,19 @@ collision_layer = 128
 collision_mask = 64
 motion_mode = 1
 script = ExtResource("1_t0stg")
-speed = 1000
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_220mt")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 129
+collision_mask = 65
 script = SubResource("GDScript_t0stg")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+[node name="AreaCollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+unique_name_in_owner = true
 shape = SubResource("CircleShape2D_jy0lp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="BodyCollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 shape = SubResource("CircleShape2D_jy0lp")

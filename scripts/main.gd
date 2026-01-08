@@ -3,8 +3,6 @@ extends Node2D
 # ──────────────────────────────────────────────────────────────
 #   SIGNALS
 # ──────────────────────────────────────────────────────────────
-signal enemy_destroyed(score: int, energy: int, player_id: int)
-signal absorbed_energy(amount: int, player_id: int)
 signal player_removed(player_id: int)
 
 # ──────────────────────────────────────────────────────────────
@@ -14,6 +12,7 @@ signal player_removed(player_id: int)
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
+@onready var ball: SpaceBall = $Ball
 
 @onready var player_scene: PackedScene = preload("res://players/player_ship.tscn")
 
@@ -69,7 +68,7 @@ func _ready() -> void:
 # ──────────────────────────────────────────────────────────────
 #   PHYSICS DEMO-JOIN (Keyboard als Device 0)
 # ──────────────────────────────────────────────────────────────
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# Debug-Ausgabe optional
 	#print("Main physics running…")
 
@@ -85,7 +84,7 @@ func _physics_process(delta: float) -> void:
 # ──────────────────────────────────────────────────────────────
 #   SPIELER JOIN
 # ──────────────────────────────────────────────
-func _on_player_joined(player_id: int, device_id: int) -> void:
+func _on_player_joined(player_id: int, _device_id: int) -> void:
 	# print("✅ _on_player_joined aufgerufen, player_id:", player_id, " device_id:", device_id)
 
 
@@ -211,9 +210,6 @@ func _connect_level_signals() -> void:
 		return
 	# print("main: connect_level_signals – Kinder:", level_container.get_child_count())
 
-	if level.has_signal("level_finished"):
-		level.level_finished.connect(_on_level_finished)
-
 	if level.has_signal("zoom_requested"):
 		level.zoom_requested.connect(_on_zoom_requested)
 
@@ -229,8 +225,6 @@ func _on_level_loaded() -> void:
 
 	_connect_level_signals()
 
-func _on_level_finished(next_level_number: int, gained_score: int = 0, gained_energy: int = 0) -> void:
-	pass
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 	# print("received zoom signal)")

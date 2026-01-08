@@ -79,6 +79,5 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		"here_comes_the_boss":
 			enemy_spawner.here_comes_the_boss()
 			
-			
 		_:
 			push_warning("Unbekanntes Timeline-Event: %s" % event_name)

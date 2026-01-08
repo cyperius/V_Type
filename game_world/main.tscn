@@ -38,5 +38,7 @@ unique_name_in_owner = true
 
 [node name="Ball" parent="." instance=ExtResource("5_a57km")]
 position = Vector2(606, 1117)
+collision_layer = 220
+speed = 1500.0
 
 [editable path="CanvasLayer/UI"]

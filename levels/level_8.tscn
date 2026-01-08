@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://0ji404uc88wb"]
+
+[ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_qnp4g"]
+[ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_ho0ug"]
+[ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_lxcpb"]
+[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="4_vko6h"]
+[ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="5_k2ajo"]
+[ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_6kkia"]
+[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="7_fksli"]
+[ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="8_lyejb"]
+
+[node name="Level_1" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_qnp4g")
+amount_of_enemies = 100
+ship_scale = 1.2
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_ho0ug")]
+level_boss = ExtResource("3_lxcpb")
+enemy1 = ExtResource("4_vko6h")
+enemy2_with_path = ExtResource("5_k2ajo")
+enemy3 = ExtResource("6_6kkia")
+
+[node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
+position = Vector2(4032, 1783)
+
+[node name="Marker2D2" parent="EnemySpawner/SpawnPositions" index="1"]
+position = Vector2(4524, 1822)
+
+[node name="Marker2D3" parent="EnemySpawner/SpawnPositions" index="2"]
+position = Vector2(4583, 467)
+
+[node name="Marker2D4" parent="EnemySpawner/SpawnPositions" index="3"]
+position = Vector2(4495, 1389)
+
+[node name="Marker2D5" parent="EnemySpawner/SpawnPositions" index="4"]
+position = Vector2(4356, 1023)
+
+[node name="Marker2D6" parent="EnemySpawner/SpawnPositions" index="5"]
+position = Vector2(4097, 206)
+
+[node name="Marker2D7" parent="EnemySpawner/SpawnPositions" index="6"]
+position = Vector2(5379.5, 423)
+
+[node name="Marker2D8" parent="EnemySpawner/SpawnPositions" index="7"]
+position = Vector2(5379.5, 743)
+
+[node name="Marker2D9" parent="EnemySpawner/SpawnPositions" index="8"]
+position = Vector2(5291, 1186)
+
+[node name="Marker2D10" parent="EnemySpawner/SpawnPositions" index="9"]
+position = Vector2(5320, 84)
+
+[node name="Marker2D11" parent="EnemySpawner/SpawnPositions" index="10"]
+position = Vector2(5286, 1703)
+
+[node name="Marker2D12" parent="EnemySpawner/SpawnPositions" index="11"]
+position = Vector2(5350, 2121)
+
+[node name="EnemiesContainer" type="Node2D" parent="."]
+
+[node name="background_Control" parent="." instance=ExtResource("7_fksli")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -82.0
+offset_top = -54.0
+offset_right = -82.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 6.322
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_lyejb")
+autoplay = true
+
+[node name="Players" type="Node2D" parent="."]
+
+[connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
+
+[editable path="EnemySpawner"]

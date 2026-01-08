@@ -267,8 +267,8 @@ func _on_area_entered(other: Area2D) -> void:
 			hit.global_position = Vector2(other.global_position.x - 45, other.global_position.y)
 			other.queue_free()
 
-func player_is_hit(damage: int) -> void:
-	_change_health(-damage)
+func player_is_hit(taken_damage: int) -> void:
+	_change_health(-taken_damage)
 	calculate_damage_state()
 	if health <= 0:
 		handle_player_death()

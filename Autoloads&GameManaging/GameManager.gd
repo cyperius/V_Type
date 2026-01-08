@@ -313,10 +313,10 @@ func _on_enemy_hit(score: int, energy: int, player_id: int) -> void:
 		player_scores[player_id] = 0
 	player_scores[player_id] += score
 	if Global.player_ships.has(player_id):
-		print("line286: check")
+		#print("line286: check")
 		var ship = Global.player_ships[player_id]
 		if ship is PlayerShip:
-			print("line289: check")
+			#print("line289: check")
 			ship.blue_energy += energy
 			ship.score += score
 	_update_global_ui()
