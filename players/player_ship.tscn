@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene load_steps=9 format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
+[ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flg8t"]
 radius = 40.0
@@ -26,6 +27,7 @@ secondary_weapon = ExtResource("3_flg8t")
 
 [node name="ship_sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(1, 0)
 texture = ExtResource("4_5icsl")
 
 [node name="Gunpoint" type="Node2D" parent="."]
@@ -52,3 +54,8 @@ one_shot = true
 [node name="ParticlesShield" parent="." instance=ExtResource("5_5icsl")]
 unique_name_in_owner = true
 scale = Vector2(0.242723, 0.189479)
+
+[node name="Burst" parent="." instance=ExtResource("6_5icsl")]
+position = Vector2(-106, -6)
+scale = Vector2(0.12, 0.072)
+skew = -0.216421

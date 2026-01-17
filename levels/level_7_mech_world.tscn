@@ -249,14 +249,13 @@ damage = 100
 
 [node name="Sprite2D" type="Sprite2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder"]
 scale = Vector2(3, 2.998)
-texture = ExtResource("10_57v3o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MechWorld/SteelGirdersGroup2/SteelGirder"]
 position = Vector2(2.91172, -17.7913)
 shape = SubResource("RectangleShape2D_57v3o")
 
 [node name="SteelGirder2" type="Area2D" parent="MechWorld/SteelGirdersGroup2"]
-position = Vector2(4721, 297)
+position = Vector2(4743, 413)
 rotation = -1.67752
 collision_layer = 68
 collision_mask = 195

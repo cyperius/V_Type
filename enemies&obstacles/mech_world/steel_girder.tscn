@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cjuuiscrvfvc2"]
 
 [ext_resource type="Script" uid="uid://dbh3td24uiqvs" path="res://scripts/steel_girder.gd" id="1_7ij44"]
-[ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="1_fx531"]
+[ext_resource type="Texture2D" uid="uid://cxh1uci0xwds2" path="res://assets/graphic_elements/game_world/golden_girder.png" id="2_7ij44"]
 [ext_resource type="Script" uid="uid://bc6i86ur5qygm" path="res://scripts/steel_girder_area_2d.gd" id="3_7ij44"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1k2u"]
@@ -12,10 +12,12 @@ script = ExtResource("1_7ij44")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-0.141578, 20.0988)
-scale = Vector2(3.49222, 3.48893)
-texture = ExtResource("1_fx531")
+scale = Vector2(1.65095, 1.39027)
+texture = ExtResource("2_7ij44")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(913, -734)
+scale = Vector2(1.99782, -2.45126)
 shape = SubResource("RectangleShape2D_k1k2u")
 
 [node name="Area2D" type="Area2D" parent="."]
