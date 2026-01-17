@@ -166,6 +166,7 @@ sources/0 = SubResource("TileSetAtlasSource_lxcpb")
 process_mode = 1
 script = ExtResource("1_qnp4g")
 amount_of_enemies = 100
+level_nr = 8
 ship_scale = 1.2
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ho0ug")]

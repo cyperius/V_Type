@@ -42,7 +42,7 @@ var level_paths   : Array      = [
 	"res://levels/level_5.tscn", 
 	"res://levels/level_6.tscn",
 	"res://levels/level_7_mech_world.tscn",
-	"level8",
+	"res://levels/level_8_tilemap.tscn",
 	"level9",
 	"res://levels/void_for_testing.tscn"
 	# …weitere Levels hier anhängen

@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://d0iia6p5arjuq"]
+[gd_scene load_steps=11 format=3 uid="uid://d0iia6p5arjuq"]
 
+[ext_resource type="Script" uid="uid://byecouccnw75x" path="res://scripts/burst.gd" id="1_gr0xf"]
 [ext_resource type="Texture2D" uid="uid://caj0bit2ohgs2" path="res://assets/graphic_elements/player/burst/Burst7.png" id="1_qntfj"]
 [ext_resource type="Texture2D" uid="uid://bo102p52jvksd" path="res://assets/graphic_elements/player/burst/Burst9.png" id="2_gr0xf"]
 [ext_resource type="Texture2D" uid="uid://icndob4mi2wm" path="res://assets/graphic_elements/player/burst/Burst6.png" id="3_lrsxv"]
@@ -41,7 +42,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Burst" type="Node2D"]
+[node name="Flame" type="Node2D"]
+script = ExtResource("1_gr0xf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-235, -12)
@@ -50,4 +52,4 @@ skew = -0.015708
 sprite_frames = SubResource("SpriteFrames_28446")
 animation = &"bursting"
 autoplay = "bursting"
-frame_progress = 0.261042
+frame_progress = 0.925212
