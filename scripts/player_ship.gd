@@ -1,4 +1,4 @@
-class_name PlayerShip extends Area2D
+class_name PlayerShip extends CharacterBody2D
 
 # ──────────────────────────────────────────────────────────────
 #   SIGNALS (für Main/UI, statt direkte UI‑Zugriffe)
@@ -62,7 +62,7 @@ var projectiles := []
 @onready var player3_skin = preload("res://assets/graphic_elements/player/player3_ship_sideways.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
 @onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
-@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
+@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
 @onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
 @onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
 @onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
@@ -74,7 +74,7 @@ var projectiles := []
 @onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship.png")
 var skins
 
-
+@onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var hit_scene: PackedScene = preload("res://game_world/hit.tscn")
 @onready var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
@@ -139,7 +139,7 @@ func connect_signals() -> void:
 	print("connecte signals")
 	var level := GameManager.current_level_node
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-	area_entered.connect(_on_area_entered)
+	ship_area.area_entered.connect(_on_area_entered)
 	if level.has_signal("zoom_requested"):
 		print("see the signal...")
 		level.zoom_requested.connect(_on_zoom_requested)
@@ -181,25 +181,32 @@ func _process(delta: float) -> void:
 			deactivate_shield()
 		#_emit_stats()  # UI live halten
 
-	# Waffen  Invalid type in function 'shoot_weapon' in base 'Area2D (PlayerShip)'. The Object-derived class of argument 1 (previously freed) is not a subclass of the expected argument class.
+	
 	if Input.is_action_just_pressed("p%d_primary_weapon" % player_id):
 		shoot_weapon(primary_weapon, player_id)
 	if Input.is_action_just_pressed("p%d_secondary_weapon" % player_id):
 		shoot_weapon(secondary_weapon, player_id)
 
-	# Bewegung je nach Modus
+
+func _physics_process(delta: float) -> void:
+	if player_is_dead:
+		velocity = Vector2.ZERO
+		return
+
 	match mode:
 		FlightMode.LEFT_RIGHT:
-			_process_left_right_move(delta)
+			_physics_left_right_move(delta)
 		FlightMode.CIRCLE:
-			_process_circle(delta)
+			_physics_circle_move(delta)
 		FlightMode.DOWN_UP:
-			_process_left_right_move(delta)
+			_physics_left_right_move(delta)
+	# Bewegung je nach Modus
+	
 
 # ──────────────────────────────────────────────────────────────
 #   MOVEMENT
 # ──────────────────────────────────────────────────────────────
-func _process_left_right_move(delta: float) -> void:
+func _physics_left_right_move(delta: float) -> void:
 	var direction := Vector2.ZERO
 	if controls_are_reversed:
 		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
@@ -219,21 +226,50 @@ func _process_left_right_move(delta: float) -> void:
 	
 	var screen_width := get_viewport_rect().size.x / zoom_factor.x
 	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
-	var velocity := direction * speed
-	position += velocity * delta
+	velocity = direction * speed
+	move_and_slide()
 	position.x = clampf(position.x, 0.0, screen_width)
 	position.y = clampf(position.y, 0.0, screen_hight)
 	
 
-func _process_circle(delta: float) -> void:
+func _physics_circle_move(delta: float) -> void:
 	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)
-	angle += input_strength * angular_speed * delta
-	var offset := Vector2(cos(angle), sin(angle)) * circle_radius
-	global_position = circle_center_position + offset
-	rotation = angle + PI # Die Anpassunf auf 2.5 PI war nötig um die 
-	# Ausrichtung des ships nach innen zu erreichen
+	## A) einfache Varainte ohne Physik-Steuerung
+	#angle += input_strength * angular_speed * delta
+	#var offset := Vector2(cos(angle), sin(angle)) * circle_radius
+	#global_position = circle_center_position + offset
+	#rotation = angle 
 	
 	
+	# B Physiksteuerung inkl. Kollsionsvorhersage und dann Stopp
+	# Kein Input -> keine Bewegung (du bleibst exakt stehen)
+	if is_equal_approx(input_strength, 0.0):
+		velocity = Vector2.ZERO
+		return
+
+	# Naechster Winkel (noch NICHT uebernehmen)
+	var next_angle := angle + input_strength * angular_speed * delta
+
+	# Zielpunkt auf der Schiene (exakt Kreis)
+	var next_offset := Vector2(cos(next_angle), sin(next_angle)) * circle_radius
+	var next_position := circle_center_position + next_offset
+
+	# Bewegung, die wir machen wuerden
+	var motion := next_position - global_position
+
+	# Testen, ob diese Bewegung kollidiert (ohne sie wirklich auszufuehren)
+	var collision := move_and_collide(motion, true) # test_only = true
+
+	if collision == null:
+		# Frei -> Winkel uebernehmen und exakt auf den Kreis setzen
+		angle = next_angle
+		global_position = next_position
+	else:
+		# Blockiert -> Winkel nicht aendern (du "klemmst" an der Wand)
+		velocity = Vector2.ZERO
+
+	# Optik: nach innen ausrichten (auch wenn blockiert)
+	rotation = angle + PI
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
@@ -254,8 +290,8 @@ func _on_area_entered(other: Area2D) -> void:
 				
 		else:
 			# Kurzzeitig nicht kollidieren, damit der Treffer nicht mehrfach zählt
-			collision_mask = 0
-			collision_layer = 0
+			ship_area.collision_mask = 0
+			ship_area.collision_layer = 0
 			player_is_hit(dmg)
 			print("player_ship.gd: see the grider")
 
@@ -287,8 +323,8 @@ func _do_been_hit_blink() -> void:
 func _on_just_been_hit_timer_timeout() -> void:
 	# Nach dem i-Frames-Blinken Kollisionswerte wiederherstellen
 	modulate = current_player_state
-	collision_mask = _backup_collision_mask
-	collision_layer = _backup_collision_layer
+	ship_area.collision_mask = _backup_collision_mask
+	ship_area.collision_layer = _backup_collision_layer
 
 # Schild
 func activate_shield() -> void:

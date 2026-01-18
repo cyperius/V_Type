@@ -61,9 +61,11 @@ func _physics_process(delta: float) -> void:
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
 func _on_area_entered(other: Area2D) -> void:
-	# Friendly Fire verhindern: eigenes Schiff ignorieren
-	if other is PlayerShip:
-		return
+	## Friendly Fire verhindern: eigenes Schiff ignorieren
+	if other.get_parent() != null:
+		var parent = other.get_parent()
+		if parent is PlayerShip:
+			return # braucht es aktuell nicht, da die PlayerShips jetzt CharacterBodies sind.
 
 	# Treffer-VFX (nicht für Asteroiden, falls du dort keinen Effekt willst)
 	if not other.is_in_group("asteroids"):

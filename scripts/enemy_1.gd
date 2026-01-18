@@ -46,10 +46,6 @@ func _ready() -> void:
 		audio_stream_player_2d.stream = shot_sound
 	
 	
-	#current_level = get_parent().get_parent() 
-	# 15.12.2025 get_parent().get_parent() ist schlechte..
-	# praxis, also bei gelegenheit stabiler machen..
-	# 17.12.2025 Versuch: 
 	current_level = get_tree().get_first_node_in_group("levels")
 	
 	# 1) -- für Angriff auf Spieler -- #
@@ -60,6 +56,7 @@ func _ready() -> void:
 			# Spieler in das Dictionary eintragen
 			players[player_id] = player
 	# 1) -- oben: für Angriff auf Spieler -- #
+	
 	
 	# 2) -- für Angriff auf space_ball -- #
 	var current_scene = get_tree().current_scene
@@ -74,8 +71,9 @@ func connect_signals() -> void:
 	
 
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
-		apply_damage(other.damage, other.player_id)
+	if other.is_in_group("players"):
+		var entered_player = other.get_parent()
+		apply_damage(entered_player.damage, entered_player.player_id)
 	elif other.is_in_group("evaders"):    
 		apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
 # wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 

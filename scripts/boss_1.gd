@@ -140,7 +140,7 @@ func _shoot(weapon: PackedScene) -> void:
 			#print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
 	
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
+	if other.is_in_group("players"):
 		apply_damage(other.damage, other.player_id)
 	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
 	#elif other.is_in_group("evaders"):    

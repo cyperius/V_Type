@@ -72,9 +72,10 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 1) Grundzustände (Player Rotation und Flight Mode im Inspector setzen)
 	player.mode = flight_mode # Verhalten definiert im player_ship.gd
 	player.rotation_degrees = player_rotation
-	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) # so zu lesen: Bsp. (1 << 2): 
+	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5) | (1 << 6)| (1 << 7) 
+	# so zu lesen: Bsp. (1 << 2): 
 	# 1 wird 2 Bits nach links geschoben; ergibt: 000100 (binär) → Layer 3
-	# player reagier also auf collision_mask (1 << 2) =3; auf (1 << 3) = 4; usw.
+	# player reagiert also auf collision_mask (1 << 2) =3; auf (1 << 3) = 4; usw.
 	player.collision_layer = 1
 	# print(" i'm placed in the level (player ", player, ")")
 

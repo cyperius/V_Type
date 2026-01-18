@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
+[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
-[ext_resource type="Texture2D" uid="uid://cc0j31mhuem11" path="res://assets/graphic_elements/enemies/space_shurikan_station.png" id="7_flg8t"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5icsl"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flg8t"]
 radius = 28.8764
 height = 190.0
 
@@ -16,14 +16,14 @@ height = 190.0
 radius = 118.0
 height = 423.91
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flg8t"]
-radius = 28.8764
-height = 190.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rk2pp"]
+radius = 27.0
+height = 236.0
 
-[node name="PlayerShip" type="Area2D"]
+[node name="PlayerShip" type="CharacterBody2D"]
 process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
-collision_mask = 124
+collision_mask = 252
 script = ExtResource("1_l3jmy")
 max_health = 1000
 damage = 20
@@ -37,10 +37,16 @@ texture = ExtResource("4_5icsl")
 
 [node name="Gunpoint" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="ShipArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_mask = 60
+script = ExtResource("5_flg8t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
+visible = false
 rotation = -1.5708
 scale = Vector2(0.831128, 1.03763)
-shape = SubResource("CapsuleShape2D_5icsl")
+shape = SubResource("CapsuleShape2D_flg8t")
 one_way_collision_margin = 0.0
 
 [node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="."]
@@ -66,15 +72,8 @@ position = Vector2(-106, -6)
 scale = Vector2(0.12, 0.072)
 skew = -0.216421
 
-[node name="RigidBody2D" type="AnimatableBody2D" parent="."]
-collision_mask = 113
-sync_to_physics = false
-
-[node name="BodyCollisionShape2D2" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="BodyCollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 0)
 rotation = -1.5708
-shape = SubResource("CapsuleShape2D_flg8t")
+shape = SubResource("CapsuleShape2D_rk2pp")
 one_way_collision_margin = 0.0
-
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
-scale = Vector2(1, 0.5)
-texture = ExtResource("7_flg8t")

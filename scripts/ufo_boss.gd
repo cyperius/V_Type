@@ -127,8 +127,9 @@ func _on_been_hit() -> void:
 		
 		
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
-		apply_damage(other.damage, other.player_id)
+	if other.is_in_group("players"):
+		var entered_player = other.get_parent()
+		entered_player.apply_damage(entered_player.damage, entered_player.player_id)
 	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
 	#elif other.is_in_group("evaders"):    
 		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
