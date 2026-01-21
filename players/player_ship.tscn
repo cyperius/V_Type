@@ -1,11 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene load_steps=12 format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
-[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
+[ext_resource type="Script" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flg8t"]
@@ -16,9 +16,11 @@ height = 190.0
 radius = 118.0
 height = 423.91
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rk2pp"]
-radius = 27.0
-height = 236.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]
+size = Vector2(26.0009, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_df6tw"]
+size = Vector2(15.9993, 187)
 
 [node name="PlayerShip" type="CharacterBody2D"]
 process_mode = 1
@@ -72,8 +74,14 @@ position = Vector2(-106, -6)
 scale = Vector2(0.12, 0.072)
 skew = -0.216421
 
-[node name="BodyCollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(-3, 0)
+[node name="BodyCollisionShape1" type="CollisionShape2D" parent="."]
+position = Vector2(5.00001, -8)
 rotation = -1.5708
-shape = SubResource("CapsuleShape2D_rk2pp")
+shape = SubResource("RectangleShape2D_flg8t")
+one_way_collision_margin = 0.0
+
+[node name="BodyCollisionShape2" type="CollisionShape2D" parent="."]
+position = Vector2(-9, 13)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_df6tw")
 one_way_collision_margin = 0.0

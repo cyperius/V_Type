@@ -80,6 +80,10 @@ var skins
 @onready var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
+@onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
+@onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
+
+
 
 # Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
 var _backup_collision_layer: int
@@ -147,6 +151,7 @@ func connect_signals() -> void:
 func set_skin(mode: String) -> void:
 	ship_sprite.texture = skins[player_id-1]["looks"][mode]
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
+	body_collision_shape_1.s
 # ──────────────────────────────────────────────────────────────
 #   PROCESS / INPUT
 # ──────────────────────────────────────────────────────────────
