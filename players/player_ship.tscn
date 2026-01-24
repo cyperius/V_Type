@@ -44,11 +44,6 @@ rotation = -1.5708
 shape = SubResource("RectangleShape2D_df6tw")
 one_way_collision_margin = 0.0
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-scale = Vector2(0.992441, 1.05523)
-target_position = Vector2(150, 0)
-collision_mask = 65
-
 [node name="ship_sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(1, 0)

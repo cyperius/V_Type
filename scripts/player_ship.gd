@@ -88,9 +88,6 @@ var skins
 @onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
 @onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
 
-# RayCast am Body angehängt
-@onready var ray_cast_2d: RayCast2D = $RayCast2D
-
 # Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
 var _backup_collision_layer: int
 var _backup_collision_mask: int
@@ -235,15 +232,21 @@ func _physics_left_right_move(delta: float) -> void:
 		else:
 			set_skin("neutral")
 	
-	
 	var screen_width := get_viewport_rect().size.x / zoom_factor.x
 	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
 	velocity = direction * speed
 	move_and_slide()
-	if ray_cast_2d.is_colliding():
-		position.x = clampf(position.x-5, 0.0, screen_width)
-	else:
-		position.x = clampf(position.x, 0.0, screen_width)
+	velocity = direction * speed
+
+	# Wenn du an einer Wand klebst: Geschwindigkeit in Wandrichtung entfernen
+	for collision_nr in range(get_slide_collision_count()):
+		var collision := get_slide_collision(collision_nr)
+		var normal := collision.get_normal()
+		# Entferne den Anteil der velocity, der in die Wand zeigt
+		if velocity.dot(normal) < 0.0:
+			velocity = velocity.slide(normal)
+			
+	position.x = clampf(position.x, 0.0, screen_width)
 	position.y = clampf(position.y, 0.0, screen_hight)
 	
 
