@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d201dmyypinsj"
+path="res://.godot/imported/Label_ist gut_Mid_Levelish.ogg-023aab2f2e3010d26c10356d2c14ec94.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_ist gut_Mid_Levelish.ogg"
+dest_files=["res://.godot/imported/Label_ist gut_Mid_Levelish.ogg-023aab2f2e3010d26c10356d2c14ec94.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

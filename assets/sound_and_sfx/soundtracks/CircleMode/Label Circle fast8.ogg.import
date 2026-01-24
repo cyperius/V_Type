@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ctm6ep2d02dy6"
+path="res://.godot/imported/Label Circle fast8.ogg-8a82b843a1f270fe832ab5dd30c48aad.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/CircleMode/Label Circle fast8.ogg"
+dest_files=["res://.godot/imported/Label Circle fast8.ogg-8a82b843a1f270fe832ab5dd30c48aad.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dygygvhw6utor"
+path="res://.godot/imported/Label_flight_through_long_corridor_towards epic finale.ogg-0aea9f07f9860372161c6b3ca2b86fbd.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_flight_through_long_corridor_towards epic finale.ogg"
+dest_files=["res://.godot/imported/Label_flight_through_long_corridor_towards epic finale.ogg-0aea9f07f9860372161c6b3ca2b86fbd.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

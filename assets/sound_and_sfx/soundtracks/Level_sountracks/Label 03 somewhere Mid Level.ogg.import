@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dbqovfkws6biw"
+path="res://.godot/imported/Label 03 somewhere Mid Level.ogg-643e8fd58fc5bcd6519b8f541d48a4fb.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label 03 somewhere Mid Level.ogg"
+dest_files=["res://.godot/imported/Label 03 somewhere Mid Level.ogg-643e8fd58fc5bcd6519b8f541d48a4fb.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

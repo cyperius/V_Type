@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bigdfibyy1g7s"
+path="res://.godot/imported/Space Waves.ogg-908239f1c8d3c865a6334d9f0d5a4083.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Space Waves.ogg"
+dest_files=["res://.godot/imported/Space Waves.ogg-908239f1c8d3c865a6334d9f0d5a4083.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
