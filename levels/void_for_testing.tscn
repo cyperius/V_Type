@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d36vihnryhm45"]
+[gd_scene load_steps=15 format=3 uid="uid://d36vihnryhm45"]
 
 [ext_resource type="Script" uid="uid://cndkoqykwa006" path="res://scripts/void_for_testing.gd" id="1_0r0rd"]
 [ext_resource type="Script" uid="uid://dc0cvebmpglmy" path="res://scripts/enemy_spawner.gd" id="2_4giuu"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="5_78h43"]
 [ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_2ov36"]
 [ext_resource type="Script" uid="uid://6tosvc4nc1tq" path="res://scripts/void_background_control.gd" id="7_p75xr"]
-[ext_resource type="AudioStream" uid="uid://dooxkahr0t1ts" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_Midlevel_progressiv.ogg" id="8_6q1xe"]
 [ext_resource type="Shader" uid="uid://2i33jfqowr2r" path="res://ressources/shaders/scrolling_background.gdshader" id="8_j7wy4"]
 [ext_resource type="Texture2D" uid="uid://csgdcmhiu0chx" path="res://assets/graphic_elements/backgrounds/Sternenhimmel_NachtJPG.png" id="9_78h43"]
 [ext_resource type="Texture2D" uid="uid://dqcxpwl0abmy8" path="res://assets/graphic_elements/enemies/metal_arm1.png" id="10_sp0my"]
@@ -118,7 +117,6 @@ one_shot = true
 autostart = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_6q1xe")
 autoplay = true
 
 [node name="Players" type="Node2D" parent="."]

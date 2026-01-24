@@ -58,20 +58,25 @@ var projectiles := []
 # ──────────────────────────────────────────────────────────────
 @onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
-@onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways.png")
+@onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways_neutral.png")
 @onready var player3_skin = preload("res://assets/graphic_elements/player/player3_ship_sideways.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
+
 @onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
 @onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
 @onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
 @onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
 @onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
 @onready var player3_diving_skin = preload("res://assets/graphic_elements/player/player3_ship_rueckenlage.png")
+@onready var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
+@onready var player5_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_neutral.png")
+@onready var player_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
+
 
 @onready var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
 @onready var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
 @onready var player3_top_down = preload("res://assets/graphic_elements/player/player3_ship.png")
-@onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship.png")
+@onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship_top_down.png")
 var skins
 
 @onready var ship_area: Area2D = %ShipArea
@@ -83,7 +88,8 @@ var skins
 @onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
 @onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
 
-
+# RayCast am Body angehängt
+@onready var ray_cast_2d: RayCast2D = $RayCast2D
 
 # Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
 var _backup_collision_layer: int
@@ -151,7 +157,7 @@ func connect_signals() -> void:
 func set_skin(mode: String) -> void:
 	ship_sprite.texture = skins[player_id-1]["looks"][mode]
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
-	body_collision_shape_1.s
+	body_collision_shape_1.scale = skins[player_id-1]["looks"]["scale"]
 # ──────────────────────────────────────────────────────────────
 #   PROCESS / INPUT
 # ──────────────────────────────────────────────────────────────
@@ -197,6 +203,7 @@ func _physics_process(delta: float) -> void:
 	if player_is_dead:
 		velocity = Vector2.ZERO
 		return
+	
 
 	match mode:
 		FlightMode.LEFT_RIGHT:
@@ -233,7 +240,10 @@ func _physics_left_right_move(delta: float) -> void:
 	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
 	velocity = direction * speed
 	move_and_slide()
-	position.x = clampf(position.x, 0.0, screen_width)
+	if ray_cast_2d.is_colliding():
+		position.x = clampf(position.x-5, 0.0, screen_width)
+	else:
+		position.x = clampf(position.x, 0.0, screen_width)
 	position.y = clampf(position.y, 0.0, screen_hight)
 	
 

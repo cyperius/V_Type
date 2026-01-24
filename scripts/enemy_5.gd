@@ -12,7 +12,7 @@ func _on_target_player_activated() -> void:
 	y_speed = 100
 
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
+	if other.is_in_group("players"):
 		die()
 	elif other.is_in_group("evaders"):    
 		apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
