@@ -317,22 +317,8 @@ func _on_area_entered(other: Area2D) -> void:
 			ship_area.collision_mask = 0
 			ship_area.collision_layer = 0
 			player_is_hit(dmg)
-			print("player_ship.gd: see the grider")
-
-		# Treffer-Feedback bei Projektilen
-		
 			
-		if other.is_in_group("projectiles"):
-			var hit := hit_scene.instantiate()
 
-			# 1) erst konfigurieren
-			hit.global_position = other.global_position + Vector2(-45, 0)
-			hit.scale = Vector2(2, 2)
-
-			# 2) dann hinzufügen
-			get_tree().current_scene.add_child(hit)
-
-			other.queue_free()
 
 
 func player_is_hit(taken_damage: int) -> void:
