@@ -253,7 +253,7 @@ func _physics_left_right_move(delta: float) -> void:
 		if velocity.dot(normal) < 0.0:
 			velocity = velocity.slide(normal)
 			
-	position.x = clampf(position.x, 0.0, screen_width)
+	#position.x = clampf(position.x, 0.0, screen_width)
 	position.y = clampf(position.y, 0.0, screen_hight)
 	
 

@@ -68,7 +68,7 @@ func _ready() -> void:
 # ──────────────────────────────────────────────────────────────
 #   PHYSICS DEMO-JOIN (Keyboard als Device 0)
 # ──────────────────────────────────────────────────────────────
-func _physics_process(_delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Debug-Ausgabe optional
 	#print("Main physics running…")
 
@@ -79,6 +79,8 @@ func _physics_process(_delta: float) -> void:
 			# Players.join() sendet das player_joined-Signal
 			# und Main._on_player_joined() wird automatisch aufgerufen.
 			print("Keyboard join triggered, player_id:", player_id)
+			
+	
 
 
 # ──────────────────────────────────────────────────────────────

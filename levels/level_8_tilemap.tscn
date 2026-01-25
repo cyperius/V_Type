@@ -268,7 +268,6 @@ process_mode = 1
 script = ExtResource("1_6tcit")
 last_level = true
 auto_thrust_enabled = true
-player_camera_on = true
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ho0ug")]
 timer_basic_wait_time = 300

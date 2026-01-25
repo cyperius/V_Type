@@ -32,6 +32,7 @@ max_health = 1000
 damage = 20
 primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
+metadata/_edit_vertical_guides_ = [540.0]
 
 [node name="PlayerCamera2D" type="Camera2D" parent="."]
 enabled = false

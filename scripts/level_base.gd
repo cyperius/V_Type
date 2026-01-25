@@ -32,7 +32,7 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 func _ready() -> void:
 	add_to_group("levels")
 	# Grösse des Hintergrunds setzen
-	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
+	background.size = Vector2(20000, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
 	
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
