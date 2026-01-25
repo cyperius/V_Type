@@ -50,7 +50,9 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		"enemies_appear":
 			enemies_appear()
 		"zoom_out":
-			zoom_out(0.5, 0.5, 34.0)
+			var default_zoom_x = get_tree().current_scene.default_zoom_x
+			var default_zoom_y = get_tree().current_scene.default_zoom_y
+			zoom_out(0.5 * default_zoom_x, 0.5 * default_zoom_y, 34.0)
 		"target_player":
 			start_attacking_player()
 		_:

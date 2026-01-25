@@ -22,6 +22,15 @@ var scroll_x := 0.0
 
 var input_joiner: Node = null
 
+# ──────────────────────────────────────────────────────────────
+#   OPTICS
+# ──────────────────────────────────────────────────────────────
+
+@export var default_zoom_x := 1
+@export var default_zoom_y := 1
+
+
+# ──────────────────────────────────────────────────────────────
 
 # Nur einmal Level laden – niemals mehrfach
 var level_loaded_once := false
@@ -95,7 +104,8 @@ func _physics_process(delta: float) -> void:
 			var snapped_x: int = int(floor(scroll_x)) 
 			scroll_anchor.position.x = snapped_x
 			camera.position.x = snapped_x
-
+			camera.global_position.y = int(camera.global_position.y)
+			
 			
 			#
 			#
@@ -244,7 +254,7 @@ func _connect_level_signals() -> void:
 
 func _on_level_loaded() -> void:
 	tw.kill()
-	camera.zoom = Vector2(1, 1)
+	camera.zoom = Vector2(default_zoom_x, default_zoom_y)
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
 	for player_id in Global.player_ships.keys():
