@@ -7,6 +7,8 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export var amount_of_enemies: int
 @export var level_nr : int = 1
 @export var last_level := false
+@export var auto_thrust_enabled := false
+@export var player_camera_on := false
 
 
 # -- levelspezifische optics und Platzierung für das player_ship -- #
@@ -30,7 +32,7 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 func _ready() -> void:
 	add_to_group("levels")
 	# Grösse des Hintergrunds setzen
-	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
+	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
 	
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
@@ -94,6 +96,8 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 			base_position = Vector2(viewport_size.x * 0.1, viewport_size.y * 0.2)
 			# print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
 			print("my placed position: ", player.global_position)
+			player.auto_thrust_enabled = auto_thrust_enabled
+			player.player_camera_2d.enabled = player_camera_on
 			
 	player.global_position = base_position + player_offset
 			

@@ -17,6 +17,7 @@ var circle_radius := 200.0
 var angle := 0.0
 var angular_speed := 2.0
 var zoom_factor : Vector2 = Vector2(1, 1)
+@onready var player_camera_2d: Camera2D = $PlayerCamera2D
 
 
 # ──────────────────────────────────────────────────────────────
@@ -26,6 +27,9 @@ var zoom_factor : Vector2 = Vector2(1, 1)
 @export var max_speed: float = 600.0
 var speed: float = max_speed
 var boost_activated := false
+@export var auto_forward_speed := 300.0
+@export var auto_thrust_enabled := false
+
 
 @export var max_health: int = 600
 var health: int							# in _ready() auf max_health gesetzt
@@ -108,7 +112,6 @@ func _ready() -> void:
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
-
 	
 
 	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
@@ -234,9 +237,13 @@ func _physics_left_right_move(delta: float) -> void:
 	
 	var screen_width := get_viewport_rect().size.x / zoom_factor.x
 	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
-	velocity = direction * speed
+	
+	if auto_thrust_enabled:
+		velocity = direction * speed + auto_forward_speed * Vector2(1, 0)
+	else:
+		velocity = direction * speed
 	move_and_slide()
-	velocity = direction * speed
+	
 
 	# Wenn du an einer Wand klebst: Geschwindigkeit in Wandrichtung entfernen
 	for collision_nr in range(get_slide_collision_count()):
@@ -523,3 +530,4 @@ func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 # ──────────────────────────────────────────────────────────────
 func status_report() -> void:
 	print("player_id:", player_id, " pos:", global_position, "screensize: ", get_viewport_rect().size, " hp:", health, " energy:", blue_energy)
+	print("player_camera: ", player_camera_2d.enabled)

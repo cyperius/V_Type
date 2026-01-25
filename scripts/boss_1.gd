@@ -141,7 +141,7 @@ func _shoot(weapon: PackedScene) -> void:
 	
 func _on_area_entered(other: Area2D) -> void:
 	if other.is_in_group("players"):
-		apply_damage(other.damage, other.player_id)
+		apply_damage(other.damage, -1)
 	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
 	#elif other.is_in_group("evaders"):    
 		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
