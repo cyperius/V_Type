@@ -163,11 +163,13 @@ func here_comes_the_boss():
 		_on_boss_defeated() # falls kein Boss gesetzt wurde, lösen wir direkt das defeated_signal aus
 		# damit der Level beendet wird. 14.12.22025 evtl. Bezeichnung ändern oder separates Signal zum levelbeeenden?
 	else: # wenn also ein Boss für level_boss gesetzt wurde (ganz oben "preload")
-		var boss = level_boss.instantiate()
-		# und dann die wird level_boss als child_Szene zur laufenden Szene hinzugefügt
+		var boss = level_boss.instantiate()		
+		# dann zuerst Péosition setzen und erst dann..
+		boss.global_position = Vector2(5000, 1100) # 7000, 1100
+		# wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
-		boss.global_position = Vector2(5000, 1100) # 7000, 1100
+		
 		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
 		boss.health_points = boss.health_points * number_of_players
 

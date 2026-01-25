@@ -63,7 +63,6 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void:
 		
-			
 	if lost_control:
 		rotation_degrees += 200 * delta
 		global_position = global_position.move_toward(next_corner, (basic_speed / 2) * delta)

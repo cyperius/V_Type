@@ -14,11 +14,14 @@ var level : Node # Gloable Varaible, Referenz wird in ready-Funktion gesetzt
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
 @onready var scroll_anchor: Node2D = %ScrollAnchor
+var scroll_x := 0.0
+
 @onready var ball: SpaceBall = $Ball
 
 @onready var player_scene: PackedScene = preload("res://players/player_ship.tscn")
 
 var input_joiner: Node = null
+
 
 # Nur einmal Level laden – niemals mehrfach
 var level_loaded_once := false
@@ -88,14 +91,22 @@ func _physics_process(delta: float) -> void:
 	if level != null and "camera_scrolling" in level:
 		print("camera_scrolling: ", level.camera_scrolling)
 		if level.camera_scrolling == true:
-			scroll_anchor.position.x += (200 * delta)
-			#camera.global_position = scroll_anchor.global_position
+			scroll_x += 200.0 * delta
+			var snapped_x: int = int(floor(scroll_x)) 
+			scroll_anchor.position.x = snapped_x
+			camera.position.x = snapped_x
 
-			var cam_pos := scroll_anchor.position
-			cam_pos.x = round(cam_pos.x)
-			cam_pos.y = round(cam_pos.y)
-			camera.position = cam_pos
-				
+			
+			#
+			#
+			#scroll_anchor.position.x += (200 * delta)
+			##camera.global_position = scroll_anchor.global_position
+#
+			#var cam_pos := scroll_anchor.position
+			#cam_pos.x = round(cam_pos.x)
+			#cam_pos.y = round(cam_pos.y)
+			#camera.position = cam_pos
+				#
 
 
 # ──────────────────────────────────────────────────────────────

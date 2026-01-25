@@ -30,7 +30,7 @@ func _on_area_entered(other) -> void:
 		# wenn ein Spieler getroffen wurde, Trefferszene auslösen und Schuss löschen
 		var hit := hit_scene.instantiate()
 		
-		# 1) erst konfigurieren
+		# 1) erst konfigurieren (inkl. richtungsabhängiger offset, da der Schuss lang ist)
 		hit.global_position = global_position + direction * speed * 0.05
 		hit.scale = Vector2(2, 2)
 
