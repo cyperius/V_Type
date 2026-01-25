@@ -32,8 +32,9 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 func _ready() -> void:
 	add_to_group("levels")
 	# Grösse des Hintergrunds setzen
-	background.size = Vector2(20000, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
-	
+	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
+	var camera = get_tree().current_scene.get_child(0)
+	camera.position = Vector2(0, 0)
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
 	# Alle registrierten Spieler ins Level setzen

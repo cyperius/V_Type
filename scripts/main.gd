@@ -12,6 +12,7 @@ signal player_removed(player_id: int)
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
+@onready var scroll_anchor: Node2D = %ScrollAnchor
 @onready var ball: SpaceBall = $Ball
 
 @onready var player_scene: PackedScene = preload("res://players/player_ship.tscn")
@@ -68,7 +69,8 @@ func _ready() -> void:
 # ──────────────────────────────────────────────────────────────
 #   PHYSICS DEMO-JOIN (Keyboard als Device 0)
 # ──────────────────────────────────────────────────────────────
-func _process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+
 	# Debug-Ausgabe optional
 	#print("Main physics running…")
 
@@ -79,7 +81,14 @@ func _process(_delta: float) -> void:
 			# Players.join() sendet das player_joined-Signal
 			# und Main._on_player_joined() wird automatisch aufgerufen.
 			print("Keyboard join triggered, player_id:", player_id)
-			
+	
+	scroll_anchor.global_position.x += (200 * delta)
+	#camera.global_position = scroll_anchor.global_position
+
+	var cam_pos := scroll_anchor.global_position
+	cam_pos.x = round(cam_pos.x)
+	cam_pos.y = round(cam_pos.y)
+	camera.global_position = cam_pos
 	
 
 

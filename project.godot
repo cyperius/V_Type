@@ -350,3 +350,12 @@ activate_ball={
 2d_physics/layer_6="boarders"
 2d_physics/layer_7="world"
 2d_physics/layer_8="ball"
+
+[physics]
+
+common/physics_interpolation=true
+
+[rendering]
+
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
