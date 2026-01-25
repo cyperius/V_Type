@@ -271,6 +271,7 @@ func _load_level(level_nr: int) -> void:
 
 	# In den Container einfügen
 	level_container.add_child(current_level_node)
+	
 
 	# Signal fürs Level-Ende verbinden (Godot 4-Style)
 	

@@ -9,6 +9,7 @@ signal player_removed(player_id: int)
 #   REFERENCES
 # ──────────────────────────────────────────────────────────────
 @onready var level_container: Node = $LevelContainer
+var level : Node # Gloable Varaible, Referenz wird in ready-Funktion gesetzt
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
@@ -35,7 +36,7 @@ func _ready() -> void:
 	
 	# Level loaded Signal des GameManagers verbinden
 	GameManager.level_loaded.connect(_on_level_loaded)
-
+	
 	# InputJoiner suchen
 	if has_node("InputJoiner"):
 		input_joiner = $InputJoiner
@@ -81,15 +82,20 @@ func _physics_process(delta: float) -> void:
 			# Players.join() sendet das player_joined-Signal
 			# und Main._on_player_joined() wird automatisch aufgerufen.
 			print("Keyboard join triggered, player_id:", player_id)
-	
-	scroll_anchor.global_position.x += (200 * delta)
-	#camera.global_position = scroll_anchor.global_position
+			
+	# Wenn der Level camera_scrolling aktiviert hat (ExportVariable), Scrolling aktivieren
+	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
+	if level != null and "camera_scrolling" in level:
+		print("camera_scrolling: ", level.camera_scrolling)
+		if level.camera_scrolling == true:
+			scroll_anchor.position.x += (200 * delta)
+			#camera.global_position = scroll_anchor.global_position
 
-	var cam_pos := scroll_anchor.global_position
-	cam_pos.x = round(cam_pos.x)
-	cam_pos.y = round(cam_pos.y)
-	camera.global_position = cam_pos
-	
+			var cam_pos := scroll_anchor.position
+			cam_pos.x = round(cam_pos.x)
+			cam_pos.y = round(cam_pos.y)
+			camera.position = cam_pos
+				
 
 
 # ──────────────────────────────────────────────────────────────
@@ -235,6 +241,8 @@ func _on_level_loaded() -> void:
 		_place_player_in_current_level(ship, player_id)
 
 	_connect_level_signals()
+	# Referenz auf das aktuelle Level
+	level = level_container.get_child(1)
 
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:

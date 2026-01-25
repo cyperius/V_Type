@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjtnv3grwen6" path="res://enemies&obstacles/invader.tscn" id="3_rqsg2"]
 [ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_xn6mk"]
 [ext_resource type="Script" uid="uid://cgdf1sx7vnilt" path="res://game_world/background.gd" id="5_fpvgn"]
-[ext_resource type="AudioStream" uid="uid://b6jh34j3on0ug" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/uplifting.ogg" id="6_rqsg2"]
+[ext_resource type="AudioStream" uid="uid://b6jh34j3on0ug" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Uplifting.ogg" id="6_rqsg2"]
 [ext_resource type="Texture2D" uid="uid://bokxsq44mok5l" path="res://assets/graphic_elements/backgrounds/earth_orbit_in_space.png" id="6_xn6mk"]
 
 [sub_resource type="Curve2D" id="Curve2D_fpvgn"]

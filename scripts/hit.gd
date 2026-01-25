@@ -6,7 +6,6 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	mini_explosion.scale = Vector2(0.2, 0.2)
 	mini_explosion.play()
 	audio_stream_player_2d.play()
 

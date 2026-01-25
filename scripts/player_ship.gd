@@ -17,7 +17,6 @@ var circle_radius := 200.0
 var angle := 0.0
 var angular_speed := 2.0
 var zoom_factor : Vector2 = Vector2(1, 1)
-@onready var player_camera_2d: Camera2D = $PlayerCamera2D
 
 
 # ──────────────────────────────────────────────────────────────
@@ -321,12 +320,20 @@ func _on_area_entered(other: Area2D) -> void:
 			print("player_ship.gd: see the grider")
 
 		# Treffer-Feedback bei Projektilen
+		
+			
 		if other.is_in_group("projectiles"):
-			var hit = hit_scene.instantiate()
-			add_child(hit)
-			hit.scale = Vector2(15, 15)
-			hit.global_position = Vector2(other.global_position.x - 45, other.global_position.y)
+			var hit := hit_scene.instantiate()
+
+			# 1) erst konfigurieren
+			hit.global_position = other.global_position + Vector2(-45, 0)
+			hit.scale = Vector2(2, 2)
+
+			# 2) dann hinzufügen
+			get_tree().current_scene.add_child(hit)
+
 			other.queue_free()
+
 
 func player_is_hit(taken_damage: int) -> void:
 	_change_health(-taken_damage)
@@ -530,4 +537,4 @@ func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 # ──────────────────────────────────────────────────────────────
 func status_report() -> void:
 	print("player_id:", player_id, " pos:", global_position, "screensize: ", get_viewport_rect().size, " hp:", health, " energy:", blue_energy)
-	print("player_camera: ", player_camera_2d.enabled)
+	

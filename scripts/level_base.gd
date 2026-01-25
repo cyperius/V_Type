@@ -8,7 +8,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export var level_nr : int = 1
 @export var last_level := false
 @export var auto_thrust_enabled := false
-@export var player_camera_on := false
+@export var camera_scrolling := false
 
 
 # -- levelspezifische optics und Platzierung für das player_ship -- #
@@ -98,7 +98,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 			# print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
 			print("my placed position: ", player.global_position)
 			player.auto_thrust_enabled = auto_thrust_enabled
-			player.player_camera_2d.enabled = player_camera_on
+			
 			
 	player.global_position = base_position + player_offset
 			
@@ -136,3 +136,6 @@ func _on_incoming_boss() -> void:
 		
 func _on_number_of_players_changed() -> void:
 	enemy_spawner.set_spawn_rate()
+	
+func _print_test() ->void:
+	print("print_method executed")
