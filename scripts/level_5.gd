@@ -11,7 +11,7 @@ signal player_target_activated
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
-	64.0: "zoom_out",
+	64.0: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
 }
 
