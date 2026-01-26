@@ -18,6 +18,7 @@ var circle_mode_enabled: bool = false
 
 # ─── Initialisierung bei Erscheinen ──────────────────────────────────────
 func _ready() -> void:
+	print("aktuelle zoomstufe: ", get_tree().current_scene.camera.zoom)
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	var shooter: PlayerShip = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
@@ -54,9 +55,10 @@ func _physics_process(delta: float) -> void:
 
 	position += velocity * delta
 
-	# Off-screen entsorgen (mit kleinem Rand)
-	var rect := get_viewport_rect().grow(64)
-	if not rect.has_point(global_position):
+	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
+	var rect : Rect2 = get_viewport_rect().grow(64)
+	rect.size = rect.size / get_tree().current_scene.camera.zoom
+	if not rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
 		queue_free()
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
@@ -65,13 +67,13 @@ func _on_area_entered(other: Area2D) -> void:
 	if other.get_parent() != null:
 		var parent = other.get_parent()
 		if parent is PlayerShip:
-			return # braucht es aktuell nicht, da die PlayerShips jetzt CharacterBodies sind.
+			return 
 
 	# Treffer-VFX (nicht für Asteroiden, falls du dort keinen Effekt willst)
 	if not other.is_in_group("asteroids"):
 		var enemy_hit = enemy_hit_scene.instantiate()
-		get_tree().current_scene.add_child(enemy_hit)
 		enemy_hit.global_position = global_position
+		get_tree().current_scene.add_child(enemy_hit)
 		
 	
 	# Schaden anwenden, wenn das Ziel eine passende API anbietet
