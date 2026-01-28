@@ -45,7 +45,7 @@ func _ready() -> void:
 	# Kollision anpassen (z. B. CircleShape2D)
 	if collision_shape_2d_1.shape is CircleShape2D:
 		var shape = collision_shape_2d_1.shape.duplicate() as CircleShape2D
-		shape.radius *= astroid_scale
+		shape.radius *= 0.9 * astroid_scale # ein bisschen kleiner
 		collision_shape_2d_1.shape = shape
 
 	# Masse basierend auf Volumen-
@@ -58,7 +58,7 @@ func _ready() -> void:
 	angle = randf_range(deg_to_rad(170), deg_to_rad(190))
 	
 
-# Bewegung und Drehung setzen2
+# Bewegung und Drehung setzen
 	linear_velocity = direction * speed
 	angular_velocity = randf_range(-3.0, 3.0)
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cs0c76735u785" path="res://scripts/Asteroid_Level.gd" id="1_cqqrw"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="2_0jwxd"]
-[ext_resource type="AudioStream" path="res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).wav" id="5_01p4q"]
+[ext_resource type="AudioStream" uid="uid://c17w6e6hjd0i7" path="res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).ogg" id="5_01p4q"]
 [ext_resource type="PackedScene" uid="uid://m1xmua3tbslv" path="res://enemies&obstacles/enemy_utilities/asteroid_spawner.tscn" id="5_shokp"]
 
 [node name="Asteroid_Level" type="Node2D"]
