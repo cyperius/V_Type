@@ -16,7 +16,7 @@ signal enemy_destroyed(score: int, energy: int)
 
 func _ready():
 	asteroid_spawner.asteroid_destroyed.connect(_on_asteroid_destroyed)
-	bg.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
+	#bg.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
 	##background.position = Vector2(-1920, -1440)  # Stelle sicher, dass er oben links beginnt
 	
 # ── Spieler vorbereiten: für ALLE registrierten Spieler

@@ -26,8 +26,8 @@ var input_joiner: Node = null
 #   OPTICS
 # ──────────────────────────────────────────────────────────────
 
-@export var default_zoom_x := 1
-@export var default_zoom_y := 1
+@export var default_zoom_x := 1.0
+@export var default_zoom_y := 1.0
 
 
 # ──────────────────────────────────────────────────────────────
@@ -254,7 +254,12 @@ func _connect_level_signals() -> void:
 
 func _on_level_loaded() -> void:
 	tw.kill()
-	camera.zoom = Vector2(default_zoom_x, default_zoom_y)
+	var level = level_container.get_child(1)
+	if "zoom_factor" in level:
+		var level_zoom_factor : Vector2 = level.zoom_factor
+		camera.zoom = level_zoom_factor
+	else:
+		camera.zoom = Vector2(default_zoom_x, default_zoom_y)
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
 	for player_id in Global.player_ships.keys():

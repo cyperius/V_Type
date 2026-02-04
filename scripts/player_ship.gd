@@ -17,6 +17,7 @@ var circle_radius := 200.0
 var angle := 0.0
 var angular_speed := 2.0
 var zoom_factor : Vector2 = Vector2(1, 1)
+var cooling_down := false
 
 
 # ──────────────────────────────────────────────────────────────
@@ -116,8 +117,8 @@ func _ready() -> void:
 	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
 		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "top_down": player1_top_down, "scale": Vector2(0.7, 0.7)}},
 		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "top_down": player2_top_down, "scale": Vector2(0.7, 0.7)}},
-		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin, "top_down": player3_top_down, "scale": Vector2(0.6, 0.6)}},
-		{"looks": {"neutral": player4_skin, "top_down": player4_top_down, "scale": Vector2(1, 1.4)}},
+		{"looks": {"neutral": player3_skin, "rising": player3_skin, "sinking": player3_skin, "top_down": player3_top_down, "scale": Vector2(0.1, 0.1)}},
+		{"looks": {"neutral": player4_skin, "rising": player4_skin, "sinking": player4_skin, "top_down": player4_top_down, "scale": Vector2(0.1, 0.1)}},
 		]
 	
 	# Kollisions-Backup sichern (für Death/Revive)
@@ -391,8 +392,12 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 		add_child(projectile)
 
 	projectiles.append(projectile)
-	if projectile.has_method("fire"):
+	if projectile.has_method("fire") and cooling_down == false:
 		projectile.fire()
+		cooling_down = true
+		await get_tree().create_timer(1.0).timeout
+		cooling_down = false
+
 
 # ──────────────────────────────────────────────────────────────
 #   EFFECTS (Reverse, Slow)

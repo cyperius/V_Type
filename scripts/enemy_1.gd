@@ -156,9 +156,9 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	var explosion_animation = explosion_animation_scene.instantiate()
-	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
+	get_tree().current_scene.add_child(explosion_animation)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

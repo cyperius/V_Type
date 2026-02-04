@@ -10,6 +10,7 @@ size = Vector2(370.5, 31.5)
 collision_layer = 2
 collision_mask = 22
 script = ExtResource("1_2vos1")
+volume = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708

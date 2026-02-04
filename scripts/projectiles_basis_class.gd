@@ -114,6 +114,6 @@ func start_tweens(angle: float) -> void:
 # ─── Soundeffekt beim Abfeuern (kann z. B. aus player_ship aufgerufen werden) ──
 func fire() -> void:
 	if sfx_stream:
-		AudioManager.play_sfx(sfx_stream, volume)
+		AudioManager.play_sfx(sfx_stream, 0.5 * volume)
 	elif sfx_name != "":
-		AudioManager.play_sfx_string(sfx_name, volume)
+		AudioManager.play_sfx_string(sfx_name, 0.5 * volume)

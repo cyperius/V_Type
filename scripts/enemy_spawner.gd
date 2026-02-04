@@ -116,11 +116,12 @@ func _on_timer2_timeout():
 		emit_signal("enemy_spawned", path_enemy)
 		# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 		# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...
+		path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y/2.8
 		enemies_container.add_child(path_enemy)
 		# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 		# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
-		path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y/2.8
 		enemy_counter += 1
+	
 	
 func _on_timer3_timeout() -> void:
 	at_least_one_enemy_spawned = true

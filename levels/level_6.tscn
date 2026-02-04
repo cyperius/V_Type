@@ -23,9 +23,8 @@ size = Vector2(229, 4359)
 [node name="Level_6" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_qskt5")
-amount_of_enemies = 20
+amount_of_enemies = 60
 level_nr = 6
-last_level = true
 ship_scale = 0.15
 player_rotation = 270
 flight_mode = 2

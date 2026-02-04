@@ -104,10 +104,10 @@ func take_damage(damage) -> void:
 	if health <= 0:
 		AudioManager.play_sfx_string("explosion", asteroid_scale)
 		var explosion_animation = explosion_animation_scene.instantiate()
-		get_tree().current_scene.add_child(explosion_animation)  
 		explosion_animation.scale *= scale_factor_rounded * explosion_scale
 		explosion_animation.speed_scale = 2
 		explosion_animation.position = global_position
+		get_tree().current_scene.add_child(explosion_animation)  
 		emit_signal("asteroid_destroyed", scale_factor_rounded)
 		#emit_signal("enemy_destroyed", scale_factor_rounded * score_count, energy_left)
 		queue_free()

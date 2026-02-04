@@ -127,5 +127,5 @@ func _on_end_phase2() -> void:
 	phase2_fadeout = true
 
 func _on_area_entered(other: Area2D) -> void:
-	print("it actually worked")
+	print("mech_world.gd: it actually worked")
 	

@@ -9,7 +9,7 @@
 
 [node name="Level_5" type="Node2D"]
 script = ExtResource("1_fi56y")
-amount_of_enemies = 800
+amount_of_enemies = 250
 level_nr = 5
 
 [node name="EnemiesContainer" type="Node2D" parent="."]

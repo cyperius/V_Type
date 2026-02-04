@@ -82,8 +82,8 @@ func _on_timer_timeout() -> void:
 
 	for enemy_position in enemy_positions:
 		var enemy = enemy1.instantiate()
-		enemies_container.add_child(enemy)
 		enemy.position = enemy_position.position
+		enemies_container.add_child(enemy)
 		enemy_counter += 1
 	
 		_assign_unique_breakout_follow(enemy, breakout_path_a)
@@ -103,9 +103,9 @@ func here_comes_the_boss() -> void:
 		timer.stop()
 		timer2.stop()
 		var boss = level_boss.instantiate()
-		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 		boss.global_position = Vector2(7000, 1100)
+		get_tree().current_scene.add_child(boss)
 		boss.health_points = boss.health_points * number_of_players
 
 

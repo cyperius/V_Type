@@ -29,8 +29,8 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	AudioManager.play_sfx_string("explosion")
-	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
+	get_tree().current_scene.add_child(explosion_animation)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()
