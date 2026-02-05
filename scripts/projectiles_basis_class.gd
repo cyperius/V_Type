@@ -7,7 +7,7 @@ extends Area2D
 @export var damage: int = 10				# Schaden des Projektils
 @export var sfx_stream: AudioStream			# Optional: direkter Soundeffekt
 @export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser")
-@export var volume: float = 1.0				# Lautstärke
+@export_range(-30, 10, 0.5) var volume: float = 1.0				# Lautstärke
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
 @onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit.tscn")
@@ -115,6 +115,6 @@ func start_tweens(angle: float) -> void:
 func fire() -> void:
 	pass
 	#if sfx_stream:
-		#AudioManager.play_sfx(sfx_stream, 0.5 * volume)
+		#AudioManager.play_sfx(sfx_stream, volume)
 	#elif sfx_name != "":
-		#AudioManager.play_sfx_string(sfx_name, 0.5 * volume)
+		#AudioManager.play_sfx_string(sfx_name, volume)
