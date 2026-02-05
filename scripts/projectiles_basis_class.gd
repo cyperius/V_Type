@@ -5,8 +5,8 @@ extends Area2D
 											# wird von player_ship.gd her die richtigen ID überschrieben
 @export var speed: float = 400.0			# Fluggeschwindigkeit
 @export var damage: int = 10				# Schaden des Projektils
-@export var sfx_stream: AudioStream			# Optional: direkter Soundeffekt
-@export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser")
+@export var sfx_stream: AudioStream			# direkter Soundeffekt
+#@export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser") - aktueel (6.2.2026) nicht genutzt
 @export_range(-30, 10, 0.5) var volume: float = 1.0				# Lautstärke
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
