@@ -35,7 +35,7 @@ var input_joiner: Node = null
 # Nur einmal Level laden – niemals mehrfach
 var level_loaded_once := false
 var tw = create_tween()   # tw wird später einen tween referenzieren (mit create_tween() )
-# tw es ist als globale Variable definiert, damit der tween von einer anderen Funktion 
+# tw ist als globale Variable definiert, damit der tween von einer anderen Funktion 
 # her, gestoppt werden kann -> tw.kill()
 
 
@@ -253,13 +253,19 @@ func _connect_level_signals() -> void:
 
 
 func _on_level_loaded() -> void:
-	tw.kill()
-	var level = level_container.get_child(1)
+	tw.kill() # falls noch ein tween von "func _on_zoom_requested" laufen würde
+	var level = level_container.get_child(1) # das zweite child (1) ist jeweils der level
 	if "zoom_factor" in level:
 		var level_zoom_factor : Vector2 = level.zoom_factor
+		print("main.gd: Lvel_zoom_factor: ", level_zoom_factor)
 		camera.zoom = level_zoom_factor
 	else:
 		camera.zoom = Vector2(default_zoom_x, default_zoom_y)
+		# Grösse des Hintergrunds setzen
+	level.background.size.x /= (camera.zoom.x)  # geht nicht. Problem: background ist keine Exportvariable des levels.
+	level.background.size.y /= camera.zoom.y # 
+	 # alternativ auf FullHD-Fenstergröße Vector2(3860, 2160) setzen
+	
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
 	for player_id in Global.player_ships.keys():

@@ -56,8 +56,8 @@ func _physics_process(delta: float) -> void:
 	position += velocity * delta
 
 	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
-	var rect : Rect2 = get_viewport_rect().grow(64)
-	rect.size = rect.size / get_tree().current_scene.camera.zoom
+	var rect : Rect2 = get_viewport_rect().grow(300)
+	rect.size = rect.size
 	if not rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
 		queue_free()
 
@@ -113,7 +113,8 @@ func start_tweens(angle: float) -> void:
 
 # ─── Soundeffekt beim Abfeuern (kann z. B. aus player_ship aufgerufen werden) ──
 func fire() -> void:
-	if sfx_stream:
-		AudioManager.play_sfx(sfx_stream, 0.5 * volume)
-	elif sfx_name != "":
-		AudioManager.play_sfx_string(sfx_name, 0.5 * volume)
+	pass
+	#if sfx_stream:
+		#AudioManager.play_sfx(sfx_stream, 0.5 * volume)
+	#elif sfx_name != "":
+		#AudioManager.play_sfx_string(sfx_name, 0.5 * volume)

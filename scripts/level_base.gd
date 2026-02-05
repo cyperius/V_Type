@@ -32,8 +32,6 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 
 func _ready() -> void:
 	add_to_group("levels")
-	# Grösse des Hintergrunds setzen
-	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße Vector2(3860, 2160)
 	var camera = get_tree().current_scene.get_child(0)
 	camera.position = Vector2(0, 0)
 	# Levelstart: Zerstörte IDs zurücksetzen
@@ -47,9 +45,10 @@ func _ready() -> void:
 	Global.roster_changed.connect(_on_number_of_players_changed)
 
 	# ── Enemy‑Spawner Signale
-	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
-	#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
+	if enemy_spawner:
+		enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
+		#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
+		enemy_spawner.incoming_boss.connect(_on_incoming_boss)
 
 	# Optional: Boss‑Timer
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)

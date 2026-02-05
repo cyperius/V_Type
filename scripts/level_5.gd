@@ -11,7 +11,7 @@ signal player_target_activated
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
-	6: "zoom_out", # 64.0
+	64: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
 }
 
@@ -50,9 +50,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		"enemies_appear":
 			enemies_appear()
 		"zoom_out":
-			var default_zoom_x = get_tree().current_scene.default_zoom_x
-			var default_zoom_y = get_tree().current_scene.default_zoom_y
-			zoom_out(0.5 * default_zoom_x, 0.5 * default_zoom_y, 34.0)
+			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
 		"target_player":
 			start_attacking_player()
 		_:

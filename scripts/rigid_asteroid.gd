@@ -15,6 +15,7 @@ signal asteroid_destroyed(size: int)
 @export var energy_left : int = 5
 @export var score_count : int = 100
 @export var damage : int = 100
+@onready var number_of_players := 1 # damit von Anfang an damit gerechnet werden kann; wird in ready function aktualisiert
 
 var asteroid_scale : float = 1
 var scale_factor_rounded
@@ -23,6 +24,9 @@ var scale_factor_rounded
 const SCREEN_SIZE = Vector2(3840, 2160)
 
 func _ready() -> void:
+	
+	var number_of_players = Global.player_ships.size()
+
 	animated_sprite.play("astroid_rotating")
 	#asteroid_destroyed.connect(Callable(get_parent(), "_on_asteroid_destroyed"))
 	# besser beim Spawnen (im AsteoidSpawner) verbinden
@@ -34,22 +38,25 @@ func _ready() -> void:
 	apply_space_physics(self)
 
 	# Zufällige Skalierung
-	var astroid_scale = randf_range(1, 2.0)
-	scale_factor_rounded = round(astroid_scale)
-	animated_sprite.scale = Vector2(astroid_scale, astroid_scale)
+	asteroid_scale = randf_range(1, 2.0)
+	scale_factor_rounded = round(asteroid_scale)
+	animated_sprite.scale = Vector2(asteroid_scale, asteroid_scale)
 	# "health" und Basisschaden, den Asteroid anrichtet, wird mit seiner Grösse multipliziert
-	area2d.damage *= astroid_scale
-	health *= astroid_scale
-	damage *= astroid_scale
+	area2d.damage *= asteroid_scale
+	# die angewwandte health ist in der area2d definiert, welche die Kollsion registriert
+	# dieser Wert wird aufgrund der Root_node export health und der Grössew des Asteroiden berechnet
+	area2d.health = health * asteroid_scale * number_of_players
+	damage *= asteroid_scale # 4.2.2026: damage wird direkt durch rigid Body erteilt, sollte so stimmen
+	print("asteroid:scale: ", asteroid_scale, " rounded; ", scale_factor_rounded, " health: ", area2d.health)
 
 	# Kollision anpassen (z. B. CircleShape2D)
 	if collision_shape_2d_1.shape is CircleShape2D:
 		var shape = collision_shape_2d_1.shape.duplicate() as CircleShape2D
-		shape.radius *= 0.9 * astroid_scale # ein bisschen kleiner
+		shape.radius *= 0.9 * asteroid_scale # ein bisschen kleiner
 		collision_shape_2d_1.shape = shape
 
 	# Masse basierend auf Volumen-
-	mass = astroid_scale * astroid_scale * astroid_scale
+	mass = asteroid_scale * asteroid_scale * asteroid_scale
 
 
 	# Zufällige Geschwindigkeit
@@ -62,10 +69,10 @@ func _ready() -> void:
 	linear_velocity = direction * speed
 	angular_velocity = randf_range(-3.0, 3.0)
 
-	# Startposition rechts ausserhalb vom sichtbaren Bereich
-	if position == Vector2.ZERO:
-		position = Vector2(SCREEN_SIZE.x + randf_range(1000, 4000), randf_range(0, SCREEN_SIZE.y))
-	#print("start_position:", global_position)
+	## Startposition rechts ausserhalb vom sichtbaren Bereich
+	#if position == Vector2.ZERO:
+		#position = Vector2(SCREEN_SIZE.x + randf_range(1000, 4000), randf_range(0, SCREEN_SIZE.y))
+	##print("start_position:", global_position)
 	
 	
 	
@@ -73,7 +80,7 @@ func _process(delta: float) -> void:
 	if global_position.x <= - 20 or global_position.y > 3000 or global_position.y < -1000:
 		queue_free()
 		
-
+		
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var pos = state.transform.origin
 

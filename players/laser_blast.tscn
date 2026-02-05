@@ -17,7 +17,6 @@ script = ExtResource("1_yh0dj")
 blast_speed = 800.0
 damage = 50
 sfx_stream = ExtResource("2_jhc3a")
-volume = 0.2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_kl33j")
@@ -31,3 +30,8 @@ target_position = Vector2(500, 0)
 collision_mask = 4
 collide_with_areas = true
 script = ExtResource("4_odjvy")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jhc3a")
+autoplay = true
+bus = &"shots"
