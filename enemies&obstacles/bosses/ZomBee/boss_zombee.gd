@@ -142,9 +142,8 @@ func track_nearest_player():
 			min_distance = dist
 			#...und der Spieler zu dem sie gehört ist der nahgelegenste Spieler
 			closest_player = player
-	
-	if closest_player:
-		if space_ball: # 26.1.2026 Nur falls es den SpaceBall gibt
+	if is_instance_valid(closest_player):
+		if is_instance_valid(space_ball):
 			if global_position.distance_to(space_ball.global_position) < global_position.distance_to(closest_player.global_position):
 				if global_position.distance_to(space_ball.global_position) > 100:
 					direction = global_position.direction_to(space_ball.global_position)
@@ -183,6 +182,7 @@ func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 		explosion_animation.global_position = global_position
 		explosion_animation.scale = Vector2(50, 50)
 		explosion_animation.speed_scale = 0.3
+		
 		queue_free()
 	
 	

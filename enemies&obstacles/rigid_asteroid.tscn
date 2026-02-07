@@ -18,7 +18,7 @@ can_sleep = false
 freeze_mode = 1
 linear_damp_mode = 1
 script = ExtResource("1_iatvu")
-health = 250
+health = 1000
 speed = 600
 
 [node name="AnimatedSprite2D" parent="." instance=ExtResource("1_vn8af")]

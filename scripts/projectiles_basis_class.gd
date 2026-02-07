@@ -5,7 +5,7 @@ extends Area2D
 											# wird von player_ship.gd her die richtigen ID überschrieben
 @export var speed: float = 400.0			# Fluggeschwindigkeit
 @export var damage: int = 10				# Schaden des Projektils
-@export var sfx_stream: AudioStream			# direkter Soundeffekt
+@export var shot_sfx_stream: AudioStream			# direkter Soundeffekt
 #@export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser") - aktueel (6.2.2026) nicht genutzt
 @export_range(-30, 10, 0.5) var volume: float = 1.0				# Lautstärke
 
@@ -113,8 +113,7 @@ func start_tweens(angle: float) -> void:
 
 # ─── Soundeffekt beim Abfeuern (kann z. B. aus player_ship aufgerufen werden) ──
 func fire() -> void:
-	pass
-	#if sfx_stream:
-		#AudioManager.play_sfx(sfx_stream, volume)
+	if shot_sfx_stream:
+		AudioManager.play_sfx(shot_sfx_stream, volume)
 	#elif sfx_name != "":
 		#AudioManager.play_sfx_string(sfx_name, volume)

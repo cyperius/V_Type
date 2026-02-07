@@ -17,8 +17,8 @@ blast_scale = Vector2(20, 20)
 blast_speed = 2000.0
 speed = 2000.0
 damage = 20
-sfx_stream = ExtResource("2_nf1aw")
-volume = 0.4
+shot_sfx_stream = ExtResource("2_nf1aw")
+volume = -8.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(2.08165e-12, 2.08165e-12)

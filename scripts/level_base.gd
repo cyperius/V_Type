@@ -46,9 +46,11 @@ func _ready() -> void:
 
 	# ── Enemy‑Spawner Signale
 	if enemy_spawner:
-		enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
+		if enemy_spawner.has_signal("boss_defeated"):
+			enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 		#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-		enemy_spawner.incoming_boss.connect(_on_incoming_boss)
+		if enemy_spawner.has_signal("_on_incoming_boss"):
+			enemy_spawner.incoming_boss.connect(_on_incoming_boss) #Invalid access to property or key 'incoming_boss' on a base object of type 'Node2D (AsteroidSpawner.gd)'.
 
 	# Optional: Boss‑Timer
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
@@ -135,7 +137,7 @@ func _on_incoming_boss() -> void:
 		
 		
 func _on_number_of_players_changed() -> void:
-	enemy_spawner.set_spawn_rate()
+	enemy_spawner.set_spawn_rate() # Attempt to call function 'set_spawn_rate' in base 'null instance' on a null instance.
 	
 func _print_test() ->void:
 	print("print_method executed")

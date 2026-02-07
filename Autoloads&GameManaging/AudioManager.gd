@@ -89,7 +89,11 @@ func _create_sfx_pool() -> void:
 	for old_player in sfx_players:
 		if is_instance_valid(old_player):
 			old_player.queue_free()
-	sfx_players.clear()
+	sfx_players.clear() # Da die Player als Child-Nodes zur Szene hinzugefügt wurden,
+						# reicht es nicht, nur das Array zu leeren.
+						# Die Instanzen existieren sonst weiterhin im SceneTree und müssen
+						# explizit per queue_free() entfernt werden.
+
 
 	# Wir erzeugen sfx_pool_size Player.
 	for i in sfx_pool_size:
@@ -136,7 +140,7 @@ func stop_music() -> void:
 	music_player.stop()
 
 
-func fade_out_music(duration: float = 2.0) -> void:
+func fade_out(duration: float = 2.0) -> void:
 	# Blendet die Musik über duration Sekunden aus, indem volume_db Richtung -80 dB animiert wird.
 	# -80 dB ist praktisch "stumm".
 

@@ -71,7 +71,7 @@ func _on_spawn_timer_timeout() -> void:
 	
 	
 func _on_asteroid_destroyed(size) -> void:
-	emit_signal("asteroid_destroyed", size)
+	astroid_level.emit_signal("enemy_destroyed", size, size)
 		
 	
 func _process(delta: float) -> void:

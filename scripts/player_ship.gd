@@ -149,7 +149,7 @@ func connect_signals() -> void:
 	print("connecte signals")
 	var level := GameManager.current_level_node
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
-	ship_area.area_entered.connect(_on_area_entered)
+	ship_area.area_entered.connect(_on_ship_area_entered)
 	if level.has_signal("zoom_requested"):
 		print("see the signal...")
 		level.zoom_requested.connect(_on_zoom_requested)
@@ -253,7 +253,7 @@ func _physics_left_right_move(delta: float) -> void:
 		if velocity.dot(normal) < 0.0:
 			velocity = velocity.slide(normal)
 			
-	#position.x = clampf(position.x, 0.0, screen_width)
+	position.x = clampf(position.x, 0.0, screen_width)
 	position.y = clampf(position.y, 0.0, screen_hight)
 	
 
@@ -299,7 +299,7 @@ func _physics_circle_move(delta: float) -> void:
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
 # ──────────────────────────────────────────────────────────────
-func _on_area_entered(other: Area2D) -> void:
+func _on_ship_area_entered(other: Area2D) -> void:
 	# Effekt-Trigger (optional)
 	if "hit_effect" in other:
 		_apply_effect_by_name(str(other.hit_effect))
@@ -371,6 +371,7 @@ func shield_absorbing(absorbed_damage: int) -> void:
 func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 	if not weapon:
 		return
+	# hier gewünschtenfalls waffenspezifische Cool_down Phase integrieren?
 	var projectile = weapon.instantiate()
 
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
@@ -392,11 +393,10 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 		add_child(projectile)
 
 	projectiles.append(projectile)
-	if projectile.has_method("fire") and cooling_down == false:
+	if projectile.has_method("fire"):
 		projectile.fire()
-		cooling_down = true
 		await get_tree().create_timer(1.0).timeout
-		cooling_down = false
+		#cooling_down = false
 
 
 # ──────────────────────────────────────────────────────────────

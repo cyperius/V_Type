@@ -31,8 +31,6 @@ Players="*res://Autoloads&GameManaging/Players.gd"
 window/size/viewport_width=3840
 window/size/viewport_height=2160
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
-window/stretch/scale_mode="integer"
 
 [importer_defaults]
 

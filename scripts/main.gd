@@ -224,7 +224,7 @@ func _place_player_in_current_level(player_ship: PlayerShip, player_id: int) -> 
 		level.place_player_in_current_level(player_ship, player_id)
 	else:
 		# Standard-Spawn (links unten in der Safe-Zone)
-		var viewport := get_viewport_rect().size
+		var viewport := get_viewport_rect().size # refaktorieren, nicht mit ge_viewport_tect arbeiten
 		var base := viewport * 0.05
 		var offset := Vector2(180, 60 + 240 * (player_id - 1))
 		player_ship.global_position = base + offset
