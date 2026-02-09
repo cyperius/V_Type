@@ -74,6 +74,10 @@ func _on_asteroid_destroyed(size) -> void:
 	astroid_level.emit_signal("enemy_destroyed", size, size)
 		
 	
+func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
+	pass # diese Funktion gibt es in anderen Levels ist hiewr aber bewusst ausgeschaltet
+	#anstattdessen wird in diesem Level, die helath der asteroids der Spieleranzahl angepasst
+	
 func _process(delta: float) -> void:
 	pass
 	

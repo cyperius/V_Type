@@ -84,7 +84,8 @@ func _process(delta: float) -> void:
 	
 		
 func _position_change() -> void:
-		new_y = randi_range(position.y - 300, position.y + 300) 
+		new_y = clamp(randi_range(position.y - 300, position.y + 300), 200, 1800)
+	
 		
 func _shot() -> void:
 	if shot_sound:

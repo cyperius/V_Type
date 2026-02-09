@@ -272,6 +272,7 @@ amount_of_enemies = 40
 last_level = true
 auto_thrust_enabled = true
 camera_scrolling = true
+zoom_factor = Vector2(0.9, 1)
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_ho0ug")]
 timer_basic_wait_time = 300
