@@ -168,38 +168,28 @@ func play_sfx_string(sound_name: String, volume: float = 1.0, pitch_scale: float
 
 
 func play_sfx(audio_stream: AudioStream, volume: float = 1.0, pitch_scale: float = 1.0) -> void:
-	# Spielt einen Soundeffekt ab (polyphon), indem ein Player aus dem Pool verwendet wird.
-
-	# Wenn kein Stream übergeben wurde, können wir nichts abspielen.
 	if audio_stream == null:
 		return
 
-	# Wenn der Pool leer ist (sollte nicht passieren, aber Sicherheit), abbrechen.
 	if sfx_players.is_empty():
 		return
 
-	# Nächsten Player aus dem Pool holen (Round-Robin).
 	var player := sfx_players[next_sfx_player_index]
-
-	# Index erhöhen und am Ende wieder auf 0 springen (Modulo).
 	next_sfx_player_index = (next_sfx_player_index + 1) % sfx_players.size()
 
-	# Stream setzen (welche Audio-Datei abgespielt werden soll).
+	# --- HARTER RESET des Player-Zustands ---
+	player.stop()
+	player.stream = null
+	player.volume_db = 0.0
+	player.pitch_scale = 1.0
+	player.bus = sfx_bus_name
+	# ---------------------------------------
+
+	# --- Jetzt gezielt neu konfigurieren ---
 	player.stream = audio_stream
-
-	# Lautstärke setzen (linear 0..1 -> dB).
 	player.volume_db = linear_to_db(volume)
-
-	# Pitch setzen (1.0 = normal, >1 höher, <1 tiefer).
-	# Das ist nützlich, um leichte Variation reinzubringen (z.B. random 0.95..1.05).
 	player.pitch_scale = pitch_scale
 
-	# Wichtig: Player stoppen, falls er gerade noch etwas abspielt.
-	# Dadurch erzwingen wir einen sauberen Neustart auf diesem Player.
-	# (Bei Round-Robin kann es sein, dass der Player noch läuft, wenn der Pool zu klein ist.)
-	player.stop()
-
-	# Sound starten.
 	player.play()
 
 # ──────────────────────────────────────────────────────────────

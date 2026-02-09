@@ -117,18 +117,20 @@ func _shoot(weapon: PackedScene) -> void:
 					projectile_instance.direction = shot_direction 
 					#print("boss1: projectile_instance.direction: ", projectile_instance.direction)
 					projectile_instance.shot_orientation = shot_direction.angle()
-				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
+				
 				# Verwende gunpoints als Referenzen für Startpunkte des Schusses
 				projectile_instance.global_position = gunpoint.global_position
 				#print("boss1: projectile_instance.direction: ", shot_direction == projectile_instance.direction)
-				
+				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
 				# Füge das Projektil der Liste aktiver Projektile hinzu
 				projectiles.append(projectile_instance)
 		else: # wenn keine gunpoints -> Fallback: Nutze die Schiffposition
 			var projectile_instance = enemy_weapon.instantiate()
-			current_scene.add_child(projectile_instance) #
 			projectile_instance.global_position = global_position
 			#print("boss1.gd: Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+			
+			current_scene.add_child(projectile_instance) #
+			
 	else:
 		#print("boss1.gd: Fehler: Keine aktuelle Szene gefunden!")
 		
@@ -139,6 +141,7 @@ func _shoot(weapon: PackedScene) -> void:
 		else:
 			pass
 			#print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
+	
 	
 func _on_area_entered(other: Area2D) -> void:
 	if other.is_in_group("players"):
