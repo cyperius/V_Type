@@ -60,6 +60,13 @@ var projectiles := []
 # ──────────────────────────────────────────────────────────────
 #   GRAPHICS / FX / COLLISIONS
 # ──────────────────────────────────────────────────────────────
+
+@onready var camera = get_tree().current_scene.get_node("%Camera2D")
+@onready var screen_width : float
+@onready var screen_hight : float
+
+@onready var level = get_tree().current_scene.get_node("LevelContainer")
+
 @onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
 @onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways_neutral.png")
@@ -235,9 +242,6 @@ func _physics_left_right_move(delta: float) -> void:
 		else:
 			set_skin("neutral")
 	
-	var screen_width := get_viewport_rect().size.x / zoom_factor.x
-	var screen_hight := get_viewport_rect().size.y / zoom_factor.y
-	
 	if auto_thrust_enabled:
 		velocity = direction * speed + auto_forward_speed * Vector2(1, 0)
 	else:
@@ -252,10 +256,65 @@ func _physics_left_right_move(delta: float) -> void:
 		# Entferne den Anteil der velocity, der in die Wand zeigt
 		if velocity.dot(normal) < 0.0:
 			velocity = velocity.slide(normal)
-			
-	position.x = clampf(position.x, 0.0, screen_width)
-	position.y = clampf(position.y, 0.0, screen_hight)
 	
+
+	var visible_rect := get_visible_world_rect()
+
+	var clamped_global := global_position
+	clamped_global.x = clampf(clamped_global.x, visible_rect.position.x, visible_rect.position.x + visible_rect.size.x)
+	clamped_global.y = clampf(clamped_global.y, visible_rect.position.y, visible_rect.position.y + visible_rect.size.y)
+	global_position = clamped_global
+
+
+
+# ------------------------------------------------------------
+# Liefert den aktuell sichtbaren Welt-Ausschnitt als Rect2
+# (robust gegenüber Camera-Zoom, Offset, Limits, Stretch usw.)
+#
+# Rückgabewert:
+#	Rect2 in WELTKOORDINATEN, das exakt dem sichtbaren Bildschirm
+#	entspricht.
+# ------------------------------------------------------------
+func get_visible_world_rect() -> Rect2:
+	# Holt den Viewport, in dem dieses Node gerendert wird.
+	# Das ist genau der Viewport, der für die Kamera/Canvas-Transforms
+	# relevant ist (nicht zwingend einfach "das Fenster").
+	var viewport := get_viewport()
+	
+	# Ermittelt die Grösse des aktuell sichtbaren Bereichs des Viewports
+	# in PIXELN.
+	# Wichtig: berücksichtigt z.B. Letterboxing durch Aspect-Ratio.
+	var viewport_size_pixels: Vector2 = viewport.get_visible_rect().size
+	
+	# Holt die Canvas-Transformation, die Godot aktuell verwendet,
+	# um Weltkoordinaten -> Screen-Pixel zu transformieren
+	# (inkl. Camera2D-Position, Zoom, Offset, Limits, Smoothing usw.)
+	#
+	# affine_inverse() kehrt diese Transformation um:
+	# Screen-Pixel -> Weltkoordinaten
+	var inverse_canvas: Transform2D = viewport.get_canvas_transform().affine_inverse()
+	
+	# Rechnet die linke obere Ecke des Bildschirms (0,0 in Pixeln)
+	# in Weltkoordinaten um.
+	# Ergebnis: exakte Weltposition, die oben links sichtbar ist.
+	var top_left_world: Vector2 = inverse_canvas * Vector2(0.0, 0.0)
+	
+	# Rechnet die rechte untere Ecke des sichtbaren Bildschirms
+	# (Breite, Höhe in Pixeln) in Weltkoordinaten um.
+	# Ergebnis: exakte Weltposition, die unten rechts sichtbar ist.
+	var bottom_right_world: Vector2 = inverse_canvas * viewport_size_pixels
+	
+	# Erstellt und gibt ein Rect2 zurück:
+	# - position  = obere linke Ecke (in Weltkoordinaten)
+	# - size      = Breite/Höhe des sichtbaren Weltbereichs
+	return Rect2(
+		top_left_world,
+		bottom_right_world - top_left_world
+	)
+
+
+
+
 
 func _physics_circle_move(delta: float) -> void:
 	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)

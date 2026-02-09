@@ -126,14 +126,15 @@ func _on_been_hit() -> void:
 		
 		
 func _on_area_entered(other: Area2D) -> void:
+	print("ufo_boss.gd: boss_health: ", health_points )
 	if other.is_in_group("players"):
-		apply_damage(other.damage, -1)
+		apply_damage(other.damage, -1) # Wenn also das UFo "grammt2 wird -> dafür gibts keine Punkte:)
 	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
 	#elif other.is_in_group("evaders"):    
 		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
 # wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
 # player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
-# dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
+# dass der Colleteralschaden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
 	else:
 		if "damage" in other and "owner_id" in other:
 			apply_damage(other.damage, other.owner_id)

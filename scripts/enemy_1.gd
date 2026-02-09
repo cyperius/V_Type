@@ -23,6 +23,7 @@ signal collision_detected(enemy: Node, collision_position: Vector2)
 @onready var current_level : Node # wird in ready_function gesetzt
 
 
+
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
@@ -30,6 +31,7 @@ var direction : Vector2 = Vector2(-1, -1)
 var evasive_mode_on = false
 var player_shot_owner_id : int =- 1
 var is_player_tracking_active := false
+var player : PlayerShip
 
 
 
@@ -51,7 +53,7 @@ func _ready() -> void:
 	# 1) -- für Angriff auf Spieler -- #
 	# Durch alle registrierten Spieler in Global gehen
 	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
+		player = Global.get_player_ship(player_id) as PlayerShip # player ist oben als globale Variable definiert
 		if player:
 			# Spieler in das Dictionary eintragen
 			players[player_id] = player
@@ -94,7 +96,7 @@ func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
 	
 func _process(delta: float) -> void:
 	
-	if position.x < -300:
+	if position.x < -50:
 		queue_free()
 		
 	position.x += delta * x_speed * direction.x
@@ -136,11 +138,13 @@ func track_nearest_player():
 
 func _on_shoot_timer_timeout():
 	if randi_range(1, chance_of_shooting) == 1:
-		audio_stream_player_2d.volume_db = -10
-		audio_stream_player_2d.play()
-		var shot = shot_scene.instantiate()
-		shot.global_position = _gun_point.global_position
-		get_parent().add_child(shot)
+		var visible_rect = player.get_visible_world_rect()
+		if visible_rect.has_point(global_position):
+			audio_stream_player_2d.volume_db = -10
+			audio_stream_player_2d.play()
+			var shot = shot_scene.instantiate()
+			shot.global_position = _gun_point.global_position
+			get_parent().add_child(shot)
 	
 
 func apply_damage(damage_amount, owner_id) -> void:
@@ -156,7 +160,7 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	var explosion_animation = explosion_animation_scene.instantiate()
-	explosion_animation.position = global_position
+	explosion_animation.global_position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
 	get_tree().current_scene.add_child(explosion_animation)
 	hide()

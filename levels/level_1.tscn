@@ -13,8 +13,6 @@
 process_mode = 1
 script = ExtResource("1_gwceb")
 amount_of_enemies = 40
-zoom_factor = Vector2(0.8, 0.8)
-ship_scale = 1.2
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_gwceb")]
 level_boss = ExtResource("3_l53as")
@@ -85,3 +83,4 @@ autoplay = true
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
 
 [editable path="EnemySpawner"]
+[editable path="background_Control"]

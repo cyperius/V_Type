@@ -9,7 +9,7 @@ signal player_removed(player_id: int)
 #   REFERENCES
 # ──────────────────────────────────────────────────────────────
 @onready var level_container: Node = $LevelContainer
-var level : Node # Gloable Varaible, Referenz wird in ready-Funktion gesetzt
+var level : Node # Gloable Variable, Referenz wird gesetzt, sobald spieler existieren
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
@@ -97,14 +97,14 @@ func _physics_process(delta: float) -> void:
 			
 	# Wenn der Level camera_scrolling aktiviert hat (ExportVariable), Scrolling aktivieren
 	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
-	if level != null and "camera_scrolling" in level:
-		print("camera_scrolling: ", level.camera_scrolling)
-		if level.camera_scrolling == true:
-			scroll_x += 200.0 * delta
-			var snapped_x: int = int(floor(scroll_x)) 
-			scroll_anchor.position.x = snapped_x
-			camera.position.x = snapped_x
-			camera.global_position.y = int(camera.global_position.y)
+	
+	if is_instance_valid(level) and level.get("camera_scrolling") == true:
+		scroll_x += 200.0 * delta
+		var snapped_x: int = int(floor(scroll_x)) 
+		scroll_anchor.position.x = snapped_x
+		
+		camera.position.x = snapped_x
+		camera.global_position.y = int(camera.global_position.y)
 			
 			
 			#
@@ -219,7 +219,7 @@ func _remove_player(player_id: int) -> void:
 #   PLAYER PLATZIEREN IM LEVEL
 # ──────────────────────────────────────────────────────────────
 func _place_player_in_current_level(player_ship: PlayerShip, player_id: int) -> void:
-	var level := GameManager.current_level_node
+	level = GameManager.current_level_node
 	if level and level.has_method("place_player_in_current_level"):
 		level.place_player_in_current_level(player_ship, player_id)
 	else:
@@ -254,16 +254,17 @@ func _connect_level_signals() -> void:
 
 func _on_level_loaded() -> void:
 	tw.kill() # falls noch ein tween von "func _on_zoom_requested" laufen würde
-	var level = level_container.get_child(1) # das zweite child (1) ist jeweils der level
+	# Referenz auf das aktuelle Level
+	level = level_container.get_child(1) # das zweite child (1) ist jeweils der level
 	if "zoom_factor" in level:
-		var level_zoom_factor : Vector2 = level.zoom_factor
+		var level_zoom_factor : Vector2 = level.zoom_factor # Trying to assign value of type 'float' to a variable of type 'Vector2'.
 		print("main.gd: Lvel_zoom_factor: ", level_zoom_factor)
 		camera.zoom = level_zoom_factor
 	else:
 		camera.zoom = Vector2(default_zoom_x, default_zoom_y)
 		# Grösse des Hintergrunds setzen
-	level.background.size.x /= (camera.zoom.x)  # geht nicht. Problem: background ist keine Exportvariable des levels.
-	level.background.size.y /= camera.zoom.y # 
+	#level.background.size.x /= camera.zoom.x  # geht nicht. Problem: background ist keine Exportvariable des levels.
+	#level.background.size.y /= camera.zoom.y # Invalid access to property or key 'background' on a base object of type 'Node2D (level_3.gd)'.
 	 # alternativ auf FullHD-Fenstergröße Vector2(3860, 2160) setzen
 	
 	await get_tree().process_frame
@@ -273,8 +274,7 @@ func _on_level_loaded() -> void:
 		_place_player_in_current_level(ship, player_id)
 
 	_connect_level_signals()
-	# Referenz auf das aktuelle Level
-	level = level_container.get_child(1)
+	
 
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:

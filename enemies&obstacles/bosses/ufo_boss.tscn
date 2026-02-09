@@ -46,6 +46,7 @@ size = Vector2(86.5, 4.7)
 
 [node name="UfoBoss" type="Area2D"]
 top_level = true
+position = Vector2(-2, 0)
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_rgdwt")

@@ -1,6 +1,11 @@
 extends Node2D
+signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
+
 
 @export var circle_radius := 200.0
+@export var zoom_factor := Vector2(1, 1)
+@onready var background: Node2D = $Vortex # Bennenung als background zwingend, wegen externem Zugriff 
+#(Zugriff von main.gd in Funktion "_on_level_loaded")
 @export var cirle_shot_scene : PackedScene
 @export var level_duration_basis : int = 90
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
@@ -11,7 +16,7 @@ extends Node2D
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
 @onready var center_node = $Center
 
-signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
+
 
 
 func _ready() -> void:
@@ -40,6 +45,7 @@ func _place_all_players_in_current_level() -> void:
 		if player is PlayerShip:
 			place_player_in_current_level(player, player_id)
 
+
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
 
@@ -57,7 +63,8 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 
 	# 4) Position + Rotation
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
-	player.global_rotation_degrees = start_angle + PI
+	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
+
 
 	# 5) Optional: Level-spezifische Skalierung (rein visuell)
 	player.scale = Vector2(0.2, 0.2)

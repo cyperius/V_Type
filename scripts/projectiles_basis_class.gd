@@ -12,6 +12,7 @@ extends Area2D
 # ─── Interne Variablen ───────────────────────────────────────────────────
 @onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit.tscn")
 
+@onready var shooter: PlayerShip 
 var velocity: Vector2 = Vector2.ZERO
 var circle_center_position: Vector2 = Vector2.ZERO
 var circle_mode_enabled: bool = false
@@ -20,7 +21,7 @@ var circle_mode_enabled: bool = false
 func _ready() -> void:
 	print("aktuelle zoomstufe: ", get_tree().current_scene.camera.zoom)
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
-	var shooter: PlayerShip = Global.get_player_ship(owner_id) as PlayerShip
+	shooter = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
@@ -56,9 +57,10 @@ func _physics_process(delta: float) -> void:
 	position += velocity * delta
 
 	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
-	var rect : Rect2 = get_viewport_rect().grow(300)
-	rect.size = rect.size
-	if not rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
+	var visible_rect = shooter.get_visible_world_rect()
+	#var rect : Rect2 = get_viewport_rect().grow(300)
+	#rect.size = rect.size
+	if not visible_rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
 		queue_free()
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────

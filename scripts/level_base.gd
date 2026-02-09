@@ -28,12 +28,18 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 @onready var enemies_container: Node2D = $EnemiesContainer
 @onready var spawned_enemies = 0
 @onready var background: Control = $background_Control
+@onready var background_texture_rect: TextureRect = $background_Control/background_TextureRect
+@onready var camera: Camera2D = get_tree().current_scene.get_node("%Camera2D")
 
 
 func _ready() -> void:
 	add_to_group("levels")
-	var camera = get_tree().current_scene.get_child(0)
+	
+	# -- settings for visible world --
 	camera.position = Vector2(0, 0)
+	background_texture_rect.size /= zoom_factor   # 8.2.2026: allenfalls analoge lösung für level mit anderem skript?
+	
+	
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
 	# Alle registrierten Spieler ins Level setzen
@@ -111,7 +117,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 4) Sichtbar schalten
 	player.show()
 	
-	# 5) je nach Level passende Skin setzen (aich im Inspector)
+	# 5) je nach Level passende Skin setzen (auch im Inspector)
 	player.set_skin(skin)
 	
 	# 6) player Signale verbinden
@@ -137,7 +143,9 @@ func _on_incoming_boss() -> void:
 		
 		
 func _on_number_of_players_changed() -> void:
-	enemy_spawner.set_spawn_rate() # Attempt to call function 'set_spawn_rate' in base 'null instance' on a null instance.
+	if enemy_spawner:
+		enemy_spawner.set_spawn_rate() # die Funktion wird auch bei der Instanzierung
+		#eines neuen Levels aufgerufen
 	
 func _print_test() ->void:
 	print("print_method executed")
