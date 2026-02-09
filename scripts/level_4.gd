@@ -1,5 +1,5 @@
 extends Node2D  # MainScene basiert auf Node2D
-
+signal test
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 signal enemy_destroyed(score: int, energy: int)
 
