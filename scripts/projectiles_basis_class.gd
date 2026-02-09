@@ -57,9 +57,7 @@ func _physics_process(delta: float) -> void:
 	position += velocity * delta
 
 	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
-	var visible_rect = shooter.get_visible_world_rect()
-	#var rect : Rect2 = get_viewport_rect().grow(300)
-	#rect.size = rect.size
+	var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
 	if not visible_rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
 		queue_free()
 

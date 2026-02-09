@@ -138,7 +138,7 @@ func track_nearest_player():
 
 func _on_shoot_timer_timeout():
 	if randi_range(1, chance_of_shooting) == 1:
-		var visible_rect = player.get_visible_world_rect()
+		var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
 		if visible_rect.has_point(global_position):
 			audio_stream_player_2d.volume_db = -10
 			audio_stream_player_2d.play()

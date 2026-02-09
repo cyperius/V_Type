@@ -25,6 +25,7 @@ AudioManager="*res://Autoloads&GameManaging/AudioManager.tscn"
 Global="*res://Autoloads&GameManaging/Global.gd"
 GameManager="*res://Autoloads&GameManaging/GameManager.gd"
 Players="*res://Autoloads&GameManaging/Players.gd"
+CameraUtilities="*res://scripts/camera_utils.gd"
 
 [display]
 
