@@ -55,7 +55,7 @@ func _ready() -> void:
 		if enemy_spawner.has_signal("boss_defeated"):
 			enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
 		#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-		if enemy_spawner.has_signal("_on_incoming_boss"):
+		if enemy_spawner.has_signal("incoming_boss"):
 			enemy_spawner.incoming_boss.connect(_on_incoming_boss) #Invalid access to property or key 'incoming_boss' on a base object of type 'Node2D (AsteroidSpawner.gd)'.
 
 	# Optional: Boss‑Timer

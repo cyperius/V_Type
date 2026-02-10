@@ -165,7 +165,7 @@ func here_comes_the_boss():
 		# damit der Level beendet wird. 14.12.22025 evtl. Bezeichnung ändern oder separates Signal zum levelbeeenden?
 	else: # wenn also ein Boss für level_boss gesetzt wurde (ganz oben "preload")
 		var boss = level_boss.instantiate()		
-		# dann zuerst Péosition setzen und erst dann..
+		# dann zuerst Position setzen und erst dann..
 		boss.global_position = Vector2(5000, 1100) # 7000, 1100
 		# wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 		get_tree().current_scene.add_child(boss)
