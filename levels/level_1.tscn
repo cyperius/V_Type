@@ -12,7 +12,7 @@
 [node name="Level_1" type="Node2D"]
 process_mode = 1
 script = ExtResource("1_gwceb")
-amount_of_enemies = 40
+amount_of_enemies = 4
 
 [node name="EnemySpawner" parent="." instance=ExtResource("2_gwceb")]
 level_boss = ExtResource("3_l53as")

@@ -4,7 +4,8 @@ signal enemy_destroyed(score: int, energy: int)
 signal asteroid_destroyed(size: int)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var collision_shape_2d_1: CollisionShape2D = %CollisionShape2D1
+@onready var hit_box: CollisionShape2D = %HitBox
+@onready var physic_collision_shape: CollisionShape2D = %PhysicCollisionShape
 @onready var area2d = $Area2D
 @onready var explosion_animation_scene = preload("res://game_world/explosion_animation.tscn")
 @export var explosion_scale : float = 0.5
@@ -50,10 +51,15 @@ func _ready() -> void:
 	print("asteroid:scale: ", asteroid_scale, " rounded; ", scale_factor_rounded, " health: ", area2d.health)
 
 	# Kollision anpassen (z. B. CircleShape2D)
-	if collision_shape_2d_1.shape is CircleShape2D:
-		var shape = collision_shape_2d_1.shape.duplicate() as CircleShape2D
+	if hit_box.shape is CircleShape2D:
+		var shape = hit_box.shape.duplicate() as CircleShape2D
 		shape.radius *= 0.9 * asteroid_scale # ein bisschen kleiner
-		collision_shape_2d_1.shape = shape
+		hit_box.shape = shape
+	if physic_collision_shape.shape is CircleShape2D:
+		var physic_shape = physic_collision_shape.shape.duplicate() as CircleShape2D
+		physic_shape.radius *= 0.9 * asteroid_scale # ein bisschen kleiner
+		physic_collision_shape.shape = physic_shape
+		
 
 	# Masse basierend auf Volumen-
 	mass = asteroid_scale * asteroid_scale * asteroid_scale

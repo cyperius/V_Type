@@ -29,14 +29,14 @@ collision_layer = 16
 collision_mask = 3
 script = ExtResource("3_c8icm")
 
-[node name="CollisionShape2D1" type="CollisionShape2D" parent="Area2D"]
+[node name="HitBox" type="CollisionShape2D" parent="Area2D"]
 unique_name_in_owner = true
 position = Vector2(-3.58333, 2.09285)
 scale = Vector2(1.11277, 1.03329)
 shape = SubResource("CircleShape2D_t47tc")
 debug_color = Color(0.0863281, 0, 0.7, 0.42)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="PhysicCollisionShape" type="CollisionShape2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(-3, 2)
 scale = Vector2(0.931622, 0.987448)
