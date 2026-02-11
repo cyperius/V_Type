@@ -135,10 +135,10 @@ func _ready() -> void:
 		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "top_down": player1_top_down, "scale": Vector2(0.7, 0.7)}},
 		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "top_down": player2_top_down, "scale": Vector2(0.7, 0.7)}},
 		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin, "top_down": player3_top_down, "scale": Vector2(0.75, 0.75)}},
-		{"looks": {"neutral": player5_skin, "rising": player5_raising_skin, "sinking": player5_diving_skin, "top_down": player5_top_down, "scale": Vector2(0.75, 0.75)}},
-		{"looks": {"neutral": player4_skin, "rising": player5_raising_skin, "sinking": player4_diving_skin, "top_down": player4_top_down, "scale": Vector2(0.8, 0.8)}},
+		{"looks": {"neutral": player4_skin, "rising": player4_raising_skin, "sinking": player4_diving_skin, "top_down": player4_top_down, "scale": Vector2(0.75, 0.75)}},
+		{"looks": {"neutral": player5_skin, "rising": player5_raising_skin, "sinking": player5_diving_skin, "top_down": player5_top_down, "scale": Vector2(0.8, 0.8)}},
 		]
-	# p4 skin scale: (0.75, 0.75)
+	
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
 	_backup_collision_mask = collision_mask

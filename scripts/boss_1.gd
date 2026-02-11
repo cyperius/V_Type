@@ -25,6 +25,8 @@ var projectile_instance # globale Variable für Schussinstanz
 #@onready var space_ball : SpaceBall # für Angriff aus space_ball
 #@onready var current_level : Node # wird in ready_function gesetzt
 
+var rumble_intensity := 0.0
+var explosion_animation : Node2D
 
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
@@ -170,11 +172,18 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	AudioManager.play_sfx_string("explosion", 25)
-	var explosion_animation = explosion_animation_scene.instantiate()
+	explosion_animation = explosion_animation_scene.instantiate() as ExplosionAnimation
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(25, 25)
-	explosion_animation.speed_scale = 0.5
+	explosion_animation.speed_scale = 0.3
+	explosion_animation.rumble(2, 1)
+	
+	
+	#Input.start_joy_vibration(1, 1.0, 1.0, 3.0)
+	#Input.start_joy_vibration(2, 1.0, 1.0, 3.0)
+	#Input.start_joy_vibration(3, 1.0, 1.0, 3.0)
+
 	emit_signal("boss_defeated")
 	await get_tree().create_timer(0.05).timeout
 	queue_free()
