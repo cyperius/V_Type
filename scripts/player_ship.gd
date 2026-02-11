@@ -67,28 +67,38 @@ var projectiles := []
 
 @onready var level = get_tree().current_scene.get_node("LevelContainer")
 
+var skins
+
+# -- skins --
+# -- neutral --
 @onready var ship_sprite: Sprite2D = %ship_sprite
 @onready var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
-@onready var player4_skin = preload("res://assets/graphic_elements/player/player_4_sideways_neutral.png")
-@onready var player3_skin = preload("res://assets/graphic_elements/player/player3_ship_sideways.png")
+@onready var player4_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_neutral.png")
+@onready var player3_skin = preload("res://assets/graphic_elements/player/p3_neutral_exportiert.png")
 @onready var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
-
-@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
-@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
-@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
-@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
-@onready var player3_raising_skin = preload("res://assets/graphic_elements/player/player3_ship_bauchlage.png")
-@onready var player3_diving_skin = preload("res://assets/graphic_elements/player/player3_ship_rueckenlage.png")
-@onready var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
 @onready var player5_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_neutral.png")
-@onready var player_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
 
+# -- raising --
+@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
+@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
+@onready var player3_raising_skin = preload("res://assets/graphic_elements/player/p3_bauchlage_exportiert.png")
+@onready var player4_raising_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_bauchlage.png")
+@onready var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
 
+# -- sinking("diving") --
+@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
+@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
+@onready var player3_diving_skin = preload("res://assets/graphic_elements/player/p3_sideways_rueckenlage.png")
+@onready var player4_diving_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_rueckenlage.png")
+@onready var player5_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
+
+# -- top down --
 @onready var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
 @onready var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
-@onready var player3_top_down = preload("res://assets/graphic_elements/player/player3_ship.png")
+@onready var player3_top_down = preload("res://assets/graphic_elements/player/p3_topdown_gross.png")
 @onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship_top_down.png")
-var skins
+@onready var player5_top_down = preload("res://assets/graphic_elements/player/white_gray_arrow_topdown_gross.png")
+
 
 @onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
@@ -124,10 +134,11 @@ func _ready() -> void:
 	skins = [ # die keys der level1 Dictionaries entsprechen der jeweiligen player_id
 		{"looks": {"neutral": player1_skin, "rising": player1_raising_skin, "sinking": player1_diving_skin, "top_down": player1_top_down, "scale": Vector2(0.7, 0.7)}},
 		{"looks": {"neutral": player2_skin, "rising": player2_raising_skin, "sinking": player2_diving_skin, "top_down": player2_top_down, "scale": Vector2(0.7, 0.7)}},
-		{"looks": {"neutral": player3_skin, "rising": player3_skin, "sinking": player3_skin, "top_down": player3_top_down, "scale": Vector2(0.1, 0.1)}},
-		{"looks": {"neutral": player4_skin, "rising": player4_skin, "sinking": player4_skin, "top_down": player4_top_down, "scale": Vector2(0.1, 0.1)}},
+		{"looks": {"neutral": player3_skin, "rising": player3_raising_skin, "sinking": player3_diving_skin, "top_down": player3_top_down, "scale": Vector2(0.75, 0.75)}},
+		{"looks": {"neutral": player5_skin, "rising": player5_raising_skin, "sinking": player5_diving_skin, "top_down": player5_top_down, "scale": Vector2(0.75, 0.75)}},
+		{"looks": {"neutral": player4_skin, "rising": player5_raising_skin, "sinking": player4_diving_skin, "top_down": player4_top_down, "scale": Vector2(0.8, 0.8)}},
 		]
-	
+	# p4 skin scale: (0.75, 0.75)
 	# Kollisions-Backup sichern (für Death/Revive)
 	_backup_collision_layer = collision_layer
 	_backup_collision_mask = collision_mask
