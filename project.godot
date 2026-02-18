@@ -26,6 +26,7 @@ Global="*res://Autoloads&GameManaging/Global.gd"
 GameManager="*res://Autoloads&GameManaging/GameManager.gd"
 Players="*res://Autoloads&GameManaging/Players.gd"
 CameraUtilities="*res://scripts/camera_utils.gd"
+RumbleManager="*res://Autoloads&GameManaging/RumbleManager.gd"
 
 [display]
 

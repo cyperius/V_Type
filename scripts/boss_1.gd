@@ -177,13 +177,18 @@ func die() -> void:
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(25, 25)
 	explosion_animation.speed_scale = 0.3
-	explosion_animation.rumble(2, 1)
+	
+	# sicher unnötig komplizierte, aber funktionierende Referenz zu aktive Controllern
+	var controller_ids := Players.get_active_player_ids() # diese Funktion in Players generiert einen Array mit player_ids, welche mit 1 starten (aber keine int sind)
+	var array_with_controller_ids : Array[int] # Für die folgende rumble() - Funktion müssen die Controller ID's mit einem Array mit Int-Elementen übergeben werden
+	for number in controller_ids:  # daher werden die Nummern aus dem array "controller_ids" zu int-Werten umgewandelt
+		var int_number = int(number) # man könnte wohl auch einfach mit "number = int(number)" direkt umwandeln
+		int_number -= 1 # die ursprünglichen player_ids begannen mit 1 -> Korrektur um -1
+		array_with_controller_ids.append(int_number) # und die nun passenden Elemnte dem array "array_with_controller_ids" hinzufügen
+	
+	RumbleManager.rumble(2.5, 1)  
 	
 	
-	#Input.start_joy_vibration(1, 1.0, 1.0, 3.0)
-	#Input.start_joy_vibration(2, 1.0, 1.0, 3.0)
-	#Input.start_joy_vibration(3, 1.0, 1.0, 3.0)
-
 	emit_signal("boss_defeated")
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

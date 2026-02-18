@@ -25,7 +25,7 @@ var player_to_device: Dictionary = {} # player_id -> device_id
 # ──────────────────────────────────────────────────────────────
 func join(device_id: int) -> int:
 	# Falls Gerät schon drin → ID zurückgeben
-	if device_to_player.has(device_id):
+	if device_to_player.has(device_id):  # device_to_player ist ein Dictionary
 		return device_to_player[device_id]
 	print("func Players.join() mit device_id: ", device_id, " aufgerufen") # funktioniert 26.11.25 16:55
 	var free_id := _next_free_player_id()
@@ -43,15 +43,15 @@ func join(device_id: int) -> int:
 	return free_id
 
 func leave_by_player(player_id: int) -> void:
-	if not player_to_device.has(player_id):
+	if not player_to_device.has(player_id):  #player_to_device ist ein Dictionary
 		return
-	var dev: int = player_to_device[player_id]
+	var device: int = player_to_device[player_id]
 	player_to_device.erase(player_id)
-	device_to_player.erase(dev)
+	device_to_player.erase(device)
 
-	player_left.emit(player_id, dev)
+	player_left.emit(player_id, device)
 	mapping_changed.emit()
-	print("Player left: ID =", player_id, " Device =", dev)
+	print("Player left: ID =", player_id, " Device =", device)
 
 func leave_by_device(device_id: int) -> void:
 	if not device_to_player.has(device_id):
@@ -63,14 +63,14 @@ func leave_by_device(device_id: int) -> void:
 #   HELPERS
 # ──────────────────────────────────────────────────────────────
 func get_active_player_ids() -> Array:
-	var ids := player_to_device.keys()
+	var ids := player_to_device.keys() # gibt player_ids zurück. Kann allenfalls als indirekte Referenz zu den Contriollern verwendet werden?
 	ids.sort()
 	return ids
 
 func get_device_for_player(player_id: int) -> int:
 	return player_to_device.get(player_id, -1)
 
-func get_player_for_device(device_id: int) -> int:
+func get_player_for_device(device_id: int) -> int: 
 	return device_to_player.get(device_id, -1)
 
 func get_active_count() -> int:
@@ -87,7 +87,7 @@ func reset_all() -> void:
 # ──────────────────────────────────────────────────────────────
 #   INTERNAL
 # ──────────────────────────────────────────────────────────────
-func _next_free_player_id() -> int:
+func _next_free_player_id() -> int:  # wird durch "func join()" aufgerufen
 	for id in range(1, MAX_PLAYERS + 1):
 		if not player_to_device.has(id):
 			return id

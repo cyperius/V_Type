@@ -36,12 +36,13 @@ func spawn_vomit_bullet():
 		return
 	var bullet = vomit_bullet_scene.instantiate() as Area2D
 	get_tree().current_scene.add_child(bullet)
-	bullet.look_at(boss_zombee.closest_player.global_position)
-	bullet.global_position = head.global_position
-	# bisheriger: jeder Schuss wird neu ausgerichtet - funktioniert besser (zu gut)
-	bullet.velocity = 5000.0 * bullet.global_position.direction_to(boss_zombee.closest_player.global_position)# oder andere Geschwindigkeit
-	# 26.12.2025: neu: in vomit_wave() gesetzte Richtung für Kotzstrahl gilt füer alle Kotzbrocken :)
-	# bullet.velocity = 5000.0 * vomit_wave_direction # 26.12.2025 funktioniert nicht gut. Schüsse scheinen immer in selbe Richtung zu gehen
+	if boss_zombee.closest_player.global_position:  # Sicherheitsnetz-> behebt hoffentlcih untenstehendes Problem
+		bullet.look_at(boss_zombee.closest_player.global_position)  # als player zerstört wurde: Invalid access to property or key 'global_position' on a base object of type 'Nil'.
+		bullet.global_position = head.global_position
+		# bisheriger: jeder Schuss wird neu ausgerichtet - funktioniert besser (zu gut)
+		bullet.velocity = 5000.0 * bullet.global_position.direction_to(boss_zombee.closest_player.global_position)# oder andere Geschwindigkeit
+		# 26.12.2025: neu: in vomit_wave() gesetzte Richtung für Kotzstrahl gilt füer alle Kotzbrocken :)
+		# bullet.velocity = 5000.0 * vomit_wave_direction # 26.12.2025 funktioniert nicht gut. Schüsse scheinen immer in selbe Richtung zu gehen
 	
 	
 func vomit_wave():
