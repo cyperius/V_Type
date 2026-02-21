@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ogim12joq8c2"
+path="res://.godot/imported/Synthwave rising.ogg-270c3e235d8a01fd964c78a3678f1d86.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Synthwave rising.ogg"
+dest_files=["res://.godot/imported/Synthwave rising.ogg-270c3e235d8a01fd964c78a3678f1d86.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

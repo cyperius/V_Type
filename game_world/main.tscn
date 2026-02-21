@@ -1,18 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://c20flpj8vlyd6"]
+[gd_scene load_steps=5 format=3 uid="uid://c20flpj8vlyd6"]
 
 [ext_resource type="Script" uid="uid://be45lia8mdmjn" path="res://scripts/main.gd" id="1_2wu2a"]
 [ext_resource type="Script" uid="uid://ddjm4cidxf726" path="res://Autoloads&GameManaging/InputJoiner.gd" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://be2saoppwc7v6" path="res://game_world/ui.tscn" id="3_vtdax"]
 [ext_resource type="PackedScene" uid="uid://0belslydrl30" path="res://pause_screen.tscn" id="4_jyhfs"]
-[ext_resource type="PackedScene" uid="uid://bsof326rrjc3y" path="res://players/spaceball.tscn" id="5_a57km"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_2wu2a")
+
+[node name="ScrollAnchor" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 unique_name_in_owner = true
 rotation = 0.000526298
 anchor_mode = 0
+process_callback = 0
 
 [node name="LevelContainer" type="Node2D" parent="."]
 process_mode = 1
@@ -35,10 +38,5 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="PauseScreen" parent="CanvasLayer" instance=ExtResource("4_jyhfs")]
-
-[node name="Ball" parent="." instance=ExtResource("5_a57km")]
-position = Vector2(606, 1117)
-collision_layer = 220
-speed = 1500.0
 
 [editable path="CanvasLayer/UI"]

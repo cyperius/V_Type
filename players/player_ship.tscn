@@ -1,29 +1,49 @@
-[gd_scene load_steps=9 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene load_steps=12 format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
+[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]
+size = Vector2(26.0009, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_df6tw"]
+size = Vector2(15.9993, 187)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flg8t"]
-radius = 40.0
-height = 370.0
+radius = 28.8764
+height = 190.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_df6tw"]
 radius = 118.0
 height = 423.91
 
-[node name="PlayerShip" type="Area2D"]
+[node name="PlayerShip" type="CharacterBody2D"]
 process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
-collision_mask = 124
+collision_mask = 252
 script = ExtResource("1_l3jmy")
-max_health = 1000
+max_health = 5000
 damage = 20
 primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
+metadata/_edit_vertical_guides_ = [540.0]
+
+[node name="BodyCollisionShape1" type="CollisionShape2D" parent="."]
+position = Vector2(5.00001, -8)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_flg8t")
+one_way_collision_margin = 0.0
+
+[node name="BodyCollisionShape2" type="CollisionShape2D" parent="."]
+position = Vector2(-9, 13)
+rotation = -1.5708
+shape = SubResource("RectangleShape2D_df6tw")
+one_way_collision_margin = 0.0
 
 [node name="ship_sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -32,13 +52,18 @@ texture = ExtResource("4_5icsl")
 
 [node name="Gunpoint" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="ShipArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_mask = 60
+script = ExtResource("5_flg8t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
 rotation = -1.5708
-scale = Vector2(0.600002, 0.567413)
+scale = Vector2(0.831128, 1.03763)
 shape = SubResource("CapsuleShape2D_flg8t")
 one_way_collision_margin = 0.0
 
-[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="ShipArea"]
 unique_name_in_owner = true
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_df6tw")

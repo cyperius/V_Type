@@ -5,9 +5,9 @@
 [ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_5rcgx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_foi4l"]
-size = Vector2(173.5, 7.5)
+size = Vector2(167, 7.5)
 
-[node name="Node2D" type="Area2D"]
+[node name="Area2D" type="Area2D"]
 process_mode = 1
 collision_layer = 8
 collision_mask = 17
@@ -17,12 +17,11 @@ damage = 250
 sfx_stream = ExtResource("2_5rcgx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-192, 1)
 rotation = 1.57952
 scale = Vector2(5.352, 5)
 texture = ExtResource("2_3hlow")
+offset = Vector2(0, 4)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-169, 0)
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_foi4l")

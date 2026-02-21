@@ -33,14 +33,12 @@ var wings_paralyzed = false
 
 
 func _ready() -> void:
-	print ("bee spawned")
 	add_to_group("enemies")
+	
+	# Signal für Änderungen in player Anzahl verbinden
+	Global.roster_changed.connect(update_active_players)
 	# Durch alle registrierten Spieler in Global gehen
-	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
-		if player:
-			# Spieler in das Dictionary eintragen
-			players[player_id] = player
+	update_active_players()
 			
 	var current_scene = get_tree().current_scene
 	if current_scene.has_node("Ball"):
@@ -110,6 +108,22 @@ func _on_wings_area_entered(other: Area2D) -> void:
 		wings_paralyzed = false
 
 
+func update_active_players() -> void:
+	print("BossZombee: player roster updated")
+	players = {} # bestehdnen Dictionary leeren
+	# dann neu bilden mit Spielern die registriert sind und nicht zerstört wurden
+	for player_id in Global.player_ships.keys():
+		if player_id in Global.destroyed_player_ids:
+			pass
+		else:
+			var player = Global.get_player_ship(player_id)
+			if player:
+				# Spieler in das Dictionary eintragen
+				players[player_id] = player
+				print("player roster updated")
+	closest_player = null
+
+
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
 	closest_player = null
@@ -128,11 +142,11 @@ func track_nearest_player():
 			min_distance = dist
 			#...und der Spieler zu dem sie gehört ist der nahgelegenste Spieler
 			closest_player = player
-	
-	if closest_player:
-		if global_position.distance_to(space_ball.global_position) < global_position.distance_to(closest_player.global_position):
-			if global_position.distance_to(space_ball.global_position) > 100:
-				direction = global_position.direction_to(space_ball.global_position)
+	if is_instance_valid(closest_player):
+		if is_instance_valid(space_ball):
+			if global_position.distance_to(space_ball.global_position) < global_position.distance_to(closest_player.global_position):
+				if global_position.distance_to(space_ball.global_position) > 100:
+					direction = global_position.direction_to(space_ball.global_position)
 		else:
 			if global_position.distance_to(closest_player.global_position) > 100:
 				direction = global_position.direction_to(closest_player.global_position)
@@ -168,6 +182,7 @@ func _on_brain_area_entered(area_that_entered: Area2D) -> void:
 		explosion_animation.global_position = global_position
 		explosion_animation.scale = Vector2(50, 50)
 		explosion_animation.speed_scale = 0.3
+		
 		queue_free()
 	
 	

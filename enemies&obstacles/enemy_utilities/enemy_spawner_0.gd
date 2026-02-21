@@ -1,1 +1,0 @@
-class_name EnemySpawner0 extends Node2D

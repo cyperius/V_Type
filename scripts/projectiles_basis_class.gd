@@ -5,21 +5,23 @@ extends Area2D
 											# wird von player_ship.gd her die richtigen ID überschrieben
 @export var speed: float = 400.0			# Fluggeschwindigkeit
 @export var damage: int = 10				# Schaden des Projektils
-@export var sfx_stream: AudioStream			# Optional: direkter Soundeffekt
-@export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser")
-@export var volume: float = 1.0				# Lautstärke
+@export var shot_sfx_stream: AudioStream			# direkter Soundeffekt
+#@export var sfx_name: String = ""			# Alternativ: Soundeffektname (z. B. "laser") - aktueel (6.2.2026) nicht genutzt
+@export_range(-30, 10, 0.5) var volume: float = 1.0				# Lautstärke
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
 @onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit.tscn")
 
+@onready var shooter: PlayerShip 
 var velocity: Vector2 = Vector2.ZERO
 var circle_center_position: Vector2 = Vector2.ZERO
 var circle_mode_enabled: bool = false
 
 # ─── Initialisierung bei Erscheinen ──────────────────────────────────────
 func _ready() -> void:
+	print("aktuelle zoomstufe: ", get_tree().current_scene.camera.zoom)
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
-	var shooter: PlayerShip = Global.get_player_ship(owner_id) as PlayerShip
+	shooter = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
@@ -54,22 +56,24 @@ func _physics_process(delta: float) -> void:
 
 	position += velocity * delta
 
-	# Off-screen entsorgen (mit kleinem Rand)
-	var rect := get_viewport_rect().grow(64)
-	if not rect.has_point(global_position):
+	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
+	var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
+	if not visible_rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
 		queue_free()
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
 func _on_area_entered(other: Area2D) -> void:
-	# Friendly Fire verhindern: eigenes Schiff ignorieren
-	if other is PlayerShip:
-		return
+	## Friendly Fire verhindern: eigenes Schiff ignorieren
+	if other.get_parent() != null:
+		var parent = other.get_parent()
+		if parent is PlayerShip:
+			return 
 
 	# Treffer-VFX (nicht für Asteroiden, falls du dort keinen Effekt willst)
 	if not other.is_in_group("asteroids"):
 		var enemy_hit = enemy_hit_scene.instantiate()
-		get_tree().current_scene.add_child(enemy_hit)
 		enemy_hit.global_position = global_position
+		get_tree().current_scene.add_child(enemy_hit)
 		
 	
 	# Schaden anwenden, wenn das Ziel eine passende API anbietet
@@ -109,7 +113,7 @@ func start_tweens(angle: float) -> void:
 
 # ─── Soundeffekt beim Abfeuern (kann z. B. aus player_ship aufgerufen werden) ──
 func fire() -> void:
-	if sfx_stream:
-		AudioManager.play_sfx(sfx_stream, volume)
-	elif sfx_name != "":
-		AudioManager.play_sfx_string(sfx_name, volume)
+	if shot_sfx_stream:
+		AudioManager.play_sfx(shot_sfx_stream, volume)
+	#elif sfx_name != "":
+		#AudioManager.play_sfx_string(sfx_name, volume)

@@ -31,7 +31,6 @@ gravity_scale = 0.0
 z_index = -1
 position = Vector2(-284.244, 245.866)
 rotation = 0.811578
-scale = Vector2(1, 1)
 physics_material_override = SubResource("PhysicsMaterial_mcpsi")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm7"]
@@ -134,7 +133,6 @@ shape = SubResource("RectangleShape2D_1880s")
 z_index = -1
 position = Vector2(303, 21.9999)
 rotation = 0.811578
-scale = Vector2(1, 1)
 physics_material_override = SubResource("PhysicsMaterial_mcpsi")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm5"]
@@ -153,7 +151,6 @@ shape = SubResource("RectangleShape2D_1880s")
 z_index = -1
 position = Vector2(-185, -435)
 rotation = 0.811578
-scale = Vector2(1, 1)
 physics_material_override = SubResource("PhysicsMaterial_mcpsi")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidMetalArm6"]

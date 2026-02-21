@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cvxfng8alyrqq"
+path="res://.godot/imported/Label_M1_1_Mech Level.ogg-9f18ce5f88392568dcd0bf93e8da236b.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_M1_1_Mech Level.ogg"
+dest_files=["res://.godot/imported/Label_M1_1_Mech Level.ogg-9f18ce5f88392568dcd0bf93e8da236b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

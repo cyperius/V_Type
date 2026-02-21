@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://tn7oan56ea6u"]
+[gd_scene load_steps=8 format=3 uid="uid://tn7oan56ea6u"]
 
 [ext_resource type="Script" uid="uid://b6uweyfr61vsh" path="res://scripts/boss_1.gd" id="1_kd5r2"]
 [ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_yguwa"]
@@ -6,14 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://bgsl5b0g4eo5h" path="res://assets/graphic_elements/enemies/ship3.png" id="4_gdapw"]
 [ext_resource type="AudioStream" uid="uid://dt5fdvc1m1fs" path="res://assets/sound_and_sfx/soundtracks/boss_Themes/Label _ Tech Menace Level or Boss, slow medium threat.wav" id="4_jqv7l"]
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_2ng8k"]
-points = PackedVector2Array(-435, -414, -161, -40, -378, -67, -243, 19, -404, 46, -471, 88, 106, 89, 85, -418, 3, -420, -45, -205)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ipajw"]
+radius = 131.0
+height = 489.055
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8n0jx"]
+radius = 131.0
+height = 517.804
 
 [node name="Boss1" type="Area2D"]
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("1_kd5r2")
-health_points = 5000.0
+health_points = 100.0
 shot_sound = ExtResource("2_yguwa")
 shot_scene = ExtResource("3_1ohr7")
 damage = 300
@@ -21,16 +26,28 @@ score_count = 5000
 boss_soundtrack = ExtResource("4_jqv7l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-16, -88)
-shape = SubResource("ConvexPolygonShape2D_2ng8k")
+position = Vector2(-208, -280)
+rotation = -0.721057
+scale = Vector2(0.37974, 1.26257)
+shape = SubResource("CapsuleShape2D_ipajw")
+debug_color = Color(0, 0.6, 0.129412, 0.419608)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(0, 84)
-rotation = 3.14159
-scale = Vector2(-1, 1)
-shape = SubResource("ConvexPolygonShape2D_2ng8k")
+position = Vector2(-176, 296)
+rotation = -2.32547
+scale = Vector2(0.37974, 1.26257)
+shape = SubResource("CapsuleShape2D_8n0jx")
+debug_color = Color(0, 0.6, 0.129412, 0.419608)
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(-72, 12)
+rotation = -1.57776
+scale = Vector2(0.670861, 1.39562)
+shape = SubResource("CapsuleShape2D_8n0jx")
+debug_color = Color(0, 0.6, 0.129412, 0.419608)
 
 [node name="Ship3" type="Sprite2D" parent="."]
+show_behind_parent = true
 texture = ExtResource("4_gdapw")
 
 [node name="GunPoints" type="Node2D" parent="."]

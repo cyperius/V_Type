@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd13bjbqv6ap"]
+[gd_scene load_steps=6 format=3 uid="uid://dd13bjbqv6ap"]
 
 [ext_resource type="Script" uid="uid://b7sj5h4so43qn" path="res://scripts/rigid_asteroid.gd" id="1_iatvu"]
 [ext_resource type="PackedScene" uid="uid://djba7sqwptmdw" path="res://enemies&obstacles/asteroid_animation.tscn" id="1_vn8af"]
 [ext_resource type="Script" uid="uid://bl4c52hweh2ov" path="res://scripts/Area2D.gd" id="3_c8icm"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_81xbp"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_t47tc"]
+radius = 42.403
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7u1wg"]
 radius = 42.403
 
 [node name="RigidAsteroid" type="RigidBody2D"]
@@ -15,13 +18,8 @@ can_sleep = false
 freeze_mode = 1
 linear_damp_mode = 1
 script = ExtResource("1_iatvu")
-health = 250
+health = 1000
 speed = 600
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(-4, 1)
-shape = SubResource("CircleShape2D_81xbp")
 
 [node name="AnimatedSprite2D" parent="." instance=ExtResource("1_vn8af")]
 
@@ -31,10 +29,18 @@ collision_layer = 16
 collision_mask = 3
 script = ExtResource("3_c8icm")
 
-[node name="CollisionShape2D1" type="CollisionShape2D" parent="Area2D"]
+[node name="HitBox" type="CollisionShape2D" parent="Area2D"]
 unique_name_in_owner = true
 position = Vector2(-3.58333, 2.09285)
 scale = Vector2(1.11277, 1.03329)
-shape = SubResource("CircleShape2D_81xbp")
+shape = SubResource("CircleShape2D_t47tc")
+debug_color = Color(0.0863281, 0, 0.7, 0.42)
+
+[node name="PhysicCollisionShape" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-3, 2)
+scale = Vector2(0.931622, 0.987448)
+shape = SubResource("CircleShape2D_7u1wg")
+debug_color = Color(0.0902344, 0.7, 0, 0.42)
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

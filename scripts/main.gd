@@ -9,19 +9,33 @@ signal player_removed(player_id: int)
 #   REFERENCES
 # ──────────────────────────────────────────────────────────────
 @onready var level_container: Node = $LevelContainer
+var level : Node # Gloable Variable, Referenz wird gesetzt, sobald spieler existieren
 @onready var players_root: Node2D = $LevelContainer/PlayersRoot
 @onready var ui: Control = %UI
 @onready var camera: Camera2D = %Camera2D
+@onready var scroll_anchor: Node2D = %ScrollAnchor
+var scroll_x := 0.0
+
 @onready var ball: SpaceBall = $Ball
 
 @onready var player_scene: PackedScene = preload("res://players/player_ship.tscn")
 
 var input_joiner: Node = null
 
+# ──────────────────────────────────────────────────────────────
+#   OPTICS
+# ──────────────────────────────────────────────────────────────
+
+@export var default_zoom_x := 1.0
+@export var default_zoom_y := 1.0
+
+
+# ──────────────────────────────────────────────────────────────
+
 # Nur einmal Level laden – niemals mehrfach
 var level_loaded_once := false
 var tw = create_tween()   # tw wird später einen tween referenzieren (mit create_tween() )
-# tw es ist als globale Variable definiert, damit der tween von einer anderen Funktion 
+# tw ist als globale Variable definiert, damit der tween von einer anderen Funktion 
 # her, gestoppt werden kann -> tw.kill()
 
 
@@ -34,7 +48,7 @@ func _ready() -> void:
 	
 	# Level loaded Signal des GameManagers verbinden
 	GameManager.level_loaded.connect(_on_level_loaded)
-
+	
 	# InputJoiner suchen
 	if has_node("InputJoiner"):
 		input_joiner = $InputJoiner
@@ -68,7 +82,8 @@ func _ready() -> void:
 # ──────────────────────────────────────────────────────────────
 #   PHYSICS DEMO-JOIN (Keyboard als Device 0)
 # ──────────────────────────────────────────────────────────────
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+
 	# Debug-Ausgabe optional
 	#print("Main physics running…")
 
@@ -79,6 +94,29 @@ func _physics_process(_delta: float) -> void:
 			# Players.join() sendet das player_joined-Signal
 			# und Main._on_player_joined() wird automatisch aufgerufen.
 			print("Keyboard join triggered, player_id:", player_id)
+			
+	# Wenn der Level camera_scrolling aktiviert hat (ExportVariable), Scrolling aktivieren
+	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
+	
+	if is_instance_valid(level) and level.get("camera_scrolling") == true:
+		scroll_x += 200.0 * delta
+		var snapped_x: int = int(floor(scroll_x)) 
+		scroll_anchor.position.x = snapped_x
+		
+		camera.position.x = snapped_x
+		camera.global_position.y = int(camera.global_position.y)
+			
+			
+			#
+			#
+			#scroll_anchor.position.x += (200 * delta)
+			##camera.global_position = scroll_anchor.global_position
+#
+			#var cam_pos := scroll_anchor.position
+			#cam_pos.x = round(cam_pos.x)
+			#cam_pos.y = round(cam_pos.y)
+			#camera.position = cam_pos
+				#
 
 
 # ──────────────────────────────────────────────────────────────
@@ -181,12 +219,12 @@ func _remove_player(player_id: int) -> void:
 #   PLAYER PLATZIEREN IM LEVEL
 # ──────────────────────────────────────────────────────────────
 func _place_player_in_current_level(player_ship: PlayerShip, player_id: int) -> void:
-	var level := GameManager.current_level_node
+	level = GameManager.current_level_node
 	if level and level.has_method("place_player_in_current_level"):
 		level.place_player_in_current_level(player_ship, player_id)
 	else:
 		# Standard-Spawn (links unten in der Safe-Zone)
-		var viewport := get_viewport_rect().size
+		var viewport := get_viewport_rect().size # refaktorieren, nicht mit ge_viewport_tect arbeiten
 		var base := viewport * 0.05
 		var offset := Vector2(180, 60 + 240 * (player_id - 1))
 		player_ship.global_position = base + offset
@@ -215,8 +253,20 @@ func _connect_level_signals() -> void:
 
 
 func _on_level_loaded() -> void:
-	tw.kill()
-	camera.zoom = Vector2(1, 1)
+	tw.kill() # falls noch ein tween von "func _on_zoom_requested" laufen würde
+	# Referenz auf das aktuelle Level
+	level = level_container.get_child(1) # das zweite child (1) ist jeweils der level
+	if "zoom_factor" in level:
+		var level_zoom_factor : Vector2 = level.zoom_factor # Trying to assign value of type 'float' to a variable of type 'Vector2'.
+		print("main.gd: Lvel_zoom_factor: ", level_zoom_factor)
+		camera.zoom = level_zoom_factor
+	else:
+		camera.zoom = Vector2(default_zoom_x, default_zoom_y)
+		# Grösse des Hintergrunds setzen
+	#level.background.size.x /= camera.zoom.x  # geht nicht. Problem: background ist keine Exportvariable des levels.
+	#level.background.size.y /= camera.zoom.y # Invalid access to property or key 'background' on a base object of type 'Node2D (level_3.gd)'.
+	 # alternativ auf FullHD-Fenstergröße Vector2(3860, 2160) setzen
+	
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
 	for player_id in Global.player_ships.keys():
@@ -224,6 +274,7 @@ func _on_level_loaded() -> void:
 		_place_player_in_current_level(ship, player_id)
 
 	_connect_level_signals()
+	
 
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:

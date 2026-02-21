@@ -25,10 +25,12 @@ AudioManager="*res://Autoloads&GameManaging/AudioManager.tscn"
 Global="*res://Autoloads&GameManaging/Global.gd"
 GameManager="*res://Autoloads&GameManaging/GameManager.gd"
 Players="*res://Autoloads&GameManaging/Players.gd"
+CameraUtilities="*res://scripts/camera_utils.gd"
+RumbleManager="*res://Autoloads&GameManaging/RumbleManager.gd"
 
 [display]
 
-window/size/viewport_width=3860
+window/size/viewport_width=3840
 window/size/viewport_height=2160
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
@@ -350,3 +352,15 @@ activate_ball={
 2d_physics/layer_6="boarders"
 2d_physics/layer_7="world"
 2d_physics/layer_8="ball"
+
+[physics]
+
+common/physics_interpolation=true
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+textures/default_filters/use_nearest_mipmap_filter=true
+textures/decals/filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true

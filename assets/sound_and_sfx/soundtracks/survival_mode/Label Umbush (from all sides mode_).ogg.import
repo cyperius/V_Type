@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c17w6e6hjd0i7"
+path="res://.godot/imported/Label Umbush (from all sides mode_).ogg-00c90b751d423fdedf3c5bf969914cb8.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).ogg"
+dest_files=["res://.godot/imported/Label Umbush (from all sides mode_).ogg-00c90b751d423fdedf3c5bf969914cb8.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

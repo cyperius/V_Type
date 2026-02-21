@@ -68,13 +68,14 @@ func _physics_process(delta: float) -> void:
 	if level_7.phase_1_activated:
 		for girder in girders_1: # Bewegung der Girders; Werterange wird jeweils in set_girders_stats_range
 			# erweitert und danach werden die Werte zufällig neu gesetzt
-			girder.position += girders_stats[girder]["move_speed"] * delta * Vector2(-1, girders_stats[girder]["move_direction_y"])
+			girder.global_position += girders_stats[girder]["move_speed"] * delta * Vector2(-1, girders_stats[girder]["move_direction_y"])
 			girder.rotation += girders_stats[girder]["rotation_speed"] * delta * girders_stats[girder]["rotation_direction"]
-			if girder.position.x <= -200 or girder.position.y < -200 or girder.position.y > 2600: 
+			if girder.global_position.x <= -200 or girder.global_position.y < -200 or girder.global_position.y > 2600: 
 				# wenn ausserhalb des Bildes: neue Zufallsstats setzen und rechts respawnen
 				set_girder_stats_range() # respawnen, Werte-range erweitern, danach werden Werte zufällig gesetzt
-				girder.position.x = 4300
-				girder.position.y = randi_range(100, 2400)
+				girder.global_position = Vector2(4300, randi_range(100, 2400)) # wichtig, x und y Koordinaten in einem setzen,
+				# damit es keinen Zwischenzustand gibt (-> hat zu Aufblitzen des Sprites geführt)
+				girder.reset_physics_interpolation() # nach Teleport empfohlen, wenn mit physics_process gearbeitet wird
 				if phase1_fadeout == false:
 					girders_stats[girder]["move_speed"] = randi_range(min_move_speed_factor, chosen_max_move_speed_factor) * basic_move_speed
 					girders_stats[girder]["rotation_speed"] = randf_range(min_rotation_speed, max_rotation_speed)
@@ -84,17 +85,16 @@ func _physics_process(delta: float) -> void:
 					girders_stats[girder]["move_speed"] = 0
 					girders_stats[girder]["rotation_speed"] = 0
 			
-				
-		
 	if level_7.phase_2_activated == true:
 		for girder in girders_2: # Bewegung der Girders; Werterange wird jeweils in set_girders_stats_range
 			# erweitert und danach werden die Werte zufällig neu gesetzt
-			girder.position += girders_stats[girder]["move_speed"] * delta * Vector2(-1, girders_stats[girder]["move_direction_y"])
+			girder.global_position += girders_stats[girder]["move_speed"] * delta * Vector2(-1, girders_stats[girder]["move_direction_y"])
 			girder.rotation += girders_stats[girder]["rotation_speed"] * delta * girders_stats[girder]["rotation_direction"]
 			if girder.global_position.x <= -200 or girder.global_position.y > 2600: 
 				# wenn ausserhalb des Bildes: respawnen und neue Zufallsstats setzen 
-				girder.global_position.x = randi_range(2000, 4000)
-				girder.global_position.y = -400
+				girder.global_position = Vector2(randi_range(2000, 4000), -400)
+				girder.reset_physics_interpolation()
+				
 				if phase2_fadeout == false:
 					set_girder_stats_range() # respawnen, Werte-range erweitern, danach werden Werte zufällig gesetzt
 					girders_stats[girder]["move_speed"] = randi_range(min_move_speed_factor, chosen_max_move_speed_factor) * basic_move_speed
@@ -104,21 +104,18 @@ func _physics_process(delta: float) -> void:
 				else:
 					girders_stats[girder]["move_speed"] = 0
 					girders_stats[girder]["rotation_speed"] = 0
+			
 		
-			
-			
 func set_girder_stats_range() -> void:
-	#min_move_speed_factor += 0.01 # range für Geschwindigkeiten erhöhen 
-	# (da Endgeschwindigkeit über rangi_rage berechnet wird, erst ab 10 Durchläufen wirksam)
 	possible_max_move_speed_factor += 0.01
 	chosen_max_move_speed_factor = randf_range(min_move_speed_factor, possible_max_move_speed_factor)
-	#min_rotation_speed += 0.01 # range für Rotationsgeschwindîgkeit erhöhen
+
 	max_rotation_speed += 0.01
-	max_rotation_speed = clamp(max_rotation_speed, max_rotation_speed, 6)
-	# y-Bewegung: mögliche range erhöhen und Richtung zufällig wählen lassen
+	max_rotation_speed = clamp(max_rotation_speed, 0.5, 6.0)
+
 	move_direction_y_range += 0.01
-	move_direction_y_range = clamp(move_direction_y_range, move_direction_y_range, 0.2)
-	
+	move_direction_y_range = clamp(move_direction_y_range, 0.0, 0.2)
+
 	
 func _on_end_phase1() -> void:
 	phase1_fadeout = true
@@ -127,5 +124,5 @@ func _on_end_phase2() -> void:
 	phase2_fadeout = true
 
 func _on_area_entered(other: Area2D) -> void:
-	print("it actually worked")
+	print("mech_world.gd: it actually worked")
 	

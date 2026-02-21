@@ -32,7 +32,8 @@ var destroyed_player_ids: Dictionary[int, bool] = {}
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
-	print("🌍 Global.gd _ready – Spieler-Daten:", player_ships)
+	#print("🌍 Global.gd _ready – Spieler-Daten:", player_ships)
+	pass
 
 # ──────────────────────────────────────────────────────────────
 #   REGISTRIERUNG / DEREGISTRIERUNG
@@ -49,8 +50,8 @@ func register_player(player_id: int, ship: Node, sprite: Node) -> void:
 	# Events für Außenwelt
 	emit_signal("player_registered", player_id)
 	emit_signal("roster_changed")
-	print("✅ Spieler %d registriert" % player_id)
-	print(player_ships.size())
+	print("Global.gd: ✅ Spieler %d registriert" % player_id)
+	print("Global.gd: Anzahl Spieler: ", player_ships.size())
 
 func unregister_player(player_id: int) -> void:
 	# Spieler verlässt das Level/Spielerpool
@@ -74,7 +75,8 @@ func mark_player_destroyed(player_id: int) -> void:
 	if destroyed_player_ids.has(player_id):
 		return
 	destroyed_player_ids[player_id] = true
-	#player_ships.erase(player_id)  # Habe ich neu eingefügt 1.12.2025
+	#player_ships.erase(player_id)  # Habe ich neu eingefügt 1.12.2025, 
+	# 23.1.26: aktuell weglassen, wegen GameOver-Prüfung
 	emit_signal("player_destroyed", player_id)
 	emit_signal("roster_changed")
 	print("💥 Spieler %d zerstört" % player_id)

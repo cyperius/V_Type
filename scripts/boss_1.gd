@@ -25,6 +25,8 @@ var projectile_instance # globale Variable für Schussinstanz
 #@onready var space_ball : SpaceBall # für Angriff aus space_ball
 #@onready var current_level : Node # wird in ready_function gesetzt
 
+var rumble_intensity := 0.0
+var explosion_animation : Node2D
 
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
@@ -84,7 +86,8 @@ func _process(delta: float) -> void:
 	
 		
 func _position_change() -> void:
-		new_y = randi_range(position.y - 300, position.y + 300) 
+		new_y = clamp(randi_range(position.y - 300, position.y + 300), 200, 1800)
+	
 		
 func _shot() -> void:
 	if shot_sound:
@@ -116,18 +119,20 @@ func _shoot(weapon: PackedScene) -> void:
 					projectile_instance.direction = shot_direction 
 					#print("boss1: projectile_instance.direction: ", projectile_instance.direction)
 					projectile_instance.shot_orientation = shot_direction.angle()
-				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
+				
 				# Verwende gunpoints als Referenzen für Startpunkte des Schusses
 				projectile_instance.global_position = gunpoint.global_position
 				#print("boss1: projectile_instance.direction: ", shot_direction == projectile_instance.direction)
-				
+				current_scene.add_child(projectile_instance) # Füge das Projektil der aktuellen Szene hinzu
 				# Füge das Projektil der Liste aktiver Projektile hinzu
 				projectiles.append(projectile_instance)
 		else: # wenn keine gunpoints -> Fallback: Nutze die Schiffposition
 			var projectile_instance = enemy_weapon.instantiate()
-			current_scene.add_child(projectile_instance) #
 			projectile_instance.global_position = global_position
 			#print("boss1.gd: Gunpoint nicht gefunden, nutze Schiffposition:", projectile_instance.global_position)
+			
+			current_scene.add_child(projectile_instance) #
+			
 	else:
 		#print("boss1.gd: Fehler: Keine aktuelle Szene gefunden!")
 		
@@ -139,9 +144,10 @@ func _shoot(weapon: PackedScene) -> void:
 			pass
 			#print("boss1.gd: Fehler: Projektil hat keine fire()-Methode!")
 	
+	
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
-		apply_damage(other.damage, other.player_id)
+	if other.is_in_group("players"):
+		apply_damage(other.damage, -1)
 	# kommenden Block allenfalls reaktivieren anpassen, falls Ausweichverhalten eine Rolle spielen soll
 	#elif other.is_in_group("evaders"):    
 		#apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
@@ -166,11 +172,23 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	AudioManager.play_sfx_string("explosion", 25)
-	var explosion_animation = explosion_animation_scene.instantiate()
+	explosion_animation = explosion_animation_scene.instantiate() as ExplosionAnimation
 	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
 	explosion_animation.scale = Vector2(25, 25)
-	explosion_animation.speed_scale = 0.5
+	explosion_animation.speed_scale = 0.3
+	
+	# sicher unnötig komplizierte, aber funktionierende Referenz zu aktive Controllern
+	var controller_ids := Players.get_active_player_ids() # diese Funktion in Players generiert einen Array mit player_ids, welche mit 1 starten (aber keine int sind)
+	var array_with_controller_ids : Array[int] # Für die folgende rumble() - Funktion müssen die Controller ID's mit einem Array mit Int-Elementen übergeben werden
+	for number in controller_ids:  # daher werden die Nummern aus dem array "controller_ids" zu int-Werten umgewandelt
+		var int_number = int(number) # man könnte wohl auch einfach mit "number = int(number)" direkt umwandeln
+		int_number -= 1 # die ursprünglichen player_ids begannen mit 1 -> Korrektur um -1
+		array_with_controller_ids.append(int_number) # und die nun passenden Elemnte dem array "array_with_controller_ids" hinzufügen
+	
+	RumbleManager.rumble(2.5, 1)  
+	
+	
 	emit_signal("boss_defeated")
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

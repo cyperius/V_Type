@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c3bqokbvj4htl"
+path="res://.godot/imported/Label_M_2 after mid Dark Level.ogg-995951810564c4282e08fea54f8cb4da.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_M_2 after mid Dark Level.ogg"
+dest_files=["res://.godot/imported/Label_M_2 after mid Dark Level.ogg-995951810564c4282e08fea54f8cb4da.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

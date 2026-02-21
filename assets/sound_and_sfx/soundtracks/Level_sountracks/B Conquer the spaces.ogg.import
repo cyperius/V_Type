@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://8d22hiws10qb"
+path="res://.godot/imported/B Conquer the spaces.ogg-74dc8156a15e6f43bbd4877e4c954a7c.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/B Conquer the spaces.ogg"
+dest_files=["res://.godot/imported/B Conquer the spaces.ogg-74dc8156a15e6f43bbd4877e4c954a7c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

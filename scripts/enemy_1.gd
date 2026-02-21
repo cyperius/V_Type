@@ -23,6 +23,7 @@ signal collision_detected(enemy: Node, collision_position: Vector2)
 @onready var current_level : Node # wird in ready_function gesetzt
 
 
+
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
@@ -30,6 +31,7 @@ var direction : Vector2 = Vector2(-1, -1)
 var evasive_mode_on = false
 var player_shot_owner_id : int =- 1
 var is_player_tracking_active := false
+var player : PlayerShip
 
 
 
@@ -46,20 +48,17 @@ func _ready() -> void:
 		audio_stream_player_2d.stream = shot_sound
 	
 	
-	#current_level = get_parent().get_parent() 
-	# 15.12.2025 get_parent().get_parent() ist schlechte..
-	# praxis, also bei gelegenheit stabiler machen..
-	# 17.12.2025 Versuch: 
 	current_level = get_tree().get_first_node_in_group("levels")
 	
 	# 1) -- für Angriff auf Spieler -- #
 	# Durch alle registrierten Spieler in Global gehen
 	for player_id in Global.player_ships.keys():
-		var player = Global.get_player_ship(player_id)
+		player = Global.get_player_ship(player_id) as PlayerShip # player ist oben als globale Variable definiert
 		if player:
 			# Spieler in das Dictionary eintragen
 			players[player_id] = player
 	# 1) -- oben: für Angriff auf Spieler -- #
+	
 	
 	# 2) -- für Angriff auf space_ball -- #
 	var current_scene = get_tree().current_scene
@@ -74,8 +73,9 @@ func connect_signals() -> void:
 	
 
 func _on_area_entered(other: Area2D) -> void:
-	if other is PlayerShip:
-		apply_damage(other.damage, other.player_id)
+	if other.is_in_group("players"):
+		var entered_player = other.get_parent()
+		apply_damage(entered_player.damage, entered_player.player_id)
 	elif other.is_in_group("evaders"):    
 		apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
 # wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
@@ -96,7 +96,7 @@ func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
 	
 func _process(delta: float) -> void:
 	
-	if position.x < -300:
+	if position.x < -50:
 		queue_free()
 		
 	position.x += delta * x_speed * direction.x
@@ -115,7 +115,7 @@ func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
 	closest_player = null
 	# INF ist eine vordefnierte Konstante "Infinite". Sinn: 
-	# erst Wert "unendlich" als Disztanz setzen, die dann durhc die nächste
+	# erst Wert "unendlich" als Disztanz setzen, die dann durch die nächste
 	# gemessene (zwingend kleinere) Distanz ersetzt wird
 	var min_distance = INF
 	# Für jeden Spieler, die oben im dictionary players erfasst wurde, wird die 
@@ -123,25 +123,28 @@ func track_nearest_player():
 	for player_id in players.keys():
 		var player = players[player_id]
 		var dist = global_position.distance_to(player.global_position)
-		# ...und wenn diese gemessene Distanz < ist als die bishr kleinste
+		# ...und wenn diese gemessene Distanz < ist als die bisher kleinste
 		# Distanz, wird dies die neuste kleinste Distanz
 		if dist < min_distance:
 			min_distance = dist
 			#...und der Spieler zu dem sie gehört ist der nahgelegenste Spieler
 			closest_player = player
 
-	if closest_player:
+	if closest_player and closest_player.player_is_dead == false:
 		if global_position.distance_to(closest_player.global_position) > 100:
 			direction = global_position.direction_to(closest_player.global_position)
 
 
+
 func _on_shoot_timer_timeout():
 	if randi_range(1, chance_of_shooting) == 1:
-		audio_stream_player_2d.volume_db = -10
-		audio_stream_player_2d.play()
-		var shot = shot_scene.instantiate()
-		shot.global_position = _gun_point.global_position
-		get_parent().add_child(shot)
+		var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
+		if visible_rect.has_point(global_position):
+			audio_stream_player_2d.volume_db = -10
+			audio_stream_player_2d.play()
+			var shot = shot_scene.instantiate()
+			shot.global_position = _gun_point.global_position
+			get_parent().add_child(shot)
 	
 
 func apply_damage(damage_amount, owner_id) -> void:
@@ -157,9 +160,9 @@ func apply_damage(damage_amount, owner_id) -> void:
 		
 func die() -> void:
 	var explosion_animation = explosion_animation_scene.instantiate()
-	get_tree().current_scene.add_child(explosion_animation)
-	explosion_animation.position = global_position
+	explosion_animation.global_position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)
+	get_tree().current_scene.add_child(explosion_animation)
 	hide()
 	await get_tree().create_timer(0.05).timeout
 	queue_free()

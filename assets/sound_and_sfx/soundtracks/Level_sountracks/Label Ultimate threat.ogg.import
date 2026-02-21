@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://f7f76mapbxwl"
+path="res://.godot/imported/Label Ultimate threat.ogg-7552e10b87e60b20f5d866729213981e.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.ogg"
+dest_files=["res://.godot/imported/Label Ultimate threat.ogg-7552e10b87e60b20f5d866729213981e.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

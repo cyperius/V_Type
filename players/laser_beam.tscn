@@ -14,12 +14,11 @@ collision_layer = 2
 collision_mask = 52
 script = ExtResource("1_mp64s")
 blast_scale = Vector2(20, 20)
-blast_speed = 6000.0
+blast_speed = 2000.0
 speed = 2000.0
 damage = 20
-sfx_stream = ExtResource("2_nf1aw")
-sfx_name = "laser_beam"
-volume = 0.5
+shot_sfx_stream = ExtResource("2_nf1aw")
+volume = -8.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(2.08165e-12, 2.08165e-12)

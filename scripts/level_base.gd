@@ -7,8 +7,11 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export var amount_of_enemies: int
 @export var level_nr : int = 1
 @export var last_level := false
+@export var auto_thrust_enabled := false
+@export var camera_scrolling := false
+@export var zoom_factor : Vector2 = Vector2(1, 1)
 
-
+	
 # -- levelspezifische optics und Platzierung für das player_ship -- #
 @export_range(0.1, 2.0, 0.05) var ship_scale : float = 1
 enum Rotations { R0 = 0, R90 = 90, R180 = 180, R270 = 270 }
@@ -25,12 +28,17 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 @onready var enemies_container: Node2D = $EnemiesContainer
 @onready var spawned_enemies = 0
 @onready var background: Control = $background_Control
+@onready var background_texture_rect: TextureRect = $background_Control/background_TextureRect
+@onready var camera: Camera2D = get_tree().current_scene.get_node("%Camera2D")
 
 
 func _ready() -> void:
 	add_to_group("levels")
-	# Grösse des Hintergrunds setzen
-	background.size = Vector2(3860, 2160)  # Falls FullHD-Fenstergröße
+	
+	# -- settings for visible world --
+	camera.position = Vector2(0, 0)
+	background_texture_rect.size /= zoom_factor   # 8.2.2026: allenfalls analoge lösung für level mit anderem skript?
+	
 	
 	# Levelstart: Zerstörte IDs zurücksetzen
 	Global.reset_round_state()
@@ -43,9 +51,12 @@ func _ready() -> void:
 	Global.roster_changed.connect(_on_number_of_players_changed)
 
 	# ── Enemy‑Spawner Signale
-	enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
-	#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
-	enemy_spawner.incoming_boss.connect(_on_incoming_boss)
+	if enemy_spawner:
+		if enemy_spawner.has_signal("boss_defeated"):
+			enemy_spawner.connect("boss_defeated", Callable(self, "_on_boss_defeated")) # alte Schreibweise okay
+		#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
+		if enemy_spawner.has_signal("incoming_boss"):
+			enemy_spawner.incoming_boss.connect(_on_incoming_boss) #Invalid access to property or key 'incoming_boss' on a base object of type 'Node2D (AsteroidSpawner.gd)'.
 
 	# Optional: Boss‑Timer
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
@@ -72,9 +83,10 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 1) Grundzustände (Player Rotation und Flight Mode im Inspector setzen)
 	player.mode = flight_mode # Verhalten definiert im player_ship.gd
 	player.rotation_degrees = player_rotation
-	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) # so zu lesen: Bsp. (1 << 2): 
+	player.collision_mask = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5) | (1 << 6)| (1 << 7) 
+	# so zu lesen: Bsp. (1 << 2): 
 	# 1 wird 2 Bits nach links geschoben; ergibt: 000100 (binär) → Layer 3
-	# player reagier also auf collision_mask (1 << 2) =3; auf (1 << 3) = 4; usw.
+	# player reagiert also auf collision_mask (1 << 2) =3; auf (1 << 3) = 4; usw.
 	player.collision_layer = 1
 	# print(" i'm placed in the level (player ", player, ")")
 
@@ -93,6 +105,8 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 			base_position = Vector2(viewport_size.x * 0.1, viewport_size.y * 0.2)
 			# print("flight mode is..", PlayerShip.FlightMode.LEFT_RIGHT)
 			print("my placed position: ", player.global_position)
+			player.auto_thrust_enabled = auto_thrust_enabled
+			
 			
 	player.global_position = base_position + player_offset
 			
@@ -103,7 +117,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# 4) Sichtbar schalten
 	player.show()
 	
-	# 5) je nach Level passende Skin setzen (aich im Inspector)
+	# 5) je nach Level passende Skin setzen (auch im Inspector)
 	player.set_skin(skin)
 	
 	# 6) player Signale verbinden
@@ -129,4 +143,9 @@ func _on_incoming_boss() -> void:
 		
 		
 func _on_number_of_players_changed() -> void:
-	enemy_spawner.set_spawn_rate()
+	if enemy_spawner:
+		enemy_spawner.set_spawn_rate() # die Funktion wird auch bei der Instanzierung
+		#eines neuen Levels aufgerufen
+	
+func _print_test() ->void:
+	print("print_method executed")
