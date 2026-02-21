@@ -99,7 +99,7 @@ func _physics_process(delta: float) -> void:
 	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
 	
 	if is_instance_valid(level) and level.get("camera_scrolling") == true:
-		scroll_x += 200.0 * delta
+		scroll_x += level.camera_scroll_speed * delta # der scrolll speed wird als Exportvariable des Levels festgelegt
 		var snapped_x: int = int(floor(scroll_x)) 
 		scroll_anchor.position.x = snapped_x
 		

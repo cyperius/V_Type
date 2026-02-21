@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
-[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
+[ext_resource type="Script" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]

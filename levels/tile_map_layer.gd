@@ -1,3 +1,4 @@
 extends TileMapLayer
 
-func _process(delta: float) -> void:
+#func _process(delta: float) -> void:
+	#pass
