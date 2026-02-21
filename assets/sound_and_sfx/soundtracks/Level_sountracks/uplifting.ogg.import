@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://b6jh34j3on0ug"
-path="res://.godot/imported/Uplifting.ogg-b5db4235e9d37ca20cdb91f0ff897f36.oggvorbisstr"
+path="res://.godot/imported/uplifting.ogg-552fd38e5e1fd17dea94360258882933.oggvorbisstr"
 
 [deps]
 
-source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Uplifting.ogg"
-dest_files=["res://.godot/imported/Uplifting.ogg-b5db4235e9d37ca20cdb91f0ff897f36.oggvorbisstr"]
+source_file="res://assets/sound_and_sfx/soundtracks/Level_sountracks/uplifting.ogg"
+dest_files=["res://.godot/imported/uplifting.ogg-552fd38e5e1fd17dea94360258882933.oggvorbisstr"]
 
 [params]
 
