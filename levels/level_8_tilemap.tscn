@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=4 uid="uid://0ji404uc88wb"]
 
-[ext_resource type="Script" uid="uid://clvfj5ral3glh" path="res://scripts/level_8_tilemap.gd" id="1_6tcit"]
+[ext_resource type="Script" path="res://scripts/level_8_tilemap.gd" id="1_6tcit"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_ho0ug"]
 [ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="3_lxcpb"]
 [ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="4_vko6h"]
