@@ -27,7 +27,7 @@ var cooling_down := false
 @export var max_speed: float = 600.0
 var speed: float = max_speed
 var boost_activated := false
-@export var auto_forward_speed := 300.0
+@export var auto_forward_speed := 300.0 # 21.2.2026: hier soll der Wert der Exportvariable des Levels (camera_scroll_speed) verwendet werden 
 @export var auto_thrust_enabled := false
 
 

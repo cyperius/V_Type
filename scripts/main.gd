@@ -99,7 +99,7 @@ func _physics_process(delta: float) -> void:
 	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
 	
 	if is_instance_valid(level) and level.get("camera_scrolling") == true:
-		scroll_x += 200.0 * delta
+		scroll_x += level.camera_scroll_speed * delta # der scrolll speed wird als Exportvariable des Levels festgelegt
 		var snapped_x: int = int(floor(scroll_x)) 
 		scroll_anchor.position.x = snapped_x
 		
@@ -183,7 +183,6 @@ func _spawn_player(player_id: int) -> void:
 	ship.player_id = player_id
 	ship.mode = ship.FlightMode.LEFT_RIGHT
 
-	ship.visible = false # unsichtbar setzen, bis an richtige Position gesetzt
 	players_root.add_child(ship)
 
 	# Sprite/Visual finden
@@ -191,7 +190,6 @@ func _spawn_player(player_id: int) -> void:
 
 	# Spieler global registrieren
 	Global.register_player(player_id, ship, visual_node)
-	
 
 	# Positionierung abhängig vom Level
 	_place_player_in_current_level(ship, player_id)

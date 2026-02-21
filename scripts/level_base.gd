@@ -9,6 +9,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 @export var last_level := false
 @export var auto_thrust_enabled := false
 @export var camera_scrolling := false
+@export var camera_scroll_speed := 200.0
 @export var zoom_factor : Vector2 = Vector2(1, 1)
 
 	
@@ -80,6 +81,8 @@ func _place_all_players_in_current_level() -> void:
 
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	
+	
+	player.hide()
 	# 1) Grundzustände (Player Rotation und Flight Mode im Inspector setzen)
 	player.mode = flight_mode # Verhalten definiert im player_ship.gd
 	player.rotation_degrees = player_rotation

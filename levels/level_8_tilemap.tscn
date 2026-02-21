@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://0ji404uc88wb"]
+[gd_scene load_steps=18 format=4 uid="uid://0ji404uc88wb"]
 
 [ext_resource type="Script" path="res://scripts/level_8_tilemap.gd" id="1_6tcit"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_ho0ug"]
@@ -6,11 +6,17 @@
 [ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="4_vko6h"]
 [ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="5_k2ajo"]
 [ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_6kkia"]
-[ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="7_fksli"]
+[ext_resource type="Script" uid="uid://cgdf1sx7vnilt" path="res://game_world/background.gd" id="7_tjg4j"]
 [ext_resource type="AudioStream" uid="uid://78xxewi6k0vm" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_enter Industrial World.ogg" id="8_6tcit"]
+[ext_resource type="Shader" uid="uid://2i33jfqowr2r" path="res://ressources/shaders/scrolling_background.gdshader" id="8_uada6"]
 [ext_resource type="Texture2D" uid="uid://tnncvsku4poe" path="res://assets/graphic_elements/TileMaps/metallstruktur_TileAtas.png" id="9_ho0ug"]
+[ext_resource type="Texture2D" uid="uid://csgdcmhiu0chx" path="res://assets/graphic_elements/backgrounds/Sternenhimmel_NachtJPG.png" id="9_sglcj"]
 [ext_resource type="Texture2D" uid="uid://b4m1jjpnrttvj" path="res://assets/graphic_elements/TileMaps/TileAtlasKorridore.png" id="10_6tcit"]
 [ext_resource type="Script" uid="uid://bnb0teamvmsda" path="res://levels/tile_map_layer.gd" id="10_kos1d"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d8trb"]
+shader = ExtResource("8_uada6")
+shader_parameter/speed = 0.1
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lxcpb"]
 texture = ExtResource("9_ho0ug")
@@ -318,7 +324,10 @@ position = Vector2(5350, 2121)
 
 [node name="EnemiesContainer" type="Node2D" parent="."]
 
-[node name="background_Control" parent="." instance=ExtResource("7_fksli")]
+[node name="background_Control" type="Control" parent="."]
+process_mode = 1
+z_index = -1
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -328,6 +337,17 @@ offset_right = -74.0
 offset_bottom = 36.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("7_tjg4j")
+
+[node name="background_TextureRect" type="TextureRect" parent="background_Control"]
+process_mode = 1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_d8trb")
+layout_mode = 0
+offset_right = 4224.0
+offset_bottom = 2376.0
+texture = ExtResource("9_sglcj")
+stretch_mode = 1
 
 [node name="BossTimer" type="Timer" parent="."]
 wait_time = 6.322

@@ -49,6 +49,8 @@ func _place_all_players_in_current_level() -> void:
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
 	
+	player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
+	
 	# 1) Modus aktivieren
 	player.mode = player.FlightMode.CIRCLE
 
@@ -71,6 +73,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
 	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
 	
+	player.show()
 
 	# 6) Debug
 	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
