@@ -21,6 +21,7 @@ func _ready() -> void:
 	var center_node = $"../Center" # Was hier referenziert Im parent dieses Nodes gibt es 
 	# einen ChildNode (also ein Sibling dieses Nodes) der "Center" heisst
 	circle_center_position = center_node.global_position
+	health_points = 500
 	
 	
 func _process(delta: float) -> void:

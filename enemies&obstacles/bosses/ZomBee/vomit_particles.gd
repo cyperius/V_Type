@@ -34,6 +34,8 @@ func _process(_delta: float) -> void:
 func spawn_vomit_bullet():
 	if vomit_particles.emitting == false:
 		return
+	if not is_instance_valid(boss_zombee.closest_player):
+		return
 	var bullet = vomit_bullet_scene.instantiate() as Area2D
 	get_tree().current_scene.add_child(bullet)
 	if boss_zombee.closest_player.global_position:  # Sicherheitsnetz-> behebt hoffentlcih untenstehendes Problem
