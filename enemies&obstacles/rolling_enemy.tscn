@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dl2e74omrebva"]
+
+[ext_resource type="Script" uid="uid://cba0sg8o0gow3" path="res://character_body_2d.gd" id="1_5l4et"]
+[ext_resource type="Texture2D" uid="uid://br4cnru4u3k6f" path="res://assets/graphic_elements/enemies/raupen_schiff_c.png" id="2_nmhrp"]
+[ext_resource type="Texture2D" uid="uid://tin43ch7xw5x" path="res://assets/graphic_elements/enemies/raupen_schiff_b.png" id="3_mtuyw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sm6pe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_nmhrp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_mtuyw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5l4et"]
+size = Vector2(240, 56)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 96
+script = ExtResource("1_5l4et")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_sm6pe")
+frame_progress = 0.28966
+
+[node name="WallRay" type="RayCast2D" parent="."]
+position = Vector2(210, -2)
+target_position = Vector2(20, 0)
+collision_mask = 97
+
+[node name="FloorRay" type="RayCast2D" parent="."]
+collision_mask = 96
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, 151)
+shape = SubResource("RectangleShape2D_5l4et")

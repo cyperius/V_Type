@@ -99,12 +99,12 @@ func _physics_process(delta: float) -> void:
 	# die Referenz auf das Level wird in der "_on_level_loaded()" Funktion gesetzt
 	
 	if is_instance_valid(level) and level.get("camera_scrolling") == true:
-		scroll_x += level.camera_scroll_speed * delta # der scrolll speed wird als Exportvariable des Levels festgelegt
-		var snapped_x: int = int(floor(scroll_x)) 
-		scroll_anchor.position.x = snapped_x
-		
+		scroll_x += level.camera_scroll_speed * delta
+		var snapped_x = roundi(scroll_x)
+	# 	scroll_anchor.position.x = snapped_x  ← auskommentieren
 		camera.position.x = snapped_x
-		camera.global_position.y = int(camera.global_position.y)
+		camera.global_position.y = roundi(camera.global_position.y)
+
 			
 			
 			#
@@ -157,6 +157,9 @@ func _load_game_level() -> void:
 
 	# Level-Signale verbinden
 	_connect_level_signals()
+	
+	# Kamera wieder zurücksetzen
+	scroll_x = 0 
 
 	print("🌟 Level erfolgreich geladen.")
 

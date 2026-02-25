@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6p1fe7m6ipmd"]
+
+[ext_resource type="Texture2D" uid="uid://clm1yfcbch702" path="res://assets_kursM9 Kopie/kenney-particles/fire_01.png" id="1_svy55"]
+[ext_resource type="Script" uid="uid://3r4jalkb20h3" path="res://scripts/particles_default_scene.gd" id="2_3kfi0"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6hjs6"]
+particle_flag_align_y = true
+emission_shape_scale = Vector3(1, 12, 1)
+emission_shape = 1
+emission_sphere_radius = 26.2
+spread = 0.0
+gravity = Vector3(0, 10000, 0)
+color = Color(0.42702, 0.912109, 0.202493, 1)
+collision_mode = 1
+collision_friction = 0.3
+collision_bounce = 0.1
+collision_use_scale = true
+
+[node name="VomitParticles" type="GPUParticles2D"]
+amount = 200
+texture = ExtResource("1_svy55")
+lifetime = 0.6
+interp_to_end = 0.025
+speed_scale = 5.0
+process_material = SubResource("ParticleProcessMaterial_6hjs6")
+script = ExtResource("2_3kfi0")

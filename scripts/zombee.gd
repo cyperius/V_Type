@@ -22,8 +22,8 @@ func _ready() -> void:
 func _on_brain_area_entered(area: Area2D) -> void:
 	print("brain_hit")
 	AudioManager.play_sfx_string("explosion")
-	get_tree().current_scene.add_child(explosion_animation)
 	explosion_animation.position = global_position
+	get_tree().current_scene.add_child(explosion_animation)
 	emit_signal("enemy_destroyed", score_count, energy_left)
 	queue_free()
 	
