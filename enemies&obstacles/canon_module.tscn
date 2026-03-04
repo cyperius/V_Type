@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d14wi2fh43rbc"]
+
+[ext_resource type="Script" uid="uid://cwmfjq1g7tiy2" path="res://scripts/canon_modul.gd" id="1_lnqwe"]
+[ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="2_joyd7"]
+
+[node name="CanonModule" type="Node2D" unique_id=21923008]
+script = ExtResource("1_lnqwe")
+cease_fire_time = 4.0
+bullet_szene = ExtResource("2_joyd7")
+shots_per_attack = 3
+break_between_shots_time = 0.3

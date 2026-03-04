@@ -1,16 +1,18 @@
 extends Area2D
 
-@onready var hit_scene : PackedScene = preload("res://game_world/hit.tscn") # braucht es hit_scene beim player noch? vieleoicht schon für treffer des palyers?
 @export var speed = 400
 @export var damage = 10
-@export var sfx_stream: AudioStream  
 @onready var speed_level : float = 0.8 + GameManager.loop_counter / 5
 @export var direction : Vector2 = Vector2(-1, 0)
 @export var shot_orientation : float
 
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var hit_scene : PackedScene = preload("res://game_world/hit.tscn") # braucht es hit_scene beim player noch? vieleoicht schon für treffer des palyers?
+
 var projectiles = []  
 
 func _ready() -> void:
+	audio_stream_player_2d.play()
 	add_to_group("projectiles")
 	area_entered.connect(_on_area_entered)
 	rotation = shot_orientation

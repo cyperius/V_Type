@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2jofv3v62qdo"]
+[gd_scene format=3 uid="uid://d2jofv3v62qdo"]
 
 [ext_resource type="Script" uid="uid://dxvm10wva7ff4" path="res://scripts/laser_blast.gd" id="1_yh0dj"]
 [ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_jhc3a"]
@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lef15"]
 size = Vector2(65, 35)
 
-[node name="laser_blast" type="Area2D"]
+[node name="laser_blast" type="Area2D" unique_id=915932707]
 top_level = true
 position = Vector2(1, 0)
 collision_layer = 2
@@ -17,16 +17,16 @@ script = ExtResource("1_yh0dj")
 blast_speed = 800.0
 damage = 50
 shot_sfx_stream = ExtResource("2_jhc3a")
-volume = -18.0
+volume = -7.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1963118616]
 texture = ExtResource("3_kl33j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=465387024]
 position = Vector2(1.5, -0.5)
 shape = SubResource("RectangleShape2D_lef15")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=12044298]
 target_position = Vector2(500, 0)
 collision_mask = 4
 collide_with_areas = true

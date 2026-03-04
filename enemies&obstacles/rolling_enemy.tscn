@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dl2e74omrebva"]
+[gd_scene format=3 uid="uid://dl2e74omrebva"]
 
 [ext_resource type="Script" uid="uid://cba0sg8o0gow3" path="res://character_body_2d.gd" id="1_5l4et"]
 [ext_resource type="Texture2D" uid="uid://br4cnru4u3k6f" path="res://assets/graphic_elements/enemies/raupen_schiff_c.png" id="2_nmhrp"]
 [ext_resource type="Texture2D" uid="uid://tin43ch7xw5x" path="res://assets/graphic_elements/enemies/raupen_schiff_b.png" id="3_mtuyw"]
+[ext_resource type="Script" uid="uid://cwmfjq1g7tiy2" path="res://scripts/canon_modul.gd" id="4_mtuyw"]
+[ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="5_mtuyw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sm6pe"]
 animations = [{
@@ -19,25 +21,42 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5l4et"]
-size = Vector2(240, 56)
+size = Vector2(174, 34)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1745987113]
+position = Vector2(1, 0)
 collision_layer = 4
 collision_mask = 96
 script = ExtResource("1_5l4et")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=241256289]
+scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("SpriteFrames_sm6pe")
 frame_progress = 0.28966
 
-[node name="WallRay" type="RayCast2D" parent="."]
-position = Vector2(210, -2)
-target_position = Vector2(20, 0)
-collision_mask = 97
-
-[node name="FloorRay" type="RayCast2D" parent="."]
+[node name="WallRay" type="RayCast2D" parent="." unique_id=756091717]
+modulate = Color(0.12989275, 0.8816964, 0.20708683, 1)
+self_modulate = Color(0.3029766, 0.69866073, 0.2089744, 1)
+position = Vector2(119, 30)
+target_position = Vector2(100, 0)
 collision_mask = 96
+collide_with_areas = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3, 151)
+[node name="FloorRay" type="RayCast2D" parent="." unique_id=248220830]
+position = Vector2(113, 100)
+target_position = Vector2(20, 17)
+collision_mask = 96
+collide_with_areas = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1763946175]
+position = Vector2(-1, 90)
 shape = SubResource("RectangleShape2D_5l4et")
+
+[node name="CanonModule" type="Node2D" parent="." unique_id=883435724]
+position = Vector2(151, -2)
+script = ExtResource("4_mtuyw")
+cease_fire_time = 4.0
+bullet_szene = ExtResource("5_mtuyw")
+shots_per_attack = 3
+break_between_shots_time = 0.3
+metadata/_custom_type_script = "uid://cwmfjq1g7tiy2"
