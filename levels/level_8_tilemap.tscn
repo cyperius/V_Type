@@ -278,6 +278,8 @@ process_mode = 1
 script = ExtResource("1_6tcit")
 amount_of_enemies = 50
 last_level = true
+auto_thrust_enabled = true
+camera_scrolling = true
 camera_scroll_speed = 300.0
 
 [node name="EnemySpawner" parent="." unique_id=1788620378 instance=ExtResource("2_ho0ug")]
@@ -401,7 +403,47 @@ position = Vector2(8585, 815)
 scale = Vector2(0.7, 0.7)
 
 [node name="RollingEnemy" parent="." unique_id=641722577 instance=ExtResource("15_sglcj")]
-position = Vector2(1485.9999, 1345)
+position = Vector2(2636, 1373)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy2" parent="." unique_id=1745987113 instance=ExtResource("15_sglcj")]
+position = Vector2(1560.0001, 1353)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy3" parent="." unique_id=161866059 instance=ExtResource("15_sglcj")]
+position = Vector2(4904, 1822)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy4" parent="." unique_id=1522083709 instance=ExtResource("15_sglcj")]
+position = Vector2(7306, 1820)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy5" parent="." unique_id=1121100056 instance=ExtResource("15_sglcj")]
+position = Vector2(10011, 842)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy6" parent="." unique_id=222828328 instance=ExtResource("15_sglcj")]
+position = Vector2(12937, 2010.9998)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy7" parent="." unique_id=1626903386 instance=ExtResource("15_sglcj")]
+position = Vector2(13362, 609.00006)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy8" parent="." unique_id=1677187526 instance=ExtResource("15_sglcj")]
+position = Vector2(17024, 692)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy9" parent="." unique_id=436966663 instance=ExtResource("15_sglcj")]
+position = Vector2(19571, 1531)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy10" parent="." unique_id=604852395 instance=ExtResource("15_sglcj")]
+position = Vector2(25030.002, 321)
+scale = Vector2(0.7, 0.7)
+
+[node name="RollingEnemy12" parent="." unique_id=1718787673 instance=ExtResource("15_sglcj")]
+position = Vector2(26866, 311)
 scale = Vector2(0.7, 0.7)
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
