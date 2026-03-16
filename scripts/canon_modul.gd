@@ -8,6 +8,10 @@ extends Node2D
 @export var shots_per_attack : int
 @onready var break_between_shots_timer = Timer.new()
 @export var break_between_shots_time : float
+@export var shot_direction : Vector2
+@onready var aim: Marker2D = $Aim
+
+
 
 
 func _ready() -> void:
@@ -15,6 +19,7 @@ func _ready() -> void:
 	add_child(cease_fire_timer)
 	cease_fire_timer.start(cease_fire_time)
 	cease_fire_timer.timeout.connect(_on_cease_fire_timer_timeout)
+	shot_direction = global_position.direction_to(aim)
 
 
 func _on_cease_fire_timer_timeout() -> void:

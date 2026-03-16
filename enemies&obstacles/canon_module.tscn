@@ -9,3 +9,7 @@ cease_fire_time = 4.0
 bullet_szene = ExtResource("2_joyd7")
 shots_per_attack = 3
 break_between_shots_time = 0.3
+
+[node name="Aim" type="Marker2D" parent="." unique_id=395985780]
+position = Vector2(-100, 0)
+gizmo_extents = 143.0

@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="4_fib11"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_foi4l"]
-size = Vector2(167, 7.5)
+size = Vector2(108.5, 5.75)
 
 [node name="Area2D" type="Area2D" unique_id=2107515624]
 process_mode = 1
@@ -18,12 +18,13 @@ speed = 2000
 damage = 250
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=972056815]
-rotation = 1.57952
-scale = Vector2(5.352, 5)
+rotation = 1.579523
+scale = Vector2(3, 3)
 texture = ExtResource("2_3hlow")
-offset = Vector2(0, 4)
+offset = Vector2(0, 40)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=189792500]
+position = Vector2(-107.5, -0.25)
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_foi4l")
 

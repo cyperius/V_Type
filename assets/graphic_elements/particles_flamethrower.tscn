@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://blepeh8157lsa"]
+[gd_scene format=3 uid="uid://blepeh8157lsa"]
 
 [ext_resource type="Script" uid="uid://dp8ri4dy3d47f" path="res://assets/graphic_elements/particles_flamethrower.gd" id="1_76uin"]
 [ext_resource type="Texture2D" uid="uid://clm1yfcbch702" path="res://assets_kursM9 Kopie/kenney-particles/fire_01.png" id="1_g6lwx"]
@@ -38,12 +38,12 @@ collision_use_scale = true
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g6lwx"]
 size = Vector2(83, 765.24)
 
-[node name="FlameThrower" type="Node2D"]
+[node name="FlameThrower" type="Node2D" unique_id=705106060]
 top_level = true
 z_index = -2
 script = ExtResource("1_76uin")
 
-[node name="FlameParticles" type="GPUParticles2D" parent="."]
+[node name="FlameParticles" type="GPUParticles2D" parent="." unique_id=2130828701]
 unique_name_in_owner = true
 amount = 200
 texture = ExtResource("1_g6lwx")
@@ -52,25 +52,29 @@ interp_to_end = 0.025
 speed_scale = 5.0
 process_material = SubResource("ParticleProcessMaterial_6hjs6")
 
-[node name="BurnArea" type="Area2D" parent="."]
+[node name="BurnArea" type="Area2D" parent="." unique_id=1678275223]
 unique_name_in_owner = true
 position = Vector2(-466, -656)
 collision_layer = 12
 script = ExtResource("3_76uin")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BurnArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BurnArea" unique_id=604920673]
 unique_name_in_owner = true
 position = Vector2(466.5, 740)
 shape = SubResource("RectangleShape2D_g6lwx")
 debug_color = Color(0.0738281, 0, 0.7, 0.42)
 
-[node name="BreakTimer" type="Timer" parent="."]
+[node name="BreakTimer" type="Timer" parent="." unique_id=1382073261]
 unique_name_in_owner = true
 process_callback = 0
 wait_time = 1.5
 
-[node name="BurnTimer" type="Timer" parent="."]
+[node name="BurnTimer" type="Timer" parent="." unique_id=1445866537]
 unique_name_in_owner = true
 process_callback = 0
 wait_time = 2.5
 ignore_time_scale = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1525017968]
+unique_name_in_owner = true
+scale = Vector2(22.755487, 67.771545)

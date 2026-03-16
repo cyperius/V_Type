@@ -5,19 +5,18 @@ extends Node2D
 @onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
 @onready var break_timer: Timer = %BreakTimer
 @onready var burn_timer: Timer = %BurnTimer
-
-
+@onready var visible_on_screen_enabler_2d: VisibleOnScreenEnabler2D = %VisibleOnScreenEnabler2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#flame_particles.emitting = false
-	break_timer.start()
+	flame_particles.emitting = false
+	visible_on_screen_enabler_2d.screen_entered.connect(_on_screen_entered)
+	visible_on_screen_enabler_2d.screen_exited.connect(_on_screen_exited)
 	break_timer.timeout.connect(_on_break_timer_timeout)
 	burn_timer.timeout.connect(_on_burn_timer_timeout)
 	
-
-
+	
 func _on_break_timer_timeout() -> void:
 	burn_timer.start()
 	break_timer.stop()
@@ -35,3 +34,12 @@ func _on_burn_timer_timeout() -> void:
 	collision_shape_2d.disabled = true
 	collision_shape_2d.debug_color = Color(0.2, 0.5, 1, 0.5)
 	
+func _on_screen_entered() -> void:
+	break_timer.start()
+	
+func _on_screen_exited() -> void:
+	flame_particles.emitting = false
+	break_timer.stop()
+	burn_timer.stop()
+	collision_shape_2d.disabled = true
+	queue_free()

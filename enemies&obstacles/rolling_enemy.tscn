@@ -21,42 +21,59 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5l4et"]
-size = Vector2(174, 34)
+size = Vector2(111.88999, 34)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1745987113]
 position = Vector2(1, 0)
+scale = Vector2(-0.5, 0.5)
 collision_layer = 4
 collision_mask = 96
 script = ExtResource("1_5l4et")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=241256289]
-scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("SpriteFrames_sm6pe")
 frame_progress = 0.28966
 
-[node name="WallRay" type="RayCast2D" parent="." unique_id=756091717]
-modulate = Color(0.12989275, 0.8816964, 0.20708683, 1)
-self_modulate = Color(0.3029766, 0.69866073, 0.2089744, 1)
-position = Vector2(119, 30)
-target_position = Vector2(100, 0)
-collision_mask = 96
-collide_with_areas = true
-
-[node name="FloorRay" type="RayCast2D" parent="." unique_id=248220830]
-position = Vector2(113, 100)
-target_position = Vector2(20, 17)
-collision_mask = 96
-collide_with_areas = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1763946175]
-position = Vector2(-1, 90)
-shape = SubResource("RectangleShape2D_5l4et")
-
-[node name="CanonModule" type="Node2D" parent="." unique_id=883435724]
-position = Vector2(151, -2)
+[node name="CanonModule2" type="Node2D" parent="." unique_id=234168616]
+unique_name_in_owner = true
+position = Vector2(178, -104)
 script = ExtResource("4_mtuyw")
 cease_fire_time = 4.0
 bullet_szene = ExtResource("5_mtuyw")
 shots_per_attack = 3
 break_between_shots_time = 0.3
 metadata/_custom_type_script = "uid://cwmfjq1g7tiy2"
+
+[node name="CanonModule" type="Node2D" parent="." unique_id=883435724]
+unique_name_in_owner = true
+position = Vector2(190, 98)
+script = ExtResource("4_mtuyw")
+cease_fire_time = 4.0
+bullet_szene = ExtResource("5_mtuyw")
+shots_per_attack = 3
+break_between_shots_time = 0.3
+metadata/_custom_type_script = "uid://cwmfjq1g7tiy2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1763946175]
+position = Vector2(5, 162)
+scale = Vector2(2.0555906, 1.1046703)
+shape = SubResource("RectangleShape2D_5l4et")
+
+[node name="WallRay" type="RayCast2D" parent="." unique_id=756091717]
+unique_name_in_owner = true
+modulate = Color(0.13721702, 0.90401787, 0.39053512, 1)
+self_modulate = Color(0.03659122, 0.91071427, 0.18488, 1)
+target_position = Vector2(252, 0)
+collision_mask = 96
+collide_with_areas = true
+
+[node name="FloorRay" type="RayCast2D" parent="." unique_id=248220830]
+unique_name_in_owner = true
+position = Vector2(132, 172)
+scale = Vector2(1.4640126, 1.0025418)
+target_position = Vector2(20, 17)
+collision_mask = 96
+collide_with_areas = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1013108778]
+unique_name_in_owner = true
