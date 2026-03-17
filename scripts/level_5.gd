@@ -8,6 +8,14 @@ signal player_target_activated
 
 @export var do_target_player := false
 
+# ----- für circle formation --------*
+
+@export var circle_radius := 100.0
+@export var cirle_shot_scene : PackedScene
+@export var winkel_geschwindigkeit : float = 6
+@onready var center_node = $Center
+
+
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
@@ -43,6 +51,43 @@ func _process(delta: float) -> void:
 			var event_name: String = time_stamps[time_stamp]
 			loese_audio_ereignis_aus(event_name)
 			time_stamps_already_triggered[time_stamp] = true
+
+
+
+func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> void:
+	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
+	
+	player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
+	
+	# 1) Modus aktivieren
+	player.mode = player.FlightMode.CIRCLE
+
+	# 2) Kreis-Parameter setzen
+	player.circle_center_position = center_node.global_position
+	player.circle_radius = circle_radius
+
+	# 3) Startwinkel (gleichmäßig nach aktueller Spieleranzahl)
+	var active_count : int = max(1, Global.player_ships.size())
+	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
+	player.angle = start_angle + 2 * PI
+	
+	# 4) Level-spezifische skin und Ausrichtung setzen
+	player.set_skin("top_down")
+
+	# 5) Optional: Level-spezifische Skalierung (rein visuell)
+	player.scale = Vector2(0.2, 0.2)
+
+	# 6) Position + Rotation
+	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
+	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
+	
+	player.show()
+
+	# 6) Debug
+	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
+		player_id, player.circle_center_position, player.circle_radius, start_angle
+	])
+
 
 
 func loese_audio_ereignis_aus(event_name: String) -> void:
