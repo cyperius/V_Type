@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b402fm5cuxyoc"]
+[gd_scene format=3 uid="uid://b402fm5cuxyoc"]
 
 [ext_resource type="Script" uid="uid://bgop1nvvga3dt" path="res://scripts/player_ship.gd" id="1_l3jmy"]
 [ext_resource type="PackedScene" uid="uid://bsohmrklp25tq" path="res://players/laser_beam.tscn" id="2_5icsl"]
@@ -22,7 +22,7 @@ height = 190.0
 radius = 118.0
 height = 423.91
 
-[node name="PlayerShip" type="CharacterBody2D"]
+[node name="PlayerShip" type="CharacterBody2D" unique_id=1060040165]
 process_mode = 1
 self_modulate = Color(0.270588, 0.0313726, 0.878431, 1)
 collision_mask = 252
@@ -33,54 +33,54 @@ primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
 metadata/_edit_vertical_guides_ = [540.0]
 
-[node name="BodyCollisionShape1" type="CollisionShape2D" parent="."]
+[node name="BodyCollisionShape1" type="CollisionShape2D" parent="." unique_id=807823042]
 position = Vector2(5.00001, -8)
 rotation = -1.5708
 shape = SubResource("RectangleShape2D_flg8t")
 one_way_collision_margin = 0.0
 
-[node name="BodyCollisionShape2" type="CollisionShape2D" parent="."]
+[node name="BodyCollisionShape2" type="CollisionShape2D" parent="." unique_id=1062987125]
 position = Vector2(-9, 13)
 rotation = -1.5708
 shape = SubResource("RectangleShape2D_df6tw")
 one_way_collision_margin = 0.0
 
-[node name="ship_sprite" type="Sprite2D" parent="."]
+[node name="ship_sprite" type="Sprite2D" parent="." unique_id=2006737790]
 unique_name_in_owner = true
 position = Vector2(1, 0)
 texture = ExtResource("4_5icsl")
 
-[node name="Gunpoint" type="Node2D" parent="."]
+[node name="Gunpoint" type="Node2D" parent="." unique_id=1913216489]
 
-[node name="ShipArea" type="Area2D" parent="."]
+[node name="ShipArea" type="Area2D" parent="." unique_id=846720337]
 unique_name_in_owner = true
 collision_mask = 60
 script = ExtResource("5_flg8t")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShipArea" unique_id=56783057]
 rotation = -1.5708
 scale = Vector2(0.831128, 1.03763)
 shape = SubResource("CapsuleShape2D_flg8t")
 one_way_collision_margin = 0.0
 
-[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="ShipArea"]
+[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="ShipArea" unique_id=6446513]
 unique_name_in_owner = true
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_df6tw")
 one_way_collision_margin = 0.0
 
-[node name="BeenHitTimer" type="Timer" parent="."]
+[node name="BeenHitTimer" type="Timer" parent="." unique_id=1631808903]
 unique_name_in_owner = true
 wait_time = 1.5
 one_shot = true
 
-[node name="AudioListener2D" type="AudioListener2D" parent="."]
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=2137553066]
 
-[node name="ParticlesShield" parent="." instance=ExtResource("5_5icsl")]
+[node name="ParticlesShield" parent="." unique_id=1398720504 instance=ExtResource("5_5icsl")]
 unique_name_in_owner = true
 scale = Vector2(0.242723, 0.189479)
 
-[node name="Burst" parent="." instance=ExtResource("6_5icsl")]
+[node name="Burst" parent="." unique_id=510669725 instance=ExtResource("6_5icsl")]
 position = Vector2(-106, -6)
 scale = Vector2(0.12, 0.072)
 skew = -0.216421

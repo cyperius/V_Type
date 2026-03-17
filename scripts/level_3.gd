@@ -73,6 +73,7 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
 	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
 	
+	await get_tree().process_frame
 	player.show()
 
 	# 6) Debug

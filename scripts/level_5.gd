@@ -10,7 +10,7 @@ signal player_target_activated
 
 # ----- für circle formation --------*
 
-@export var circle_radius := 100.0
+@export var circle_radius := 400.0
 @export var cirle_shot_scene : PackedScene
 @export var winkel_geschwindigkeit : float = 6
 @onready var center_node = $Center
@@ -18,9 +18,11 @@ signal player_target_activated
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
-	16.75: "enemies_appear", # 16.75
-	64: "zoom_out", # 64.0
-	76: "target_player", # ca. 76
+	1.6: "enemies_appear", # 16.75
+	3: "zoom_out", # 64.0
+	8: "target_player", # ca. 76
+	42: "circle_formation"
+	
 }
 
 var time_stamps_already_triggered: Dictionary = {}
@@ -53,6 +55,14 @@ func _process(delta: float) -> void:
 			time_stamps_already_triggered[time_stamp] = true
 
 
+func _place_all_players_in_circle_formation() -> void:
+	for player_id in Global.player_ships.keys():
+		var player := Global.get_player_ship(player_id)
+		if player is PlayerShip:
+			place_player_in_circle_formation(player, player_id)
+			# print(" (level_base.gd): nr of players : ", player_id)
+
+
 
 func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> void:
 	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
@@ -69,19 +79,21 @@ func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> voi
 	# 3) Startwinkel (gleichmäßig nach aktueller Spieleranzahl)
 	var active_count : int = max(1, Global.player_ships.size())
 	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
-	player.angle = start_angle + 2 * PI
+	player.angle = start_angle + 2.0 * PI
 	
-	# 4) Level-spezifische skin und Ausrichtung setzen
-	player.set_skin("top_down")
-
-	# 5) Optional: Level-spezifische Skalierung (rein visuell)
+	# 4) Optional: Level-spezifische Skalierung (rein visuell)
 	player.scale = Vector2(0.2, 0.2)
 
+	await get_tree().process_frame  # warte bis hide() gerendert wurde
+	# 5) Level-spezifische skin und Ausrichtung setzen
+	player.set_skin("top_down")
+	player.show()
+	
 	# 6) Position + Rotation
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
-	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
+	player.global_rotation = center_node.global_position.angle_to_point(player.global_position)
 	
-	player.show()
+	
 
 	# 6) Debug
 	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
@@ -98,6 +110,8 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
 		"target_player":
 			start_attacking_player()
+		"circle_formation":
+			_place_all_players_in_circle_formation()
 		_:
 			push_warning("Unbekanntes Timeline-Event: %s" % event_name)
 

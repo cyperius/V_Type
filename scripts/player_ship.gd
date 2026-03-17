@@ -161,7 +161,7 @@ func _ready() -> void:
 
 	# Initiale Stats an Main/UI melden
 	#_emit_stats()
-
+	
 
 func connect_signals() -> void:
 	print("connecte signals")
@@ -173,8 +173,8 @@ func connect_signals() -> void:
 		level.zoom_requested.connect(_on_zoom_requested)
 
 func set_skin(mode: String) -> void:
-	ship_sprite.texture = skins[player_id-1]["looks"][mode]
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
+	ship_sprite.texture = skins[player_id-1]["looks"][mode]
 	body_collision_shape_1.scale = skins[player_id-1]["looks"]["scale"]
 # ──────────────────────────────────────────────────────────────
 #   PROCESS / INPUT
@@ -316,7 +316,7 @@ func _physics_circle_move(delta: float) -> void:
 		velocity = Vector2.ZERO
 
 	# Optik: nach innen ausrichten (auch wenn blockiert)
-	rotation = angle + PI
+	rotation = angle + 2 *PI
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
