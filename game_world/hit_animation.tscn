@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ck7admjqqso4d"]
+
+[ext_resource type="PackedScene" uid="uid://biu2g8yefq00u" path="res://game_world/explosion_animation.tscn" id="1_mkwvw"]
+[ext_resource type="Script" uid="uid://b8ie6mc0j4awc" path="res://scripts/hit_animation.gd" id="2_mkwvw"]
+
+[node name="HitAnimation" unique_id=1367602027 instance=ExtResource("1_mkwvw")]
+scale = Vector2(0.5, 0.5)
+speed_scale = 5.0
+script = ExtResource("2_mkwvw")

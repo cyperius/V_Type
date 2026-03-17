@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddamewq24ewbi"]
+[gd_scene format=3 uid="uid://ddamewq24ewbi"]
 
 [ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_gwceb"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_gwceb"]
@@ -9,12 +9,12 @@
 [ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="6_5ot28"]
 [ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_l53as"]
 
-[node name="Level_1" type="Node2D"]
+[node name="Level_1" type="Node2D" unique_id=856734464]
 process_mode = 1
 script = ExtResource("1_gwceb")
-amount_of_enemies = 50
+amount_of_enemies = 5
 
-[node name="EnemySpawner" parent="." instance=ExtResource("2_gwceb")]
+[node name="EnemySpawner" parent="." unique_id=106955596 instance=ExtResource("2_gwceb")]
 level_boss = ExtResource("3_l53as")
 enemy1 = ExtResource("3_btoec")
 enemy2_with_path = ExtResource("4_3sk1a")
@@ -56,9 +56,9 @@ position = Vector2(5286, 1703)
 [node name="Marker2D12" parent="EnemySpawner/SpawnPositions" index="11"]
 position = Vector2(5350, 2121)
 
-[node name="EnemiesContainer" type="Node2D" parent="."]
+[node name="EnemiesContainer" type="Node2D" parent="." unique_id=504957321]
 
-[node name="background_Control" parent="." instance=ExtResource("5_08mmt")]
+[node name="background_Control" parent="." unique_id=896586382 instance=ExtResource("5_08mmt")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -69,16 +69,16 @@ offset_bottom = -54.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BossTimer" type="Timer" parent="."]
+[node name="BossTimer" type="Timer" parent="." unique_id=1227244078]
 wait_time = 6.322
 one_shot = true
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=235340265]
 stream = ExtResource("6_5ot28")
 autoplay = true
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Players" type="Node2D" parent="." unique_id=1629794311]
 
 [connection signal="level_finished" from="EnemySpawner" to="." method="_on_enemy_spawner_level_finished"]
 

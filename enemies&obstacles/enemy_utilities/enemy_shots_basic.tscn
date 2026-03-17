@@ -31,7 +31,7 @@ shape = SubResource("RectangleShape2D_foi4l")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=631802159]
 stream = ExtResource("4_fib11")
 volume_db = 16.0
-max_distance = 1500.0
-attenuation = 0.30778658
+max_distance = 2270.0
+attenuation = 0.37892973
 panning_strength = 3.0
 bus = &"SFX"

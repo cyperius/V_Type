@@ -2,14 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cwmfjq1g7tiy2" path="res://scripts/canon_modul.gd" id="1_lnqwe"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="2_joyd7"]
+[ext_resource type="Texture2D" uid="uid://duxphb43vpsr7" path="res://assets_kursM9 Kopie/circle_32x32.png" id="3_joyd7"]
 
 [node name="CanonModule" type="Node2D" unique_id=21923008]
+self_modulate = Color(0.671152, 0.106126174, 0.106126174, 1)
 script = ExtResource("1_lnqwe")
+muzzle_firing_color = Color(0.10196076, 0.83741236, 0.8901961, 1)
+muzzle_color = Color(0.48452926, 0, 0, 0)
 cease_fire_time = 4.0
 bullet_szene = ExtResource("2_joyd7")
 shots_per_attack = 3
 break_between_shots_time = 0.3
 
 [node name="Aim" type="Marker2D" parent="." unique_id=395985780]
-position = Vector2(-100, 0)
+position = Vector2(100, 0)
 gizmo_extents = 143.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=514901153]
+texture = ExtResource("3_joyd7")

@@ -12,7 +12,6 @@ var just_turned := false
 @export var ajusted_scale_y = 0.4
 @onready var wall_ray: RayCast2D = %WallRay
 @onready var floor_ray: RayCast2D = %FloorRay
-@onready var canon_module: CanonModule = %CanonModule
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var visible_on_screen_enabler_2d: VisibleOnScreenEnabler2D = %VisibleOnScreenEnabler2D
 

@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://cba0sg8o0gow3" path="res://character_body_2d.gd" id="1_5l4et"]
 [ext_resource type="Texture2D" uid="uid://br4cnru4u3k6f" path="res://assets/graphic_elements/enemies/raupen_schiff_c.png" id="2_nmhrp"]
 [ext_resource type="Texture2D" uid="uid://tin43ch7xw5x" path="res://assets/graphic_elements/enemies/raupen_schiff_b.png" id="3_mtuyw"]
-[ext_resource type="Script" uid="uid://cwmfjq1g7tiy2" path="res://scripts/canon_modul.gd" id="4_mtuyw"]
-[ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="5_mtuyw"]
+[ext_resource type="PackedScene" uid="uid://d14wi2fh43rbc" path="res://enemies&obstacles/canon_module.tscn" id="4_nmhrp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sm6pe"]
 animations = [{
@@ -25,34 +24,15 @@ size = Vector2(111.88999, 34)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1745987113]
 position = Vector2(1, 0)
-scale = Vector2(-0.5, 0.5)
+scale = Vector2(0.5, 0.5)
 collision_layer = 4
 collision_mask = 96
 script = ExtResource("1_5l4et")
+speed = 600
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=241256289]
 sprite_frames = SubResource("SpriteFrames_sm6pe")
 frame_progress = 0.28966
-
-[node name="CanonModule2" type="Node2D" parent="." unique_id=234168616]
-unique_name_in_owner = true
-position = Vector2(178, -104)
-script = ExtResource("4_mtuyw")
-cease_fire_time = 4.0
-bullet_szene = ExtResource("5_mtuyw")
-shots_per_attack = 3
-break_between_shots_time = 0.3
-metadata/_custom_type_script = "uid://cwmfjq1g7tiy2"
-
-[node name="CanonModule" type="Node2D" parent="." unique_id=883435724]
-unique_name_in_owner = true
-position = Vector2(190, 98)
-script = ExtResource("4_mtuyw")
-cease_fire_time = 4.0
-bullet_szene = ExtResource("5_mtuyw")
-shots_per_attack = 3
-break_between_shots_time = 0.3
-metadata/_custom_type_script = "uid://cwmfjq1g7tiy2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1763946175]
 position = Vector2(5, 162)
@@ -77,3 +57,11 @@ collide_with_areas = true
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1013108778]
 unique_name_in_owner = true
+
+[node name="CanonModule2" parent="." unique_id=244434034 instance=ExtResource("4_nmhrp")]
+unique_name_in_owner = true
+position = Vector2(176, 100)
+
+[node name="CanonModule" parent="." unique_id=21923008 instance=ExtResource("4_nmhrp")]
+unique_name_in_owner = true
+position = Vector2(182, -104)

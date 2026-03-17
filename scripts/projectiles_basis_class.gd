@@ -10,7 +10,7 @@ extends Area2D
 @export_range(-30, 10, 0.5) var volume: float = 1.0				# Lautstärke
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
-@onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit.tscn")
+@onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
 
 @onready var shooter: PlayerShip 
 var velocity: Vector2 = Vector2.ZERO

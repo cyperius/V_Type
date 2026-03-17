@@ -7,7 +7,7 @@ extends Area2D
 @export var shot_orientation : float
 
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
-@onready var hit_scene : PackedScene = preload("res://game_world/hit.tscn") # braucht es hit_scene beim player noch? vieleoicht schon für treffer des palyers?
+@onready var hit_scene : PackedScene = preload("res://game_world/hit_animation.tscn") # braucht es hit_scene beim player noch? vieleoicht schon für treffer des palyers?
 
 var projectiles = []  
 

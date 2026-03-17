@@ -15,4 +15,3 @@ func _ready() -> void:
 func _on_animation_finished() -> void:
 	queue_free()
 	
-	

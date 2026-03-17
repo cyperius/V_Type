@@ -102,7 +102,7 @@ var skins
 
 @onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
-@onready var hit_scene: PackedScene = preload("res://game_world/hit.tscn")
+@onready var hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
 @onready var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
