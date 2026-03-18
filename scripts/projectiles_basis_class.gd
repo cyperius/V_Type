@@ -12,7 +12,7 @@ extends Area2D
 # ─── Interne Variablen ───────────────────────────────────────────────────
 @onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
 
-@onready var shooter: PlayerShip 
+var shooter: PlayerShip 
 var velocity: Vector2 = Vector2.ZERO
 var circle_center_position: Vector2 = Vector2.ZERO
 var circle_mode_enabled: bool = false
@@ -23,18 +23,20 @@ func _ready() -> void:
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	shooter = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
+		shooter.player_ship_flight_mode_switch_initiated.connect(_player_ship_flight_mode_switch_initiated)
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
-			# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
-			var offset: Vector2 = shooter.global_position - shooter.circle_center_position
-			var angle: float = offset.angle()
-			rotation = angle
-			circle_center_position = shooter.circle_center_position
-			start_tweens(angle)
+			if shooter.face_circle_center:
+				# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
+				var offset: Vector2 = shooter.global_position - shooter.circle_center_position
+				var angle: float = offset.angle()
+				rotation = angle
+				circle_center_position = shooter.circle_center_position
+				start_tweens(angle)
 		else:
-			if shooter.mode == shooter.FlightMode.LEFT_RIGHT:
+			#if shooter.mode == shooter.FlightMode.LEFT_RIGHT: # testweise auskommenteirt, damit auch im circle Modus auswärts gewannt gültig
 			# Linearer Schuss nach rechts (bei Bedarf später an Mündung/Rotation koppeln)
-				velocity = Vector2.RIGHT.rotated(deg_to_rad(shooter.rotation_degrees)) * speed
+			velocity = Vector2.RIGHT.rotated(deg_to_rad(shooter.rotation_degrees)) * speed
 				
 			if shooter.mode == shooter.FlightMode.DOWN_UP:
 			# Linearer Schuss nach oben
@@ -48,6 +50,10 @@ func _ready() -> void:
 	add_to_group("projectiles")
 	set_physics_process(true)
 
+
+func _player_ship_flight_mode_switch_initiated() -> void:
+	print("projectile player_switch_mode _switched")
+	shooter.face_circle_center = false
 
 # ─── Bewegung / Verhalten ────────────────────────────────────────────────
 func _physics_process(delta: float) -> void:

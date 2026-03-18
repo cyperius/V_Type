@@ -2,7 +2,7 @@ class_name LevelBase
 extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
-signal flight_mode_switch_initiated
+#signal flight_mode_switch_initiated
 
 # Festlegung der Level Parameter #
 @export var amount_of_enemies: int
@@ -81,7 +81,6 @@ func _place_all_players_in_current_level() -> void:
 
 
 func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
-	
 	
 	player.hide()
 	# 1) Grundzustände (Player Rotation und Flight Mode im Inspector setzen)

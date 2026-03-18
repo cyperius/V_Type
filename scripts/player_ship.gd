@@ -177,6 +177,7 @@ func connect_signals() -> void:
 		level.zoom_requested.connect(_on_zoom_requested)
 	if level.has_signal("flight_mode_switch_initiated"):
 		level.flight_mode_switch_initiated.connect(_on_flight_mode_switch_initiated)
+		
 
 func set_skin(mode: String) -> void:
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
