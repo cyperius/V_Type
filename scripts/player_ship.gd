@@ -14,6 +14,7 @@ enum FlightMode { LEFT_RIGHT, RIGHT_LEFT, DOWN_UP, UP_DOWN, CIRCLE, FREE }
 var mode : FlightMode
 var circle_center_position := Vector2.ZERO
 var circle_radius := 200.0
+var face_circle_center := true
 var angle := 0.0
 var angular_speed := 2.0
 var zoom_factor : Vector2 = Vector2(1, 1)
@@ -315,8 +316,13 @@ func _physics_circle_move(delta: float) -> void:
 		# Blockiert -> Winkel nicht aendern (du "klemmst" an der Wand)
 		velocity = Vector2.ZERO
 
-	# Optik: nach innen ausrichten (auch wenn blockiert)
-	rotation = angle + 2 *PI
+
+	if face_circle_center:
+		# Optik: nach innen ausrichten (auch wenn blockiert)
+		rotation = angle + PI
+	else:
+		# nach aussen ausrichten
+		rotation = angle + 2*PI
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD

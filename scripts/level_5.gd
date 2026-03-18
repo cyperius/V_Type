@@ -80,6 +80,7 @@ func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> voi
 	var active_count : int = max(1, Global.player_ships.size())
 	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
 	player.angle = start_angle + 2.0 * PI
+	player.face_circle_center = false
 	
 	# 4) Optional: Level-spezifische Skalierung (rein visuell)
 	player.scale = Vector2(0.2, 0.2)
