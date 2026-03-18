@@ -3,6 +3,7 @@ extends LevelBase
 signal zoom_requested(zoomfactor_x: float, zoomfactor_y: float, zoom_time: float)
 signal player_target_activated
 
+
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
 
@@ -113,6 +114,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			start_attacking_player()
 		"circle_formation":
 			_place_all_players_in_circle_formation()
+			flight_mode_switch_initiated.emit()
 		_:
 			push_warning("Unbekanntes Timeline-Event: %s" % event_name)
 

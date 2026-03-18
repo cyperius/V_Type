@@ -6,6 +6,7 @@ class_name PlayerShip extends CharacterBody2D
 signal stats_changed(player_id: int, health: int, energy: int)
 signal player_died(player_id: int)
 signal shield_toggled(player_id: int, active: bool)
+signal player_ship_flight_mode_switch_initiated
 
 # ──────────────────────────────────────────────────────────────
 #   ENUMS / MODE / Global Variables
@@ -45,9 +46,9 @@ var controls_are_reversed := false
 var player_is_dead := false
 var spawn_position := Vector2.ZERO
 
-@export var shield_energy_drain : int = 100
-@export var boost_energy_drain : int = 20
-@export var absorbing_factor : float = 0.2
+@export var shield_energy_drain : float = 100
+@export var boost_energy_drain : float = 20
+@export var absorbing_factor : float = 0.0
 
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
@@ -63,8 +64,8 @@ var projectiles := []
 # ──────────────────────────────────────────────────────────────
 
 @onready var camera = get_tree().current_scene.get_node("%Camera2D")
-@onready var screen_width : float
-@onready var screen_hight : float
+var screen_width : float
+var screen_hight : float
 
 @onready var level = get_tree().current_scene.get_node("LevelContainer")
 
@@ -73,42 +74,44 @@ var skins
 # -- skins --
 # -- neutral --
 @onready var ship_sprite: Sprite2D = %ship_sprite
-@onready var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
-@onready var player4_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_neutral.png")
-@onready var player3_skin = preload("res://assets/graphic_elements/player/p3_neutral_exportiert.png")
-@onready var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
-@onready var player5_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_neutral.png")
+var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
+var player4_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_neutral.png")
+var player3_skin = preload("res://assets/graphic_elements/player/p3_neutral_exportiert.png")
+var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
+var player5_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_neutral.png")
 
 # -- raising --
-@onready var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
-@onready var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
-@onready var player3_raising_skin = preload("res://assets/graphic_elements/player/p3_bauchlage_exportiert.png")
-@onready var player4_raising_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_bauchlage.png")
-@onready var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
+var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
+var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
+var player3_raising_skin = preload("res://assets/graphic_elements/player/p3_bauchlage_exportiert.png")
+var player4_raising_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_bauchlage.png")
+var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
 
 # -- sinking("diving") --
-@onready var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
-@onready var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
-@onready var player3_diving_skin = preload("res://assets/graphic_elements/player/p3_sideways_rueckenlage.png")
-@onready var player4_diving_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_rueckenlage.png")
-@onready var player5_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
+var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
+var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
+var player3_diving_skin = preload("res://assets/graphic_elements/player/p3_sideways_rueckenlage.png")
+var player4_diving_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_rueckenlage.png")
+var player5_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
 
 # -- top down --
-@onready var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
-@onready var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
-@onready var player3_top_down = preload("res://assets/graphic_elements/player/p3_topdown_gross.png")
-@onready var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship_top_down.png")
-@onready var player5_top_down = preload("res://assets/graphic_elements/player/white_gray_arrow_topdown_gross.png")
+var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
+var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
+var player3_top_down = preload("res://assets/graphic_elements/player/p3_topdown_gross.png")
+var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship_top_down.png")
+var player5_top_down = preload("res://assets/graphic_elements/player/white_gray_arrow_topdown_gross.png")
 
 
 @onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
-@onready var hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
-@onready var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 @onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
 @onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
+
+# effects
+var hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
+var explosion_scene: PackedScene = preload("res://game_world/explosion_animation.tscn")
 
 # Kollisions-Layer/Masken-Backup für Death/Revive Roundtrip
 var _backup_collision_layer: int
@@ -172,6 +175,8 @@ func connect_signals() -> void:
 	if level.has_signal("zoom_requested"):
 		print("see the signal...")
 		level.zoom_requested.connect(_on_zoom_requested)
+	if level.has_signal("flight_mode_switch_initiated"):
+		level.flight_mode_switch_initiated.connect(_on_flight_mode_switch_initiated)
 
 func set_skin(mode: String) -> void:
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
@@ -237,6 +242,10 @@ func _physics_process(delta: float) -> void:
 # ──────────────────────────────────────────────────────────────
 #   MOVEMENT
 # ──────────────────────────────────────────────────────────────
+
+func _on_flight_mode_switch_initiated() -> void:
+	player_ship_flight_mode_switch_initiated.emit()
+
 func _physics_left_right_move(delta: float) -> void:
 	var direction := Vector2.ZERO
 	if controls_are_reversed:
@@ -348,8 +357,6 @@ func _on_ship_area_entered(other: Area2D) -> void:
 			player_is_hit(dmg)
 			
 
-
-
 func player_is_hit(taken_damage: int) -> void:
 	_change_health(-taken_damage)
 	calculate_damage_state()
@@ -382,6 +389,7 @@ func activate_shield() -> void:
 	_shield_collision_shape.disabled = false
 	emit_signal("shield_toggled", player_id, true)
 
+
 func deactivate_shield() -> void:
 	if not shield_is_activated:
 		return
@@ -390,8 +398,22 @@ func deactivate_shield() -> void:
 	_shield_collision_shape.disabled = true
 	emit_signal("shield_toggled", player_id, false)
 
+
 func shield_absorbing(absorbed_damage: int) -> void:
 	_change_energy(+absorbed_damage)
+
+
+# boost
+func _set_boost(active: bool) -> void:
+	#if boost_activated == active:
+		#return
+	boost_activated = active
+	if active:
+		speed *= 1.8
+		angular_speed *= 1.8
+	else:
+		speed /= 1.8
+		angular_speed /= 1.8
 
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
@@ -526,21 +548,9 @@ func _change_energy(delta_energy: int) -> void:
 func _drain_energy_per_sec(rate: float, delta: float) -> void:
 	if blue_energy <= 0:
 		return
-	var drain := int(round(rate * delta))
+	var drain := rate * delta
 	if drain != 0:
 		_change_energy(-drain)
-
-
-func _set_boost(active: bool) -> void:
-	if boost_activated == active:
-		return
-	boost_activated = active
-	if active:
-		speed *= 1.8
-		angular_speed *= 1.8
-	else:
-		speed /= 1.8
-		angular_speed /= 1.8
 
 
 func _on_zoom_requested(zx: float, zy: float, t: int) -> void:

@@ -29,6 +29,7 @@ collision_mask = 252
 script = ExtResource("1_l3jmy")
 max_health = 5000
 damage = 20
+boost_energy_drain = 40
 primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
 metadata/_edit_vertical_guides_ = [540.0]

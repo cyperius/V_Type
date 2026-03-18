@@ -22,6 +22,7 @@ func _ready() -> void:
 	print("aktuelle zoomstufe: ", get_tree().current_scene.camera.zoom)
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	shooter = Global.get_player_ship(owner_id) as PlayerShip
+	shooter.player_sh
 	if shooter != null:
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled:
@@ -48,9 +49,10 @@ func _ready() -> void:
 	add_to_group("projectiles")
 	set_physics_process(true)
 
+
 # ─── Bewegung / Verhalten ────────────────────────────────────────────────
 func _physics_process(delta: float) -> void:
-	if circle_mode_enabled:
+	if circle_mode_enabled and shooter.face_circle_center:
 		# Circle-Variante wird per Tween bewegt; hier nichts tun
 		return
 

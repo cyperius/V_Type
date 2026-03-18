@@ -2,6 +2,7 @@ class_name LevelBase
 extends Node2D
 
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
+signal flight_mode_switch_initiated
 
 # Festlegung der Level Parameter #
 @export var amount_of_enemies: int
