@@ -1,22 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnmuk0dqt6w1f"]
+[gd_scene format=3 uid="uid://dnmuk0dqt6w1f"]
 
 [ext_resource type="Script" uid="uid://byagihqejd2jk" path="res://scripts/projectiles_basis_class.gd" id="1_2vos1"]
 [ext_resource type="Texture2D" uid="uid://bn02nhddpo7fl" path="res://assets/graphic_elements/shots/Slice 11.png" id="2_pn4q6"]
+[ext_resource type="Script" uid="uid://dogwvtoj1p2ji" path="res://scripts/radio_modul.gd" id="3_pn4q6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mjhr5"]
 size = Vector2(370.5, 31.5)
 
-[node name="projectiles_basis_class" type="Area2D"]
+[node name="projectiles_basis_class" type="Area2D" unique_id=812709192]
 collision_layer = 2
 collision_mask = 22
 script = ExtResource("1_2vos1")
 volume = -14.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1890518086]
 rotation = 1.5708
 scale = Vector2(5, 5)
 texture = ExtResource("2_pn4q6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2061571962]
 position = Vector2(22.75, 0.75)
 shape = SubResource("RectangleShape2D_mjhr5")
+
+[node name="RadioModul" type="Node" parent="." unique_id=822269550]
+script = ExtResource("3_pn4q6")
