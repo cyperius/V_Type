@@ -11,6 +11,9 @@ extends Area2D
 
 # ─── Interne Variablen ───────────────────────────────────────────────────
 @onready var enemy_hit_scene: PackedScene = preload("res://game_world/hit_animation.tscn")
+@onready var visible_on_screen_notifier_2d: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
+
+
 
 var shooter: PlayerShip 
 var velocity: Vector2 = Vector2.ZERO
@@ -20,28 +23,25 @@ var circle_mode_enabled: bool = false
 # ─── Initialisierung bei Erscheinen ──────────────────────────────────────
 func _ready() -> void:
 	print("aktuelle zoomstufe: ", get_tree().current_scene.camera.zoom)
+	visible_on_screen_notifier_2d.screen_exited.connect(_on_screen_exited) # Invalid access to property or key 'screen_exited' on a base object of type 'null instance'.
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	shooter = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
 		shooter.player_ship_flight_mode_switch_initiated.connect(_player_ship_flight_mode_switch_initiated)
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
-		if circle_mode_enabled:
-			if shooter.face_circle_center:
-				# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
-				var offset: Vector2 = shooter.global_position - shooter.circle_center_position
-				var angle: float = offset.angle()
-				rotation = angle
-				circle_center_position = shooter.circle_center_position
-				start_tweens(angle)
-		else:
-			#if shooter.mode == shooter.FlightMode.LEFT_RIGHT: # testweise auskommenteirt, damit auch im circle Modus auswärts gewannt gültig
-			# Linearer Schuss nach rechts (bei Bedarf später an Mündung/Rotation koppeln)
-			velocity = Vector2.RIGHT.rotated(deg_to_rad(shooter.rotation_degrees)) * speed
+		if circle_mode_enabled and shooter.face_circle_center:
+			# Richtung aus Spieler-Position relativ zum Kreiszentrum ableiten
+			var offset: Vector2 = shooter.global_position - shooter.circle_center_position
+			var angle: float = offset.angle()
+			rotation = angle
+			circle_center_position = shooter.circle_center_position
+			start_tweens(angle)
 				
-			if shooter.mode == shooter.FlightMode.DOWN_UP:
-			# Linearer Schuss nach oben
-				velocity = Vector2.RIGHT.rotated(deg_to_rad(shooter.rotation_degrees)) * speed
-				rotation_degrees = shooter.rotation_degrees
+		else: # nur oben ist der eine Spezialfall, für alle anderen Fälle...
+			# linearer Schuss der ship Ausrichtung entlang (bei Bedarf später an Mündung/Rotation koppeln)
+			velocity = Vector2.RIGHT.rotated(deg_to_rad(shooter.rotation_degrees)) * speed
+			rotation_degrees = shooter.rotation_degrees
+				
 	else:
 		# Fallback: linear nach rechts
 		velocity = Vector2.RIGHT * speed
@@ -63,10 +63,16 @@ func _physics_process(delta: float) -> void:
 
 	position += velocity * delta
 
-	# Off-screen entsorgen (mit kleinem Rand und Zoom-Korrektur
-	var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
-	if not visible_rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
-		queue_free()
+
+func _on_screen_exited() -> void: # Off-screen entsorgen (neuer Ansatz 19.3.26)
+	queue_free() # visible on screen notifier für jedes Projektil anpassen, 
+	# oder einfach gross genug machen _> Schuss inkl. etwas "padding" umfassen
+	
+	
+# Off-SCreen entsorgen alter Ansatz vor 19.3. 2026: 
+#var visible_rect = CameraUtils.get_visible_world_rect(get_viewport())
+#if not visible_rect.has_point(global_position): # "wenn es die Position des Schusses in rect nicht gibt ..." 
+	#queue_free()
 
 # ─── Treffererkennung (auf Area2D-Objekte) ───────────────────────────────
 func _on_area_entered(other: Area2D) -> void:

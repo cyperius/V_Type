@@ -6,6 +6,7 @@ extends "res://scripts/projectiles_basis_class.gd"
 
 @onready var sprite: Sprite2D = $Sprite2D
 
+
 func _ready() -> void:
 	# WICHTIG: speed VOR super._ready() setzen (Basis nutzt speed in _ready()).
 	speed = blast_speed

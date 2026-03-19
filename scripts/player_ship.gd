@@ -57,8 +57,6 @@ var spawn_position := Vector2.ZERO
 @export var secondary_weapon: PackedScene
 
 
-var projectiles := []
-
 # ──────────────────────────────────────────────────────────────
 #   GRAPHICS / FX / COLLISIONS
 # ──────────────────────────────────────────────────────────────
@@ -433,7 +431,7 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 		projectile.set_owner_id(player_id)
 
 	# Position vom Gunpoint
-	var gunpoint := $Gunpoint
+	var gunpoint := %Gunpoint
 	projectile.global_position = gunpoint.global_position if gunpoint else global_position
 
 	# In Szene einfügen
@@ -443,7 +441,6 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 	else:
 		add_child(projectile)
 
-	projectiles.append(projectile)
 	if projectile.has_method("fire"):
 		projectile.fire()
 		await get_tree().create_timer(1.0).timeout

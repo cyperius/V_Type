@@ -24,3 +24,6 @@ shape = SubResource("RectangleShape2D_mjhr5")
 
 [node name="RadioModul" type="Node" parent="." unique_id=822269550]
 script = ExtResource("3_pn4q6")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=898408787]
+rect = Rect2(-242, -71, 548, 132)

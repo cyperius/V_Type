@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsohmrklp25tq"]
+[gd_scene format=3 uid="uid://bsohmrklp25tq"]
 
 [ext_resource type="Script" uid="uid://ew5ic3gmf41j" path="res://scripts/laser_beam.gd" id="1_mp64s"]
 [ext_resource type="AudioStream" uid="uid://rkvvb80hqjb2" path="res://assets/sound_and_sfx/sound_effects/laser_shot.wav" id="2_nf1aw"]
@@ -8,7 +8,7 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nvlhb"]
 height = 78.0
 
-[node name="Area2D" type="Area2D"]
+[node name="Area2D" type="Area2D" unique_id=699066959]
 top_level = true
 collision_layer = 2
 collision_mask = 52
@@ -20,16 +20,19 @@ damage = 20
 shot_sfx_stream = ExtResource("2_nf1aw")
 volume = -8.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=49319436]
 position = Vector2(2.08165e-12, 2.08165e-12)
 texture = ExtResource("3_7qmcl")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1909637561]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_nvlhb")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1776852620]
 target_position = Vector2(300, 0)
 collision_mask = 4
 collide_with_areas = true
 script = ExtResource("4_nf1aw")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1606564581]
+unique_name_in_owner = true

@@ -1,6 +1,7 @@
 class_name LaserBeam
 extends "res://scripts/projectiles_basis_class.gd"
 
+
 @export var blast_scale := Vector2(1, 1)
 @export var blast_speed := 400.0
 

@@ -29,7 +29,6 @@ collision_mask = 252
 script = ExtResource("1_l3jmy")
 max_health = 5000
 damage = 20
-boost_energy_drain = 40
 primary_weapon = ExtResource("2_5icsl")
 secondary_weapon = ExtResource("3_flg8t")
 metadata/_edit_vertical_guides_ = [540.0]
@@ -52,6 +51,10 @@ position = Vector2(1, 0)
 texture = ExtResource("4_5icsl")
 
 [node name="Gunpoint" type="Node2D" parent="." unique_id=1913216489]
+unique_name_in_owner = true
+
+[node name="Muzzle" type="Node2D" parent="Gunpoint" unique_id=1912495411]
+position = Vector2(125, 0)
 
 [node name="ShipArea" type="Area2D" parent="." unique_id=846720337]
 unique_name_in_owner = true

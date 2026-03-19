@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://v06vu4n3ca8t" path="res://scripts/laser_blast_ray_cast.gd" id="4_odjvy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lef15"]
-size = Vector2(65, 35)
+size = Vector2(66, 35)
 
 [node name="laser_blast" type="Area2D" unique_id=915932707]
 top_level = true
@@ -14,7 +14,10 @@ position = Vector2(1, 0)
 collision_layer = 2
 collision_mask = 20
 script = ExtResource("1_yh0dj")
+blast_scale = null
 blast_speed = 800.0
+owner_id = null
+speed = null
 damage = 50
 shot_sfx_stream = ExtResource("2_jhc3a")
 volume = -7.0
@@ -23,7 +26,7 @@ volume = -7.0
 texture = ExtResource("3_kl33j")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=465387024]
-position = Vector2(1.5, -0.5)
+position = Vector2(1, -0.5)
 shape = SubResource("RectangleShape2D_lef15")
 
 [node name="RayCast2D" type="RayCast2D" parent="." unique_id=12044298]
@@ -31,3 +34,5 @@ target_position = Vector2(500, 0)
 collision_mask = 4
 collide_with_areas = true
 script = ExtResource("4_odjvy")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=939931536]
