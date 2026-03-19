@@ -20,10 +20,10 @@ signal flight_mode_switch_initiated
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
-	1.6: "enemies_appear", # 16.75
-	3: "zoom_out", # 64.0
-	8: "target_player", # ca. 76
-	12: "circle_formation"
+	16.75: "enemies_appear", # 16.75
+	64: "zoom_out", # 64.0
+	76: "target_player", # ca. 76
+	96: "circle_formation"
 	
 }
 
