@@ -6,6 +6,8 @@ extends "res://scripts/enemy_1.gd"
 @onready var damage_collision_shape: CollisionShape2D = %damage_collision_shape
 @onready var visual_damage_explosion: Sprite2D = $explosion_area/visual_damage_explosion
 @onready var explosion_area: Area2D = $explosion_area
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+var self_destruct_triggered := false
 
 
 func connect_signals() -> void:
@@ -31,23 +33,24 @@ func _on_area_entered(other: Area2D) -> void:
 		
 		
 func _process(delta: float) -> void:
-	if global_position.distance_to(player.global_position) < trigger_distance:
-		trigger_explosion_mode()
+	if global_position.distance_to(player.global_position) < trigger_distance and self_destruct_triggered == false:
+		trigger_self_destruct()
 		
 		
-func trigger_explosion_mode() -> void:
-	sprite_2d.self_modulate = Color(0.585, 0.02, 0.02, 1.0)
-	await get_tree().create_timer(0.6).timeout
-	sprite_2d.self_modulate = Color(0.0, 0.093, 0.942, 1.0)
-	await get_tree().create_timer(0.2).timeout
-	sprite_2d.self_modulate = Color(0.795, 0.043, 0.043, 1.0)
-	await get_tree().create_timer(0.7).timeout
-	sprite_2d.self_modulate = Color(0.032, 0.153, 0.967, 1.0)
-	await get_tree().create_timer(0.2).timeout
-	sprite_2d.self_modulate = Color(0.975, 0.009, 0.009, 1.0)
-	await get_tree().create_timer(0.8).timeout
+func trigger_self_destruct() -> void:
+	is_player_tracking_active = true
+	self_destruct_triggered = true # self_destruct als getriggert markieren _> kann nicht erneut ausgelöst werden
+	audio_stream_player.play()
+	var tween = create_tween()
+	tween.parallel()
+	tween.tween_property(sprite_2d, "self_modulate", Color(0.975, 0.009, 0.009, 1.0), 1)
+	tween.tween_method(_set_pitch_scale, 1.0, 4.0, 3.0)
+	await tween.finished
 	damage_explode()
 	
+	
+func _set_pitch_scale(pitch_value: float) -> void:
+	audio_stream_player.pitch_scale = pitch_value
 	
 func damage_explode() -> void:
 	explosion_area.damage = explosion_damage # es wird eine Variable damage für den

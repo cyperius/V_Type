@@ -9,6 +9,10 @@ resource_name = "Distortion"
 [sub_resource type="AudioEffectFilter" id="AudioEffectFilter_opb4m"]
 resource_name = "Filter"
 
+[sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_opb4m"]
+resource_name = "PitchShift"
+pitch_scale = 4.4
+
 [resource]
 bus/0/solo = true
 bus/0/mute = true
@@ -20,6 +24,8 @@ bus/0/effect/1/effect = SubResource("AudioEffectDistortion_opb4m")
 bus/0/effect/1/enabled = false
 bus/0/effect/2/effect = SubResource("AudioEffectFilter_opb4m")
 bus/0/effect/2/enabled = false
+bus/0/effect/3/effect = SubResource("AudioEffectPitchShift_opb4m")
+bus/0/effect/3/enabled = true
 bus/1/name = &"SFX"
 bus/1/solo = true
 bus/1/mute = true
