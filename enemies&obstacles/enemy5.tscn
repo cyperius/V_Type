@@ -25,9 +25,11 @@ scale = Vector2(0.2, 0.2)
 collision_layer = 4
 collision_mask = 23
 script = ExtResource("1_skfhp")
+trigger_distance = 500.0
 shot_sound = ExtResource("2_ewv5y")
 shot_scene = ExtResource("3_ytml0")
 x_basic_speed = 150
+y_basic_speed = 150
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=421201911]
 rotation = -1.37881
@@ -49,10 +51,9 @@ wait_time = 2.0
 autostart = true
 
 [node name="explosion_area" type="Area2D" parent="." unique_id=1552200918]
-collision_layer = 256
+collision_layer = 260
 collision_mask = 0
 monitoring = false
-monitorable = false
 script = ExtResource("5_x54c6")
 
 [node name="visual_damage_explosion" type="Sprite2D" parent="explosion_area" unique_id=532622547]

@@ -31,14 +31,19 @@ func _on_area_entered(other: Area2D) -> void:
 		if "damage" in other and "owner_id" in other:
 			apply_damage(other.damage, other.owner_id)
 		
-		
 func _process(delta: float) -> void:
-	if global_position.distance_to(player.global_position) < trigger_distance and self_destruct_triggered == false:
+	super(delta)  # führt den _process von enemy_1.gd aus
+	
+	if not is_instance_valid(player):
+		return
+	if global_position.distance_to(player.global_position) < trigger_distance and not self_destruct_triggered:
 		trigger_self_destruct()
-		
+
 		
 func trigger_self_destruct() -> void:
 	is_player_tracking_active = true
+	y_speed = 375
+	x_speed = 375
 	self_destruct_triggered = true # self_destruct als getriggert markieren _> kann nicht erneut ausgelöst werden
 	audio_stream_player.play()
 	var tween = create_tween()
@@ -56,7 +61,7 @@ func damage_explode() -> void:
 	explosion_area.damage = explosion_damage # es wird eine Variable damage für den
 	# explosion_area Node kreiert, um die API des player_ships zu bedienen
 	var explosion_tween = create_tween() # das ExplosionsSprite wächst per tween auf die Endgrösse
-	explosion_tween.tween_property(visual_damage_explosion, "scale", Vector2(30, 30), 0.3)
+	explosion_tween.tween_property(visual_damage_explosion, "scale", Vector2(50, 50), 0.3)
 	damage_collision_shape.disabled = false # diese Collsionshape ist via Inspector deaktiert und wird
 	# aktiviert, da die damage_explosion getriggertw urde
 	await explosion_tween.finished # wenn der tween vorbei ist wird der enemy direkt gelöscht - nicht via die() Funktion
