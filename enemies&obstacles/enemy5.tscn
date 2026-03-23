@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://dhfdy6ogf65vp" path="res://assets/sound_and_sfx/sound_effects/intense_Laser.wav" id="2_ewv5y"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_ytml0"]
 [ext_resource type="Texture2D" uid="uid://b1sqw8m8etpsd" path="res://assets/graphic_elements/enemies/enemy5.png" id="4_t7wyn"]
-[ext_resource type="Script" uid="uid://cb75573qhwxc5" path="res://scripts/explosion_area.gd" id="5_x54c6"]
+[ext_resource type="Script" path="res://scripts/explosion_area.gd" id="5_x54c6"]
 [ext_resource type="AudioStream" uid="uid://dojp58pcustar" path="res://assets/sound_and_sfx/sound_effects/about_to_explode.wav" id="6_yqjhn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3fnv"]
@@ -49,6 +49,10 @@ wait_time = 2.0
 autostart = true
 
 [node name="explosion_area" type="Area2D" parent="." unique_id=1552200918]
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = false
 script = ExtResource("5_x54c6")
 
 [node name="visual_damage_explosion" type="Sprite2D" parent="explosion_area" unique_id=532622547]
