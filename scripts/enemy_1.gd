@@ -154,11 +154,14 @@ func apply_damage(damage_amount, owner_id) -> void:
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
 	GameManager._on_enemy_hit(score, energy_left, owner_id)
-	if health_points <= 0 and not self_destruct_triggered:
-		die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
+	if health_points <= 0:
+		if not self_destruct_triggered: # 24.3.26: ganze apply_damage Funktion
+			# wird in enemy_5 überschrieben trotzdem fallback für selfdestruct-Mode hier belassen
+			die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
 		
 		
 func die() -> void:
+	print("enemy_1.gd: die() triggert")
 	var explosion_animation = explosion_animation_scene.instantiate()
 	explosion_animation.global_position = global_position
 	explosion_animation.scale = Vector2(explosion_size, explosion_size)

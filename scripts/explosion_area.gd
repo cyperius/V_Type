@@ -1,3 +1,6 @@
 extends Area2D
 
-@export var damage : int
+var damage : int
+
+func _ready() -> void:
+	add_to_group("damage_area")
