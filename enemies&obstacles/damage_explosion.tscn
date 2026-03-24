@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b3kc1v4vdhoec"]
+
+[ext_resource type="Script" uid="uid://cb75573qhwxc5" path="res://scripts/explosion_area.gd" id="1_6k1b5"]
+[ext_resource type="Texture2D" uid="uid://bb1frdgjk24jl" path="res://ressources/circle_default.tres" id="2_tjms0"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qgsod"]
+radius = 26.0
+
+[node name="damage_explosion" type="Area2D" unique_id=1813658961]
+collision_layer = 262
+script = ExtResource("1_6k1b5")
+
+[node name="visual_damage_explosion" type="Sprite2D" parent="." unique_id=1774596682]
+unique_name_in_owner = true
+rotation = 3.1415925
+texture = ExtResource("2_tjms0")
+
+[node name="damage_collision_shape" type="CollisionShape2D" parent="." unique_id=1649618002]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_qgsod")
+disabled = true
+debug_color = Color(0.11140782, 0.9598214, 0.9257334, 1)

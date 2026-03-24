@@ -83,10 +83,9 @@ func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 
 func _on_timer_timeout():
 	at_least_one_enemy_spawned = true
-	# print("(enemy.gd): timeout -> normaler enemy?")
 	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
 	var enemy = enemy1.instantiate()
-	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
+	enemy.current_level = level # aktuelle Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
 	enemy.position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 

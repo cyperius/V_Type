@@ -8,13 +8,15 @@ extends "res://scripts/enemy_1.gd"
 @onready var explosion_area: Area2D = $explosion_area
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
-var damage_explosion_scale := Vector2(20, 20)
-@export var damage_explosion_scale_max_scale := Vector2(100, 100)
+var self_destruct_tween: Tween = null
+var explosion_area_to_be : Vector2
+var explosion_start_scale := Vector2(5, 5)
+var damage_explosion_scene = preload("res://enemies&obstacles/damage_explosion.tscn")
+@export var explosion_area_max_scale := Vector2(160, 160)
 
 func _ready() -> void:
 	super._ready()
-	visual_damage_explosion.hide()
-
+	
 
 func connect_signals() -> void:
 	if current_level and current_level.has_signal("player_target_activated"):
@@ -36,8 +38,6 @@ func _on_area_entered(other: Area2D) -> void:
 	elif other.is_in_group("evaders"):    
 		apply_damage(other.damage, other.player_shot_owner_id) # die player_shot_owner_id.. #(other.damage, other.player_shot_owner_id)
 	# wird vom Schuss auf den Gegner übertragen
-	elif other.is_in_group("damage_area"):
-		apply_damage(other.damage, -1)
 	else:
 		if "damage" in other:
 			if "owner_id" in other: 
@@ -62,31 +62,34 @@ func trigger_self_destruct() -> void:
 	x_speed = 375
 	self_destruct_triggered = true # self_destruct als getriggert markieren -> kann nicht erneut ausgelöst werden
 	audio_stream_player.play()
-	var tween = create_tween()
-	tween.parallel()
-	tween.tween_property(sprite_2d, "self_modulate", Color(0.975, 0.009, 0.009, 1.0), 1)
-	tween.tween_method(_set_pitch_scale, 1.0, 4.0, 3.0)
-	tween.tween_property(self, "damage_explosion_scale", damage_explosion_scale_max_scale, 3.0)
-	await tween.finished
+	self_destruct_tween = create_tween()
+	var tween_duration := 5.6
+	self_destruct_tween.set_parallel()
+	self_destruct_tween.tween_property(sprite_2d, "self_modulate", Color(0.975, 0.009, 0.009, 1.0), tween_duration)
+	self_destruct_tween.tween_method(_set_pitch_scale, 1.0, 4.0, tween_duration)
+	self_destruct_tween.tween_method(_set_explosion_scale, explosion_start_scale, explosion_area_max_scale, tween_duration)
+	await self_destruct_tween.finished
 	damage_explode()
-	
-	
+
+
 func _set_pitch_scale(pitch_value: float) -> void:
 	audio_stream_player.pitch_scale = pitch_value
-	
+
+
+func _set_explosion_scale(explosion_scale: Vector2) -> void:
+	explosion_area_to_be = explosion_scale
+	print("explotion_area_to_be: ", explosion_area_to_be)
+
+
 func damage_explode() -> void:
-	visual_damage_explosion.show()
-	explosion_area.damage = explosion_damage # es wird eine Variable damage für den
-	# explosion_area Node kreiert, um die API des player_ships zu bedienen
-	var explosion_tween = create_tween() # das ExplosionsSprite wächst per tween auf die Endgrösse
-	explosion_tween.tween_property(explosion_area, "scale", damage_explosion_scale, 0.3)
-	damage_collision_shape.disabled = false # diese Collsionshape ist via Inspector deaktiert und wird
-	# aktiviert, da die damage_explosion getriggertw urde
-	await explosion_tween.finished # wenn der tween vorbei ist wird der enemy direkt gelöscht - nicht via die() Funktion
+	self_destruct_tween.kill()
+	var damage_explosion = damage_explosion_scene.instantiate()
+	damage_explosion.global_position = global_position
+	get_tree().current_scene.add_child(damage_explosion)
 	queue_free()
 	
-	
-func apply_damage(damage_amount, owner_id) -> void: # Methode vom vererbten Script überschreiben, 
+
+func apply_damage(damage_amount, owner_id) -> void: # Methode vom vererbten Script überschreiben,
 	# wegen erweiterter Logik mit explosion_damage
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
 	var damage_dealt = clamp(damage_amount, 0, health_points) # Invalid type in utility function "clamp()". Cannot convert argument 2 from int to Nil.
@@ -97,6 +100,6 @@ func apply_damage(damage_amount, owner_id) -> void: # Methode vom vererbten Scri
 	if health_points <= 0:
 		if not self_destruct_triggered:
 			die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
-		else: 
+		else:
 			damage_explode()
 	

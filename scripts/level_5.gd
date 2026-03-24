@@ -122,7 +122,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 
 	
 func enemies_appear() -> void:
-	enemy_spawner.set_spawn_rate(5)
+	enemy_spawner.set_spawn_rate(1) # 5
 
 
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
