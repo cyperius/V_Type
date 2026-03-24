@@ -130,7 +130,7 @@ func _on_roster_changed_check_game_over(_player_id := -1) -> void:
 
 
 func jump_to_level(level_nr: int) -> void:
-	await AudioManager.fade_out(4)
+	await AudioManager.fade_out(4) # funktionoert nicht: "await" keyword is unnecessary because the expression isn't a coroutine nor a signal.
 	GameManager.current_level = level_nr
 	GameManager._load_level(level_nr)
 

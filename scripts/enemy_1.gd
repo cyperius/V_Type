@@ -1,4 +1,4 @@
-class_name enemy extends Area2D
+class_name Enemy extends Area2D
 
 signal collision_detected(enemy: Node, collision_position: Vector2)
 
@@ -21,7 +21,7 @@ signal collision_detected(enemy: Node, collision_position: Vector2)
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var space_ball : SpaceBall # für Angriff aus space_ball
 @onready var current_level : Node # wird in ready_function gesetzt
-
+var self_destruct_triggered := false
 
 
 var closest_player : Node
@@ -77,7 +77,7 @@ func _on_area_entered(other: Area2D) -> void:
 		var entered_player = other.get_parent()
 		apply_damage(entered_player.damage, entered_player.player_id)
 	elif other.is_in_group("evaders"):    
-		apply_damage(other.damage, player_shot_owner_id) # die player_shot_owner_id..
+		apply_damage(other.damage, other.player_shot_owner_id) # die player_shot_owner_id..
 # wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
 # player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
 # dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
@@ -149,13 +149,13 @@ func _on_shoot_timer_timeout():
 
 func apply_damage(damage_amount, owner_id) -> void:
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
-	var damage_dealt = clamp(damage_amount, 0, health_points)
+	var damage_dealt = clamp(damage_amount, 0, health_points) # Invalid type in utility function "clamp()". Cannot convert argument 2 from int to Nil.
 	health_points -= damage_dealt
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
 	GameManager._on_enemy_hit(score, energy_left, owner_id)
-	if health_points <= 0:
-		die()
+	if health_points <= 0 and not self_destruct_triggered:
+		die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
 		
 		
 func die() -> void:

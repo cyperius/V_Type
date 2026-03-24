@@ -27,6 +27,7 @@ func _ready() -> void:
 	# Shooter einmalig „snapshotten“ (robust, falls der Spieler den Tree verlässt)
 	shooter = Global.get_player_ship(owner_id) as PlayerShip
 	if shooter != null:
+		owner_id = shooter.player_id
 		shooter.player_ship_flight_mode_switch_initiated.connect(_player_ship_flight_mode_switch_initiated)
 		circle_mode_enabled = (shooter.mode == shooter.FlightMode.CIRCLE) # circle_mode_enabled wird auf "true" gesetzt, falls der FlightMode entsprechnd gesetzt ist (was wiederum im jew. Level vorgenoommen wird)
 		if circle_mode_enabled and shooter.face_circle_center:

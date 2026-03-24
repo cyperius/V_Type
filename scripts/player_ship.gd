@@ -3,7 +3,6 @@ class_name PlayerShip extends CharacterBody2D
 # ──────────────────────────────────────────────────────────────
 #   SIGNALS (für Main/UI, statt direkte UI‑Zugriffe)
 # ──────────────────────────────────────────────────────────────
-signal stats_changed(player_id: int, health: int, energy: int)
 signal player_died(player_id: int)
 signal shield_toggled(player_id: int, active: bool)
 signal player_ship_flight_mode_switch_initiated

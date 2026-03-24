@@ -6,7 +6,7 @@ extends RayCast2D
 func _physics_process(_delta: float) -> void:
 	if is_colliding():
 		var collider = get_collider()
-		print("colliding with: ", collider)
+		print(self, ": raycast is colliding with: ", collider)
 		if collider.is_in_group("evaders"): 
 			# gegebenfalls Signal beim Collider auslösen und Position des Schusses mitgeben
 			# um ebtsprechendes Ausweicheverhalten zu aktivieren

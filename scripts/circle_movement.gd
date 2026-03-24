@@ -1,4 +1,4 @@
-extends enemy
+extends Enemy
 
 @onready var circle_size_change_timer: Timer = $CircleSizeChangeTimer
 @onready var circle_center_speed_timer: Timer = $CircleCenterSpeedTimer

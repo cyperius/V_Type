@@ -1,6 +1,10 @@
 extends Boss
 
-signal collision_detected(collision_position: Vector2)
+# Anmerkung: Die Definition der mitgegeben Argumente wird nciht zur Laufzeit geprüft
+# wenn das Signal beim emittieren 2 S Arguemnte mitgibt, und die Empfängermethode 2 erwartet, ist
+# es für die Funktionalität egal, ob die Argeumente bei der Signaldefionition angegeben werden
+# aber natürlich dennoch korrekt deklarieren natürlich für Codewartbarkeit
+signal collision_detected(shot_type: Node, collision_position: Vector2)
 signal been_hit
 
 # boss stats
@@ -144,8 +148,8 @@ func _on_area_entered(other: Area2D) -> void:
 				lost_control = true
 				print("lost control")
 				# ohne diese Zeile, würde der neue Soundtrack immer wieder von Neuem getriggert
-				if audio_stream_player.stream == normal_soundtrack: 
-					audio_stream_player.stream = lost_control_soundtrack
+				if audio_stream_player.stream == normal_soundtrack: # wenn noch der normale Soundtrack läuft
+					audio_stream_player.stream = lost_control_soundtrack # wechsle zum lost-control Soundtrack
 					audio_stream_player.play()
 			else:
 				lost_control = false

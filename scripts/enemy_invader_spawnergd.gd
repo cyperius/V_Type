@@ -4,8 +4,8 @@ signal boss_defeated
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 
-@export var timer_basic_wait_time: int = 3
-@export var timer2_basic_wait_time: int = 4
+@export var timer_basic_wait_time: float = 3.0
+@export var timer2_basic_wait_time: float = 4.0
 
 @export var level_boss: PackedScene
 @export var basic_spawn_rate: int = 1
