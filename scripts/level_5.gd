@@ -3,6 +3,7 @@ extends LevelBase
 signal zoom_requested(zoomfactor_x: float, zoomfactor_y: float, zoom_time: float)
 signal player_target_activated
 signal flight_mode_switch_initiated
+signal player_placement_initiated
 
 
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
@@ -71,6 +72,9 @@ func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> voi
 	
 	player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
 	
+	# 0) Signale zum Player verbinden
+	player.connect_signals()
+	
 	# 1) Modus aktivieren
 	player.mode = player.FlightMode.CIRCLE
 
@@ -96,9 +100,10 @@ func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> voi
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
 	player.global_rotation = center_node.global_position.angle_to_point(player.global_position)
 	
-	
+	# 7) Signal senden um stats im Flightmodulk des Players zu aktualisieren
+	player_placement_initiated.emit()
 
-	# 6) Debug
+	# 8) Debug
 	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
 		player_id, player.circle_center_position, player.circle_radius, start_angle
 	])
@@ -122,7 +127,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 
 	
 func enemies_appear() -> void:
-	enemy_spawner.set_spawn_rate(1) # 5
+	enemy_spawner.set_spawn_rate(5) # 5
 
 
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:

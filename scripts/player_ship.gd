@@ -22,6 +22,13 @@ var cooling_down := false
 
 
 # ──────────────────────────────────────────────────────────────
+#   Module (für Composition)
+# ──────────────────────────────────────────────────────────────
+
+@onready var circle_flight_module: CircleFlightModuleModul = %CircleFlightModule
+
+
+# ──────────────────────────────────────────────────────────────
 #   PLAYER PROPERTIES
 # ──────────────────────────────────────────────────────────────
 @export var player_id: int = 1
@@ -129,6 +136,13 @@ func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
+	circle_flight_module.setup(self, player_id)
+	# Startwerte für CircleFlightMode ans Modul weitergeben
+	circle_flight_module.circle_center_position = circle_center_position
+	circle_flight_module.circle_radius = circle_radius
+	circle_flight_module.angular_speed = angular_speed
+	circle_flight_module.face_circle_center = face_circle_center
+	
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
@@ -176,7 +190,21 @@ func connect_signals() -> void:
 		level.zoom_requested.connect(_on_zoom_requested)
 	if level.has_signal("flight_mode_switch_initiated"):
 		level.flight_mode_switch_initiated.connect(_on_flight_mode_switch_initiated)
+	if level.has_signal("player_placement_initiated"):
+		print("i see the signal")
+		level.player_placement_initiated.connect(_on_player_placement_initiated)
 		
+
+func _on_player_placement_initiated()-> void:
+	print("Player initiated signal received")
+	circle_flight_module.setup(self, player_id)
+	# Startwerte für CircleFlightMode ans Modul weitergeben
+	circle_flight_module.circle_center_position = circle_center_position
+	circle_flight_module.circle_radius = circle_radius
+	circle_flight_module.angular_speed = angular_speed
+	circle_flight_module.face_circle_center = face_circle_center
+	
+
 
 func set_skin(mode: String) -> void:
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
@@ -233,7 +261,7 @@ func _physics_process(delta: float) -> void:
 		FlightMode.LEFT_RIGHT:
 			_physics_left_right_move(delta)
 		FlightMode.CIRCLE:
-			_physics_circle_move(delta)
+			circle_flight_module.physics_update(delta) # <-- Modul übernimmt
 		FlightMode.DOWN_UP:
 			_physics_left_right_move(delta)
 	# Bewegung je nach Modus
@@ -305,7 +333,11 @@ func _physics_circle_move(delta: float) -> void:
 		return
 
 	# Naechster Winkel (noch NICHT uebernehmen)
-	var next_angle := angle - input_strength * angular_speed * delta
+	# Steuerung: rechts -> Uhrzeigersinn
+	var next_angle := angle + input_strength * angular_speed * delta
+	
+	# Steuerung: rechts -> Gegenuhrzeigersinn
+	#var next_angle := angle - input_strength * angular_speed * delta
 
 	# Zielpunkt auf der Schiene (exakt Kreis)
 	var next_offset := Vector2(cos(next_angle), sin(next_angle)) * circle_radius

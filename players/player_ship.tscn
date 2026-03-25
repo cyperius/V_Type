@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
 [ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
+[ext_resource type="Script" uid="uid://co6ox1j6ry68a" path="res://scripts/lock_target_flight_mode.gd" id="8_df6tw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]
 size = Vector2(26.0009, 260)
@@ -88,3 +89,8 @@ scale = Vector2(0.242723, 0.189479)
 position = Vector2(-106, -6)
 scale = Vector2(0.12, 0.072)
 skew = -0.216421
+
+[node name="CircleFlightModule" type="Node" parent="." unique_id=843209843]
+unique_name_in_owner = true
+script = ExtResource("8_df6tw")
+metadata/_custom_type_script = "uid://co6ox1j6ry68a"

@@ -1,5 +1,7 @@
 extends Node2D
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
+signal player_placement_initiated
+
 
 
 @export var circle_radius := 200.0
@@ -51,6 +53,9 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	
 	player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
 	
+	# 0) Signale zum Player verbinden
+	player.connect_signals()
+	
 	# 1) Modus aktivieren
 	player.mode = player.FlightMode.CIRCLE
 
@@ -73,10 +78,13 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
 	player.global_rotation = player.global_position.angle_to_point(center_node.global_position)
 	
+	# 7) Signal senden um stats im Flightmodulk des Players zu aktualisieren
+	player_placement_initiated.emit()
+	
 	await get_tree().process_frame
 	player.show()
 
-	# 6) Debug
+	# 7) Debug
 	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
 		player_id, player.circle_center_position, player.circle_radius, start_angle
 	])

@@ -253,6 +253,6 @@ position = Vector2(8548.39, 669)
 gizmo_extents = 69.5
 
 [node name="Center" type="Marker2D" parent="." unique_id=1570931403]
-position = Vector2(4188, 2225)
+position = Vector2(4041, 2225)
 
 [editable path="EnemySpawner"]
