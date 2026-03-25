@@ -191,7 +191,6 @@ func connect_signals() -> void:
 	if level.has_signal("flight_mode_switch_initiated"):
 		level.flight_mode_switch_initiated.connect(_on_flight_mode_switch_initiated)
 	if level.has_signal("player_placement_initiated"):
-		print("i see the signal")
 		level.player_placement_initiated.connect(_on_player_placement_initiated)
 		
 
