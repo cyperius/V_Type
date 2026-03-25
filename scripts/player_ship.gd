@@ -305,7 +305,7 @@ func _physics_circle_move(delta: float) -> void:
 		return
 
 	# Naechster Winkel (noch NICHT uebernehmen)
-	var next_angle := angle + input_strength * angular_speed * delta
+	var next_angle := angle - input_strength * angular_speed * delta
 
 	# Zielpunkt auf der Schiene (exakt Kreis)
 	var next_offset := Vector2(cos(next_angle), sin(next_angle)) * circle_radius
@@ -340,16 +340,14 @@ func _on_ship_area_entered(other: Area2D) -> void:
 	if "hit_effect" in other:
 		_apply_effect_by_name(str(other.hit_effect))
 	
+	# Absicherung gegen Mehrfachschden, bei dynamischen collsionshapes, könnte
+	# theoretsich für alle "others" geprüft werden, aber lasse er voresrt mal
+	# so, als Erinnerung, wieso es nötig wurde
 	if other.is_in_group("dynamic_damaging_areas"):
 		if damage_already_dealt:
 			return
 		damage_already_dealt = true  # sofort setzen, bevor Schaden übergeben wird
-	## get_overlapping_areas() ist zuverlässiger als area_entered bei wachsenden Shapes
-		#for area in ship_area.get_overlapping_areas(): # Funktion get_overlapping_areas ist 
-			## eine built-in Funktion von Area2Ds
-			
-			
-
+	
 	# Damage
 	if "damage" in other:
 		var dmg: int = int(other.damage)

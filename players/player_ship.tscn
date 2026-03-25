@@ -75,7 +75,7 @@ one_way_collision_margin = 0.0
 
 [node name="BeenHitTimer" type="Timer" parent="." unique_id=1631808903]
 unique_name_in_owner = true
-wait_time = 9.879999999999999
+wait_time = 1.5
 one_shot = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=2137553066]
