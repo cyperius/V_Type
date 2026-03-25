@@ -18,5 +18,4 @@ texture = ExtResource("2_tjms0")
 [node name="damage_collision_shape" type="CollisionShape2D" parent="." unique_id=1649618002]
 unique_name_in_owner = true
 shape = SubResource("CircleShape2D_qgsod")
-disabled = true
-debug_color = Color(0.11140782, 0.9598214, 0.9257334, 1)
+debug_color = Color(0.11207495, 0.9598109, 0.9255881, 0.20400001)

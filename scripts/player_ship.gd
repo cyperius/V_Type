@@ -38,6 +38,8 @@ var health: int							# in _ready() auf max_health gesetzt
 var blue_energy: int					# in _ready() auf max_energy gesetzt
 var score : int = 0
 
+
+var damage_already_dealt := false # zur Verhinderung von Mehrfachtreffern bei "dynamic_damaging_areas"
 var shield_is_activated := false
 var player_is_slowed_down := false
 var controls_are_reversed := false
@@ -335,26 +337,37 @@ func _physics_circle_move(delta: float) -> void:
 #   COMBAT / HIT / SHIELD
 # ──────────────────────────────────────────────────────────────
 func _on_ship_area_entered(other: Area2D) -> void:
-	# Effekt-Trigger (optional)
 	if "hit_effect" in other:
 		_apply_effect_by_name(str(other.hit_effect))
+	
+	if other.is_in_group("dynamic_damaging_areas"):
+		if damage_already_dealt:
+			return
+		damage_already_dealt = true  # sofort setzen, bevor Schaden übergeben wird
+	## get_overlapping_areas() ist zuverlässiger als area_entered bei wachsenden Shapes
+		#for area in ship_area.get_overlapping_areas(): # Funktion get_overlapping_areas ist 
+			## eine built-in Funktion von Area2Ds
+			
+			
 
 	# Damage
 	if "damage" in other:
 		var dmg: int = int(other.damage)
+		# i-Frame Schutz sofort aktivieren, unabhängig vom Schild-Status
+		# verhindert dass z.B. eine wachsende Explosion mehrfach in aufeinanderfolgenden
+		# Frames trifft
+		ship_area.collision_mask = 0
+		ship_area.collision_layer = 0
 		if shield_is_activated:
 			if other.is_in_group("projectiles"):
-				shield_absorbing(dmg * absorbing_factor)  # Schild „heilt“ Energie um einen Viertel des Schadens
+				shield_absorbing(dmg * absorbing_factor)  # Schild „heilt" Energie um Anteil des Schadens
 			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
-				
 		else:
-			# Kurzzeitig nicht kollidieren, damit der Treffer nicht mehrfach zählt
-			ship_area.collision_mask = 0
-			ship_area.collision_layer = 0
 			player_is_hit(dmg)
-			
 
+	
+	
 func player_is_hit(taken_damage: int) -> void:
 	_change_health(-taken_damage)
 	calculate_damage_state()
@@ -377,6 +390,7 @@ func _on_just_been_hit_timer_timeout() -> void:
 	modulate = current_player_state
 	ship_area.collision_mask = _backup_collision_mask
 	ship_area.collision_layer = _backup_collision_layer
+	damage_already_dealt = false # Absicherung für die dynamic_damage_areas wieder resetten
 
 # Schild
 func activate_shield() -> void:
