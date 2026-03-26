@@ -18,9 +18,15 @@ var body: CharacterBody2D
 # ──────────────────────────────────────────────────────────────
 # SETUP (von PlayerShip aufrufen statt _ready)
 # ──────────────────────────────────────────────────────────────
-func setup(owner_body: CharacterBody2D, owner_player_id: int) -> void:
+
+func setup(owner_body: CharacterBody2D) -> void:
 	body = owner_body
-	player_id = owner_player_id
+	# Direkt vom Body lesen - keine Doppelzuweisung nötig
+	player_id = body.player_id
+	circle_center_position = body.circle_center_position
+	circle_radius = body.circle_radius
+	angular_speed = body.angular_speed
+	face_circle_center = body.face_circle_center
 
 
 # ──────────────────────────────────────────────────────────────

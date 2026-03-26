@@ -7,8 +7,14 @@ extends "res://scripts/enemy_1.gd"
 @onready var visual_damage_explosion: Sprite2D = %visual_damage_explosion
 @onready var explosion_area: Area2D = $explosion_area
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
-
-var self_destruct_tween: Tween = null
+@onready var on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
+@onready var queue_free_timer: Timer = $QueueFreeTimer
+var screen_entered := false # Für queue_free Mechnaik, verhindert ein Löschen bei 
+# initialem Spawn ausserhalb des Screens
+var is_waiting_for_despawn := false # verhindert Mehrfaches auslösen der await Zeile, falls ein 
+# Gegner schnell zwischen Screen entered und exited hin und her wechseln sollte
+var self_destruct_tween: Tween = null # Membervariable, damit der Tween ausserhalb
+# seines scopes gekillt werden kann
 var explosion_area_to_be : Vector2
 var explosion_start_scale := Vector2(5, 5)
 var damage_explosion_scene = preload("res://enemies&obstacles/damage_explosion.tscn")
@@ -17,6 +23,24 @@ var damage_explosion_scene = preload("res://enemies&obstacles/damage_explosion.t
 func _ready() -> void:
 	super._ready()
 	
+	on_screen_notifier.screen_entered.connect(_on_screen_entered)
+	on_screen_notifier.screen_exited.connect(_on_screen_exited)
+	queue_free_timer.wait_time = 5
+	
+	
+func _on_screen_entered() -> void:
+	screen_entered = true
+	is_waiting_for_despawn = false
+	queue_free_timer.stop()
+	
+func _on_screen_exited() -> void:
+	if screen_entered and not is_waiting_for_despawn: # verhindert Mehrfachauslösung
+		is_waiting_for_despawn = true
+		queue_free_timer.start()
+		await queue_free_timer.timeout
+		if is_instance_valid(self) and not is_queued_for_deletion():
+			queue_free()
+		
 
 func connect_signals() -> void:
 	if current_level and current_level.has_signal("player_target_activated"):

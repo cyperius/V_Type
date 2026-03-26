@@ -47,3 +47,7 @@ autostart = true
 stream = ExtResource("6_yqjhn")
 
 [node name="DetectionArea" parent="." unique_id=22679296 instance=ExtResource("6_qgsod")]
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1289038137]
+
+[node name="QueueFreeTimer" type="Timer" parent="." unique_id=584329095]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://rgckmvef731q"]
+[gd_scene format=3 uid="uid://rgckmvef731q"]
 
 [ext_resource type="Script" uid="uid://d27u07raui764" path="res://scripts/enemy_1.gd" id="1_iflxy"]
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_e6246"]
@@ -15,7 +15,7 @@ height = 871.761
 [sub_resource type="CircleShape2D" id="CircleShape2D_6yld4"]
 radius = 134.093
 
-[node name="Enemy1" type="Area2D"]
+[node name="Enemy1" type="Area2D" unique_id=534037284]
 process_mode = 1
 scale = Vector2(0.15, 0.15)
 collision_layer = 4
@@ -25,29 +25,31 @@ shot_sound = ExtResource("2_e6246")
 shot_scene = ExtResource("2_f688s")
 damage = 200
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=897792053]
 rotation = -1.37881
 texture = ExtResource("2_hcdqk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=780728563]
 position = Vector2(3, 37)
 shape = SubResource("RectangleShape2D_778il")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=691106960]
 position = Vector2(2, 30)
 rotation = 0.272439
 shape = SubResource("CapsuleShape2D_p3fnv")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." unique_id=859563501]
 position = Vector2(-530, 30)
 shape = SubResource("CircleShape2D_6yld4")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1887528043]
 
-[node name="GunPoint" type="Marker2D" parent="."]
+[node name="GunPoint" type="Marker2D" parent="." unique_id=571902954]
 unique_name_in_owner = true
 position = Vector2(-675, 20)
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=1388533132]
 wait_time = 2.0
 autostart = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=65342653]

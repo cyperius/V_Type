@@ -136,13 +136,6 @@ func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
-	circle_flight_module.setup(self, player_id)
-	# Startwerte für CircleFlightMode ans Modul weitergeben
-	circle_flight_module.circle_center_position = circle_center_position
-	circle_flight_module.circle_radius = circle_radius
-	circle_flight_module.angular_speed = angular_speed
-	circle_flight_module.face_circle_center = face_circle_center
-	
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
@@ -196,14 +189,9 @@ func connect_signals() -> void:
 
 func _on_player_placement_initiated()-> void:
 	print("Player initiated signal received")
-	circle_flight_module.setup(self, player_id)
+	circle_flight_module.setup(self)
 	# Startwerte für CircleFlightMode ans Modul weitergeben
-	circle_flight_module.circle_center_position = circle_center_position
-	circle_flight_module.circle_radius = circle_radius
-	circle_flight_module.angular_speed = angular_speed
-	circle_flight_module.face_circle_center = face_circle_center
 	
-
 
 func set_skin(mode: String) -> void:
 	ship_sprite.scale = skins[player_id-1]["looks"]["scale"]
@@ -316,54 +304,6 @@ func _physics_left_right_move(delta: float) -> void:
 	global_position = clamped_global
 
 
-func _physics_circle_move(delta: float) -> void:
-	var input_strength := Input.get_action_strength("p%d_right" % player_id) - Input.get_action_strength("p%d_left" % player_id)
-	## A) einfache Varainte ohne Physik-Steuerung
-	#angle += input_strength * angular_speed * delta
-	#var offset := Vector2(cos(angle), sin(angle)) * circle_radius
-	#global_position = circle_center_position + offset
-	#rotation = angle 
-	
-	
-	# B Physiksteuerung inkl. Kollsionsvorhersage und dann Stopp
-	# Kein Input -> keine Bewegung (du bleibst exakt stehen)
-	if is_equal_approx(input_strength, 0.0):
-		velocity = Vector2.ZERO
-		return
-
-	# Naechster Winkel (noch NICHT uebernehmen)
-	# Steuerung: rechts -> Uhrzeigersinn
-	var next_angle := angle + input_strength * angular_speed * delta
-	
-	# Steuerung: rechts -> Gegenuhrzeigersinn
-	#var next_angle := angle - input_strength * angular_speed * delta
-
-	# Zielpunkt auf der Schiene (exakt Kreis)
-	var next_offset := Vector2(cos(next_angle), sin(next_angle)) * circle_radius
-	var next_position := circle_center_position + next_offset
-
-	# Bewegung, die wir machen wuerden
-	var motion := next_position - global_position
-
-	# Testen, ob diese Bewegung kollidiert (ohne sie wirklich auszufuehren)
-	var collision := move_and_collide(motion, true) # test_only = true
-
-	if collision == null:
-		# Frei -> Winkel uebernehmen und exakt auf den Kreis setzen
-		angle = next_angle
-		global_position = next_position
-	else:
-		# Blockiert -> Winkel nicht aendern (du "klemmst" an der Wand)
-		velocity = Vector2.ZERO
-
-
-	if face_circle_center:
-		# Optik: nach innen ausrichten (auch wenn blockiert)
-		rotation = angle + PI
-	else:
-		# nach aussen ausrichten
-		rotation = angle + 2*PI
-
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
 # ──────────────────────────────────────────────────────────────
@@ -395,7 +335,6 @@ func _on_ship_area_entered(other: Area2D) -> void:
 		else:
 			player_is_hit(dmg)
 
-	
 	
 func player_is_hit(taken_damage: int) -> void:
 	_change_health(-taken_damage)
