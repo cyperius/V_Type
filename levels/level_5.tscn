@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cmesqo88lutx0" path="res://enemies&obstacles/enemy5.tscn" id="3_fi56y"]
 [ext_resource type="AudioStream" uid="uid://bevtp8nmr7tjd" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_long_late_stage.ogg" id="3_hldbq"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="4_mxx4w"]
-[ext_resource type="PackedScene" uid="uid://iyew0gat3x6d" path="res://enemies&obstacles/bosses/ufo_boss.tscn" id="5_1y5xd"]
 
 [node name="Level_5" type="Node2D" unique_id=1681802007]
 script = ExtResource("1_fi56y")
@@ -41,8 +40,6 @@ one_shot = true
 autostart = true
 
 [node name="EnemySpawner" parent="." unique_id=995979122 instance=ExtResource("2_hldbq")]
-level_boss = ExtResource("5_1y5xd")
-basic_spawn_rate = 2
 enemy1 = ExtResource("3_fi56y")
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" index="0"]
@@ -253,6 +250,6 @@ position = Vector2(8548.39, 669)
 gizmo_extents = 69.5
 
 [node name="Center" type="Marker2D" parent="." unique_id=1570931403]
-position = Vector2(4041, 2225)
+position = Vector2(1841, 982)
 
 [editable path="EnemySpawner"]

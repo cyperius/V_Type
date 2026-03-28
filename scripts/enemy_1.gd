@@ -110,7 +110,6 @@ func _process(delta: float) -> void:
 		track_nearest_player()
 	
 	
-	
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
 	closest_player = null

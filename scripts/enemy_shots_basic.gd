@@ -39,6 +39,6 @@ func _on_area_entered(other) -> void:
 		# 2) dann hinzufügen
 		get_tree().current_scene.add_child(hit)
 		
-	queue_free()
+		queue_free()
 	
 	

@@ -136,6 +136,8 @@ func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
+	circle_flight_module.setup(self)
+	
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
@@ -243,7 +245,6 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 	
-
 	match mode:
 		FlightMode.LEFT_RIGHT:
 			_physics_left_right_move(delta)

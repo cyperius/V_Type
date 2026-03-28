@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dotwejj00ynpr"]
+[gd_scene format=3 uid="uid://dotwejj00ynpr"]
 
 [ext_resource type="Script" uid="uid://ql3hci5nyf1c" path="res://levels/level_6.gd" id="1_qskt5"]
 [ext_resource type="Script" uid="uid://brg2ryempbb5e" path="res://scripts/enemy_invader_spawnergd.gd" id="2_qskt5"]
@@ -20,7 +20,7 @@ point_count = 8
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qskt5"]
 size = Vector2(229, 4359)
 
-[node name="Level_6" type="Node2D"]
+[node name="Level_6" type="Node2D" unique_id=137026387]
 process_mode = 1
 script = ExtResource("1_qskt5")
 amount_of_enemies = 60
@@ -30,7 +30,7 @@ player_rotation = 270
 flight_mode = 2
 skin = "top_down"
 
-[node name="EnemySpawner" type="Node2D" parent="."]
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=789176804]
 process_mode = 1
 position = Vector2(-456, -680)
 script = ExtResource("2_qskt5")
@@ -39,116 +39,116 @@ timer2_basic_wait_time = 100
 level_boss = ExtResource("3_xn6mk")
 enemy1 = ExtResource("3_rqsg2")
 
-[node name="SpawnPositions" type="Node2D" parent="EnemySpawner"]
+[node name="SpawnPositions" type="Node2D" parent="EnemySpawner" unique_id=80263949]
 position = Vector2(213, 36)
 
-[node name="Marker2D1" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D1" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=2054100511]
 position = Vector2(415, 688.5)
 
-[node name="Marker2D2" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D2" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1072385639]
 position = Vector2(775, 688.5)
 
-[node name="Marker2D3" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D3" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=297423141]
 position = Vector2(1135, 688.5)
 
-[node name="Marker2D4" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D4" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1086676837]
 position = Vector2(1495, 688.5)
 
-[node name="Marker2D5" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D5" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1879929980]
 position = Vector2(1855, 688.5)
 
-[node name="Marker2D6" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D6" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1489583761]
 position = Vector2(2215, 688.5)
 gizmo_extents = 69.5
 
-[node name="Marker2D7" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D7" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1759034945]
 position = Vector2(2575, 688.5)
 
-[node name="Marker2D8" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D8" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=2110894640]
 position = Vector2(2935, 688.5)
 
-[node name="Marker2D9" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D9" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=326127105]
 position = Vector2(3288, 685)
 
-[node name="Marker2D10" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D10" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1458160161]
 position = Vector2(408, 407)
 
-[node name="Marker2D11" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D11" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1347328463]
 position = Vector2(768, 407)
 
-[node name="Marker2D12" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D12" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=9188457]
 position = Vector2(1128, 407)
 
-[node name="Marker2D13" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D13" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=870434135]
 position = Vector2(1488, 407)
 
-[node name="Marker2D14" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D14" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=651918583]
 position = Vector2(1848, 407)
 
-[node name="Marker2D15" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D15" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=16082131]
 position = Vector2(2208, 407)
 gizmo_extents = 69.5
 
-[node name="Marker2D16" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D16" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1609058500]
 position = Vector2(2568, 407)
 
-[node name="Marker2D17" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D17" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=136882796]
 position = Vector2(2928, 407)
 
-[node name="Marker2D18" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D18" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1210170846]
 position = Vector2(3288, 407)
 
-[node name="Marker2D19" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D19" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1089736173]
 position = Vector2(415, 147.5)
 
-[node name="Marker2D20" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D20" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1462091560]
 position = Vector2(775, 147.5)
 
-[node name="Marker2D21" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D21" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1545305523]
 position = Vector2(1135, 147.5)
 
-[node name="Marker2D22" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D22" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=128157227]
 position = Vector2(1495, 147.5)
 
-[node name="Marker2D23" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D23" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=2057571857]
 position = Vector2(1855, 147.5)
 
-[node name="Marker2D24" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D24" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=961850230]
 position = Vector2(2215, 147.5)
 gizmo_extents = 69.5
 
-[node name="Marker2D25" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D25" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=376250691]
 position = Vector2(2575, 147.5)
 
-[node name="Marker2D26" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D26" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1608356909]
 position = Vector2(2935, 147.5)
 
-[node name="Marker2D27" type="Marker2D" parent="EnemySpawner/SpawnPositions"]
+[node name="Marker2D27" type="Marker2D" parent="EnemySpawner/SpawnPositions" unique_id=1063527926]
 position = Vector2(3295, 147.5)
 
-[node name="Timer" type="Timer" parent="EnemySpawner"]
+[node name="Timer" type="Timer" parent="EnemySpawner" unique_id=927256400]
 autostart = true
 
-[node name="Timer2" type="Timer" parent="EnemySpawner"]
+[node name="Timer2" type="Timer" parent="EnemySpawner" unique_id=1486039968]
 wait_time = 10.0
 autostart = true
 
-[node name="Paths" type="Node2D" parent="."]
+[node name="Paths" type="Node2D" parent="." unique_id=102623128]
 
-[node name="BreakoutPathA" type="Path2D" parent="Paths"]
+[node name="BreakoutPathA" type="Path2D" parent="Paths" unique_id=1089722317]
 position = Vector2(2747, 539)
 scale = Vector2(0.481615, 0.577532)
 curve = SubResource("Curve2D_fpvgn")
 
-[node name="BreakoutPathB" type="Path2D" parent="Paths"]
+[node name="BreakoutPathB" type="Path2D" parent="Paths" unique_id=575192775]
 position = Vector2(-456, -680)
 curve = SubResource("Curve2D_xn6mk")
 
-[node name="EnemiesContainer" type="Node2D" parent="."]
+[node name="EnemiesContainer" type="Node2D" parent="." unique_id=1948591604]
 position = Vector2(8, 4)
 script = ExtResource("3_8tsbn")
 
-[node name="background_Control" type="Control" parent="."]
+[node name="background_Control" type="Control" parent="." unique_id=115308186]
 process_mode = 1
 z_index = -1
 layout_mode = 3
@@ -163,7 +163,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_fpvgn")
 
-[node name="background_TextureRect" type="TextureRect" parent="background_Control"]
+[node name="background_TextureRect" type="TextureRect" parent="background_Control" unique_id=1695248246]
 process_mode = 1
 texture_repeat = 2
 layout_mode = 0
@@ -171,33 +171,33 @@ offset_right = 4224.0
 offset_bottom = 2376.0
 texture = ExtResource("6_xn6mk")
 
-[node name="BossTimer" type="Timer" parent="."]
+[node name="BossTimer" type="Timer" parent="." unique_id=1313644768]
 wait_time = 6.322
 one_shot = true
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1229197288]
 stream = ExtResource("6_rqsg2")
 autoplay = true
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Players" type="Node2D" parent="." unique_id=1543150128]
 
-[node name="left_boarder" type="Area2D" parent="."]
+[node name="left_boarder" type="Area2D" parent="." unique_id=332598931]
 unique_name_in_owner = true
 position = Vector2(-118, 155)
 collision_layer = 32
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="left_boarder"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left_boarder" unique_id=1520281604]
 position = Vector2(-311, 633)
 shape = SubResource("RectangleShape2D_qskt5")
 
-[node name="right_boarder" type="Area2D" parent="."]
+[node name="right_boarder" type="Area2D" parent="." unique_id=145044869]
 unique_name_in_owner = true
 position = Vector2(4380, -49)
 collision_layer = 32
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="right_boarder"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right_boarder" unique_id=665402011]
 position = Vector2(-324.5, 713.5)
 shape = SubResource("RectangleShape2D_qskt5")

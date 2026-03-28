@@ -8,6 +8,7 @@ signal player_placement_initiated
 
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
+@onready var center: Marker2D = $Center
 
 @export var do_target_player := false
 

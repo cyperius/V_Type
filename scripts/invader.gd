@@ -1,4 +1,4 @@
-extends enemy
+extends Enemy
 
 signal just_touched_boarder
 
@@ -63,7 +63,7 @@ func _process(delta: float) -> void:
 	# rotation = breakout_path_follow.rotation # 17.12.2025 aktuell ungenutzt / funktioniert schlecht
 	# aber bei Bedarf damit experimentieren
 
-# Diese Funktion wird durch folgende Funktion den Enemy_spawner im Level ausgelöst: 
+# Diese Funktion wird durch folgende Funktion des Enemy_spawner im Level ausgelöst: 
 # func _assign_unique_breakout_follow(invader: Node, path_2d: Path2D) -> void:
 # dort geschieht (gekürzt):
 # 1) var follow: PathFollow2D = PathFollow2D.new() -> 

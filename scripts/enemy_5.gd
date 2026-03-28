@@ -1,24 +1,29 @@
 extends "res://scripts/enemy_1.gd"
 
-@export var trigger_distance: float = 200
-@export var explosion_damage : int = 1000
+
 @onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var damage_collision_shape: CollisionShape2D = %damage_collision_shape
-@onready var visual_damage_explosion: Sprite2D = %visual_damage_explosion
-@onready var explosion_area: Area2D = $explosion_area
-@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
 @onready var queue_free_timer: Timer = $QueueFreeTimer
 var screen_entered := false # Für queue_free Mechnaik, verhindert ein Löschen bei 
 # initialem Spawn ausserhalb des Screens
 var is_waiting_for_despawn := false # verhindert Mehrfaches auslösen der await Zeile, falls ein 
 # Gegner schnell zwischen Screen entered und exited hin und her wechseln sollte
+var level_center_orientation # dient nur als flag für EnemySpawner
+
+
+# -- Damageexplosion -- #
+@export var explosion_area_max_scale := Vector2(20, 20)
+@export var explosion_damage : int = 1000
+@onready var damage_collision_shape: CollisionShape2D = %damage_collision_shape
+@onready var visual_damage_explosion: Sprite2D = %visual_damage_explosion
+@onready var explosion_area: Area2D = $explosion_area
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 var self_destruct_tween: Tween = null # Membervariable, damit der Tween ausserhalb
 # seines scopes gekillt werden kann
 var explosion_area_to_be : Vector2
 var explosion_start_scale := Vector2(5, 5)
 var damage_explosion_scene = preload("res://enemies&obstacles/damage_explosion.tscn")
-@export var explosion_area_max_scale := Vector2(20, 20)
+
 
 func _ready() -> void:
 	super._ready()
@@ -74,12 +79,14 @@ func _on_area_entered(other: Area2D) -> void:
 func _process(delta: float) -> void:
 	super(delta)  # führt den _process von enemy_1.gd aus
 	
+	
+	
 		
 func trigger_self_destruct() -> void:
 	if self_destruct_triggered:
 		return
 	damage = explosion_damage # damit auch wenn man den Gegner im Selbstzerstörungsmodus berührt,
-	# der volle Schaden der damage-Explosion vwerursacht wird
+	# der volle Schaden der damage-Explosion verursacht wird
 	is_player_tracking_active = true
 	y_speed = 375
 	x_speed = 375

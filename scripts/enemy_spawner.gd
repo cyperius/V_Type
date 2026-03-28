@@ -1,4 +1,4 @@
-extends Node2D
+class_name EnemySpawner extends Node2D
 
 signal boss_defeated
 signal level_finished(level_nr: int)
@@ -51,8 +51,12 @@ var boss_spawned = false
 var current_level : Node
 var at_least_one_enemy_spawned := false
 var spawn_positions_count
+var level_center: Marker2D
+
 
 func _ready() -> void:
+	if level.has_node("Center"):
+		level_center = level.get_node("Center")
 	spawn_positions_count = enemy_positions.size()
 	current_level = get_parent()
 	number_of_players = 1 # damit sicher von Anfang an eine spawnrate gesetzt werden kann
@@ -88,19 +92,16 @@ func _on_timer_timeout():
 	enemy.current_level = level # aktuelle Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
 	enemy.position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
-	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
-	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...5
+	if "level_center_orientation" in enemy and level_center != null:
+		var direction_to_center = Vector2.ZERO
+		direction_to_center.x = -1.0 if enemy.global_position.x > level_center.global_position.x else 1.0
+		direction_to_center.y = -1.0 if enemy.global_position.y > level_center.global_position.y else 1.0
+		enemy.direction = direction_to_center
+
 	enemies_container.add_child(enemy)
-	get_tree().current_scene.name 
-
-	self.get_path()
-
-	get_parent().get_path()
-	get_instance_id()
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	
-	#print(enemy.position)
 	enemy_counter += 1
 	#enemy.speed += enemy_counter * 10
 	#print("enemies: ", enemy_counter, "enemy_speed: ", enemy.speed)
@@ -128,23 +129,15 @@ func _on_timer3_timeout() -> void:
 	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
 	var enemy = enemy3.instantiate()
 	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
-	enemy.position = enemy_positions[spawn_pos_nr].global_position
+	enemy.gloabl_position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...5
 	enemies_container.add_child(enemy)
-	get_tree().current_scene.name 
-
-	self.get_path()
-
-	get_parent().get_path()
-	get_instance_id()
 	# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 	# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 	
-	#print(enemy.position)
 	enemy_counter += 1
-
 
 
 func here_comes_the_boss():
@@ -157,20 +150,20 @@ func here_comes_the_boss():
 		timer3.stop()
 	
 	# level_boss ist eine Exportvariable, der im Inspector eine PackedScene zugeorndet wird
-	# Daraus wird nun eine Instanz erstellt mit Name boss erstellt
-	# zuerst wird noch geprüft, ob ein level_boss gesetzt wurde
+	# Daraus wird nun eine Instanz erstellt und der Variable "boss" zugeordnet
+	# zuerst wird noch geprüft, ob eine PackedScene für level_boss gesetzt wurde
 	if level_boss == null:
 		_on_boss_defeated() # falls kein Boss gesetzt wurde, lösen wir direkt das defeated_signal aus
 		# damit der Level beendet wird. 14.12.22025 evtl. Bezeichnung ändern oder separates Signal zum levelbeeenden?
 	else: # wenn also ein Boss für level_boss gesetzt wurde (ganz oben "preload")
 		var boss = level_boss.instantiate()		
-		# dann zuerst Position setzen und erst dann..
+		# dann zuerst Position setzen
 		boss.global_position = Vector2(5000, 1100) # 7000, 1100
-		# wird level_boss als child_Szene zur laufenden Szene hinzugefügt
+		# und erst dann wird level_boss als child_Szene zur laufenden Szene hinzugefügt
 		get_tree().current_scene.add_child(boss)
 		boss.connect("boss_defeated", Callable(self, "_on_boss_defeated"))
 		
-		# kleines Manko: wenn die Zahl der Spielr nach dem Spawnrn ändert, bleibt health unverändert
+		# beachte: wenn die Zahl der Spieler nach dem Spawnen ändert, bleibt health unverändert
 		boss.health_points = boss.health_points * number_of_players
 
 
