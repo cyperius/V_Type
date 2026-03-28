@@ -33,6 +33,7 @@ func _ready() -> void:
 	queue_free_timer.wait_time = 5
 	
 	
+	
 func _on_screen_entered() -> void:
 	screen_entered = true
 	is_waiting_for_despawn = false
@@ -54,8 +55,12 @@ func connect_signals() -> void:
 			
 	
 func _on_target_player_activated() -> void:
-	is_player_tracking_active = true
-	y_speed = 150
+	if is_player_tracking_active:
+		return # falls der Player schon getrackt wird, soll die Geschwindigekit nicht geändert werden
+	else: 
+		y_speed = 150
+		is_player_tracking_active = true
+	
 
 
 func _on_area_entered(other: Area2D) -> void:

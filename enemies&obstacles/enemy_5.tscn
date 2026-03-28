@@ -21,8 +21,8 @@ script = ExtResource("1_skfhp")
 health_points = 400
 shot_sound = ExtResource("2_ewv5y")
 shot_scene = ExtResource("3_ytml0")
-x_basic_speed = 150
-y_basic_speed = 100
+x_basic_speed = 200
+y_basic_speed = 50
 chance_of_shooting = 20
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=421201911]
