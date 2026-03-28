@@ -23,8 +23,8 @@ func _ensure_player_row(player_id: int) -> Label:
 
 	var row := Label.new()
 	row.name = "player_row_%d" % player_id
-	row.add_theme_font_size_override("font_size", 28)
-	row.position = Vector2(20, 20 + (player_id - 1) * 36)
+	row.add_theme_font_size_override("font_size", 36)
+	row.position = Vector2(20, 20 + (player_id - 1) * 48)
 	add_child(row)
 
 	player_rows[player_id] = row
