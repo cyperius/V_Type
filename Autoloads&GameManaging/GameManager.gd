@@ -1,7 +1,7 @@
 extends Node
 
 signal level_loaded
-signal enemy_destroyed(score: int, energy: int, player_id: int) # durch enemies aufgerufen
+signal enemy_destroyed # wird ausgelöst durch _on_enemy_destroyed(); die wurd durch den enemy_detroyed Signal des enemy ausgelöst
 signal player_stats_changed (player_id: int, score: int, energy: int, health: int) # in func _ready weiterverbunden.. aber die
 # Funktion _on_stats_changed dazu fehlt noch; evtl. stattdessen direkt zu direkt _update_player_ui verbinden?
 
@@ -308,13 +308,10 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 #   SIGNAL-CALLBACKS
 # ──────────────────────────────────────────────────────────────
 func _on_enemy_hit(score: int, energy: int, player_id: int) -> void:
-	print("main: enemy Destroyed")
-	total_destroyed_enemies += 1
 	if not player_scores.has(player_id):
 		player_scores[player_id] = 0
 	player_scores[player_id] += score
 	if Global.player_ships.has(player_id):
-		#print("line286: check")
 		var ship = Global.player_ships[player_id]
 		if ship is PlayerShip:
 			#print("line289: check")
@@ -327,7 +324,7 @@ func _on_enemy_hit(score: int, energy: int, player_id: int) -> void:
 #   UI-HILFSFUNKTIONEN
 # ──────────────────────────────────────────────────────────────
 func _update_global_ui() -> void:
-	pass	
+	pass
 
 func _update_all_players_ui() -> void:
 	for player_id in Global.player_ships.keys():
@@ -344,3 +341,7 @@ func _update_player_ui(player_id: int) -> void:
 		health_count = ship.health
 		score_count = ship.score
 	emit_signal("player_stats_changed", player_id, score_count, energy_count, health_count)
+
+func _on_enemy_destroyed() -> void:
+	print("Gamem: enemy_destroyed")
+	emit_signal("enemy_destroyed") # UI empfängt

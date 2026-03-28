@@ -2,7 +2,7 @@ extends Enemy
 
 signal just_touched_boarder
 
-@export var breakout_speed: int = 500
+@export var breakout_speed := 500.0
 @export var behaviour_change_chance_1_to_ : int = 24
 
 
@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 		position.x += delta * x_speed * direction.x
 		if dive_mode == true:
 			position.y += delta * y_speed
-			print("position.y : ", position.y)
+			#print("position.y : ", position.y)
 		if position.y > 2000:
 			queue_free()
 		return
@@ -82,9 +82,6 @@ func _exit_tree() -> void:
 
 func _on_area_entered(other: Area2D) -> void:
 	emit_signal("just_touched_boarder")
-
-	#if "damage" and "owner_id" in other: 
-		#apply_damage(other.damage, other.owner_id)
 
 
 func _on_change_direction() -> void:

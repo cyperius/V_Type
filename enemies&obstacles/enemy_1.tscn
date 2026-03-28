@@ -4,6 +4,8 @@
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_e6246"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="2_f688s"]
 [ext_resource type="Texture2D" uid="uid://btb5hc5pleirr" path="res://assets/graphic_elements/enemies/enemy2.png" id="2_hcdqk"]
+[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="5_03isx"]
+[ext_resource type="PackedScene" uid="uid://biu2g8yefq00u" path="res://game_world/explosion_animation.tscn" id="6_x0nuh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_778il"]
 size = Vector2(236, 404)
@@ -53,3 +55,8 @@ wait_time = 2.0
 autostart = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=65342653]
+
+[node name="DeathModule" type="Node2D" parent="." unique_id=138624260]
+script = ExtResource("5_03isx")
+explosion_animation_scene = ExtResource("6_x0nuh")
+metadata/_custom_type_script = "uid://b6e4vqfqm8tnm"

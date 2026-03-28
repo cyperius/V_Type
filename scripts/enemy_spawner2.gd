@@ -2,7 +2,6 @@ extends Node2D
 
 signal boss_defeated
 signal level_finished(level_nr: int)
-#signal enemy_destroyed(score: int, energy: int)
 signal enemy_spawned(enemy: Node)
 signal incoming_boss
 

@@ -16,7 +16,7 @@ var time_stamps: Dictionary = {
 	154: "phase_5_intense_again", #154
 	192: "phase_6_relax_again", # 192
 	212: "phase_7_ending", # 212,
-	12: "here_comes_the_boss", # 272
+	272: "here_comes_the_boss", # 272
 }
 
 var time_stamps_already_triggered: Dictionary = {}

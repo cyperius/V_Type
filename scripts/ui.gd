@@ -3,19 +3,33 @@ extends Control
 # ──────────────────────────────────────────────────────────────
 #   REFERENCES
 # ──────────────────────────────────────────────────────────────
-@onready var destroyed_enemies_counter: Label = $EnemiesDestroyed
+var destroyed_enemies_counter: Label
+var total_destroyed_enemies := 0
 
 
 # Hält die HUD-Zeilen pro Spieler: player_id → Label
 var player_rows: Dictionary = {}
 
 
-
-
-
 # ──────────────────────────────────────────────────────────────
 #   HELFER
 # ──────────────────────────────────────────────────────────────
+func _create_destroyed_enemies_counter() -> void:
+	destroyed_enemies_counter = Label.new()
+	destroyed_enemies_counter.name = "DestroyedEnemiesCounter"
+	destroyed_enemies_counter.text = "Enemies destroyed: 00000"
+	destroyed_enemies_counter.add_theme_font_size_override("font_size", 36)
+	destroyed_enemies_counter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+
+	add_child(destroyed_enemies_counter)
+
+	destroyed_enemies_counter.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	destroyed_enemies_counter.offset_left = -480
+	destroyed_enemies_counter.offset_top = 20
+	destroyed_enemies_counter.offset_right = -40
+	destroyed_enemies_counter.offset_bottom = 68
+
+
 # Sorgt dafür, dass ein HUD-Label für einen Spieler existiert
 func _ensure_player_row(player_id: int) -> Label:
 	if player_rows.has(player_id):
@@ -34,30 +48,26 @@ func _ensure_player_row(player_id: int) -> Label:
 # ──────────────────────────────────────────────────────────────
 #   ÖFFENTLICHE API
 # ──────────────────────────────────────────────────────────────
-
-# wird via Signal vom GameManager aufgerufen werden
 func set_player_ui(player_id: int, score: int, energy: int, health: int) -> void:
 	var row := _ensure_player_row(player_id)
-	# print("set_player_ui for player: ", player_id)
 	row.text = "P%d   Score: %d    Energy: %d    Health: %d" % [player_id, score, energy, health]
 
-# Globalen Gegnerzähler setzen
-func set_destroyed_enemies(total: int) -> void:
-	if destroyed_enemies_counter:
-		destroyed_enemies_counter.text = "Enemies destroyed: %d" % total
+
+func set_destroyed_enemies() -> void:
+	print("ui: set_destroyed_enemies triggered")
+	total_destroyed_enemies += 1
+	if destroyed_enemies_counter != null:
+		destroyed_enemies_counter.text = "Enemies destroyed: %d" % total_destroyed_enemies
 
 
 # ──────────────────────────────────────────────────────────────
 #   LEBENSZYKLUS
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
-	
+	_create_destroyed_enemies_counter()
+
 	GameManager.player_stats_changed.connect(set_player_ui)
-	
-	# Vorhandene Spieler bei Spielstart initialisieren
+	GameManager.enemy_destroyed.connect(set_destroyed_enemies)
+
 	for player_id in Global.player_ships.keys():
 		_ensure_player_row(player_id)
-
-	# Gegnerzähler initial groß setzen
-	if destroyed_enemies_counter:
-		destroyed_enemies_counter.add_theme_font_size_override("font_size", 28)

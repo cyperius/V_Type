@@ -21,7 +21,6 @@ func _ready() -> void:
 	var center_node = $"../Center" # Was hier referenziert Im parent dieses Nodes gibt es 
 	# einen ChildNode (also ein Sibling dieses Nodes) der "Center" heisst
 	circle_center_position = center_node.global_position
-	health_points = 500
 	
 	
 func _process(delta: float) -> void:
@@ -39,7 +38,8 @@ func _process(delta: float) -> void:
 	var dist_to_center = sqrt(pow(offset.x, 2) + pow(offset.y, 2))
 	scaling_factor = dist_to_center/3000
 	scale = Vector2(scaling_factor, scaling_factor)
-	explosion_size = dist_to_center/200
+	death_module.explosion_size_x = dist_to_center/200
+	death_module.explosion_size_y = dist_to_center/200
 	
 	
 	# 5. Schiff löschen, wenn es in einer nicht mehr sichtbarten Distanz ist

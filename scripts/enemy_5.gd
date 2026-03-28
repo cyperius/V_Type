@@ -63,7 +63,7 @@ func _on_area_entered(other: Area2D) -> void:
 		if self_destruct_triggered: # sollte theoretisch immer getriggert sein, aber so
 			damage_explode() # ist es noch klarer und flexibel für Anpassungen
 		else:
-			die()
+			death_module.die()
 	elif other.is_in_group("evaders"):    
 		apply_damage(other.damage, other.player_shot_owner_id) # die player_shot_owner_id.. #(other.damage, other.player_shot_owner_id)
 	# wird vom Schuss auf den Gegner übertragen
@@ -75,13 +75,10 @@ func _on_area_entered(other: Area2D) -> void:
 				apply_damage(other.damage, -1)
 		
 			
-		
 func _process(delta: float) -> void:
 	super(delta)  # führt den _process von enemy_1.gd aus
 	
 	
-	
-		
 func trigger_self_destruct() -> void:
 	if self_destruct_triggered:
 		return
@@ -140,7 +137,7 @@ func apply_damage(damage_amount, owner_id) -> void: # Methode vom vererbten Scri
 	GameManager._on_enemy_hit(score, energy_left, owner_id)
 	if health_points <= 0:
 		if not self_destruct_triggered:
-			die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
+			death_module.die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
 		else:
 			damage_explode()
 	

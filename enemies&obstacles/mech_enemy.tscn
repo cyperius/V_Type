@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cljnl8u2serb7"]
+[gd_scene format=3 uid="uid://cljnl8u2serb7"]
 
 [ext_resource type="Script" uid="uid://ecewsbe2rq2a" path="res://scripts/mech_enemy.gd" id="1_qdju6"]
 [ext_resource type="Texture2D" uid="uid://bpisr50e3sd0s" path="res://assets/graphic_elements/enemies/mech_ship.png" id="2_ajnso"]
+[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="3_yejvu"]
+[ext_resource type="PackedScene" uid="uid://biu2g8yefq00u" path="res://game_world/explosion_animation.tscn" id="4_pb1jw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aiwq4"]
 size = Vector2(823, 915)
@@ -9,7 +11,7 @@ size = Vector2(823, 915)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d3oyf"]
 size = Vector2(967.5, 636)
 
-[node name="Mech_Enemy" type="Area2D"]
+[node name="Mech_Enemy" type="Area2D" unique_id=2102134471]
 process_mode = 1
 rotation = 1.5708
 scale = Vector2(0.05, 0.05)
@@ -18,14 +20,18 @@ collision_mask = 19
 script = ExtResource("1_qdju6")
 health_points = 20
 
-[node name="Looks" type="Sprite2D" parent="."]
+[node name="Looks" type="Sprite2D" parent="." unique_id=842359804]
 position = Vector2(5, -3)
 texture = ExtResource("2_ajnso")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=298787617]
 position = Vector2(11.5, -1.5)
 shape = SubResource("RectangleShape2D_aiwq4")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1614093443]
 position = Vector2(7.25, 119)
 shape = SubResource("RectangleShape2D_d3oyf")
+
+[node name="DeathModule" type="Node2D" parent="." unique_id=749521733]
+script = ExtResource("3_yejvu")
+explosion_animation_scene = ExtResource("4_pb1jw")

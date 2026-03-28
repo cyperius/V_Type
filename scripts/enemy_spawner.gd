@@ -68,6 +68,7 @@ func _ready() -> void:
 		timer3.timeout.connect(_on_timer3_timeout)
 	
 	
+	
 func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 	# default Wert (für den fall, dass noch kein Spieler im Spiel ist)
 	# evtl. funktioniert die Anpassung der Spawn rate, wenn die Spieleranzahl ändert
@@ -129,7 +130,7 @@ func _on_timer3_timeout() -> void:
 	var spawn_pos_nr = randi_range(1, spawn_positions_count-1)
 	var enemy = enemy3.instantiate()
 	enemy.current_level = level # aktuellen Level-Referenz auf den enemy übertragen (dort gibt es eine entsprechende Variable)
-	enemy.gloabl_position = enemy_positions[spawn_pos_nr].global_position
+	enemy.global_position = enemy_positions[spawn_pos_nr].global_position
 	emit_signal("enemy_spawned", enemy)
 	# die PackedScene "res://scenes/enemy_1.tscn" welche welche oebn der Variable 
 	# "enemy_blueprint" zugeordnet wurde, wird nun istantiiert ...5

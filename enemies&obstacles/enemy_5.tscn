@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b1sqw8m8etpsd" path="res://assets/graphic_elements/enemies/enemy5.png" id="4_t7wyn"]
 [ext_resource type="PackedScene" uid="uid://b0a2mdl6b88k8" path="res://enemies&obstacles/detection_area.tscn" id="6_qgsod"]
 [ext_resource type="AudioStream" uid="uid://dojp58pcustar" path="res://assets/sound_and_sfx/sound_effects/about_to_explode.wav" id="6_yqjhn"]
+[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="7_r5n0f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3fnv"]
 radius = 156.576
@@ -53,3 +54,7 @@ scale = Vector2(1.5, 1.5)
 rect = Rect2(-350, -350, 700, 700)
 
 [node name="QueueFreeTimer" type="Timer" parent="." unique_id=584329095]
+
+[node name="DeathModule" type="Node2D" parent="." unique_id=1920338493]
+script = ExtResource("7_r5n0f")
+metadata/_custom_type_script = "uid://b6e4vqfqm8tnm"

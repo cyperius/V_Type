@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://0fdvlvoamtyn" path="res://scripts/level_5.gd" id="1_fi56y"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_hldbq"]
-[ext_resource type="PackedScene" uid="uid://cmesqo88lutx0" path="res://enemies&obstacles/enemy5.tscn" id="3_fi56y"]
+[ext_resource type="PackedScene" uid="uid://cmesqo88lutx0" path="res://enemies&obstacles/enemy_5.tscn" id="3_fi56y"]
 [ext_resource type="AudioStream" uid="uid://bevtp8nmr7tjd" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label_long_late_stage.ogg" id="3_hldbq"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="4_mxx4w"]
 

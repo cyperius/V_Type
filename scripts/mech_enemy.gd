@@ -4,18 +4,24 @@ extends Area2D
 @export var damage = 100
 @export var score_count : int = 300
 @export var energy_left : int = 20
-
 @onready var skin2 : Texture = preload("res://assets/graphic_elements/enemies/Zombee.png")
-@onready var explosion_animation = preload("res://game_world/explosion_animation.tscn").instantiate()
 @onready var looks: Sprite2D = $Looks
 @onready var body_area: Area2D = %BodyArea
 @onready var brain_area: Area2D = %BrainArea
+@onready var death_module: DeathModule = $DeathModule
 
 
 func _ready() -> void:
 	add_to_group("enemies")
 	
 	
+func _on_area_entered(other: Area2D) -> void:
+	if other.is_in_group("players"):
+		var entered_player = other.get_parent()
+		if entered_player != null:
+			apply_damage(entered_player.damage, entered_player.player_id)
+
+
 func apply_damage(damage_amount, owner_id) -> void:
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
 	var damage_dealt = clamp(damage_amount, 0, health_points)
@@ -24,18 +30,8 @@ func apply_damage(damage_amount, owner_id) -> void:
 	var score = damage_dealt
 	GameManager._on_enemy_hit(score, energy_left, owner_id)
 	if health_points <= 0:
-		die()
+		death_module.die()
 		
-		
-func die() -> void:
-	AudioManager.play_sfx_string("explosion")
-	explosion_animation.position = global_position
-	get_tree().current_scene.add_child(explosion_animation)
-	hide()
-	await get_tree().create_timer(0.05).timeout
-	queue_free()
-	
-	
 	
 func set_skin2():
 	print("Looks: ", looks)

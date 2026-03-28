@@ -21,7 +21,7 @@ func _ready() -> void:
 	circle_size_change_timer.timeout.connect(_circle_radius_change)
 	circle_center_speed_timer.timeout.connect(_circle_center_speed_change)
 	circle_center_position = global_position # mal als Platzhalter: die spawning_position (durch Enemy_Spawner)
-	# soll circle_center_position sein, evtl. kasnn man den gegenr gleich nach dem Spawnen auf eine
+	# soll circle_center_position sein, evtl. kann man den gegenr gleich nach dem Spawnen auf eine
 	#nadere Position repositionieren und er fliegt dann in die Kreisbahn oder so
 	
 func _process(delta: float) -> void:

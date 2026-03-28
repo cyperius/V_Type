@@ -2,6 +2,7 @@ class_name Enemy extends Area2D
 
 signal collision_detected(enemy: Node, collision_position: Vector2)
 
+
 @export var health_points: int = 10
 @export var shot_sound : AudioStream 
 @export var shot_scene : PackedScene
@@ -12,8 +13,6 @@ signal collision_detected(enemy: Node, collision_position: Vector2)
 @export var energy_left : int = 5
 @export var chance_of_shooting : int = 1
 
-@onready var explosion_animation_scene = preload("res://game_world/explosion_animation.tscn")
-@onready var explosion_size : float = 5
 @onready var x_speed = x_basic_speed * GameManager.loop_counter
 @onready var y_speed = y_basic_speed * GameManager.loop_counter
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
@@ -21,9 +20,9 @@ signal collision_detected(enemy: Node, collision_position: Vector2)
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var space_ball : SpaceBall # für Angriff aus space_ball
 @onready var current_level : Node # wird in ready_function gesetzt
+@onready var death_module: DeathModule = $DeathModule
+
 var self_destruct_triggered := false
-
-
 var closest_player : Node
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
@@ -40,6 +39,7 @@ func _ready() -> void:
 	add_to_group("enemies")
 	add_to_group("evaders")
 	collision_detected.connect(_on_collision_detected)
+	
 	
 	if shoot_timer:
 		shoot_timer.timeout.connect(_on_shoot_timer_timeout)
@@ -75,15 +75,8 @@ func connect_signals() -> void:
 func _on_area_entered(other: Area2D) -> void:
 	if other.is_in_group("players"):
 		var entered_player = other.get_parent()
-		apply_damage(entered_player.damage, entered_player.player_id)
-	elif other.is_in_group("evaders"):    
-		apply_damage(other.damage, other.player_shot_owner_id) # die player_shot_owner_id..
-# wird vom Schuss auf den Gegner übertragen. Aber es braucht noch einen Mecahnismus, der 
-# player_shot_owner_id wieder zurück auf den Verursacher überträgt. bzw. am besten einen anderen Mechanismus, 
-# dass der Colleteralscahden vom ersten "Dominostein" gesammelt und dann dem verursacher verrechnet wird
-	else:
-		if "damage" in other and "owner_id" in other:
-			apply_damage(other.damage, other.owner_id)
+		if entered_player != null:
+			apply_damage(entered_player.damage, entered_player.player_id)
 
 
 func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
@@ -148,7 +141,7 @@ func _on_shoot_timer_timeout():
 
 func apply_damage(damage_amount, owner_id) -> void:
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
-	var damage_dealt = clamp(damage_amount, 0, health_points) # Invalid type in utility function "clamp()". Cannot convert argument 2 from int to Nil.
+	var damage_dealt = clamp(damage_amount, 0, health_points) #
 	health_points -= damage_dealt
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
@@ -156,15 +149,6 @@ func apply_damage(damage_amount, owner_id) -> void:
 	if health_points <= 0:
 		if not self_destruct_triggered: # 24.3.26: ganze apply_damage Funktion
 			# wird in enemy_5 überschrieben trotzdem fallback für selfdestruct-Mode hier belassen
-			die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
+			death_module.die() # die() auslösen, ausser der Gegner ist bereits im self destruct Mode
 		
-		
-func die() -> void:
-	print("enemy_1.gd: die() triggert")
-	var explosion_animation = explosion_animation_scene.instantiate()
-	explosion_animation.global_position = global_position
-	explosion_animation.scale = Vector2(explosion_size, explosion_size)
-	get_tree().current_scene.add_child(explosion_animation)
-	hide()
-	await get_tree().create_timer(0.05).timeout
-	queue_free()
+	

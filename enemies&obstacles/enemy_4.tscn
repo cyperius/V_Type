@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8jntkhlu4ljn"]
+[gd_scene format=3 uid="uid://c8jntkhlu4ljn"]
 
 [ext_resource type="Script" uid="uid://d27u07raui764" path="res://scripts/enemy_1.gd" id="1_rwlnn"]
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_1ao1f"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_0wkb7"]
 [ext_resource type="Texture2D" uid="uid://xjbbdelekl3r" path="res://assets/graphic_elements/enemies/AlienSquirrel.png" id="4_rwlnn"]
+[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="5_1ao1f"]
+[ext_resource type="PackedScene" uid="uid://dl2e74omrebva" path="res://enemies&obstacles/rolling_enemy.tscn" id="6_0wkb7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3fnv"]
 radius = 320.15
@@ -13,7 +15,7 @@ height = 828.28
 radius = 98.6933
 height = 940.393
 
-[node name="Enemy1" type="Area2D"]
+[node name="Enemy1" type="Area2D" unique_id=433052150]
 process_mode = 1
 scale = Vector2(0.2, 0.2)
 collision_layer = 4
@@ -24,27 +26,32 @@ shot_scene = ExtResource("3_0wkb7")
 damage = 200
 energy_left = 50
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=910565017]
 rotation = 0.00297135
 texture = ExtResource("4_rwlnn")
 flip_h = true
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=708774942]
 position = Vector2(-5, 0)
 rotation = 0.0376922
 shape = SubResource("CapsuleShape2D_p3fnv")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." unique_id=816523126]
 position = Vector2(5, 135)
 rotation = 1.55237
 shape = SubResource("CapsuleShape2D_rwlnn")
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1261113071]
 
-[node name="GunPoint" type="Marker2D" parent="."]
+[node name="GunPoint" type="Marker2D" parent="." unique_id=1749103628]
 unique_name_in_owner = true
 position = Vector2(-675, 20)
 
-[node name="ShootTimer" type="Timer" parent="."]
+[node name="ShootTimer" type="Timer" parent="." unique_id=599064260]
 wait_time = 2.0
 autostart = true
+
+[node name="DeathModule" type="Node2D" parent="." unique_id=967181764]
+script = ExtResource("5_1ao1f")
+explosion_animation_scene = ExtResource("6_0wkb7")
+metadata/_custom_type_script = "uid://b6e4vqfqm8tnm"
