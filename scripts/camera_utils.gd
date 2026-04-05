@@ -17,3 +17,10 @@ static func get_visible_world_rect(viewport: Viewport) -> Rect2:
 	
 	# Rect2 in Weltkoordinaten zurückgeben
 	return Rect2(top_left_world, bottom_right_world - top_left_world)
+
+
+# Verwendet den return value von get_visible_world_rect() (oben definiert)
+# -> das ist ein Rect2, ein Rect2 hat die in-built-Methode get.center()
+static func get_center_world_coordinates(viewport: Viewport) -> Vector2:
+	return get_visible_world_rect(viewport).get_center()
+	

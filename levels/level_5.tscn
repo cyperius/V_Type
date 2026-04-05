@@ -10,6 +10,7 @@
 script = ExtResource("1_fi56y")
 amount_of_enemies = 250
 level_nr = 5
+skin = 0
 
 [node name="EnemiesContainer" type="Node2D" parent="." unique_id=244629464]
 

@@ -19,7 +19,7 @@ signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 enum Rotations { R0 = 0, R90 = 90, R180 = 180, R270 = 270 }
 @export var player_rotation: Rotations = Rotations.R0
 @export var flight_mode: PlayerShip.FlightMode = PlayerShip.FlightMode.LEFT_RIGHT
-@export_enum("neutral", "top_down") var skin = "neutral"
+@export_enum("neutral", "top_down") var skin # funktioniert aktuell 3.4.2026 nicht richtig
 var base_position : Vector2 # wird hier definiert, damit unten der Wert für base_position 
 # dem "match FLIGHTMode" entsprechend gesetzt werden kann und danach
 # "player.global_position = base_position + player_offset" nur 1x geschrieben werden muss
@@ -121,8 +121,8 @@ func place_player_in_current_level(player: PlayerShip, player_id: int) -> void:
 	player.show()
 	
 	# 5) je nach Level passende Skin setzen (auch im Inspector)
-	player.set_skin(skin)
-	
+	#player.set_skin(skin) # führt aktuell 3.4.2026 zu Absturz (evtl. wegen export enum ("neutral", top down")?
+							 # es funktioniert mit dr^irekter String-Befüllung: player.set_skin("top down")
 	# 6) player Signale verbinden
 	player.connect_signals()
 

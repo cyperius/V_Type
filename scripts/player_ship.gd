@@ -26,6 +26,9 @@ var cooling_down := false
 # ──────────────────────────────────────────────────────────────
 
 @onready var circle_flight_module: CircleFlightModuleModul = %CircleFlightModule
+@onready var auto_pilot_modul: Node2D = $AutoPilotModul
+@onready var label: Label = $Label
+
 
 
 # ──────────────────────────────────────────────────────────────
@@ -69,6 +72,10 @@ var spawn_position := Vector2.ZERO
 #   GRAPHICS / FX / COLLISIONS
 # ──────────────────────────────────────────────────────────────
 
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var ship_sprite: Sprite2D = %ship_sprite
+
 @onready var camera = get_tree().current_scene.get_node("%Camera2D")
 var screen_width : float
 var screen_hight : float
@@ -79,7 +86,7 @@ var skins
 
 # -- skins --
 # -- neutral --
-@onready var ship_sprite: Sprite2D = %ship_sprite
+
 var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
 var player4_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_neutral.png")
 var player3_skin = preload("res://assets/graphic_elements/player/p3_neutral_exportiert.png")
@@ -129,6 +136,8 @@ var default_player_state := Color(1, 1, 1)
 var current_player_state := default_player_state
 var health_ratio := 1.0
 
+
+
 # ──────────────────────────────────────────────────────────────
 #   READY
 # ──────────────────────────────────────────────────────────────
@@ -136,6 +145,7 @@ func _ready() -> void:
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
+	label.text = ("P" + str(player_id))
 	circle_flight_module.setup(self)
 	
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
@@ -177,7 +187,7 @@ func _ready() -> void:
 
 func connect_signals() -> void:
 	print("connecte signals")
-	var level := GameManager.current_level_node
+	level = GameManager.current_level_node # 5.4.26: falls fehler: var level := ...
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
 	ship_area.area_entered.connect(_on_ship_area_entered)
 	if level.has_signal("zoom_requested"):
@@ -187,6 +197,7 @@ func connect_signals() -> void:
 		level.flight_mode_switch_initiated.connect(_on_flight_mode_switch_initiated)
 	if level.has_signal("player_placement_initiated"):
 		level.player_placement_initiated.connect(_on_player_placement_initiated)
+	
 		
 
 func _on_player_placement_initiated()-> void:
@@ -245,14 +256,17 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 	
-	match mode:
-		FlightMode.LEFT_RIGHT:
-			_physics_left_right_move(delta)
-		FlightMode.CIRCLE:
-			circle_flight_module.physics_update(delta) # <-- Modul übernimmt
-		FlightMode.DOWN_UP:
-			_physics_left_right_move(delta)
-	# Bewegung je nach Modus
+	if not auto_pilot_modul.autopilot_is_on:
+		match mode:
+			FlightMode.LEFT_RIGHT:
+				_physics_left_right_move(delta)
+			FlightMode.CIRCLE:
+				circle_flight_module.physics_update(delta) # <-- Modul übernimmt
+			FlightMode.DOWN_UP:
+				_physics_left_right_move(delta)
+			# Bewegung je nach Modus
+	#else:
+		#print("autopilot is on..... autopilot is on...")
 	
 
 # ──────────────────────────────────────────────────────────────
@@ -547,3 +561,16 @@ func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 func status_report() -> void:
 	print("player_id:", player_id, " pos:", global_position, "screensize: ", get_viewport_rect().size, " hp:", health, " energy:", blue_energy)
 	
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	print("animated_sprite_finished")
+	animated_sprite.hide()
+	ship_sprite.show()
+	
+	
+func _change_flight_state() -> void:
+	auto_pilot_modul.autopilot_is_on = true
+	ship_sprite.hide()
+	animated_sprite.show()
+	animated_sprite.play("sideways_to_top_down")

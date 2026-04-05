@@ -12,20 +12,22 @@ signal player_placement_initiated
 
 @export var do_target_player := false
 
-# ----- für circle formation --------*
+# ----- für circle formation -------- 
 
 @export var circle_radius := 400.0
 @export var cirle_shot_scene : PackedScene
 @export var winkel_geschwindigkeit : float = 6
 @onready var center_node = $Center
+var zoom_changing := false
+# var player : PlayerShip # falls globaler scope nötig wird -> player._change_flight_state()
 
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
-	0.75: "enemies_appear", # 16.75
+	16.75: "enemies_appear", # 16.75
 	64: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
-	96: "circle_formation"
+	16: "circle_formation" # ca. 96
 	
 }
 
@@ -49,7 +51,11 @@ func _process(delta: float) -> void:
 		return
 	if audio_wiedergabe == null:
 		return
-
+	print("centerNode position: ", center_node.global_position)
+	if zoom_changing: # die verwendete Methode in CameraUtils (class_name CameraUtils) ist als "static func" definiert
+		# das bedeutedie kann direkt auf die Klasse CameraUtils verwendet werden, ohne Instanz
+		center.global_position = CameraUtils.get_center_world_coordinates(get_viewport())
+	
 	var aktuelle_audio_zeit: float = audio_wiedergabe.get_playback_position()
 
 	for time_stamp in time_stamps.keys():
@@ -63,52 +69,66 @@ func _place_all_players_in_circle_formation() -> void:
 	for player_id in Global.player_ships.keys():
 		var player := Global.get_player_ship(player_id)
 		if player is PlayerShip:
-			place_player_in_circle_formation(player, player_id)
+			player._change_flight_state()
+			prepare_player_for_circle_formation(player, player_id)
+			
 			# print(" (level_base.gd): nr of players : ", player_id)
 
 
 
-func place_player_in_circle_formation(player: PlayerShip, player_id: int) -> void:
+func prepare_player_for_circle_formation(player: PlayerShip, player_id: int) -> void:
 	# Level 3: Spieler auf Kreisbahn spawnen (Circle-Mode)
 	
-	player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
+	#player.hide() # 21.2.26: spieler blitz trotzdem am Anfang kurz auf..
 	
 	# 0) Signale zum Player verbinden
 	player.connect_signals()
+	# evtl. beim player noch ein signal anfügen
 	
 	# 1) Modus aktivieren
 	player.mode = player.FlightMode.CIRCLE
 
-	# 2) Kreis-Parameter setzen
+	# 2) Kreis-Parameter setzen  # (erst mit Zugriff auf player.global_positiion 
+	# wird der Spieler dann wirklich an die Stelle versetzt)
 	player.circle_center_position = center_node.global_position
 	player.circle_radius = circle_radius
+
 
 	# 3) Startwinkel (gleichmäßig nach aktueller Spieleranzahl)
 	var active_count : int = max(1, Global.player_ships.size())
 	var start_angle: float = 2.0 * PI * float(player_id - 1) / float(active_count)
-	player.angle = start_angle + 2.0 * PI
+	player.angle = start_angle + 2 * PI
 	player.face_circle_center = false
 	
+	
+	# Zielposition für Autopiloten berechnen:
+	var autopilot_target_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
+	var autopilot_target_rotation = center_node.global_position.angle_to_point(autopilot_target_position) # Winkel vom Mittelpunkt zur Zielposition auf dm Kreis
+	# Dann per Methodenaufruf im playerAutoPilotModul übermitteln, und Autopilot aktivieren
+	player.auto_pilot_modul._set_new_target_destination(autopilot_target_position, autopilot_target_rotation, true)
+	print("player ", player_id, "level5: player_roatation= ", center_node.global_position.angle_to_point(autopilot_target_position))
+	
+
 	# 4) Optional: Level-spezifische Skalierung (rein visuell)
 	player.scale = Vector2(0.2, 0.2)
 
+
+#await # Animationsende
+## ---- Animationsende von player_ship abwarten dann: --
+#
 	await get_tree().process_frame  # warte bis hide() gerendert wurde
 	# 5) Level-spezifische skin und Ausrichtung setzen
 	player.set_skin("top_down")
 	player.show()
 	
-	# 6) Position + Rotation
-	player.global_position = player.circle_center_position + Vector2(cos(start_angle), sin(start_angle)) * player.circle_radius
-	player.global_rotation = center_node.global_position.angle_to_point(player.global_position)
 	
-	# 7) Signal senden um stats im Flightmodulk des Players zu aktualisieren
-	player_placement_initiated.emit()
-
-	# 8) Debug
-	print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
-		player_id, player.circle_center_position, player.circle_radius, start_angle
-	])
-
+	## 7) Signal senden um stats im Flightmodulk des Players zu aktualisieren
+	#player_placement_initiated.emit()
+#
+	## 8) Debug
+	#print("🌀 Spieler %d im Circle-Mode @ %s (r=%.1f, angle=%.2f)" % [
+		#player_id, player.circle_center_position, player.circle_radius, start_angle
+	#])
 
 
 func loese_audio_ereignis_aus(event_name: String) -> void:
@@ -117,10 +137,13 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			enemies_appear()
 		"zoom_out":
 			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
+			zoom_changing = true
+			# Signal ans palyer_schiff, das das spride versteckt wird und das
+			# animatedsprite abgespeilt wird, und evtl. Steuerung aufheben / Autolenkung
+			# Zusammenspiel mit AutopilotModul?
 		"target_player":
 			start_attacking_player()
 		"circle_formation":
-			flight_mode_switch_initiated.emit()
 			_place_all_players_in_circle_formation()
 			
 		_:
