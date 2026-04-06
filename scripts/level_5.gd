@@ -31,7 +31,7 @@ var zoom_changing := false
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
-	64: "zoom_out", # 64.0
+	8: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
 	84: "play_radio", 
 	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)

@@ -1,42 +1,42 @@
-[gd_scene load_steps=5 format=3 uid="uid://c20flpj8vlyd6"]
+[gd_scene format=3 uid="uid://c20flpj8vlyd6"]
 
 [ext_resource type="Script" uid="uid://be45lia8mdmjn" path="res://scripts/main.gd" id="1_2wu2a"]
 [ext_resource type="Script" uid="uid://ddjm4cidxf726" path="res://Autoloads&GameManaging/InputJoiner.gd" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://be2saoppwc7v6" path="res://game_world/ui.tscn" id="3_vtdax"]
 [ext_resource type="PackedScene" uid="uid://0belslydrl30" path="res://pause_screen.tscn" id="4_jyhfs"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=649748754]
 script = ExtResource("1_2wu2a")
 
-[node name="ScrollAnchor" type="Node2D" parent="."]
+[node name="ScrollAnchor" type="Node2D" parent="." unique_id=1838611812]
 unique_name_in_owner = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1911975128]
 unique_name_in_owner = true
 rotation = 0.000526298
 anchor_mode = 0
 process_callback = 0
 
-[node name="LevelContainer" type="Node2D" parent="."]
+[node name="LevelContainer" type="Node2D" parent="." unique_id=1788584966]
 process_mode = 1
 
-[node name="PlayersRoot" type="Node2D" parent="LevelContainer"]
+[node name="PlayersRoot" type="Node2D" parent="LevelContainer" unique_id=1492445077]
 process_mode = 1
 
-[node name="InputJoiner" type="Node2D" parent="."]
+[node name="InputJoiner" type="Node2D" parent="." unique_id=1195503164]
 script = ExtResource("3_sugp2")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=608917606]
 
-[node name="Shop" type="Node2D" parent="CanvasLayer"]
+[node name="Shop" type="Node2D" parent="CanvasLayer" unique_id=1756934827]
 unique_name_in_owner = true
 
-[node name="UI" parent="CanvasLayer" instance=ExtResource("3_vtdax")]
+[node name="UI" parent="CanvasLayer" unique_id=61386837 instance=ExtResource("3_vtdax")]
 unique_name_in_owner = true
 
-[node name="StartMenu" type="Node2D" parent="CanvasLayer"]
+[node name="StartMenu" type="Node2D" parent="CanvasLayer" unique_id=1720347517]
 unique_name_in_owner = true
 
-[node name="PauseScreen" parent="CanvasLayer" instance=ExtResource("4_jyhfs")]
+[node name="PauseScreen" parent="CanvasLayer" unique_id=135886250 instance=ExtResource("4_jyhfs")]
 
 [editable path="CanvasLayer/UI"]

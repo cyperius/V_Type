@@ -286,6 +286,7 @@ func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 	tw.set_parallel()
 	tw.tween_property(camera, "zoom:x", zx, t)
 	tw.tween_property(camera, "zoom:y", zy, t)
+	camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
 
 
 func _input(event):
