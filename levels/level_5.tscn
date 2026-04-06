@@ -254,6 +254,7 @@ gizmo_extents = 69.5
 position = Vector2(1841, 982)
 
 [node name="VoiceAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1578863941]
+volume_db = 6.169
 bus = &"Voices"
 
 [editable path="EnemySpawner"]

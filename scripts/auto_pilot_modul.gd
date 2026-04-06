@@ -44,7 +44,7 @@ func _ready() -> void:
 	controlled_unit = get_parent()
 	print("controlled_unit is: ", controlled_unit)
 	if "speed" in controlled_unit:
-		speed = controlled_unit.speed
+		speed = controlled_unit.speed / 3
 	if "direction" in controlled_unit:
 		direction = controlled_unit.direction
 		
