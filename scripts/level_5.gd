@@ -6,13 +6,14 @@ signal flight_mode_switch_initiated
 signal player_placement_initiated
 
 
+@onready var voice_audio_stream_player: AudioStreamPlayer = $VoiceAudioStreamPlayer
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
 @onready var center: Marker2D = $Center
-@onready var jason1_there_f_everywhere: AudioStreamWAV
-@onready var nancy1_initiate_autopilot: AudioStreamWAV
-@onready var nancy2_keep_firing: AudioStreamWAV
-@onready var nancy3_watch_each_others_backs: AudioStreamWAV
+@onready var jason1_damn_it : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Jason_there_f_everywhere.wav")
+@onready var nancy1_initiate_autopilot : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_initiate_autopilot.wav")
+@onready var nancy2_keep_firing : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_keep_firing.wav")
+@onready var nancy3_watch_each_others_backs : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_watch_each_others_backs.wav")
 
 
 @export var do_target_player := false
@@ -170,22 +171,23 @@ func start_attacking_player() -> void:
 	emit_signal("player_target_activated")
 
 func play_radio() -> void:
-	audio_stream_player.stream = jason1_there_f_everywhere
-	audio_stream_player.play()
+	voice_audio_stream_player.stream = jason1_damn_it
+	voice_audio_stream_player.play()
 	
-	await  audio_stream_player.finished
-	audio_stream_player.stream = nancy1_initiate_autopilot
-	audio_stream_player.play()
+	
+	await  voice_audio_stream_player.finished
+	voice_audio_stream_player.stream = nancy1_initiate_autopilot
+	voice_audio_stream_player.play()
 	await get_tree().create_timer(1).timeout
 	loese_audio_ereignis_aus("circle_formation")
 	
-	await  audio_stream_player.finished
-	audio_stream_player.stream = jason1_there_f_everywhere
-	audio_stream_player.play()
+	await  voice_audio_stream_player.finished
+	voice_audio_stream_player.stream = nancy2_keep_firing
+	voice_audio_stream_player.play()
 	
-	await  audio_stream_player.finished
-	audio_stream_player.stream = jason1_there_f_everywhere
-	audio_stream_player.play()
+	await  voice_audio_stream_player.finished
+	voice_audio_stream_player.stream = nancy3_watch_each_others_backs
+	voice_audio_stream_player.play()
 
 func _on_player_target_activated() -> void:
 	print("level5.gd: on_player_target reached")

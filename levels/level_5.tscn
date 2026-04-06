@@ -253,7 +253,7 @@ gizmo_extents = 69.5
 [node name="Center" type="Marker2D" parent="." unique_id=1570931403]
 position = Vector2(1841, 982)
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="." unique_id=2021476462]
+[node name="VoiceAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1578863941]
 bus = &"Voices"
 
 [editable path="EnemySpawner"]
