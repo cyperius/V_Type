@@ -9,6 +9,11 @@ signal player_placement_initiated
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
 @onready var center: Marker2D = $Center
+@onready var jason1_there_f_everywhere: AudioStreamWAV
+@onready var nancy1_initiate_autopilot: AudioStreamWAV
+@onready var nancy2_keep_firing: AudioStreamWAV
+@onready var nancy3_watch_each_others_backs: AudioStreamWAV
+
 
 @export var do_target_player := false
 
@@ -27,7 +32,8 @@ var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
 	64: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
-	16: "circle_formation" # ca. 96
+	84: "play_radio", 
+	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)
 	
 }
 
@@ -143,6 +149,8 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			# Zusammenspiel mit AutopilotModul?
 		"target_player":
 			start_attacking_player()
+		"play_radio":
+			play_radio()
 		"circle_formation":
 			_place_all_players_in_circle_formation()
 			
@@ -161,6 +169,23 @@ func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
 func start_attacking_player() -> void:
 	emit_signal("player_target_activated")
 
+func play_radio() -> void:
+	audio_stream_player.stream = jason1_there_f_everywhere
+	audio_stream_player.play()
+	
+	await  audio_stream_player.finished
+	audio_stream_player.stream = nancy1_initiate_autopilot
+	audio_stream_player.play()
+	await get_tree().create_timer(1).timeout
+	loese_audio_ereignis_aus("circle_formation")
+	
+	await  audio_stream_player.finished
+	audio_stream_player.stream = jason1_there_f_everywhere
+	audio_stream_player.play()
+	
+	await  audio_stream_player.finished
+	audio_stream_player.stream = jason1_there_f_everywhere
+	audio_stream_player.play()
 
 func _on_player_target_activated() -> void:
 	print("level5.gd: on_player_target reached")
