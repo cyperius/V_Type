@@ -111,7 +111,7 @@ func _set_pitch_scale(pitch_value: float) -> void:
 
 func _set_explosion_scale(explosion_scale: Vector2) -> void: # wird durch tween.method aufgerufen
 	explosion_area_to_be = explosion_scale # explosion_scale wird im Verlaufe des tweens immer grösser
-	print("explotion_area_to_be: ", explosion_area_to_be)
+	#print("explotion_area_to_be: ", explosion_area_to_be)
 
 
 func damage_explode() -> void:

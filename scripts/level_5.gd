@@ -33,7 +33,7 @@ var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
 	64: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
-	14: "play_radio", 
+	84: "play_radio", 
 	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)
 	
 }
@@ -58,7 +58,7 @@ func _process(delta: float) -> void:
 		return
 	if audio_wiedergabe == null:
 		return
-	print("centerNode position: ", center_node.global_position)
+	#print("centerNode position: ", center_node.global_position)
 	if zoom_changing: # die verwendete Methode in CameraUtils (class_name CameraUtils) ist als "static func" definiert
 		# das bedeutedie kann direkt auf die Klasse CameraUtils verwendet werden, ohne Instanz
 		center.global_position = CameraUtils.get_center_world_coordinates(get_viewport())

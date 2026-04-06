@@ -88,31 +88,31 @@ var skins
 # -- neutral --
 
 var player1_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_neutral.png")
-var player4_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_neutral.png")
+var player4_skin = preload("res://assets/graphic_elements/player/p4_gray_arrow_sideways_neutral.png")
 var player3_skin = preload("res://assets/graphic_elements/player/p3_neutral_exportiert.png")
-var player2_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_neutral.png")
-var player5_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_neutral.png")
+var player2_skin = preload("res://assets/graphic_elements/player/p2_ship_gold_sideways_neutral.png")
+var player5_skin = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_sideways_neutral.png")
 
 # -- raising --
 var player1_raising_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_bauchlage.png")
-var player2_raising_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_bauchlage.png")
+var player2_raising_skin = preload("res://assets/graphic_elements/player/p2_ship_gold_sideways_bauchlage.png")
 var player3_raising_skin = preload("res://assets/graphic_elements/player/p3_bauchlage_exportiert.png")
-var player4_raising_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_bauchlage.png")
-var player5_raising_skin = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_bauchlage Kopie 2.png")
+var player4_raising_skin = preload("res://assets/graphic_elements/player/p4_gray_arrow_sideways_bauchlage.png")
+var player5_raising_skin = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_sideways_bauchlage Kopie 2.png")
 
 # -- sinking("diving") --
 var player1_diving_skin = preload("res://assets/graphic_elements/player/p1_ship_sideways_rueckenlage.png")
-var player2_diving_skin = preload("res://assets/graphic_elements/player/ship_gold_sideways_rueckenlage.png")
+var player2_diving_skin = preload("res://assets/graphic_elements/player/p2_ship_gold_sideways_rueckenlage.png")
 var player3_diving_skin = preload("res://assets/graphic_elements/player/p3_sideways_rueckenlage.png")
-var player4_diving_skin = preload("res://assets/graphic_elements/player/gray_arrow_sideways_rueckenlage.png")
-var player5_diving_skin  = preload("res://assets/graphic_elements/player/white_gray_arrow_sideways_rueckenlage.png")
+var player4_diving_skin = preload("res://assets/graphic_elements/player/p4_gray_arrow_sideways_rueckenlage.png")
+var player5_diving_skin  = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_sideways_rueckenlage.png")
 
 # -- top down --
-var player1_top_down = preload("res://assets/graphic_elements/player/space_ship1.png")
-var player2_top_down = preload("res://assets/graphic_elements/player/golden_ship.png")
+var player1_top_down = preload("res://assets/graphic_elements/player/p1_space_ship_top_down.png")
+var player2_top_down = preload("res://assets/graphic_elements/player/p2_golden_ship.png")
 var player3_top_down = preload("res://assets/graphic_elements/player/p3_topdown_gross.png")
-var player4_top_down = preload("res://assets/graphic_elements/player/player4_ship_top_down.png")
-var player5_top_down = preload("res://assets/graphic_elements/player/white_gray_arrow_topdown_gross.png")
+var player4_top_down = preload("res://assets/graphic_elements/player/p4_ship_top_down.png")
+var player5_top_down = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_topdown_gross.png")
 
 
 @onready var ship_area: Area2D = %ShipArea
@@ -147,7 +147,7 @@ func _ready() -> void:
 	
 	label.text = ("P" + str(player_id))
 	circle_flight_module.setup(self)
-	
+	print(player_id, " is my player_id")
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
 	blue_energy = max_energy
@@ -573,4 +573,4 @@ func _change_flight_state() -> void:
 	auto_pilot_modul.autopilot_is_on = true
 	ship_sprite.hide()
 	animated_sprite.show()
-	animated_sprite.play("sideways_to_top_down")
+	animated_sprite.play("p" + str(player_id) + "_sideways_to_top_down")

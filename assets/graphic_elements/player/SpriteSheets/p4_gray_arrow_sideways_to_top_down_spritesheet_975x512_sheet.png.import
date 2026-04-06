@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdyj7436fy75k"
-path="res://.godot/imported/Video_Mit_Blauem_Hintergrund_1280x720_sheet.png-6900d40b0aaf10ddf8eaabb91be00513.ctex"
+uid="uid://dqqb4r7qhxngt"
+path="res://.godot/imported/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png-49e5f94f212db15282d6d7059783ed88.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphic_elements/player/Video_Mit_Blauem_Hintergrund_1280x720_sheet.png"
-dest_files=["res://.godot/imported/Video_Mit_Blauem_Hintergrund_1280x720_sheet.png-6900d40b0aaf10ddf8eaabb91be00513.ctex"]
+source_file="res://assets/graphic_elements/player/SpriteSheets/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png"
+dest_files=["res://.godot/imported/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png-49e5f94f212db15282d6d7059783ed88.ctex"]
 
 [params]
 
