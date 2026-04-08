@@ -340,14 +340,15 @@ func _on_ship_area_entered(other: Area2D) -> void:
 		# i-Frame Schutz sofort aktivieren, unabhängig vom Schild-Status
 		# verhindert dass z.B. eine wachsende Explosion mehrfach in aufeinanderfolgenden
 		# Frames trifft
-		ship_area.collision_mask = 0
-		ship_area.collision_layer = 0
+		
 		if shield_is_activated:
 			if other.is_in_group("projectiles"):
 				shield_absorbing(dmg * absorbing_factor)  # Schild „heilt" Energie um Anteil des Schadens
 			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
 		else:
+			ship_area.collision_mask = 0
+			ship_area.collision_layer = 0
 			player_is_hit(dmg)
 
 	
