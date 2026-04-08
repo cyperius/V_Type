@@ -5,12 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/p2_ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
-[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
+[ext_resource type="Script" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
-[ext_resource type="Script" uid="uid://co6ox1j6ry68a" path="res://scripts/circle_flight_modul.gd" id="8_df6tw"]
+[ext_resource type="Script" path="res://scripts/circle_flight_modul.gd" id="8_df6tw"]
 [ext_resource type="Texture2D" uid="uid://dqqb4r7qhxngt" path="res://assets/graphic_elements/player/SpriteSheets/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png" id="9_plym5"]
 [ext_resource type="Texture2D" uid="uid://bdyj7436fy75k" path="res://assets/graphic_elements/player/SpriteSheets/p2_sideways_to_top_down_spritesheet.png" id="9_rk2pp"]
-[ext_resource type="Script" uid="uid://ds1mmis7a3ytd" path="res://scripts/auto_pilot_modul.gd" id="10_ge03c"]
+[ext_resource type="Script" path="res://scripts/auto_pilot_modul.gd" id="10_ge03c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]
 size = Vector2(26.0009, 260)
@@ -22,7 +22,7 @@ size = Vector2(15.9993, 187)
 radius = 28.8764
 height = 190.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_df6tw"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_plym5"]
 radius = 118.0
 height = 423.91
 
@@ -548,10 +548,15 @@ scale = Vector2(0.831128, 1.03763)
 shape = SubResource("CapsuleShape2D_flg8t")
 one_way_collision_margin = 0.0
 
-[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="ShipArea" unique_id=6446513]
+[node name="ShieldArea" type="Area2D" parent="." unique_id=936615148]
+unique_name_in_owner = true
+collision_mask = 60
+script = ExtResource("5_flg8t")
+
+[node name="ShieldCollisionShape2D2" type="CollisionShape2D" parent="ShieldArea" unique_id=6446513]
 unique_name_in_owner = true
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_df6tw")
+shape = SubResource("CapsuleShape2D_plym5")
 one_way_collision_margin = 0.0
 
 [node name="BeenHitTimer" type="Timer" parent="." unique_id=1631808903]

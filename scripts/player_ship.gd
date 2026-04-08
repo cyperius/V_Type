@@ -115,10 +115,11 @@ var player4_top_down = preload("res://assets/graphic_elements/player/p4_ship_top
 var player5_top_down = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_topdown_gross.png")
 
 
+@onready var shield_area: Area2D = %ShieldArea
 @onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
 @onready var _particles_shield: GPUParticles2D = %ParticlesShield
-@onready var _shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
+@onready var shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 @onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
 @onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
 
@@ -166,7 +167,7 @@ func _ready() -> void:
 	_backup_collision_mask = collision_mask
 
 	# Schild-Kollision initial aus
-	_shield_collision_shape.disabled = true
+	shield_collision_shape.disabled = true
 	
 	## Circle-Mode Startwinkel und skin / bleibt aktuell 12.12.25 23.18 wirkungslos
 	#if mode == FlightMode.CIRCLE:
@@ -190,6 +191,7 @@ func connect_signals() -> void:
 	level = GameManager.current_level_node # 5.4.26: falls fehler: var level := ...
 	just_been_hit_timer.timeout.connect(_on_just_been_hit_timer_timeout)
 	ship_area.area_entered.connect(_on_ship_area_entered)
+	shield_area.area_entered.connect(_on_shield_area_entered)
 	if level.has_signal("zoom_requested"):
 		print("see the signal...")
 		level.zoom_requested.connect(_on_zoom_requested)
@@ -325,7 +327,6 @@ func _physics_left_right_move(delta: float) -> void:
 func _on_ship_area_entered(other: Area2D) -> void:
 	if "hit_effect" in other:
 		_apply_effect_by_name(str(other.hit_effect))
-	
 	# Absicherung gegen Mehrfachschden, bei dynamischen collsionshapes, könnte
 	# theoretsich für alle "others" geprüft werden, aber lasse er voresrt mal
 	# so, als Erinnerung, wieso es nötig wurde
@@ -337,21 +338,24 @@ func _on_ship_area_entered(other: Area2D) -> void:
 	# Damage
 	if "damage" in other:
 		var dmg: int = int(other.damage)
-		# i-Frame Schutz sofort aktivieren, unabhängig vom Schild-Status
-		# verhindert dass z.B. eine wachsende Explosion mehrfach in aufeinanderfolgenden
-		# Frames trifft
+		# i-Frame Schutz sofort aktivieren -> verhindert dass z.B. 
+		# eine wachsende Explosion mehrfach in aufeinanderfolgenden Frames trifft
+		ship_area.collision_mask = 0
+		ship_area.collision_layer = 0
+		player_is_hit(dmg)
 		
+
+func _on_shield_area_entered(other: Area2D) -> void:
+	if "damage" in other:
+		var dmg: int = int(other.damage)
 		if shield_is_activated:
+			print("shieldis_activated")
 			if other.is_in_group("projectiles"):
 				shield_absorbing(dmg * absorbing_factor)  # Schild „heilt" Energie um Anteil des Schadens
 			elif other.is_in_group("enemies") or other.is_in_group("obstacles"):
 				_change_energy(-dmg)
-		else:
-			ship_area.collision_mask = 0
-			ship_area.collision_layer = 0
-			player_is_hit(dmg)
 
-	
+
 func player_is_hit(taken_damage: int) -> void:
 	_change_health(-taken_damage)
 	calculate_damage_state()
@@ -378,20 +382,22 @@ func _on_just_been_hit_timer_timeout() -> void:
 
 # Schild
 func activate_shield() -> void:
+	print("activating_shield")
 	if shield_is_activated or blue_energy <= 0:
 		return
 	_particles_shield.emitting = true
 	shield_is_activated = true
-	_shield_collision_shape.disabled = false
+	shield_collision_shape.disabled = false
 	emit_signal("shield_toggled", player_id, true)
 
 
 func deactivate_shield() -> void:
+	print("shield_deactivated_triggered")
 	if not shield_is_activated:
 		return
 	_particles_shield.emitting = false
 	shield_is_activated = false
-	_shield_collision_shape.disabled = true
+	shield_collision_shape.disabled = true
 	emit_signal("shield_toggled", player_id, false)
 
 
