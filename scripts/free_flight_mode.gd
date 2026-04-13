@@ -14,18 +14,21 @@ func setup(owner_body: CharacterBody2D) -> void:
 	# Direkt vom Body lesen - keine Doppelzuweisung nötig
 	player_id = body.player_id
 	
+	
 #rotation = direction.angle() - PI
 func _physics_free_flying(delta: float) -> void:
-	var direction := Vector2.ZERO
+	var rotation_input: float
+	var thrust_input: float
+
 	if owner.controls_are_reversed:
-		direction.x = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
-		direction.y = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
+		rotation_input = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
+		thrust_input = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
 	else:
-		direction.x = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
-		direction.y = Input.get_axis("p%d_up" % player_id, "p%d_down" % player_id)
-	body.rotation += direction.x * delta * rotation_speed
-	var speed = body.speed * direction.y
-	body.velocity = (-1 * direction.y) * body.speed * Vector2.RIGHT.rotated(deg_to_rad(body.rotation_degrees)) # gelegentlich diese zeile genau studieren
+		rotation_input = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
+		thrust_input = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
+
+	body.rotation += rotation_input * rotation_speed * delta
+	body.velocity = body.transform.x * thrust_input * body.speed
 	
 	body.move_and_slide()
 	#
