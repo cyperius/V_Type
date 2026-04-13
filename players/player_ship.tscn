@@ -5,12 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://d2jofv3v62qdo" path="res://players/laser_blast.tscn" id="3_flg8t"]
 [ext_resource type="Texture2D" uid="uid://dkigspm80a6r7" path="res://assets/graphic_elements/player/p2_ship_gold_sideways_neutral.png" id="4_5icsl"]
 [ext_resource type="PackedScene" uid="uid://chdad0g7sy83w" path="res://players/particles_shield.tscn" id="5_5icsl"]
-[ext_resource type="Script" path="res://scripts/ship_area.gd" id="5_flg8t"]
+[ext_resource type="Script" uid="uid://bs3jtgysm5vds" path="res://scripts/ship_area.gd" id="5_flg8t"]
 [ext_resource type="PackedScene" uid="uid://d0iia6p5arjuq" path="res://players/burst.tscn" id="6_5icsl"]
-[ext_resource type="Script" path="res://scripts/circle_flight_modul.gd" id="8_df6tw"]
+[ext_resource type="Script" uid="uid://co6ox1j6ry68a" path="res://scripts/circle_flight_modul.gd" id="8_df6tw"]
 [ext_resource type="Texture2D" uid="uid://dqqb4r7qhxngt" path="res://assets/graphic_elements/player/SpriteSheets/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png" id="9_plym5"]
 [ext_resource type="Texture2D" uid="uid://bdyj7436fy75k" path="res://assets/graphic_elements/player/SpriteSheets/p2_sideways_to_top_down_spritesheet.png" id="9_rk2pp"]
 [ext_resource type="Script" path="res://scripts/auto_pilot_modul.gd" id="10_ge03c"]
+[ext_resource type="Script" uid="uid://c5tb3v07xljxd" path="res://scripts/free_flight_mode.gd" id="11_qmb43"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]
 size = Vector2(26.0009, 260)
@@ -589,6 +590,11 @@ position = Vector2(1, 0)
 sprite_frames = SubResource("SpriteFrames_rlcqr")
 animation = &"p1_sideways_to_top_down"
 autoplay = "p2_sideways_to_top_down"
+
+[node name="FreeFlightModul" type="Node" parent="." unique_id=1801035143]
+unique_name_in_owner = true
+script = ExtResource("11_qmb43")
+metadata/_custom_type_script = "uid://c5tb3v07xljxd"
 
 [node name="AutoPilotModul" type="Node2D" parent="." unique_id=266202762]
 script = ExtResource("10_ge03c")
