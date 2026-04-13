@@ -27,8 +27,8 @@ func _ready():
 func _on_spawn_timer_timeout() -> void:
 	var new_asteroid : RigidAsteroid = asteroid.instantiate()
 	new_asteroid.asteroid_destroyed.connect(_on_asteroid_destroyed)
-	print("spawnwd asteroids: ", asteroid_counter)
-	print("spawn")
+	#print("spawnwd asteroids: ", asteroid_counter)
+	#print("spawn")
 	
 	new_asteroid.global_position = Vector2(SCREEN_SIZE.x + randf_range(1000, 4000), randf_range(0, SCREEN_SIZE.y))
 	

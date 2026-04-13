@@ -33,7 +33,7 @@ var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
 	8: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
-	84: "play_radio", 
+	12: "play_radio", # ca. 84
 	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)
 	
 }

@@ -25,10 +25,10 @@ var cooling_down := false
 #   Module (für Composition)
 # ──────────────────────────────────────────────────────────────
 
-@onready var circle_flight_module: CircleFlightModuleModul = %CircleFlightModule
 @onready var auto_pilot_modul: Node2D = $AutoPilotModul
+@onready var free_flight_modul: Node = %FreeFlightModul
+@onready var circle_flight_module: CircleFlightModuleModul = %CircleFlightModule
 @onready var label: Label = $Label
-
 
 
 # ──────────────────────────────────────────────────────────────
@@ -148,6 +148,7 @@ func _ready() -> void:
 	
 	label.text = ("P" + str(player_id))
 	circle_flight_module.setup(self)
+	free_flight_modul.setup(self)
 	print(player_id, " is my player_id")
 	# Stats initial setzen (Export-Werte aus dem Inspector werden respektiert)
 	health = max_health
@@ -266,6 +267,8 @@ func _physics_process(delta: float) -> void:
 				circle_flight_module.physics_update(delta) # <-- Modul übernimmt
 			FlightMode.DOWN_UP:
 				_physics_left_right_move(delta)
+			FlightMode.FREE:
+				free_flight_modul._physics_free_flying(delta)
 			# Bewegung je nach Modus
 	#else:
 		#print("autopilot is on..... autopilot is on...")
@@ -581,3 +584,5 @@ func _change_flight_state() -> void:
 	ship_sprite.hide()
 	animated_sprite.show()
 	animated_sprite.play("p" + str(player_id) + "_sideways_to_top_down")
+	if player_id == 1 :
+		animated_sprite.flip_h = true

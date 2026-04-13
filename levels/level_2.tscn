@@ -1,31 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://1p2k6pgvwphb"]
+[gd_scene format=3 uid="uid://1p2k6pgvwphb"]
 
 [ext_resource type="Script" uid="uid://cs0c76735u785" path="res://scripts/Asteroid_Level.gd" id="1_cqqrw"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="2_0jwxd"]
 [ext_resource type="Script" uid="uid://d23mk1mt2fehi" path="res://scripts/AsteroidSpawner.gd" id="3_v5uil"]
 [ext_resource type="AudioStream" uid="uid://c17w6e6hjd0i7" path="res://assets/sound_and_sfx/soundtracks/survival_mode/Label Umbush (from all sides mode_).ogg" id="5_01p4q"]
 
-[node name="Asteroid_Level" type="Node2D"]
+[node name="Asteroid_Level" type="Node2D" unique_id=277334056]
 script = ExtResource("1_cqqrw")
+flight_mode = 5
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=904605523]
 anchor_mode = 0
 
-[node name="background_Control" parent="." instance=ExtResource("2_0jwxd")]
+[node name="background_Control" parent="." unique_id=340404058 instance=ExtResource("2_0jwxd")]
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1155096124]
 wait_time = 0.25
 autostart = true
 
-[node name="EnemySpawner" type="Node2D" parent="."]
+[node name="EnemySpawner" type="Node2D" parent="." unique_id=518989363]
 position = Vector2(-2, 4)
 script = ExtResource("3_v5uil")
 
-[node name="Timer" type="Timer" parent="EnemySpawner"]
+[node name="Timer" type="Timer" parent="EnemySpawner" unique_id=478511588]
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=798183719]
 stream = ExtResource("5_01p4q")
 autoplay = true
 
-[node name="Players" type="Node2D" parent="."]
+[node name="Players" type="Node2D" parent="." unique_id=1039281683]
