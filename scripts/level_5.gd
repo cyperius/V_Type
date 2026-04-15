@@ -2,7 +2,6 @@ extends LevelBase
 
 signal zoom_requested(zoomfactor_x: float, zoomfactor_y: float, zoom_time: float)
 signal player_target_activated
-signal flight_mode_switch_initiated
 signal player_placement_initiated
 
 
@@ -25,7 +24,6 @@ signal player_placement_initiated
 @export var winkel_geschwindigkeit : float = 6
 @onready var center_node = $Center
 var zoom_changing := false
-# var player : PlayerShip # falls globaler scope nötig wird -> player._change_flight_state()
 
 
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
@@ -33,7 +31,7 @@ var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
 	8: "zoom_out", # 64.0
 	76: "target_player", # ca. 76
-	12: "play_radio", # ca. 84
+	24: "play_radio", # ca. 84
 	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)
 	
 }
@@ -47,7 +45,7 @@ func _ready() -> void:
 	
 	audio_wiedergabe = audio_stream_player.get_stream_playback()
 	time_stamps_already_triggered.clear()
-
+	
 	# Wichtig: EINMAL verbinden
 	if not player_target_activated.is_connected(_on_player_target_activated):
 		player_target_activated.connect(_on_player_target_activated)
@@ -76,7 +74,6 @@ func _place_all_players_in_circle_formation() -> void:
 	for player_id in Global.player_ships.keys():
 		var player := Global.get_player_ship(player_id)
 		if player is PlayerShip:
-			player._change_flight_state()
 			prepare_player_for_circle_formation(player, player_id)
 			
 			# print(" (level_base.gd): nr of players : ", player_id)
@@ -117,7 +114,7 @@ func prepare_player_for_circle_formation(player: PlayerShip, player_id: int) -> 
 	
 
 	# 4) Optional: Level-spezifische Skalierung (rein visuell)
-	player.scale = Vector2(0.2, 0.2)
+	#player.scale = Vector2(0.2, 0.2)
 
 
 #await # Animationsende
@@ -145,8 +142,8 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		"zoom_out":
 			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
 			zoom_changing = true
-			# Signal ans palyer_schiff, das das spride versteckt wird und das
-			# animatedsprite abgespeilt wird, und evtl. Steuerung aufheben / Autolenkung
+			# Signal ans playerr_schiff, das das spride versteckt wird und das
+			# animatedsprite abgespielt wird, und evtl. Steuerung aufheben / Autolenkung
 			# Zusammenspiel mit AutopilotModul?
 		"target_player":
 			start_attacking_player()
@@ -163,8 +160,16 @@ func enemies_appear() -> void:
 	enemy_spawner.set_spawn_rate(5) # 5
 
 
+func _change_flight_mode(flight_mode: int, activate_autopilot := false) -> void:
+	for player_id in Global.player_ships.keys():
+		var player := Global.get_player_ship(player_id)
+		if player is PlayerShip:
+			player._change_flight_mode(flight_mode, activate_autopilot)
+
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
 	emit_signal("zoom_requested", x_factor, y_factor, zoom_time)
+	_change_flight_mode(PlayerShip.FlightMode.FREE, false)
+		
 
 
 func start_attacking_player() -> void:
@@ -188,6 +193,7 @@ func play_radio() -> void:
 	voice_audio_stream_player.play()
 	await get_tree().create_timer(0.8).timeout
 	loese_audio_ereignis_aus("circle_formation")
+
 
 func _on_player_target_activated() -> void:
 	print("level5.gd: on_player_target reached")

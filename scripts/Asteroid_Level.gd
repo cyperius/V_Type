@@ -13,6 +13,7 @@ signal enemy_destroyed(score: int, energy: int)
 func _ready():
 	super._ready()
 	enemy_spawner.asteroid_destroyed.connect(enemy_spawner._on_asteroid_destroyed)
+	flight_mode_switch_initiated.emit()
 
 	
 func _process(delta: float) -> void:

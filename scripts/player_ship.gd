@@ -73,6 +73,7 @@ var spawn_position := Vector2.ZERO
 # ──────────────────────────────────────────────────────────────
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var ship_sprite: Sprite2D = %ship_sprite
 
@@ -108,17 +109,16 @@ var player4_diving_skin = preload("res://assets/graphic_elements/player/p4_gray_
 var player5_diving_skin  = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_sideways_rueckenlage.png")
 
 # -- top down --
-var player1_top_down = preload("res://assets/graphic_elements/player/p1_space_ship_top_down.png")
+var player1_top_down = preload("res://assets/graphic_elements/player/p1_space_ship_top_down_downsized.png")
 var player2_top_down = preload("res://assets/graphic_elements/player/p2_golden_ship.png")
 var player3_top_down = preload("res://assets/graphic_elements/player/p3_topdown_gross.png")
 var player4_top_down = preload("res://assets/graphic_elements/player/p4_ship_top_down.png")
-var player5_top_down = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_topdown_gross.png")
+var player5_top_down = preload("res://assets/graphic_elements/player/p5_white_gray_arrow_top_down_downsized.png")
 
 
 @onready var shield_area: Area2D = %ShieldArea
 @onready var ship_area: Area2D = %ShipArea
 @onready var just_been_hit_timer: Timer = %BeenHitTimer
-@onready var _particles_shield: GPUParticles2D = %ParticlesShield
 @onready var shield_collision_shape: CollisionShape2D = %ShieldCollisionShape2D2
 @onready var body_collision_shape_1: CollisionShape2D = $BodyCollisionShape1
 @onready var body_collision_shape_2: CollisionShape2D = $BodyCollisionShape2
@@ -279,7 +279,9 @@ func _physics_process(delta: float) -> void:
 # ──────────────────────────────────────────────────────────────
 
 func _on_flight_mode_switch_initiated() -> void:
-	player_ship_flight_mode_switch_initiated.emit()
+	player_ship_flight_mode_switch_initiated.emit() # 14.4.26 Dieses Signal ist aktuell ungenutzt und braucht es evtl. nicht
+	_change_flight_mode(FlightMode.FREE, false)
+	
 
 func _physics_left_right_move(delta: float) -> void:
 	var direction := Vector2.ZERO
@@ -579,10 +581,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	ship_sprite.show()
 	
 	
-func _change_flight_state() -> void:
-	auto_pilot_modul.autopilot_is_on = true
+	# wird aus einem Levelscript ausgelödt (15.4.26: Level_5 )
+func _change_flight_mode(flight_mode: FlightMode, activate_autopilot := false) -> void: # in flight_mode unbenennen (muss dann im level 5 auch angeapsstw erden)
+	auto_pilot_modul.autopilot_is_on = activate_autopilot
 	ship_sprite.hide()
 	animated_sprite.show()
+	#animated_sprite.scale = Vector2(0.42, 0.42)
 	animated_sprite.play("p" + str(player_id) + "_sideways_to_top_down")
 	if player_id == 1 :
 		animated_sprite.flip_h = true
+	mode = flight_mode
+	set_skin("top_down")

@@ -26,6 +26,42 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 
+[node name="background_Control2" parent="." unique_id=125219766 instance=ExtResource("4_mxx4w")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8578.0
+offset_top = -64.0
+offset_right = -8578.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="background_Control3" parent="." unique_id=1658467183 instance=ExtResource("4_mxx4w")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8578.0
+offset_top = -4700.0
+offset_right = -8578.0
+offset_bottom = -4700.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="background_Control4" parent="." unique_id=913714939 instance=ExtResource("4_mxx4w")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -148.0
+offset_top = -4712.0
+offset_right = -148.0
+offset_bottom = -4712.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
 [node name="BossTimer" type="Timer" parent="." unique_id=2067403447]
 wait_time = 6.322
 one_shot = true

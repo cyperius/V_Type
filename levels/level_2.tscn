@@ -7,6 +7,16 @@
 
 [node name="Asteroid_Level" type="Node2D" unique_id=277334056]
 script = ExtResource("1_cqqrw")
+asteroids_amount_basic = null
+amount_of_enemies = null
+level_nr = null
+last_level = null
+auto_thrust_enabled = null
+camera_scrolling = null
+camera_scroll_speed = null
+zoom_factor = null
+ship_scale = null
+player_rotation = null
 flight_mode = 5
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=904605523]
