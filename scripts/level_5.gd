@@ -9,7 +9,9 @@ signal player_placement_initiated
 @onready var zoom_out_timer: Timer = $ZoomOutTimer
 @onready var boss_timer: Timer = $BossTimer
 @onready var center: Marker2D = $Center
-@onready var jason1_damn_it : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Jason_there_f_everywhere.wav")
+@onready var bord_computer_mine_detection : AudioStream = load("res://assets/sound_and_sfx/voice_audios/bord_computer_detetecting_mines.wav")
+@onready var luna_commands_free_flight : AudioStream = load("res://assets/sound_and_sfx/voice_audios/SFX_Soundly_Voice_Designer_Luna_S00.wav")
+@onready var jason1_damn_it : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Jason_Damn_it_f_everywhere.wav")
 @onready var nancy2_initiate_autopilot : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_initiate_autopilot.wav")
 @onready var nancy3_keep_firing : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_keep_firing.wav")
 @onready var nancy1_watch_each_others_backs : AudioStreamWAV = load("res://assets/sound_and_sfx/voice_audios/Nancy_watch_each_others_backs.wav")
@@ -29,10 +31,11 @@ var zoom_changing := false
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
-	8: "zoom_out", # 64.0
+	64: "zoom_out", # 64.0
+	70: "radio_detecting_mines",
 	76: "target_player", # ca. 76
-	24: "play_radio", # ca. 84
-	#16: "circle_formation" # ca. 96 # Auslösung nach Funkspruch (AudiostreamPlayer)
+	84: "play_radio", # ca. 84
+	#16: "circle_formation" # ca. 96 # Auslösung automatsich nach Funkspruch (AudiostreamPlayer)
 	
 }
 
@@ -141,14 +144,16 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			enemies_appear()
 		"zoom_out":
 			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
-			zoom_changing = true
+			#zoom_changing = true
 			# Signal ans playerr_schiff, das das spride versteckt wird und das
 			# animatedsprite abgespielt wird, und evtl. Steuerung aufheben / Autolenkung
 			# Zusammenspiel mit AutopilotModul?
+		"radio_detecting_mines":
+			play_radio(0)
 		"target_player":
 			start_attacking_player()
 		"play_radio":
-			play_radio()
+			play_radio(1)
 		"circle_formation":
 			_place_all_players_in_circle_formation()
 			
@@ -168,31 +173,43 @@ func _change_flight_mode(flight_mode: int, activate_autopilot := false) -> void:
 
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
 	emit_signal("zoom_requested", x_factor, y_factor, zoom_time)
-	_change_flight_mode(PlayerShip.FlightMode.FREE, false)
-		
+	
 
 
 func start_attacking_player() -> void:
 	emit_signal("player_target_activated")
 
-func play_radio() -> void:
-	voice_audio_stream_player.stream = jason1_damn_it
-	voice_audio_stream_player.play()
+func play_radio(sequence: int) -> void:
+	match sequence:
+		0:
+			voice_audio_stream_player.stream = bord_computer_mine_detection
+			voice_audio_stream_player.play()
 	
-	await  voice_audio_stream_player.finished
-	voice_audio_stream_player.stream = nancy1_watch_each_others_backs
-	voice_audio_stream_player.play()
+			await  voice_audio_stream_player.finished
+			voice_audio_stream_player.stream = luna_commands_free_flight
+			voice_audio_stream_player.play()
+			
+			await  voice_audio_stream_player.finished
+			_change_flight_mode(PlayerShip.FlightMode.FREE, false)
+			
+		1:
+			voice_audio_stream_player.stream = jason1_damn_it
+			voice_audio_stream_player.play()
+			
+			await  voice_audio_stream_player.finished
+			voice_audio_stream_player.stream = nancy1_watch_each_others_backs
+			voice_audio_stream_player.play()
 
-	await  voice_audio_stream_player.finished
-	voice_audio_stream_player.stream = nancy2_initiate_autopilot
-	voice_audio_stream_player.play()
-	
+			await  voice_audio_stream_player.finished
+			voice_audio_stream_player.stream = nancy2_initiate_autopilot
+			voice_audio_stream_player.play()
+			
 
-	await  voice_audio_stream_player.finished
-	voice_audio_stream_player.stream = nancy3_keep_firing
-	voice_audio_stream_player.play()
-	await get_tree().create_timer(0.8).timeout
-	loese_audio_ereignis_aus("circle_formation")
+			await  voice_audio_stream_player.finished
+			voice_audio_stream_player.stream = nancy3_keep_firing
+			voice_audio_stream_player.play()
+			await get_tree().create_timer(0.8).timeout
+			loese_audio_ereignis_aus("circle_formation")
 
 
 func _on_player_target_activated() -> void:
