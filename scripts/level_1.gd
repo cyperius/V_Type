@@ -3,6 +3,8 @@ extends Node2D
 signal level_finished(next_level_nr: int, gained_score: int, gained_energy: int)
 
 @export var amount_of_enemies: int
+camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
+camera_anchor_mode = ANCHOR_MODE_FIXED_TOP_LEFT
 
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var boss_timer: Timer = $BossTimer

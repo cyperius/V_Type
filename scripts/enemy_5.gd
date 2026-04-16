@@ -85,6 +85,14 @@ func _process(delta: float) -> void:
 	super(delta)  # führt den _process von enemy_1.gd aus
 	
 	
+func do_evasive_maneuver() -> void:
+	var tween = get_tree().create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
+	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
+
+
+
 func trigger_self_destruct() -> void:
 	if self_destruct_triggered:
 		return

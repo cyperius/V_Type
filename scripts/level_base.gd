@@ -24,6 +24,10 @@ var base_position : Vector2 # wird hier definiert, damit unten der Wert für bas
 # dem "match FLIGHTMode" entsprechend gesetzt werden kann und danach
 # "player.global_position = base_position + player_offset" nur 1x geschrieben werden muss
 
+# Kameraposition (top_left oder center)
+enum CameraPosition { TOP_LEFT = Camera2D.ANCHOR_MODE_FIXED_TOP_LEFT, CENTER = Camera2D.ANCHOR_MODE_DRAG_CENTER }
+@export var camera_position: CameraPosition = CameraPosition.TOP_LEFT
+
 # Referenzen zu Nodes
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var enemy_spawner: Node2D = $EnemySpawner

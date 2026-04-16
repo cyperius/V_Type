@@ -269,6 +269,7 @@ func _on_level_loaded() -> void:
 	#level.background.size.x /= camera.zoom.x  # geht nicht. Problem: background ist keine Exportvariable des levels.
 	#level.background.size.y /= camera.zoom.y # Invalid access to property or key 'background' on a base object of type 'Node2D (level_3.gd)'.
 	 # alternativ auf FullHD-Fenstergröße Vector2(3860, 2160) setzen
+	camera.anchor_mode = level.camera_position
 	
 	await get_tree().process_frame
 	# Beim Levelwechsel alle Spieler korrekt platzieren
@@ -286,7 +287,9 @@ func _on_zoom_requested(zx: float, zy: float, t: int) -> void:
 	tw.set_parallel()
 	tw.tween_property(camera, "zoom:x", zx, t)
 	tw.tween_property(camera, "zoom:y", zy, t)
-	camera.anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
+	await tw.finished
+	
+	
 
 
 func _input(event):

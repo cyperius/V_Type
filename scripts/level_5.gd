@@ -31,8 +31,8 @@ var zoom_changing := false
 # Timeline: Zeitmarken (Sekunden) -> Event-Name
 var time_stamps: Dictionary = {
 	16.75: "enemies_appear", # 16.75
-	64: "zoom_out", # 64.0
-	70: "radio_detecting_mines",
+	4: "zoom_out", # 64.0
+	70: "radio_detecting_mines", # ca. 70 (Ca. 6 Sek nach start zoom_out)
 	96: "target_player", # ca. 76
 	100: "play_radio", # ca. 84
 	#16: "circle_formation" # ca. 96 # Auslösung automatsich nach Funkspruch (AudiostreamPlayer)
@@ -45,6 +45,7 @@ var audio_wiedergabe: AudioStreamPlayback = null
 
 func _ready() -> void:
 	super._ready()
+	center.global_position = CameraUtils.get_center_world_coordinates(get_viewport()) # Am anfang center_node setzen -> hilfreich oder überflüssig?
 	
 	audio_wiedergabe = audio_stream_player.get_stream_playback()
 	time_stamps_already_triggered.clear()
@@ -144,7 +145,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 			enemies_appear()
 		"zoom_out":
 			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 24.0)  # Zeit bis 15.4.46 war: 34
-			#zoom_changing = true
+			zoom_changing = true
 			# Signal ans playerr_schiff, das das spride versteckt wird und das
 			# animatedsprite abgespielt wird, und evtl. Steuerung aufheben / Autolenkung
 			# Zusammenspiel mit AutopilotModul?
@@ -172,7 +173,7 @@ func _change_flight_mode(flight_mode: int, activate_autopilot := false) -> void:
 			player._change_flight_mode(flight_mode, activate_autopilot)
 
 func zoom_out(x_factor: float, y_factor: float, zoom_time: float) -> void:
-	emit_signal("zoom_requested", x_factor, y_factor, zoom_time)
+	emit_signal("zoom_requested", x_factor, y_factor, zoom_time) # receiver: main.gd
 	
 
 

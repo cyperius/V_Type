@@ -81,12 +81,15 @@ func _on_area_entered(other: Area2D) -> void:
 
 func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
 	if shot_type is LaserBlast:
-		var tween = get_tree().create_tween()
-		tween.set_parallel()
-		tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
-		tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
+		do_evasive_maneuver()
+		
+func do_evasive_maneuver() -> void:
+	var tween = get_tree().create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "position:x", global_position.x + 150, 0.2)
+	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
 
-	
+
 func _process(delta: float) -> void:
 	
 	# Falls ein VisibleOnScreenNotifier2D im Root ist, keine hart gecodede queue_free Grenze setzen.
