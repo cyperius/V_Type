@@ -143,7 +143,7 @@ func loese_audio_ereignis_aus(event_name: String) -> void:
 		"enemies_appear":
 			enemies_appear()
 		"zoom_out":
-			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 34.0)
+			zoom_out(0.5 * zoom_factor.x, 0.5 * zoom_factor.y, 24.0)  # Zeit bis 15.4.46 war: 34
 			#zoom_changing = true
 			# Signal ans playerr_schiff, das das spride versteckt wird und das
 			# animatedsprite abgespielt wird, und evtl. Steuerung aufheben / Autolenkung

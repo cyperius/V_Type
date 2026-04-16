@@ -89,8 +89,10 @@ func _on_collision_detected(shot_type: Node, collision_spot: Vector2):
 	
 func _process(delta: float) -> void:
 	
-	if position.x < -50:
-		queue_free()
+	# Falls ein VisibleOnScreenNotifier2D im Root ist, keine hart gecodede queue_free Grenze setzen.
+	if get_node("$VisibleOnScreenNotifier2D") != null:
+		if position.x < -50:
+			queue_free()
 		
 	position.x += delta * x_speed * direction.x
 	position.y += delta * y_speed * direction.y

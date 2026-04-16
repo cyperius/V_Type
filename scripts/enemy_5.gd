@@ -57,6 +57,7 @@ func connect_signals() -> void:
 func _on_target_player_activated() -> void:
 	if is_player_tracking_active:
 		return # falls der Player schon getrackt wird, soll die Geschwindigekit nicht geändert werden
+		# dies ist der Fall, wenn die detection_area getriggered wurde 
 	else: 
 		y_speed = 150
 		is_player_tracking_active = true
