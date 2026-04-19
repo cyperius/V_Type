@@ -1,54 +1,65 @@
-[gd_scene load_steps=2 format=3 uid="uid://djck1bb2tl1lg"]
+[gd_scene format=3 uid="uid://djck1bb2tl1lg"]
 
 [ext_resource type="Script" uid="uid://dc0cvebmpglmy" path="res://scripts/enemy_spawner.gd" id="1_buppp"]
+[ext_resource type="PackedScene" uid="uid://tn7oan56ea6u" path="res://enemies&obstacles/bosses/boss_1.tscn" id="2_mcc0i"]
+[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="3_6fjkm"]
+[ext_resource type="PackedScene" uid="uid://5y6lldcv6my" path="res://enemy_with_path.tscn" id="4_jm5gl"]
+[ext_resource type="PackedScene" uid="uid://8b0u2iy513rn" path="res://enemies&obstacles/enemy_with_path2.tscn" id="5_odx61"]
 
-[node name="EnemySpawner" type="Node2D"]
+[node name="EnemySpawner" type="Node2D" unique_id=1898325927]
 process_mode = 1
 script = ExtResource("1_buppp")
+level_boss = ExtResource("2_mcc0i")
+enemy1 = ExtResource("3_6fjkm")
+enemy2_with_path = ExtResource("4_jm5gl")
+enemy4_with_path = ExtResource("5_odx61")
 
-[node name="SpawnPositions" type="Node2D" parent="."]
+[node name="SpawnPositions" type="Node2D" parent="." unique_id=379075759]
 
-[node name="Marker2D" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D" type="Marker2D" parent="SpawnPositions" unique_id=308162774]
 position = Vector2(4800, 320)
 
-[node name="Marker2D2" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D2" type="Marker2D" parent="SpawnPositions" unique_id=1970859308]
 position = Vector2(4800, 640)
 
-[node name="Marker2D3" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D3" type="Marker2D" parent="SpawnPositions" unique_id=124360902]
 position = Vector2(4800, 960)
 
-[node name="Marker2D4" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D4" type="Marker2D" parent="SpawnPositions" unique_id=1803486617]
 position = Vector2(4800, 1280)
 
-[node name="Marker2D5" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D5" type="Marker2D" parent="SpawnPositions" unique_id=943656171]
 position = Vector2(4800, 1600)
 
-[node name="Marker2D6" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D6" type="Marker2D" parent="SpawnPositions" unique_id=1206868361]
 position = Vector2(4792, 1920)
 gizmo_extents = 69.5
 
-[node name="Marker2D7" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D7" type="Marker2D" parent="SpawnPositions" unique_id=1422438080]
 position = Vector2(9600, 2240)
 
-[node name="Marker2D8" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D8" type="Marker2D" parent="SpawnPositions" unique_id=1425883796]
 position = Vector2(9600, 2560)
 
-[node name="Marker2D9" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D9" type="Marker2D" parent="SpawnPositions" unique_id=1022553620]
 position = Vector2(9600, 2880)
 
-[node name="Marker2D10" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D10" type="Marker2D" parent="SpawnPositions" unique_id=927478434]
 position = Vector2(9600, 1280)
 
-[node name="Marker2D11" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D11" type="Marker2D" parent="SpawnPositions" unique_id=39049456]
 position = Vector2(9600, 3520)
 
-[node name="Marker2D12" type="Marker2D" parent="SpawnPositions"]
+[node name="Marker2D12" type="Marker2D" parent="SpawnPositions" unique_id=1136301674]
 position = Vector2(9600, 3840)
 gizmo_extents = 69.5
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=19730763]
 autostart = true
 
-[node name="Timer2" type="Timer" parent="."]
+[node name="Timer2" type="Timer" parent="." unique_id=266118409]
 wait_time = 10.0
+autostart = true
+
+[node name="Timer4" type="Timer" parent="." unique_id=1296434737]
 autostart = true

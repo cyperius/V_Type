@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://8b0u2iy513rn"]
+
+[ext_resource type="Script" uid="uid://bu4hlfcybq50o" path="res://scripts/path_from_above.gd" id="1_s5myg"]
+[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="2_s5myg"]
+
+[sub_resource type="Curve2D" id="Curve2D_ehqj4"]
+_data = {
+"points": PackedVector2Array(-79.9031, 16.9706, 79.9031, -16.9706, 1356, 1967, 107.277214, 219.1194, -107.277214, -219.1194, 1009, 1756, -123.332016, 265.36646, 123.332016, -265.36646, 939, 768, 150.64459, 253.35681, -150.64459, -253.35681, 918.5714, 141.42856, -38.802395, -31.954914, 38.802395, 31.954914, 297, -547)
+}
+point_count = 5
+
+[node name="Path2D" type="Path2D" unique_id=795176581]
+process_mode = 1
+position = Vector2(2219, 74)
+curve = SubResource("Curve2D_ehqj4")
+script = ExtResource("1_s5myg")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=248455754]
+position = Vector2(297.00003, -547)
+progress = 3057.2356
+rotates = false
+loop = false
+
+[node name="Enemy1" parent="PathFollow2D" unique_id=534037284 instance=ExtResource("2_s5myg")]
+position = Vector2(1.5711195, 7.602182)
+
+[node name="Sprite2D" parent="PathFollow2D/Enemy1" index="0" unique_id=897792053]
+rotation = -1.43117
+
+[editable path="PathFollow2D/Enemy1"]

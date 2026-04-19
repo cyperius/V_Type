@@ -8,6 +8,7 @@ signal incoming_boss
 
 @export var timer_basic_wait_time : int = 3
 @export var timer2_basic_wait_time : int = 4
+@export var timer4_basic_wait_time : int = 5
 
 
 @export var level_boss : PackedScene
@@ -24,12 +25,14 @@ signal incoming_boss
 
 @onready var timer = $Timer
 @onready var timer2 = $Timer2
+@onready var timer_4 = $Timer4
+
 var timer3 : Timer # so wird timer3 als globale Variable definiert - das klappt unabhängig davon
 # ob sie tatsächlcih mit einem Wert ausgestattet wird. Somit kann, wenn ihr denn später in diesem Skript einen 
 # Wert / eine referenz zugeordnet wird darauf zugegriffen werden
 @onready var randomizer = RandomNumberGenerator.new()
-@onready var enemy_blueprint = preload("res://enemies&obstacles/enemy_1.tscn")
-@onready var path_enemy_blueprint = preload("res://enemies&obstacles/enemy_with_path.tscn")
+#@onready var enemy_blueprint = preload("res://enemies&obstacles/enemy_1.tscn")
+#@onready var path_enemy_blueprint = preload("res://enemies&obstacles/enemy_with_path.tscn")
 @onready var level = $".."
 
 
@@ -66,8 +69,8 @@ func _ready() -> void:
 	if self.has_node("%Timer3"):
 		timer3 = get_node("%Timer3")
 		timer3.timeout.connect(_on_timer3_timeout)
-	
-	
+	timer_4.timeout.connect(_on_timer_4_timeout)
+
 	
 func set_spawn_rate(spawn_rate_multiplyer: int = 1) -> void:
 	# default Wert (für den fall, dass noch kein Spieler im Spiel ist)
@@ -122,6 +125,21 @@ func _on_timer2_timeout():
 		# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
 		# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
 		enemy_counter += 1
+	
+	
+func _on_timer_4_timeout():
+	if enemy4_with_path == null:
+		return
+	else:
+		var path_enemy = enemy4_with_path.instantiate()
+		print("enemy_spawner: enemy4 spawned")
+		emit_signal("enemy_spawned", path_enemy)
+		path_enemy.global_position = $FromAbove/Marker2D.position
+		enemies_container.add_child(path_enemy)
+		# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
+		# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
+		enemy_counter += 1
+	
 	
 	
 func _on_timer3_timeout() -> void:

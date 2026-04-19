@@ -90,23 +90,18 @@ func do_evasive_maneuver() -> void:
 	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
 
 
-func _process(delta: float) -> void:
-	
-	# Falls ein VisibleOnScreenNotifier2D im Root ist, keine hart gecodede queue_free Grenze setzen.
-	if get_node("$VisibleOnScreenNotifier2D") != null:
-		if position.x < -50:
-			queue_free()
-		
+func _physics_process(delta: float) -> void:
+	var x_speed = x_basic_speed * GameManager.loop_counter
+	var y_speed = y_basic_speed * GameManager.loop_counter
+	print("y_speed: ", y_speed, " direction.y: ", direction.y, " y_basic_speed: ", y_basic_speed)
 	position.x += delta * x_speed * direction.x
 	position.y += delta * y_speed * direction.y
+	print("global_pos: ", global_position, " parent global_pos: ", get_parent().global_position)
 	
 	
-	#if "do_target_player" in current_level:
-		#if current_level.do_target_player == true:
-		
-	if is_player_tracking_active == true:
+	if is_player_tracking_active:
 		track_nearest_player()
-	
+
 	
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"

@@ -25,7 +25,3 @@ func _process(delta: float) -> void:
 
 func _on_enemy_destroyed(score: int, energy: int) -> void:
 	emit_signal("enemy_destroyed", score, energy)
-
-#
-	#
-	
