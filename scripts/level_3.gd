@@ -18,7 +18,10 @@ signal player_placement_initiated
 @onready var time_delay = 0.8 + GameManager.loop_counter / 5
 @onready var center_node = $Center
 
-
+# aus level_base kopiert:
+# Kameraposition (top_left oder center)
+enum CameraPosition { TOP_LEFT = Camera2D.ANCHOR_MODE_FIXED_TOP_LEFT, CENTER = Camera2D.ANCHOR_MODE_DRAG_CENTER }
+@export var camera_position: CameraPosition = CameraPosition.TOP_LEFT
 
 
 func _ready() -> void:
