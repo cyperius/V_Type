@@ -131,15 +131,8 @@ func _on_timer_4_timeout():
 	if enemy4_with_path == null:
 		return
 	else:
-		var path_enemy = enemy4_with_path.instantiate()
-		print("enemy_spawner: enemy4 spawned")
-		emit_signal("enemy_spawned", path_enemy)
-		path_enemy.global_position = $FromAbove/Marker2D.position
-		enemies_container.add_child(path_enemy)
-		# und nun noch im Szenenbaum der aktuellen Szene (also die, welcher dieses Skript angehängt ist) 
-		# als child zugeordnet (erst dann wird die Szene auch im Spiel manifestiert)
-		enemy_counter += 1
-	
+		_spawn_wave(enemy4_with_path, 4 * number_of_players, 0.1, $FromAbove/Marker2D.global_position)
+		
 	
 	
 func _on_timer3_timeout() -> void:
@@ -189,4 +182,13 @@ func here_comes_the_boss():
 func _on_boss_defeated():
 	print("enemy_spawner_received_boss_defeated")
 	emit_signal("boss_defeated")
+	
+	
+func _spawn_wave(enemy_to_spawn: PackedScene, amount : int, pause_between_spawns: float, position: Vector2):
+	for number in range(1, amount):
+		var spawning_enemy = enemy_to_spawn.instantiate()
+		emit_signal("enemy_spawned", spawning_enemy)
+		spawning_enemy.global_position = position
+		enemies_container.add_child(spawning_enemy)
+		enemy_counter += 1
 	

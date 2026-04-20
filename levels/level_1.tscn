@@ -2,13 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_gwceb"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_gwceb"]
-[ext_resource type="PackedScene" uid="uid://rgckmvef731q" path="res://enemies&obstacles/enemy_1.tscn" id="3_btoec"]
-[ext_resource type="PackedScene" uid="uid://tn7oan56ea6u" path="res://enemies&obstacles/bosses/boss_1.tscn" id="3_l53as"]
 [ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="4_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="5_08mmt"]
 [ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="6_5ot28"]
 [ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_l53as"]
-[ext_resource type="PackedScene" uid="uid://8b0u2iy513rn" path="res://enemies&obstacles/enemy_with_path2.tscn" id="7_3sk1a"]
 
 [node name="Level_1" type="Node2D" unique_id=856734464]
 process_mode = 1
@@ -16,12 +13,11 @@ script = ExtResource("1_gwceb")
 amount_of_enemies = 60
 
 [node name="EnemySpawner" parent="." unique_id=106955596 instance=ExtResource("2_gwceb")]
-position = Vector2(1292, 2)
-level_boss = ExtResource("3_l53as")
-enemy1 = ExtResource("3_btoec")
+position = Vector2(632, 96)
+timer_basic_wait_time = 30
+timer2_basic_wait_time = 40
 enemy2_with_path = ExtResource("4_3sk1a")
 enemy3 = ExtResource("6_l53as")
-enemy4_with_path = ExtResource("7_3sk1a")
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="0" unique_id=308162774]
 position = Vector2(4032, 1783)
@@ -59,16 +55,20 @@ position = Vector2(5286, 1703)
 [node name="Marker2D12" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="11" unique_id=1136301674]
 position = Vector2(5350, 2121)
 
+[node name="Timer4" parent="EnemySpawner" index="3" unique_id=1296434737]
+wait_time = 5.0
+
 [node name="FromAbove" type="Node2D" parent="EnemySpawner" unique_id=53472867]
+position = Vector2(-637, -110)
 
 [node name="Marker2D" type="Marker2D" parent="EnemySpawner/FromAbove" unique_id=285445821]
-position = Vector2(1726, -418)
+position = Vector2(2009, -354)
 
 [node name="Marker2D2" type="Marker2D" parent="EnemySpawner/FromAbove" unique_id=1664907098]
-position = Vector2(2522, -422)
+position = Vector2(2600, -370)
 
 [node name="Marker2D3" type="Marker2D" parent="EnemySpawner/FromAbove" unique_id=470013707]
-position = Vector2(3242, -413)
+position = Vector2(3272, -331)
 
 [node name="EnemiesContainer" type="Node2D" parent="." unique_id=504957321]
 

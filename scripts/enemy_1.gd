@@ -1,6 +1,7 @@
 class_name Enemy extends Area2D
 
 signal collision_detected(enemy: Node, collision_position: Vector2)
+signal enemy_spawned
 
 
 @export var health_points: int = 10
@@ -31,7 +32,7 @@ var evasive_mode_on = false
 var player_shot_owner_id : int =- 1
 var is_player_tracking_active := false
 var player : PlayerShip
-
+var following_path := false
 
 
 func _ready() -> void:
@@ -39,6 +40,7 @@ func _ready() -> void:
 	add_to_group("enemies")
 	add_to_group("evaders")
 	collision_detected.connect(_on_collision_detected)
+	enemy_spawned.connect(_on_enemy_spawned)
 	
 	
 	if shoot_timer:
@@ -90,19 +92,21 @@ func do_evasive_maneuver() -> void:
 	tween.tween_property(self, "position:y", global_position.y + 300, 0.2)
 
 
-func _physics_process(delta: float) -> void:
-	var x_speed = x_basic_speed * GameManager.loop_counter
-	var y_speed = y_basic_speed * GameManager.loop_counter
-	print("y_speed: ", y_speed, " direction.y: ", direction.y, " y_basic_speed: ", y_basic_speed)
-	position.x += delta * x_speed * direction.x
-	position.y += delta * y_speed * direction.y
-	print("global_pos: ", global_position, " parent global_pos: ", get_parent().global_position)
-	
-	
-	if is_player_tracking_active:
-		track_nearest_player()
+func _process(delta: float) -> void:
+	if following_path == false:
+		var x_speed = x_basic_speed * GameManager.loop_counter
+		var y_speed = y_basic_speed * GameManager.loop_counter
+		#print("y_speed: ", y_speed, " direction.y: ", direction.y, " y_basic_speed: ", y_basic_speed)
+		
+		position.x += delta * x_speed * direction.x
+		position.y += delta * y_speed * direction.y
+		# Kontrolle der Flugrichtung
+		#print("global_pos: ", global_position, " parent global_pos: ", get_parent().global_position)
+		
+		if is_player_tracking_active:
+			track_nearest_player()
 
-	
+
 func track_nearest_player():
 	# der naheliegenste player steht am Anfang noch nicht fest, daher: "null"
 	closest_player = null
@@ -126,6 +130,9 @@ func track_nearest_player():
 		if global_position.distance_to(closest_player.global_position) > 100:
 			direction = global_position.direction_to(closest_player.global_position)
 
+
+func _on_enemy_spawned() -> void:
+	pass
 
 
 func _on_shoot_timer_timeout():

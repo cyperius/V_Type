@@ -375,7 +375,7 @@ func calculate_damage_state() -> void:
 
 func _do_been_hit_blink() -> void:
 	var t := create_tween()
-	t.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(6).from_current()
+	t.tween_property(self, "modulate", Color(1, 0, 0), 1).set_trans(Tween.TRANS_ELASTIC).from_current()
 	t.set_loops(1)
 
 func _on_just_been_hit_timer_timeout() -> void:
@@ -425,7 +425,7 @@ func _set_boost(active: bool) -> void:
 # ──────────────────────────────────────────────────────────────
 #   WEAPONS
 # ──────────────────────────────────────────────────────────────
-func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
+func shoot_weapon(weapon: PackedScene, incoming_player_id : int) -> void:
 	if not weapon:
 		return
 	# hier gewünschtenfalls waffenspezifische Cool_down Phase integrieren?
@@ -434,9 +434,9 @@ func shoot_weapon(weapon: PackedScene, player_id : int) -> void:
 	# Eigentümer setzen (robust, je nach Projektil-Implementierung)
 	if "owner_id" in projectile:
 		# print("(player_ship.gd): owner id in projectil!")
-		projectile.owner_id = player_id # beim abfeuern, wird also die owner_id dem Schuss mitgegeben
+		projectile.owner_id = incoming_player_id # beim abfeuern, wird also die owner_id dem Schuss mitgegeben
 	elif projectile.has_method("set_owner_id"):
-		projectile.set_owner_id(player_id)
+		projectile.set_owner_id(incoming_player_id)
 
 	# Position vom Gunpoint
 	var gunpoint := %Gunpoint
@@ -547,9 +547,10 @@ func _change_health(delta_hp: int) -> void:
 	health = clamp(health + delta_hp, 0, max_health)
 	_emit_stats()
 #
-func _change_energy(delta_energy: int) -> void:
-	blue_energy = clamp(blue_energy + delta_energy, 0, max_energy)
+func _change_energy(delta_energy: float) -> void:
+	blue_energy = round(clamp(blue_energy + delta_energy, 0, max_energy))
 	_emit_stats()
+
 
 func _drain_energy_per_sec(rate: float, delta: float) -> void:
 	if blue_energy <= 0:

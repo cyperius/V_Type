@@ -5,19 +5,20 @@
 
 [sub_resource type="Curve2D" id="Curve2D_ehqj4"]
 _data = {
-"points": PackedVector2Array(-79.9031, 16.9706, 79.9031, -16.9706, 1356, 1967, 107.277214, 219.1194, -107.277214, -219.1194, 1009, 1756, -123.332016, 265.36646, 123.332016, -265.36646, 939, 768, 150.64459, 253.35681, -150.64459, -253.35681, 918.5714, 141.42856, -38.802395, -31.954914, 38.802395, 31.954914, 297, -547)
+"points": PackedVector2Array(-118.17731, -125.707275, 118.17731, 125.707275, 1393.5994, 1964.0276, 150.36496, 392.0382, -150.36496, -392.0382, 918.5714, 141.42856, -38.802395, -31.954914, 38.802395, 31.954914, 495, -582)
 }
-point_count = 5
+point_count = 3
 
 [node name="Path2D" type="Path2D" unique_id=795176581]
 process_mode = 1
-position = Vector2(2219, 74)
+position = Vector2(2096.102, 265.63953)
+scale = Vector2(1.2381775, 1.3413051)
 curve = SubResource("Curve2D_ehqj4")
 script = ExtResource("1_s5myg")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=248455754]
-position = Vector2(297.00003, -547)
-progress = 3057.2356
+position = Vector2(495.00006, -581.99994)
+progress = 2763.2156
 rotates = false
 loop = false
 

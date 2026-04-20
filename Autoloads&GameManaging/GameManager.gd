@@ -81,7 +81,7 @@ func _on_player_removed(player_id) -> void:
 		player_scores.erase(player_id)
 	
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("level_1"):
 		jump_to_level(1)
 	if Input.is_action_just_pressed("level_2"):
@@ -130,7 +130,7 @@ func _on_roster_changed_check_game_over(_player_id := -1) -> void:
 
 
 func jump_to_level(level_nr: int) -> void:
-	await AudioManager.fade_out(4) # funktionoert nicht: "await" keyword is unnecessary because the expression isn't a coroutine nor a signal.
+	#await AudioManager.fade_out(4) # funktionoert nicht: "await" keyword is unnecessary because the expression isn't a coroutine nor a signal.
 	GameManager.current_level = level_nr
 	GameManager._load_level(level_nr)
 
@@ -307,16 +307,16 @@ func _on_level_finished(next_level_nr: int, gained_score: int = 0, gained_energy
 # ──────────────────────────────────────────────────────────────
 #   SIGNAL-CALLBACKS
 # ──────────────────────────────────────────────────────────────
-func _on_enemy_hit(score: int, energy: int, player_id: int) -> void:
+func _on_enemy_hit(incoming_score: int, energy: int, player_id: int) -> void:
 	if not player_scores.has(player_id):
 		player_scores[player_id] = 0
-	player_scores[player_id] += score
+	player_scores[player_id] += incoming_score
 	if Global.player_ships.has(player_id):
 		var ship = Global.player_ships[player_id]
 		if ship is PlayerShip:
 			#print("line289: check")
 			ship.blue_energy += energy
-			ship.score += score
+			ship.score += incoming_score
 	_update_global_ui()
 	_update_player_ui(player_id)
 
