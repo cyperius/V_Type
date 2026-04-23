@@ -2,10 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_gwceb"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_gwceb"]
-[ext_resource type="PackedScene" uid="uid://y6nps4werd78" path="res://enemies&obstacles/enemy_with_path.tscn" id="4_3sk1a"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="5_08mmt"]
 [ext_resource type="AudioStream" uid="uid://df2eahybbankl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Hero Immortal.wav" id="6_5ot28"]
-[ext_resource type="PackedScene" uid="uid://cceyqccs75s6e" path="res://enemies&obstacles/circling_enemy_2.tscn" id="6_l53as"]
 
 [node name="Level_1" type="Node2D" unique_id=856734464]
 process_mode = 1
@@ -14,10 +12,7 @@ amount_of_enemies = 60
 
 [node name="EnemySpawner" parent="." unique_id=106955596 instance=ExtResource("2_gwceb")]
 position = Vector2(632, 96)
-timer_basic_wait_time = 30
-timer2_basic_wait_time = 40
-enemy2_with_path = ExtResource("4_3sk1a")
-enemy3 = ExtResource("6_l53as")
+enemy_type_1_wave = true
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="0" unique_id=308162774]
 position = Vector2(4032, 1783)

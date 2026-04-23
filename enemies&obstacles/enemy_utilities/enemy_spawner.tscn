@@ -10,9 +10,12 @@
 process_mode = 1
 script = ExtResource("1_buppp")
 level_boss = ExtResource("2_mcc0i")
-enemy1 = ExtResource("3_6fjkm")
-enemy2_with_path = ExtResource("4_jm5gl")
-enemy4_with_path = ExtResource("5_odx61")
+enemy_type_1_scene = ExtResource("3_6fjkm")
+enemy_type_2_scene = ExtResource("4_jm5gl")
+enemy_type_2_is_path_enemy = true
+enemy_type_3_scene = ExtResource("5_odx61")
+enemy_type_3_wave = true
+enemy_type_3_is_path_enemy = true
 
 [node name="SpawnPositions" type="Node2D" parent="." unique_id=379075759]
 
@@ -53,13 +56,3 @@ position = Vector2(9600, 3520)
 [node name="Marker2D12" type="Marker2D" parent="SpawnPositions" unique_id=1136301674]
 position = Vector2(9600, 3840)
 gizmo_extents = 69.5
-
-[node name="Timer" type="Timer" parent="." unique_id=19730763]
-autostart = true
-
-[node name="Timer2" type="Timer" parent="." unique_id=266118409]
-wait_time = 10.0
-autostart = true
-
-[node name="Timer4" type="Timer" parent="." unique_id=1296434737]
-autostart = true
