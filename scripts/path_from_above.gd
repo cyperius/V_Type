@@ -8,8 +8,9 @@ var leave_path_ratio: float
 var has_left_path := false
 
 func _ready() -> void:
-	enemy_spawned.connect(func(): GameManager._on_enemy_spawned())
-	enemy_spawned.emit()
+	#enemy_spawned.connect(func(): GameManager._on_enemy_spawned()) # Der enemy, 
+	# nicht der Pfad soll spawnen melden
+	#enemy_spawned.emit()
 	enemy.following_path = true
 	path.set_progress_ratio(1)
 	add_to_group("enemies")

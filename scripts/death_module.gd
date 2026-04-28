@@ -23,5 +23,9 @@ func die() -> void:
 	if death_module_owner.path2d_origin == true:
 		# zu allfälligem path2D (Ex-)Parent verbinden um dort löschen zu triggern
 		enemy_destroyed.connect(path_node_to_delete._on_following_path_enemy_destroyed)
-		enemy_destroyed.emit() # zu allfälligem path2D (Ex-)Parent verbinden um dort löschen zu triggern
-		death_module_owner.queue_free()
+		enemy_destroyed.emit() 
+		death_module_owner.queue_free() # dann erst den enemy löschen
+	else:
+		enemy_destroyed.emit() # enemy_destroyed senden; es ist aber in diesem
+		# Fall nur mit dem GameManager verbunden für Satistik / UI
+		death_module_owner.queue_free() # dann ebenfalls enemy löschen

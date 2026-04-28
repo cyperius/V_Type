@@ -12,7 +12,9 @@ amount_of_enemies = 60
 
 [node name="EnemySpawner" parent="." unique_id=106955596 instance=ExtResource("2_gwceb")]
 position = Vector2(632, 96)
-enemy_type_1_wave = true
+enemy_type_1_wait_time = 1.0
+enemy_type_1_wave_amount = 1
+enemy_type_2_wait_time = 400.0
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="0" unique_id=308162774]
 position = Vector2(4032, 1783)

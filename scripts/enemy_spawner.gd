@@ -88,40 +88,57 @@ func _setup_enemy_timers() -> void:
 		 "is_path_enemy": enemy_type_4_is_path_enemy},
 	]
 
-	for config_data in all_configs:
-		if config_data["scene"] == null:
-			continue
-
-		var new_timer := Timer.new()
+	for config_data in all_configs: # Für jedes Element (dictionary) im Array "all_configs"...
+		if config_data["scene"] == null: # Wenn der dictionary-key "scene" keinen Wert zugeordnet...
+			continue # ... hat, überspringe dieses Element
+		# ansonsten kreiere und konfiguriere einen timer 
+		var new_timer := Timer.new() #
 		new_timer.wait_time = config_data["wait_time"]
 		new_timer.one_shot = false
 
+		# kreiere die Variable "config_index"(int), die der Grösse des Arrays
+		# active_timers entspricht und füge den gerade kreierten timer hinzu
 		var config_index := active_timers.size()
 		active_timers.append(new_timer)
-		timer_to_config[config_index] = config_data
+		
+		# kreiere im Dictionary "timer_to_config" einen key(int), welcher dem 
+		# Wert der gerade kreierten Variable "config_index" entspricht (Hinweis:
+		# da dieser Wert jew. vor dem hinzufügen des neuen Timers erfolgt, ist die
+		# index-Zahl für den ersten Timer 0, für den zweiten 1, usw.)...
+		timer_to_config[config_index] = config_data # und ordner diesem key
+		# das aktuelle Element (also den aktuellen "timer-dictionary" mit den im
+		# Inspector gesetzten Konfigurationsdaten) als value zu
 
-		add_child(new_timer)
+		add_child(new_timer) # der Timer wird zur Szene hinzugefügt
+		# und sein timeout-Signal wird mit der zugehörigen Methode verbunden
+		# Dies ist _on_enemy_timer_timeout.config_index
 		new_timer.timeout.connect(_on_enemy_timer_timeout.bind(config_index))
-		new_timer.start()
+		new_timer.start() # und dder timer wird gestartet
 
-
+# Wenn ein timeout für Timer_x (timer.config_index) kommt, dann...
 func _on_enemy_timer_timeout(config_index: int) -> void:
+	# ...breche ab, falls der config_index dieses Timers im Dictionary 
+	# timer_to_config" nicht als key existieren sollte (nur eine Sicherheitsabfrage)
 	if not timer_to_config.has(config_index):
 		return
-
+	
+	# Kreiere eine Variable "config_data" und ordne ihr den Wert zu, der  im 
+	# timer-Dictionary dem value entspricht, der zum key mit der aktuellen Indexzahl 
+	# (welcher dieser methode als Argument mitgegeben wurde) gehört
 	var config_data: Dictionary = timer_to_config[config_index]
 
-	if config_data["scene"] == null:
+	if config_data["scene"] == null: # Falls Keine Gegner-Szene gesetzt : Abbruch
 		return
 
-	at_least_one_enemy_spawned = true
+	at_least_one_enemy_spawned = true # Wichtig für timimg im Zusammenspiel
+	# mit level_base.gd (dort wird der Boolean geprüft)
 
 	if config_data["wave"] and config_data["is_path_enemy"]:
 		# Welle aus Path-Enemies: jeder bekommt seine eigene Y-Position
 		_spawn_path_enemy_wave(config_data["scene"], config_data["wave_amount"] * number_of_players)
 	elif config_data["wave"]:
 		var spawn_position := _get_random_spawn_position()
-		_spawn_wave(config_data["scene"], config_data["wave_amount"] * number_of_players, 0.1, spawn_position)
+		_spawn_wave(config_data["scene"], config_data["wave_amount"] * number_of_players, 0.5, spawn_position)
 	elif config_data["is_path_enemy"]:
 		_spawn_path_enemy(config_data["scene"])
 	else:

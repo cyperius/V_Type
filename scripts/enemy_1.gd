@@ -14,6 +14,7 @@ signal enemy_deleted
 @export var score_count : int = 100
 @export var energy_left : int = 5
 @export var chance_of_shooting : int = 1
+@export var path2d_origin := false
 
 
 @onready var x_speed = x_basic_speed * GameManager.loop_counter
@@ -61,12 +62,14 @@ func _ready() -> void:
 	
 	
 func _on_screen_entered() -> void:
+	print("enemy_1: screen_entered")
 	screen_entered = true
 	is_waiting_for_despawn = false
 	queue_free_timer.stop()
 	
 	
 func _on_screen_exited() -> void:
+	print("enemy_1: screen_enxited")
 	if screen_entered and not is_waiting_for_despawn: # verhindert Mehrfachauslösung
 		is_waiting_for_despawn = true
 		queue_free_timer.start()
@@ -183,6 +186,7 @@ func apply_damage(damage_amount, owner_id) -> void:
 	# damage_dealt begrenzen, wenn HP auf 0 sind (wegen Score)
 	var damage_dealt = clamp(damage_amount, 0, health_points) #
 	health_points -= damage_dealt
+	print("enemy_1: took ", damage_dealt, " damage")
 	# Punktzahl in Abhängigkeit vom zugefügten Schaden, aktuell simpel 1:1
 	var score = damage_dealt
 	GameManager._on_enemy_hit(score, energy_left, owner_id)

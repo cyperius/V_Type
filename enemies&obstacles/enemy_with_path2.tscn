@@ -5,25 +5,25 @@
 
 [sub_resource type="Curve2D" id="Curve2D_ehqj4"]
 _data = {
-"points": PackedVector2Array(-118.17731, -125.707275, 118.17731, 125.707275, 1393.5994, 1964.0276, 150.36496, 392.0382, -150.36496, -392.0382, 918.5714, 141.42856, -38.802395, -31.954914, 38.802395, 31.954914, 495, -582)
+"points": PackedVector2Array(-40.344254, -432.018, 40.344254, 432.018, 1304.898, 1628.3605, 0, 0, 0, 0, 1562.898, 1565.3605, 150.36496, 392.0382, -150.36496, -392.0382, 918.5714, 141.42856, -38.802395, -31.954914, 38.802395, 31.954914, 495, -582)
 }
-point_count = 3
+point_count = 4
 
 [node name="Path2D" type="Path2D" unique_id=795176581]
 process_mode = 1
 position = Vector2(2096.102, 265.63953)
-scale = Vector2(1.2381775, 1.3413051)
 curve = SubResource("Curve2D_ehqj4")
 script = ExtResource("1_s5myg")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=248455754]
 position = Vector2(495.00006, -581.99994)
-progress = 2763.2156
+progress = 2926.408
 rotates = false
 loop = false
 
 [node name="Enemy1" parent="PathFollow2D" unique_id=534037284 instance=ExtResource("2_s5myg")]
 position = Vector2(1.5711195, 7.602182)
+scale = Vector2(0.1, 0.1)
 
 [node name="Sprite2D" parent="PathFollow2D/Enemy1" index="0" unique_id=897792053]
 rotation = -1.43117
