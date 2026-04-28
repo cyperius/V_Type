@@ -14,7 +14,6 @@ amount_of_enemies = 60
 position = Vector2(632, 96)
 enemy_type_1_wait_time = 1.0
 enemy_type_1_wave_amount = 1
-enemy_type_2_wait_time = 400.0
 
 [node name="Marker2D" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="0" unique_id=308162774]
 position = Vector2(4032, 1783)
@@ -33,24 +32,6 @@ position = Vector2(4356, 1023)
 
 [node name="Marker2D6" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="5" unique_id=1206868361]
 position = Vector2(4097, 206)
-
-[node name="Marker2D7" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="6" unique_id=1422438080]
-position = Vector2(5379.5, 423)
-
-[node name="Marker2D8" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="7" unique_id=1425883796]
-position = Vector2(5379.5, 743)
-
-[node name="Marker2D9" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="8" unique_id=1022553620]
-position = Vector2(5291, 1186)
-
-[node name="Marker2D10" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="9" unique_id=927478434]
-position = Vector2(5320, 84)
-
-[node name="Marker2D11" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="10" unique_id=39049456]
-position = Vector2(5286, 1703)
-
-[node name="Marker2D12" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="11" unique_id=1136301674]
-position = Vector2(5350, 2121)
 
 [node name="FromAbove" type="Node2D" parent="EnemySpawner" unique_id=53472867]
 position = Vector2(-637, -110)

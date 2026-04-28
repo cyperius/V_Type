@@ -37,22 +37,3 @@ position = Vector2(4800, 1600)
 [node name="Marker2D6" type="Marker2D" parent="SpawnPositions" unique_id=1206868361]
 position = Vector2(4792, 1920)
 gizmo_extents = 69.5
-
-[node name="Marker2D7" type="Marker2D" parent="SpawnPositions" unique_id=1422438080]
-position = Vector2(9600, 2240)
-
-[node name="Marker2D8" type="Marker2D" parent="SpawnPositions" unique_id=1425883796]
-position = Vector2(9600, 2560)
-
-[node name="Marker2D9" type="Marker2D" parent="SpawnPositions" unique_id=1022553620]
-position = Vector2(9600, 2880)
-
-[node name="Marker2D10" type="Marker2D" parent="SpawnPositions" unique_id=927478434]
-position = Vector2(9600, 1280)
-
-[node name="Marker2D11" type="Marker2D" parent="SpawnPositions" unique_id=39049456]
-position = Vector2(9600, 3520)
-
-[node name="Marker2D12" type="Marker2D" parent="SpawnPositions" unique_id=1136301674]
-position = Vector2(9600, 3840)
-gizmo_extents = 69.5

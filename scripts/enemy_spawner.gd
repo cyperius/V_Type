@@ -188,7 +188,7 @@ func _spawn_path_enemy_wave(enemy_scene: PackedScene, amount: int) -> void:
 		var spawn_pos_nr := randi_range(1, spawn_positions_count - 1)
 		var path_enemy := enemy_scene.instantiate()
 		emit_signal("enemy_spawned", path_enemy)
-		path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y / 2.8
+		#path_enemy.position.y = enemy_positions[spawn_pos_nr].position.y / 2.8
 		enemies_container.add_child(path_enemy)
 		enemy_counter += 1
 
