@@ -1,5 +1,7 @@
 extends Area2D
 
+signal enemy_spawned
+
 @export var health_points : int = 50
 @export var damage = 100
 @export var score_count : int = 300
@@ -9,10 +11,13 @@ extends Area2D
 @onready var body_area: Area2D = %BodyArea
 @onready var brain_area: Area2D = %BrainArea
 @onready var death_module: DeathModule = $DeathModule
+@export var path2d_origin := false
 
 
 func _ready() -> void:
 	add_to_group("enemies")
+	enemy_spawned.connect(GameManager._on_enemy_spawned)
+	
 	
 	
 func _on_area_entered(other: Area2D) -> void:
@@ -40,6 +45,7 @@ func set_skin2():
 	else:
 		looks.texture = skin2
 		print("tada: skin2! .. ?")
+	
 	
 func _process(delta: float) -> void:
 	pass

@@ -4,8 +4,8 @@
 [ext_resource type="AudioStream" uid="uid://drsetl4v3bkhc" path="res://assets/sound_and_sfx/sound_effects/burst fire.wav" id="2_1ao1f"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_0wkb7"]
 [ext_resource type="Texture2D" uid="uid://xjbbdelekl3r" path="res://assets/graphic_elements/enemies/AlienSquirrel.png" id="4_rwlnn"]
-[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="5_1ao1f"]
-[ext_resource type="PackedScene" uid="uid://dl2e74omrebva" path="res://enemies&obstacles/rolling_enemy.tscn" id="6_0wkb7"]
+[ext_resource type="Script" path="res://scripts/death_module.gd" id="5_1ao1f"]
+[ext_resource type="PackedScene" uid="uid://crvbrnqty5usd" path="res://enemies&obstacles/rolling_enemy.tscn" id="6_0wkb7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3fnv"]
 radius = 320.15
@@ -25,6 +25,8 @@ shot_sound = ExtResource("2_1ao1f")
 shot_scene = ExtResource("3_0wkb7")
 damage = 200
 energy_left = 50
+
+[node name="QueueFreeTimer" type="Timer" parent="." unique_id=2117289482]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=910565017]
 rotation = 0.00297135
@@ -54,4 +56,6 @@ autostart = true
 [node name="DeathModule" type="Node2D" parent="." unique_id=967181764]
 script = ExtResource("5_1ao1f")
 explosion_animation_scene = ExtResource("6_0wkb7")
-metadata/_custom_type_script = "uid://b6e4vqfqm8tnm"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1964159775]
+scale = Vector2(4.9999995, 4.9999995)

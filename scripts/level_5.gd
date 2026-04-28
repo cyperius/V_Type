@@ -130,7 +130,7 @@ func prepare_player_for_circle_formation(player: PlayerShip, player_id: int) -> 
 	player.show()
 	
 	
-	## 7) Signal senden um stats im Flightmodulk des Players zu aktualisieren
+	## 7) Signal senden um stats im Flightmodul des Players zu aktualisieren
 	#player_placement_initiated.emit()
 #
 	## 8) Debug

@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ecewsbe2rq2a" path="res://scripts/mech_enemy.gd" id="1_qdju6"]
 [ext_resource type="Texture2D" uid="uid://bpisr50e3sd0s" path="res://assets/graphic_elements/enemies/mech_ship.png" id="2_ajnso"]
-[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="3_yejvu"]
-[ext_resource type="PackedScene" uid="uid://biu2g8yefq00u" path="res://game_world/explosion_animation.tscn" id="4_pb1jw"]
+[ext_resource type="Script" path="res://scripts/death_module.gd" id="3_yejvu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aiwq4"]
 size = Vector2(823, 915)
@@ -34,4 +33,3 @@ shape = SubResource("RectangleShape2D_d3oyf")
 
 [node name="DeathModule" type="Node2D" parent="." unique_id=749521733]
 script = ExtResource("3_yejvu")
-explosion_animation_scene = ExtResource("4_pb1jw")

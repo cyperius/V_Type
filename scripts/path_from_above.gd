@@ -1,5 +1,6 @@
 extends Path2D
 
+signal enemy_spawned
 @onready var path: PathFollow2D = $PathFollow2D
 @onready var enemy: Enemy = $PathFollow2D/Enemy1
 
@@ -7,12 +8,15 @@ var leave_path_ratio: float
 var has_left_path := false
 
 func _ready() -> void:
+	enemy_spawned.connect(func(): GameManager._on_enemy_spawned())
+	enemy_spawned.emit()
 	enemy.following_path = true
 	path.set_progress_ratio(1)
 	add_to_group("enemies")
 	leave_path_ratio = randf_range(0.0, 0.75)
 	enemy.tree_exiting.connect(queue_free)
 	enemy.tree_exiting.connect(func(): print("Path2D wird jetzt gelöscht"))
+
 
 func _process(delta: float) -> void:
 	if has_left_path:

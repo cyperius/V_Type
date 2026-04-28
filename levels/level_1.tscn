@@ -50,9 +50,6 @@ position = Vector2(5286, 1703)
 [node name="Marker2D12" parent="EnemySpawner/SpawnPositions" parent_id_path=PackedInt32Array(106955596, 379075759) index="11" unique_id=1136301674]
 position = Vector2(5350, 2121)
 
-[node name="Timer4" parent="EnemySpawner" index="3" unique_id=1296434737]
-wait_time = 5.0
-
 [node name="FromAbove" type="Node2D" parent="EnemySpawner" unique_id=53472867]
 position = Vector2(-637, -110)
 

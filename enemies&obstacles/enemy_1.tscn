@@ -58,3 +58,5 @@ autostart = true
 
 [node name="DeathModule" type="Node2D" parent="." unique_id=138624260]
 script = ExtResource("5_03isx")
+
+[node name="QueueFreeTimer" type="Timer" parent="." unique_id=1562611121]

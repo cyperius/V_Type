@@ -2,6 +2,7 @@ class_name Enemy extends Area2D
 
 signal collision_detected(enemy: Node, collision_position: Vector2)
 signal enemy_spawned
+signal enemy_deleted
 
 
 @export var health_points: int = 10
@@ -14,6 +15,7 @@ signal enemy_spawned
 @export var energy_left : int = 5
 @export var chance_of_shooting : int = 1
 
+
 @onready var x_speed = x_basic_speed * GameManager.loop_counter
 @onready var y_speed = y_basic_speed * GameManager.loop_counter
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
@@ -22,6 +24,9 @@ signal enemy_spawned
 @onready var space_ball : SpaceBall # für Angriff aus space_ball
 @onready var current_level : Node # wird in ready_function gesetzt
 @onready var death_module: DeathModule = $DeathModule
+@onready var on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
+@onready var queue_free_timer: Timer = $QueueFreeTimer
+
 
 var self_destruct_triggered := false
 var closest_player : Node
@@ -34,13 +39,41 @@ var is_player_tracking_active := false
 var player : PlayerShip
 var following_path := false
 
+# Mechanik zum automatischen Löschen
+var screen_entered := false # Für queue_free Mechnaik, verhindert ein Löschen bei 
+# initialem Spawn ausserhalb des Screens
+var is_waiting_for_despawn := false # verhindert Mehrfaches auslösen der await Zeile, falls ein 
+# Gegner schnell zwischen Screen entered und exited hin und her wechseln sollte
+
 
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	add_to_group("enemies")
 	add_to_group("evaders")
 	collision_detected.connect(_on_collision_detected)
-	enemy_spawned.connect(_on_enemy_spawned)
+	enemy_spawned.connect(GameManager._on_enemy_spawned)
+	enemy_spawned.emit()
+	
+	on_screen_notifier.screen_entered.connect(_on_screen_entered)
+	on_screen_notifier.screen_exited.connect(_on_screen_exited)
+	enemy_deleted.connect(GameManager._on_enemy_deleted)
+	queue_free_timer.wait_time = 5
+	
+	
+func _on_screen_entered() -> void:
+	screen_entered = true
+	is_waiting_for_despawn = false
+	queue_free_timer.stop()
+	
+	
+func _on_screen_exited() -> void:
+	if screen_entered and not is_waiting_for_despawn: # verhindert Mehrfachauslösung
+		is_waiting_for_despawn = true
+		queue_free_timer.start()
+		await queue_free_timer.timeout
+		if is_instance_valid(self) and not is_queued_for_deletion():
+			emit_signal("enemy_deleted")
+			queue_free()
 	
 	
 	if shoot_timer:

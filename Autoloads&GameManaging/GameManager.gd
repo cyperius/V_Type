@@ -1,7 +1,9 @@
 extends Node
 
 signal level_loaded
-signal enemy_destroyed # wird ausgelöst durch _on_enemy_destroyed(); die wurd durch den enemy_detroyed Signal des enemy ausgelöst
+signal enemy_destroyed # wird ausgelöst durch _on_enemy_destroyed(); die wird durch den enemy_destroyed Signal des enemy ausgelöst
+signal enemy_spawned # wird ausgelöst durch _on_enemy_spawned(); die wird durch Signal in ready Funktion des enemy ausgelöst
+signal enemy_deleted # wird ausgelöst durch _on_enemy_deleted();  die wird durch Signal des enemy ausgelöst, direkt vor queue_free()
 signal player_stats_changed (player_id: int, score: int, energy: int, health: int) # in func _ready weiterverbunden.. aber die
 # Funktion _on_stats_changed dazu fehlt noch; evtl. stattdessen direkt zu direkt _update_player_ui verbinden?
 
@@ -319,6 +321,19 @@ func _on_enemy_hit(incoming_score: int, energy: int, player_id: int) -> void:
 			ship.score += incoming_score
 	_update_global_ui()
 	_update_player_ui(player_id)
+	
+	
+	
+func _on_enemy_spawned() -> void:
+	emit_signal("enemy_spawned") # UI empfängt
+
+func _on_enemy_destroyed() -> void:
+	print("GameM: enemy_destroyed")
+	emit_signal("enemy_destroyed") # UI empfängt
+	
+func _on_enemy_deleted() -> void:
+	emit_signal("enemy_deleted") # UI empfängt
+
 
 # ──────────────────────────────────────────────────────────────
 #   UI-HILFSFUNKTIONEN
@@ -341,7 +356,3 @@ func _update_player_ui(player_id: int) -> void:
 		health_count = ship.health
 		score_count = ship.score
 	emit_signal("player_stats_changed", player_id, score_count, energy_count, health_count)
-
-func _on_enemy_destroyed() -> void:
-	print("Gamem: enemy_destroyed")
-	emit_signal("enemy_destroyed") # UI empfängt

@@ -9,19 +9,19 @@ _data = {
 }
 point_count = 18
 
-[node name="Path2D" type="Path2D"]
+[node name="Path2D" type="Path2D" unique_id=2065009463]
 process_mode = 1
 position = Vector2(192.294, -90.3879)
 scale = Vector2(2.8, 2.8)
 curve = SubResource("Curve2D_ehqj4")
 script = ExtResource("1_5ohfs")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="."]
-position = Vector2(1354, 395)
-rotation = -0.189988
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=620177547]
+position = Vector2(1353.9999, 394.99994)
+rotation = -0.20631547
 progress = 5085.48
 loop = false
 
-[node name="Mech_Enemy" parent="PathFollow2D" instance=ExtResource("2_o5q7m")]
+[node name="Mech_Enemy" parent="PathFollow2D" unique_id=904613564 instance=ExtResource("2_o5q7m")]
 process_mode = 0
 collision_mask = 3

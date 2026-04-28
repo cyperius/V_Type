@@ -2,12 +2,6 @@ extends "res://scripts/enemy_1.gd"
 
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
-@onready var queue_free_timer: Timer = $QueueFreeTimer
-var screen_entered := false # Für queue_free Mechnaik, verhindert ein Löschen bei 
-# initialem Spawn ausserhalb des Screens
-var is_waiting_for_despawn := false # verhindert Mehrfaches auslösen der await Zeile, falls ein 
-# Gegner schnell zwischen Screen entered und exited hin und her wechseln sollte
 var level_center_orientation # dient nur als flag für EnemySpawner
 
 
@@ -28,16 +22,12 @@ var damage_explosion_scene = preload("res://enemies&obstacles/damage_explosion.t
 func _ready() -> void:
 	super._ready()
 	
-	on_screen_notifier.screen_entered.connect(_on_screen_entered)
-	on_screen_notifier.screen_exited.connect(_on_screen_exited)
-	queue_free_timer.wait_time = 5
-	
-	
 	
 func _on_screen_entered() -> void:
 	screen_entered = true
 	is_waiting_for_despawn = false
 	queue_free_timer.stop()
+	
 	
 func _on_screen_exited() -> void:
 	if screen_entered and not is_waiting_for_despawn: # verhindert Mehrfachauslösung

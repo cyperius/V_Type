@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://dqc8ff3hrrr0" path="res://assets/sound_and_sfx/sound_effects/laser_blast.wav" id="2_w12ld"]
 [ext_resource type="Texture2D" uid="uid://cc0j31mhuem11" path="res://assets/graphic_elements/enemies/space_shurikan_station.png" id="3_fxx5g"]
 [ext_resource type="PackedScene" uid="uid://lnxjxy5a52th" path="res://enemies&obstacles/enemy_utilities/enemy_shots_basic.tscn" id="3_rgv8d"]
-[ext_resource type="Script" uid="uid://b6e4vqfqm8tnm" path="res://scripts/death_module.gd" id="5_6fvvh"]
+[ext_resource type="Script" path="res://scripts/death_module.gd" id="5_6fvvh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6fvvh"]
 radius = 87.4999
@@ -48,4 +48,7 @@ autostart = true
 
 [node name="DeathModule" type="Node2D" parent="." unique_id=251108739]
 script = ExtResource("5_6fvvh")
-metadata/_custom_type_script = "uid://b6e4vqfqm8tnm"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1677013145]
+
+[node name="QueueFreeTimer" type="Timer" parent="." unique_id=1178339801]
