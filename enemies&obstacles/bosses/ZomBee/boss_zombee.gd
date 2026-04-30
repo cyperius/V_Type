@@ -27,9 +27,10 @@ var closest_player : Node
 
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
-var direction 
+var direction : Vector2
 var helmet_health
 var wings_paralyzed = false
+var desired_rotation : float
 
 
 func _ready() -> void:
@@ -92,7 +93,8 @@ func _process(delta: float) -> void:
 	if not vomit_particles.emitting:  # aber bewegen nur, wenn Flügel sich bewgen und gerade nicht gekotzt wird
 		if wings_paralyzed == false: 
 			global_position += direction * speed * delta
-			rotation = direction.angle() - PI
+			desired_rotation = direction.angle() - PI
+			rotation = lerp(rotation, desired_rotation, 0.1)
 		
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
@@ -103,7 +105,7 @@ func _on_wings_area_entered(other: Area2D) -> void:
 	if other.is_in_group("projectiles"):
 		wings.set_process(false)
 		wings_paralyzed = true
-		await get_tree().create_timer(5).timeout
+		await get_tree().create_timer(6).timeout
 		wings.set_process(true)
 		wings_paralyzed = false
 
@@ -150,6 +152,7 @@ func track_nearest_player():
 		else:
 			if global_position.distance_to(closest_player.global_position) > 100:
 				direction = global_position.direction_to(closest_player.global_position)
+				
 
 
 func angry_zombee() -> void:
