@@ -1,29 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhio164itgbs8"]
+[gd_scene format=3 uid="uid://bhio164itgbs8"]
 
 [ext_resource type="Script" uid="uid://bngr2x8sgfsf7" path="res://scripts/level_base.gd" id="1_0fd8o"]
 [ext_resource type="PackedScene" uid="uid://djck1bb2tl1lg" path="res://enemies&obstacles/enemy_utilities/enemy_spawner.tscn" id="2_anwe6"]
 [ext_resource type="PackedScene" uid="uid://cv2u7uwel82og" path="res://game_world/background.tscn" id="3_rej77"]
-[ext_resource type="PackedScene" uid="uid://c8jntkhlu4ljn" path="res://enemies&obstacles/enemy_4.tscn" id="4_0fd8o"]
 [ext_resource type="PackedScene" uid="uid://dgkhgx4gb10tq" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.tscn" id="4_dmnu2"]
 [ext_resource type="AudioStream" uid="uid://f7f76mapbxwl" path="res://assets/sound_and_sfx/soundtracks/Level_sountracks/Label Ultimate threat.ogg" id="5_anwe6"]
-[ext_resource type="PackedScene" uid="uid://cbjidl008eqlo" path="res://enemies&obstacles/enemy_with_path_4.tscn" id="5_dmnu2"]
 
-[node name="Level_4" type="Node2D"]
+[node name="Level_4" type="Node2D" unique_id=426289026]
 script = ExtResource("1_0fd8o")
 amount_of_enemies = 50
 level_nr = 4
 
-[node name="EnemySpawner" parent="." instance=ExtResource("2_anwe6")]
-timer_basic_wait_time = 2
-timer2_basic_wait_time = 3
+[node name="EnemySpawner" parent="." unique_id=1261385444 instance=ExtResource("2_anwe6")]
 level_boss = ExtResource("4_dmnu2")
 basic_spawn_rate = 2
-enemy1 = ExtResource("4_0fd8o")
-enemy2_with_path = ExtResource("5_dmnu2")
 
-[node name="EnemiesContainer" type="Node2D" parent="."]
+[node name="EnemiesContainer" type="Node2D" parent="." unique_id=720986207]
 
-[node name="background_Control" parent="." instance=ExtResource("3_rej77")]
+[node name="background_Control" parent="." unique_id=856770557 instance=ExtResource("3_rej77")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,11 +28,11 @@ offset_bottom = -54.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BossTimer" type="Timer" parent="."]
+[node name="BossTimer" type="Timer" parent="." unique_id=82289034]
 wait_time = 6.322
 one_shot = true
 autostart = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=2073973784]
 stream = ExtResource("5_anwe6")
 autoplay = true

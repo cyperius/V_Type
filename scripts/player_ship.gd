@@ -143,6 +143,7 @@ var health_ratio := 1.0
 #   READY
 # ──────────────────────────────────────────────────────────────
 func _ready() -> void:
+	
 	# HINWEIS: Registrierung passiert in Main.gd (Global.register_player(...)),
 	# damit wir keine Doppel-Registrierung haben.
 	
@@ -270,6 +271,17 @@ func _physics_process(delta: float) -> void:
 			FlightMode.FREE:
 				free_flight_modul._physics_free_flying(delta)
 			# Bewegung je nach Modus
+			
+	# ------ Positionsbegrenzung auf sichtbaren Bildschirm ------
+	# Kamerahilfsfunktion des Autoloads "CameraUtilities" nutzen, mit dem 
+	# aktuellen viewport als Argument (get_viewport())
+	var visible_rect := CameraUtilities.get_visible_world_rect(get_viewport())
+	var clamped_global := global_position # erst die Variable "clamed_global" kreieren und dann ihre
+	# x bzw. y Properties clampen auf die Werte des erhaltenen visible_rect 
+	clamped_global.x = clampf(clamped_global.x, visible_rect.position.x, visible_rect.position.x + visible_rect.size.x)
+	clamped_global.y = clampf(clamped_global.y, visible_rect.position.y, visible_rect.position.y + visible_rect.size.y)
+	global_position = clamped_global
+	
 	#else:
 		#print("autopilot is on..... autopilot is on...")
 	
@@ -315,16 +327,6 @@ func _physics_left_right_move(delta: float) -> void:
 		if velocity.dot(normal) < 0.0:
 			velocity = velocity.slide(normal)
 	
-
-	# Kamerahilfsfunktion des Autoloads "CameraUtilities" nutzen, mit dem 
-	# aktuellen viewport als Argument (get_viewport())
-	var visible_rect := CameraUtilities.get_visible_world_rect(get_viewport())
-	var clamped_global := global_position # erst die Variable "clamed_global" kreieren und dann ihre
-	# x bzw. y Properties clampen auf die Werte des erhaltenen visible_rect 
-	clamped_global.x = clampf(clamped_global.x, visible_rect.position.x, visible_rect.position.x + visible_rect.size.x)
-	clamped_global.y = clampf(clamped_global.y, visible_rect.position.y, visible_rect.position.y + visible_rect.size.y)
-	global_position = clamped_global
-
 
 # ──────────────────────────────────────────────────────────────
 #   COMBAT / HIT / SHIELD
@@ -576,6 +578,10 @@ func status_report() -> void:
 	
 
 
+#–––––––––––––––––––––––––––––
+# newest
+#–––––––––––––––––––----------
+
 func _on_animated_sprite_2d_animation_finished() -> void:
 	print("animated_sprite_finished")
 	animated_sprite.hide()
@@ -583,7 +589,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	
 	
 	# wird aus einem Levelscript ausgelödt (15.4.26: Level_5 )
-func _change_flight_mode(flight_mode: FlightMode, activate_autopilot := false) -> void: # in flight_mode unbenennen (muss dann im level 5 auch angeapsstw erden)
+func _change_flight_mode(new_flight_mode: FlightMode, activate_autopilot := false) -> void: # in flight_mode unbenennen (muss dann im level 5 auch angeapsstw erden)
 	auto_pilot_modul.autopilot_is_on = activate_autopilot
 	ship_sprite.hide()
 	animated_sprite.show()
@@ -591,5 +597,6 @@ func _change_flight_mode(flight_mode: FlightMode, activate_autopilot := false) -
 	animated_sprite.play("p" + str(player_id) + "_sideways_to_top_down")
 	if player_id == 1 :
 		animated_sprite.flip_h = true
-	mode = flight_mode
+	mode = new_flight_mode
 	set_skin("top_down")
+	print("player_ship: my FlighMode is ", new_flight_mode)

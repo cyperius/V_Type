@@ -67,7 +67,7 @@ func _physics_process(delta: float) -> void:
 	if autopilot_is_on:
 		#print("autopilot_target_destination :", new_target_destination)
 		#print("controlled_unit_global_position: ", controlled_unit.global_position)
-		#print("autopilot is on... NOW :", autopilot_is_on)
+		
 		
 		# Zielposition erreichen:
 		var distance_difference = new_target_destination.distance_to(controlled_unit.global_position)
@@ -86,7 +86,7 @@ func _physics_process(delta: float) -> void:
 				
 		if rotation_difference <= 0.02 and distance_difference <= 5:
 			controlled_unit.circle_flight_module.setup(controlled_unit) # dem Circle
-			# FlightModul die aktuellen daten durchgeben (evtl. kann da snoch etwas vereinafch werden..)
+			# FlightModul die aktuellen daten durchgeben (evtl. kann das noch etwas vereinafch werden..)
 			autopilot_is_on = false
 			#
 		

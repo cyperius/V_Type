@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dqqb4r7qhxngt" path="res://assets/graphic_elements/player/SpriteSheets/p4_gray_arrow_sideways_to_top_down_spritesheet_975x512_sheet.png" id="9_plym5"]
 [ext_resource type="Texture2D" uid="uid://bdyj7436fy75k" path="res://assets/graphic_elements/player/SpriteSheets/p2_sideways_to_top_down_spritesheet.png" id="9_rk2pp"]
 [ext_resource type="Texture2D" uid="uid://bc8c5qvu6eo0y" path="res://assets/graphic_elements/player/SpriteSheets/Video_mit_schwarzem_Rahmen.mov_734x384_sheet.png" id="10_3d3jf"]
-[ext_resource type="Script" path="res://scripts/auto_pilot_modul.gd" id="10_ge03c"]
+[ext_resource type="Script" uid="uid://ds1mmis7a3ytd" path="res://scripts/auto_pilot_modul.gd" id="10_ge03c"]
 [ext_resource type="Script" uid="uid://c5tb3v07xljxd" path="res://scripts/free_flight_mode.gd" id="11_qmb43"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_flg8t"]

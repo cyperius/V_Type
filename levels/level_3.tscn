@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b0lqm77qei72l" path="res://scripts/level_3.gd" id="1_856mx"]
 [ext_resource type="PackedScene" uid="uid://dqud88glri484" path="res://enemies&obstacles/enemy_circle_1.tscn" id="3_l3jpy"]
 [ext_resource type="AudioStream" uid="uid://d1vt4irxw6wis" path="res://assets/sound_and_sfx/soundtracks/CircleMode/Cosmic Dreams.wav" id="3_mi50s"]
-[ext_resource type="Texture2D" uid="uid://dqqi7ippk1o2x" path="res://assets/graphic_elements/backgrounds/IMG_5363.mov_sheet.png" id="4_20opy"]
+[ext_resource type="Texture2D" uid="uid://ccu5qumfh24sy" path="res://assets/graphic_elements/backgrounds/paint_vortex.png" id="4_8l0e1"]
 [ext_resource type="PackedScene" uid="uid://dqvir6srh5t1i" path="res://game_world/vortex.tscn" id="4_qmkp1"]
 [ext_resource type="Texture2D" uid="uid://brvk8l7vblmrb" path="res://assets/graphic_elements/backgrounds/back.png" id="5_8l0e1"]
 
@@ -23,8 +23,8 @@ autoplay = true
 [node name="Vortex" parent="." unique_id=1252594161 instance=ExtResource("4_qmkp1")]
 
 [node name="Sprite2D" parent="Vortex" index="0"]
-scale = Vector2(4.8, 2.4)
-texture = ExtResource("4_20opy")
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("4_8l0e1")
 
 [node name="TextureRect" type="TextureRect" parent="Vortex" unique_id=1483582562]
 z_index = -5

@@ -63,7 +63,6 @@ func _ready() -> void:
 		#enemy_spawner.enemy_spawned.connect(_on_enemy_spawned)
 		if enemy_spawner.has_signal("incoming_boss"):
 			enemy_spawner.incoming_boss.connect(_on_incoming_boss) #Invalid access to property or key 'incoming_boss' on a base object of type 'Node2D (AsteroidSpawner.gd)'.
-
 	# Optional: Boss‑Timer
 	#boss_timer.timeout.connect(_on_boss_timer_timeout)
 
@@ -146,6 +145,7 @@ func _on_boss_defeated() -> void:
 
 
 func _on_incoming_boss() -> void:
+	flight_mode_switch_initiated.emit() # signal durch spezifsichen boss, bzw. gewünschtem zeitpunkt auslösen lassen
 	audio_stream_player.stop()
 		
 		

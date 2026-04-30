@@ -22,13 +22,13 @@ func _physics_free_flying(delta: float) -> void:
 
 	if owner.controls_are_reversed:
 		rotation_input = Input.get_axis("p%d_right" % player_id, "p%d_left" % player_id)
-		thrust_input = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
+		
 	else:
 		rotation_input = Input.get_axis("p%d_left" % player_id, "p%d_right" % player_id)
-		thrust_input = Input.get_axis("p%d_down" % player_id, "p%d_up" % player_id)
-
-	body.rotation += rotation_input * rotation_speed * delta
-	body.velocity = body.transform.x * thrust_input * body.speed
+	
+	thrust_input = Input.get_action_strength("p%d_thrust_on" % player_id)
+	body.rotation += 2 * rotation_input * rotation_speed * delta
+	body.velocity = body.transform.x * thrust_input * body.speed * 1.8
 	
 	body.move_and_slide()
 	#
