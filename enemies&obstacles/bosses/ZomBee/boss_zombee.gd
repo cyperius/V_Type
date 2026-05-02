@@ -91,13 +91,15 @@ func _process(delta: float) -> void:
 		status_report()
 		
 	track_nearest_player() # immer den nächsten Spieler tracken für akurates Zielen
-	if not vomit_particles.emitting:  # aber bewegen nur, wenn Flügel sich bewgen und gerade nicht gekotzt wird
-		if wings_paralyzed == false: 
-			global_position += direction * speed * delta
-			desired_rotation = direction.angle() - PI
-			rotate_toward(rotation, desired_rotation, 500)
-				#desired_rotation - rotation) * delta * 0.5
-		
+	#if not vomit_particles.emitting:  # aber bewegen nur, wenn Flügel sich bewgen und gerade nicht gekotzt wird
+	if wings_paralyzed == false: 
+		global_position += direction * speed * delta
+		#direction = global_position.direction_to()
+		desired_rotation = direction.angle()
+		rotate_toward(rotation, desired_rotation, 1)
+		print("ZOMBEEBOSS: desired_rotation: ", desired_rotation, " rotation: ", rotation)
+			#desired_rotation - rotation) * delta * 0.5
+	
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
 	if area_that_entered.is_in_group("projectiles"):
@@ -152,7 +154,7 @@ func track_nearest_player():
 				if global_position.distance_to(space_ball.global_position) > 100:
 					direction = global_position.direction_to(space_ball.global_position)
 		else:
-			if brain_position.global_position.distance_to(closest_player.global_position) > 100:
+			if brain_position.global_position.distance_to(closest_player.global_position) > 20: # 100
 				direction = brain_position.global_position.direction_to(closest_player.global_position)
 				
 
