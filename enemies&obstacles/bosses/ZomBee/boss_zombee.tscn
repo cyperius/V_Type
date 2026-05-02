@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dgkhgx4gb10tq"]
+[gd_scene format=3 uid="uid://dgkhgx4gb10tq"]
 
 [ext_resource type="Script" uid="uid://de0kcftu35t6p" path="res://enemies&obstacles/bosses/ZomBee/boss_zombee.gd" id="1_37dvw"]
 [ext_resource type="Shader" uid="uid://cjr0eppeoec55" path="res://ressources/shaders/red_eyes.gdshader" id="2_7qxdt"]
@@ -66,7 +66,7 @@ height = 19.9829
 radius = 7.72721
 height = 15.6184
 
-[node name="BossZombee" type="Area2D"]
+[node name="BossZombee" type="Area2D" unique_id=595800728]
 process_mode = 1
 rotation = -0.138248
 collision_layer = 4
@@ -74,12 +74,12 @@ collision_mask = 3
 script = ExtResource("1_37dvw")
 helmet_max_health = 2000
 
-[node name="Helmet" type="Area2D" parent="."]
+[node name="Helmet" type="Area2D" parent="." unique_id=1660340526]
 unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 3
 
-[node name="HelmetSprite" type="Sprite2D" parent="Helmet"]
+[node name="HelmetSprite" type="Sprite2D" parent="Helmet" unique_id=1526157113]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.87451)
 self_modulate = Color(1, 1, 1, 0.564706)
@@ -89,12 +89,12 @@ position = Vector2(-196.911, -130.38)
 scale = Vector2(0.823627, 0.742633)
 texture = ExtResource("8_1kd36")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Helmet"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Helmet" unique_id=763955362]
 position = Vector2(-208.848, -146.176)
 scale = Vector2(30.4718, 29.5889)
 shape = SubResource("CircleShape2D_lmhcn")
 
-[node name="Head" type="Sprite2D" parent="."]
+[node name="Head" type="Sprite2D" parent="." unique_id=1752787647]
 unique_name_in_owner = true
 z_index = 1
 material = SubResource("ShaderMaterial_lmhcn")
@@ -105,7 +105,7 @@ texture = ExtResource("2_lmhcn")
 script = ExtResource("10_wvp36")
 vomit_bullet_scene = ExtResource("9_omsgk")
 
-[node name="VomitParticles" type="GPUParticles2D" parent="Head"]
+[node name="VomitParticles" type="GPUParticles2D" parent="Head" unique_id=966480120]
 unique_name_in_owner = true
 position = Vector2(-270.183, -18.3343)
 rotation = -0.0258236
@@ -119,7 +119,7 @@ explosiveness = 0.19
 randomness = 0.31
 process_material = SubResource("ParticleProcessMaterial_6hjs6")
 
-[node name="BodySprite" type="Sprite2D" parent="."]
+[node name="BodySprite" type="Sprite2D" parent="." unique_id=1075079258]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_wvp36")
 position = Vector2(19.5166, -38.6795)
@@ -127,65 +127,65 @@ rotation = 0.0939254
 scale = Vector2(1.45, 1.402)
 texture = ExtResource("5_wvp36")
 
-[node name="Body" type="Area2D" parent="BodySprite"]
+[node name="Body" type="Area2D" parent="BodySprite" unique_id=978802803]
 unique_name_in_owner = true
 rotation = 0.0997259
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("4_10gkv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/Body" unique_id=1277338905]
 position = Vector2(89.0059, 34.483)
 rotation = 1.43494
 scale = Vector2(13.9534, 13.7558)
 shape = SubResource("CapsuleShape2D_6hjs6")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1620837042]
 stream = ExtResource("13_417op")
 autoplay = true
 
-[node name="VomitTimer" type="Timer" parent="."]
+[node name="VomitTimer" type="Timer" parent="." unique_id=1422843334]
 unique_name_in_owner = true
 wait_time = 10.0
 
-[node name="AngerTimer" type="Timer" parent="."]
+[node name="AngerTimer" type="Timer" parent="." unique_id=1135678500]
 unique_name_in_owner = true
 wait_time = 1.5
 
-[node name="Wings" type="Area2D" parent="."]
+[node name="Wings" type="Area2D" parent="." unique_id=677338288]
 unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("9_htw1e")
 
-[node name="LeftWingAnchor" type="Marker2D" parent="Wings"]
+[node name="LeftWingAnchor" type="Marker2D" parent="Wings" unique_id=951770138]
 unique_name_in_owner = true
 position = Vector2(84.328, -221.492)
 rotation = -0.0855211
 
-[node name="LeftWing" type="Sprite2D" parent="Wings/LeftWingAnchor"]
+[node name="LeftWing" type="Sprite2D" parent="Wings/LeftWingAnchor" unique_id=1724294992]
 unique_name_in_owner = true
 position = Vector2(197.265, -226.882)
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("10_7qxdt")
 
-[node name="RightWingAnchor" type="Marker2D" parent="Wings"]
+[node name="RightWingAnchor" type="Marker2D" parent="Wings" unique_id=556565727]
 unique_name_in_owner = true
 position = Vector2(84, -221)
 rotation = -0.539307
 
-[node name="RightWing" type="Sprite2D" parent="Wings/RightWingAnchor"]
+[node name="RightWing" type="Sprite2D" parent="Wings/RightWingAnchor" unique_id=1263268549]
 unique_name_in_owner = true
 position = Vector2(365.154, -94.4943)
 texture = ExtResource("11_lmhcn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wings"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wings" unique_id=1522087972]
 position = Vector2(320.929, -492.472)
 rotation = -0.956926
 scale = Vector2(-2.07219, 0.950651)
 shape = SubResource("CapsuleShape2D_wvp36")
 
-[node name="Brain" type="Area2D" parent="."]
+[node name="Brain" type="Area2D" parent="." unique_id=1679385532]
 unique_name_in_owner = true
 position = Vector2(19.5166, -38.6795)
 rotation = 0.0939254
@@ -194,12 +194,12 @@ collision_layer = 4
 collision_mask = 3
 script = ExtResource("4_10gkv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Brain"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Brain" unique_id=1981230391]
 position = Vector2(-151.4, -107.614)
 scale = Vector2(20, 9.14762)
 shape = SubResource("CapsuleShape2D_omsgk")
 
-[node name="Mouth" type="Area2D" parent="."]
+[node name="Mouth" type="Area2D" parent="." unique_id=647603703]
 unique_name_in_owner = true
 position = Vector2(19.5166, -38.6795)
 rotation = 0.0939254
@@ -208,12 +208,12 @@ collision_layer = 4
 collision_mask = 3
 script = ExtResource("4_10gkv")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Mouth"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Mouth" unique_id=15958222]
 position = Vector2(-165.789, 38.623)
 scale = Vector2(10.5001, 8.26661)
 shape = SubResource("CapsuleShape2D_xadtk")
 disabled = true
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=756838437]
 wait_time = 10.0
 autostart = true

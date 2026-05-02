@@ -24,6 +24,7 @@ var closest_player : Node
 @onready var timer: Timer = $Timer
 @onready var vomit_hit_box: Area2D = %VomitHitBox
 @onready var space_ball : SpaceBall
+@onready var brain_position: CollisionShape2D = $Brain/CollisionShape2D
 
 # Dictionary, das (in ready-Funktion) alle aktiven Spieler speichert, erreichbar über ihre ID
 var players : Dictionary = {}
@@ -94,7 +95,8 @@ func _process(delta: float) -> void:
 		if wings_paralyzed == false: 
 			global_position += direction * speed * delta
 			desired_rotation = direction.angle() - PI
-			rotation = lerp(rotation, desired_rotation, 0.1)
+			rotate_toward(rotation, desired_rotation, 500)
+				#desired_rotation - rotation) * delta * 0.5
 		
 	
 func _on_body_area_entered(area_that_entered: Area2D) -> void:
@@ -150,10 +152,9 @@ func track_nearest_player():
 				if global_position.distance_to(space_ball.global_position) > 100:
 					direction = global_position.direction_to(space_ball.global_position)
 		else:
-			if global_position.distance_to(closest_player.global_position) > 100:
-				direction = global_position.direction_to(closest_player.global_position)
+			if brain_position.global_position.distance_to(closest_player.global_position) > 100:
+				direction = brain_position.global_position.direction_to(closest_player.global_position)
 				
-
 
 func angry_zombee() -> void:
 	var eyes_shader_material := head.material as ShaderMaterial
