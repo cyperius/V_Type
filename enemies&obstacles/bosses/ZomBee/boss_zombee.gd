@@ -208,12 +208,12 @@ func status_report() -> void:
 
 
 func _on_timer_timeout() -> void:
-	var eyes_shader_material := head.material as ShaderMaterial
-	eyes_shader_material.set_shader_parameter("red_color", 1.0)
+	#var eyes_shader_material := head.material as ShaderMaterial # aktuell, 17.5.26: Zombee als SpriteSheet
+	#eyes_shader_material.set_shader_parameter("red_color", 1.0)
 	await get_tree().create_timer(0.8).timeout
 	if not helmet:
 		vomit_particles.lifetime = 7.3
 	head.vomit_wave()
-	eyes_shader_material.set_shader_parameter("red_color", 0.0)
+	# eyes_shader_material.set_shader_parameter("red_color", 0.0) 
 	
 	

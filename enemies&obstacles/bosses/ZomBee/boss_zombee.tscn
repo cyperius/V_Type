@@ -33,7 +33,6 @@ shader_parameter/alpha_strength = 1.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6hjs6"]
 particle_flag_align_y = true
-emission_shape_scale = Vector3(1, 12, 1)
 emission_shape = 1
 emission_sphere_radius = 26.2
 spread = 0.0
@@ -109,15 +108,17 @@ vomit_bullet_scene = ExtResource("9_omsgk")
 unique_name_in_owner = true
 position = Vector2(-270.183, -18.3343)
 rotation = -0.0258236
-scale = Vector2(1.38095, 1.33524)
-emitting = false
+scale = Vector2(1.381804, 1.3384906)
 amount = 500
 texture = ExtResource("2_37dvw")
 lifetime = 7.33
-speed_scale = 6.89
+speed_scale = 7.6899999999999995
 explosiveness = 0.19
 randomness = 0.31
 process_material = SubResource("ParticleProcessMaterial_6hjs6")
+
+[node name="VomitOriginPosition" type="Marker2D" parent="Head" unique_id=1638644881]
+unique_name_in_owner = true
 
 [node name="BodySprite" type="Sprite2D" parent="." unique_id=1075079258]
 unique_name_in_owner = true

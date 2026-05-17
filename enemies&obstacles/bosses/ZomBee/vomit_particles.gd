@@ -10,6 +10,7 @@ var vomit_wave_direction : Vector2
 @onready var direction_2d : Vector2
 @onready var boss_zombee: BossZombee = $".."
 @onready var helmet: Area2D = %Helmet
+@onready var vomit_origin_position: Marker2D = %VomitOriginPosition
 
 
 
@@ -40,18 +41,18 @@ func spawn_vomit_bullet():
 	get_tree().current_scene.add_child(bullet)
 	if boss_zombee.closest_player.global_position:  # Sicherheitsnetz-> behebt hoffentlcih untenstehendes Problem
 		bullet.look_at(boss_zombee.closest_player.global_position)  # als player zerstört wurde: Invalid access to property or key 'global_position' on a base object of type 'Nil'.
-		bullet.global_position = head.global_position
+		bullet.global_position = vomit_origin_position.global_position
 		# bisheriger: jeder Schuss wird neu ausgerichtet - funktioniert besser (zu gut)
-		bullet.velocity = 5000.0 * bullet.global_position.direction_to(boss_zombee.closest_player.global_position)# oder andere Geschwindigkeit
+		bullet.velocity = 4000.0 * bullet.global_position.direction_to(boss_zombee.closest_player.global_position)# oder andere Geschwindigkeit
 		# 26.12.2025: neu: in vomit_wave() gesetzte Richtung für Kotzstrahl gilt füer alle Kotzbrocken :)
 		# bullet.velocity = 5000.0 * vomit_wave_direction # 26.12.2025 funktioniert nicht gut. Schüsse scheinen immer in selbe Richtung zu gehen
 	
 	
 func vomit_wave():
-	#vomit_wave_direction = head.global_position.direction_to(boss_zombee.closest_player.global_position) "26.12.25 funktioniert nicht gut
-	#print("vomit_partcles.gd: vomit_wave_direction: ", vomit_wave_direction)
+	vomit_wave_direction = vomit_origin_position.global_position.direction_to(boss_zombee.closest_player.global_position) # 26.12.25 funktioniert nicht gut
+	print("vomit_partcles.gd: vomit_wave_direction: ", vomit_wave_direction)
 	vomit_particles.emitting = true
-	#emit_signal("just_vomitted") * 26.12.2025: funktioniert damit auch nciht richtig leider
+	emit_signal("just_vomitted") # 26.12.2025: funktioniert damit auch nciht richtig leider
 	for vomit_bullets in range(15):
 		if not helmet: # nur wenn Helm zerstört ist, sollen collision areas abgesondert werden
 			spawn_vomit_bullet()
